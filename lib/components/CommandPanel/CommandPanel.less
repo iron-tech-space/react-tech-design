@@ -1,0 +1,95 @@
+.command-panel-container {
+	padding: 3px;
+	display: flex;
+
+	&.border-all {
+		//border: 1px solid @border-color;
+		border-width: @cmd-panel-border-width;
+		border-style: @cmd-panel-border-style;
+		border-color: @cmd-panel-border-color;
+	}
+	&.border-top {
+		border-top: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+	&.border-left {
+		border-left: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+	&.border-bottom {
+		border-bottom: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+	&.border-right {
+		border-right: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+	&.border-top-bottom {
+		border-top: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+		border-bottom: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+	&.border-left-right {
+		border-left: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+		border-right: @cmd-panel-border-width @cmd-panel-border-style
+			@cmd-panel-border-color;
+	}
+
+	.left-system-side {
+	}
+	.left-custom-side {
+	}
+	.center-custom-side {
+		margin: auto;
+	}
+	.right-custom-side {
+	}
+	.right-system-side {
+		.ant-input-sm {
+			height: 19px;
+		}
+		.search {
+			width: @cmd-panel-search-width;
+			margin: 0 5px;
+		}
+	}
+
+	.left-system-side button,
+	.right-system-side button {
+		border-width: @cmd-panel-btn-border-width;
+		border-style: @cmd-panel-btn-border-style;
+		border-color: @cmd-panel-btn-border-color;
+		border-radius: 3px;
+		background: white;
+		padding: 0;
+		margin: 0 5px;
+		width: 25px;
+		height: 25px;
+	}
+	.left-system-side button:hover,
+	.right-system-side button:hover {
+		cursor: pointer;
+		color: @cmd-panel-btn-hover-color;
+		border-color: @cmd-panel-btn-hover-border-color;
+	}
+
+	.left-system-side button:active,
+	.right-system-side button:active {
+		cursor: pointer;
+		color: @cmd-panel-btn-active-color;
+		border-color: @cmd-panel-btn-active-border-color;
+	}
+
+	.left-system-side button:disabled,
+	.left-system-side button[disabled],
+	.right-system-side button:disabled,
+	.right-system-side button[disabled] {
+		color: @cmd-panel-btn-disabled-color;
+		border-width: @cmd-panel-btn-disabled-border-width;
+		border-style: @cmd-panel-btn-disabled-border-style;
+		border-color: @cmd-panel-btn-disabled-border-color;
+		background-color: @cmd-panel-btn-disabled-background-color;
+	}
+}
