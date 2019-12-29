@@ -1,7 +1,10 @@
-.filter-panel-container {
+.@{rt-prefix}-filter-panel {
 	padding: @filter-panel-pt @filter-panel-pr @filter-panel-pb @filter-panel-pl;
 	display: flex;
 	align-items: flex-end;
+    &-no-title {
+        padding-top: @filter-panel-no-title-pt;
+    }
 	&.border-all {
 		border: @filter-panel-border-width @filter-panel-border-style
 			@filter-panel-border-color;
@@ -35,7 +38,7 @@
 			@filter-panel-border-color;
 	}
 
-    .filter-panel-item{
+    &-item{
         margin-right: @filter-panel-item-mr;
     }
 }

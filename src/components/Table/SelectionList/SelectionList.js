@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {CloseCircleOutlined} from '@ant-design/icons';
+import {rtPrefix} from '../../utils/variables';
 
 const SelectionList = (props) => {
 	const {selectedRowObjects, rowRender, onClickDropSelect} = props;
 
 	// console.log("SelectionList typeof -> ", typeof(rowRender));
 	return (
-		<div className={'show-selection-container'}>
+		<div className={`${rtPrefix}-table-selected-rows`}>
 			{selectedRowObjects && selectedRowObjects.length > 0 ? (
 				<ul>
 					{selectedRowObjects.map((item, index) => (

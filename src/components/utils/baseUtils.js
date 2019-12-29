@@ -1,3 +1,5 @@
+import {notification} from 'antd';
+
 export const noop = () => {};
 
 export const flatten = (arrayOfArrays) =>
@@ -61,4 +63,40 @@ export const generateUUID = () => {
 			(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
 		).toString(16)
 	);
+};
+
+
+export const getValueFromSingleSelect = (name, keys) => (keys && keys.length > 0) ? keys[0] : null;
+
+export const getValueFromMultiSelect = (name, keys) => (keys && keys.length > 0) ? keys : null;
+
+export const getValueFromSelectTable = (rows) => {
+    if (rows && rows.length > 0) return rows[0];
+    else return null;
+};
+
+export const getObjectExcludedProps = (object, exclude) => {
+    let returnObject = {};
+    Object.keys(object).forEach((key) =>
+        !exclude.includes(key) ? (returnObject[key] = object[key]) : null
+    );
+    return returnObject;
+};
+
+export const notificationError = (error, message) => {
+	if (error.response) {
+		console.error(error.response.status, error.response.data);
+		const errorDescription = (error.response.data && error.response.data.error)
+			? error.response.data.error
+			: "Нет описания ошибки";
+		notification.error({
+			message: `[${error.response.status}] ${message}`,
+			description: errorDescription,
+		});
+	} else {
+		console.error(error);
+		notification.error({
+			message: 'Не удалось детектировать ошибку. См. console.error',
+		});
+	}
 };

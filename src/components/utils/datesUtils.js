@@ -5,8 +5,9 @@ export const APP_TIME_OFFSET = 3;
 export const getMomentFromStringByFormat = (date, format) =>
 	date ? moment(date, format).utcOffset(APP_TIME_OFFSET) : null;
 
-export const getMomentWithOffset = (date) =>
-	moment(date).utcOffset(APP_TIME_OFFSET);
+// export const getMomentWithOffset = (date) =>
+// 	moment(date).utcOffset(APP_TIME_OFFSET);
+export const getMomentWithOffset = (date) => moment(date).format();
 
 export const getMomentWithOffsetTruncateDay = (date) =>
 	getMomentWithOffset(date)
@@ -15,6 +16,7 @@ export const getMomentWithOffsetTruncateDay = (date) =>
 		.seconds(0)
 		.milliseconds(0)
 		.format();
+
 
 export const toFormat = (dateString, format) => {
 	if (!dateString) {

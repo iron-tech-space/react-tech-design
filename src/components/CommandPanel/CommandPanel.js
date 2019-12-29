@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {noop} from '../utils/baseUtils';
-import {Input, Tooltip, Popconfirm, Modal} from 'antd';
+import {rtPrefix} from '../utils/variables';
+import {Input, Tooltip, Popconfirm, Modal, Button} from 'antd';
 import {
 	PlusOutlined,
 	CopyOutlined,
@@ -14,6 +15,7 @@ import {
 	FilterOutlined,
 	ExclamationCircleOutlined,
 } from '@ant-design/icons';
+import FormItems from "../Form/FormItems";
 const {confirm} = Modal;
 
 const CommandPanel = (props) => {
@@ -33,11 +35,65 @@ const CommandPanel = (props) => {
 		onClickDown,
 		onSearch,
 		showElements,
+        systemBtnProps,
 		disabledElements,
 		leftCustomSideElement,
 		centerCustomSideElement,
 		rightCustomSideElement,
 	} = props;
+
+    const defaultSystemBtnProps = {
+        add: {
+            tooltip: 'Добавить',
+            onClick: onClickAdd,
+            icon: <PlusOutlined />
+        },
+        addAsCopy: {
+            tooltip: 'Добавить копированием',
+            onClick: onClickAddAsCopy,
+            icon: <CopyOutlined />
+        },
+        addGroup: {
+            tooltip: 'Добавить группу',
+            onClick: onClickAddGroup,
+            icon: <FolderAddOutlined />
+        },
+        edit: {
+            tooltip: 'Изменить',
+            onClick: onClickEdit,
+            icon: <EditOutlined />
+        },
+        delete: {
+            tooltip: 'Удалить',
+            icon: <DeleteOutlined />
+        },
+        up: {
+            tooltip: 'Переместить вверх',
+            onClick: onClickUp,
+            icon: <ArrowUpOutlined />
+        },
+        down: {
+            tooltip: 'Переместить вниз',
+            onClick: onClickDown,
+            icon: <ArrowDownOutlined />
+        },
+		search: {
+			placeholder: 'Поиск',
+			onSearch: onSearch,
+		},
+        settings: {
+            tooltip: 'Настройки таблицы',
+            tooltipPlacement: 'topRight',
+            onClick: () => {},
+            icon: <SettingOutlined />
+        },
+        filter: {
+            tooltip: 'Настройки фильтров',
+            tooltipPlacement: 'topRight',
+            onClick: () => {},
+            icon: <FilterOutlined />
+        }
+    };
 
 	const _onClickDelete = (event) => {
 		if (deleteConfirmType === 'Modal') {
@@ -45,19 +101,6 @@ const CommandPanel = (props) => {
 		} else {
 			onClickDelete(event);
 		}
-	};
-
-	const deleteButton = (withOnClick) => {
-		return (
-			<Tooltip title='Удалить'>
-				<button
-					disabled={disabledElements.includes('delete')}
-					onClick={withOnClick ? _onClickDelete : null}
-				>
-					<DeleteOutlined />
-				</button>
-			</Tooltip>
-		);
 	};
 
 	const deleteButtonPopupConfirm = () => {
@@ -69,12 +112,12 @@ const CommandPanel = (props) => {
 				okText='Да'
 				cancelText='Нет'
 			>
-				{deleteButton(false)}
+				{renderDeleteBtn(false)}
 			</Popconfirm>
 		);
 	};
 
-	function deleteButtonModalConfirm() {
+    const deleteButtonModalConfirm = () => {
 		confirm({
 			title: deleteConfirmTitle,
 			icon: <ExclamationCircleOutlined />,
@@ -86,7 +129,63 @@ const CommandPanel = (props) => {
 				onClickDelete();
 			},
 		});
-	}
+	};
+
+    const renderDeleteBtn = (withOnClick) => {
+        const genProps = {...defaultSystemBtnProps['all'], ...systemBtnProps['all']};
+        const btnProps = {...defaultSystemBtnProps['delete'], ...systemBtnProps['delete']};
+
+        return (
+            <Tooltip title={btnProps.tooltip}>
+                <Button
+                    {...genProps}
+                    className={`${rtPrefix}-btn`}
+                    icon={btnProps.icon}
+                    onClick={withOnClick ? _onClickDelete : null}
+                    disabled={disabledElements.includes('delete')}
+                />
+            </Tooltip>
+        );
+    };
+
+    const renderBtn = (type) => {
+        const genProps = {...defaultSystemBtnProps['all'], ...systemBtnProps['all']};
+        const btnProps = {...defaultSystemBtnProps[type], ...systemBtnProps[type]};
+
+        if(showElements.includes(type)) {
+            if(btnProps.render)
+                return btnProps.render({
+                    disabled: disabledElements.includes(type),
+                    onClick: btnProps.onClick,
+					onSearch: btnProps.onSearch
+				});
+             else
+             	if (type === 'search')
+					return (
+						<Input.Search
+							disabled={disabledElements.includes(type)}
+							defaultValue={defaultValueSearch}
+							placeholder={btnProps.placeholder}
+							onSearch={btnProps.onSearch}
+							className={'search'}
+						/>
+					);
+				else
+					return (
+						<Tooltip title={btnProps.tooltip} placement={btnProps.tooltipPlacement ? btnProps.tooltipPlacement : 'top'}>
+							<Button
+								{...genProps}
+								className={`${rtPrefix}-btn`}
+								icon={btnProps.icon}
+								onClick={btnProps.onClick}
+								disabled={disabledElements.includes(type)}
+							/>
+						</Tooltip>
+					)
+        }
+        else
+            return null
+    };
 
 	return (
 		<React.Fragment>
@@ -95,138 +194,38 @@ const CommandPanel = (props) => {
 			centerCustomSideElement ||
 			rightCustomSideElement ? (
 				<div
-					className={'command-panel-container border-' + borderStyle}
+					className={`${rtPrefix}-command-panel border-${borderStyle}`}
 				>
 					<div className={'left-system-side'}>
-						{showElements.includes('add') ? (
-							<Tooltip title='Добавить'>
-								<button
-									disabled={disabledElements.includes('add')}
-									onClick={onClickAdd}
-								>
-									<PlusOutlined />
-								</button>
-							</Tooltip>
-						) : null}
-
-						{showElements.includes('addAsCopy') ? (
-							<Tooltip title='Добавить копированием'>
-								<button
-									disabled={disabledElements.includes(
-										'addAsCopy'
-									)}
-									onClick={onClickAddAsCopy}
-								>
-									<CopyOutlined />
-								</button>
-							</Tooltip>
-						) : null}
-
-						{showElements.includes('addGroup') ? (
-							<Tooltip title='Добавить группу'>
-								<button
-									disabled={disabledElements.includes(
-										'addGroup'
-									)}
-									onClick={onClickAddGroup}
-								>
-									<FolderAddOutlined />
-								</button>
-							</Tooltip>
-						) : null}
-
-						{showElements.includes('edit') ? (
-							<Tooltip title='Изменить'>
-								<button
-									disabled={disabledElements.includes('edit')}
-									onClick={onClickEdit}
-								>
-									<EditOutlined />
-								</button>
-							</Tooltip>
-						) : null}
+                        {renderBtn('add')}
+                        {renderBtn('addAsCopy')}
+                        {renderBtn('addGroup')}
+                        {renderBtn('edit')}
 
 						{showElements.includes('delete')
 							? deleteConfirm
 								? deleteConfirmType === 'Popup'
 									? deleteButtonPopupConfirm()
-									: deleteButton(true)
-								: deleteButton(true)
+									: renderDeleteBtn(true)
+								: renderDeleteBtn(true)
 							: null}
 
-						{showElements.includes('up') ? (
-							<Tooltip title='Переместить вверх'>
-								<button
-									disabled={disabledElements.includes('up')}
-									onClick={onClickUp}
-								>
-									<ArrowUpOutlined />
-								</button>
-							</Tooltip>
-						) : null}
-
-						{showElements.includes('down') ? (
-							<Tooltip title='Переместить вниз'>
-								<button
-									disabled={disabledElements.includes('down')}
-									onClick={onClickDown}
-								>
-									<ArrowDownOutlined />
-								</button>
-							</Tooltip>
-						) : null}
+                        {renderBtn('up')}
+                        {renderBtn('down')}
 					</div>
 					<div className={'left-custom-side'}>
-						{leftCustomSideElement}
+						{leftCustomSideElement ? <FormItems items={leftCustomSideElement} /> : null}
 					</div>
 					<div className={'center-custom-side'}>
-						{centerCustomSideElement}
+						{centerCustomSideElement ? <FormItems items={centerCustomSideElement} /> : null}
 					</div>
 					<div className={'right-custom-side'}>
-						{rightCustomSideElement}
+						{rightCustomSideElement ? <FormItems items={rightCustomSideElement} /> : null}
 					</div>
 					<div className={'right-system-side'}>
-						{showElements.includes('search') ? (
-							<Input.Search
-								disabled={disabledElements.includes('search')}
-								defaultValue={defaultValueSearch}
-								size='small'
-								placeholder='Поиск'
-								onSearch={onSearch}
-								className={'search'}
-							/>
-						) : null}
-						{showElements.includes('settings') ? (
-							<Tooltip
-								title='Настройки таблицы'
-								placement='topRight'
-							>
-								<button
-									disabled={disabledElements.includes(
-										'settings'
-									)}
-									onClick={() => {}}
-								>
-									<SettingOutlined />
-								</button>
-							</Tooltip>
-						) : null}
-
-						{showElements.includes('filter') ? (
-							<Tooltip
-								title='Настройки фильтров'
-								placement='topRight'
-							>
-								<button
-									disabled={disabledElements.includes(
-										'filter'
-									)}
-									onClick={() => {}}
-								>
-									<FilterOutlined />
-								</button>
-							</Tooltip>
-						) : null}
+						{renderBtn('search')}
+                        {renderBtn('settings')}
+                        {renderBtn('filter')}
 					</div>
 				</div>
 			) : null}
@@ -236,7 +235,7 @@ const CommandPanel = (props) => {
 
 CommandPanel.propTypes = {
 	/** Центральный кастомный элемент командной панели */
-	centerCustomSideElement: PropTypes.element,
+	centerCustomSideElement: PropTypes.arrayOf(PropTypes.object), // PropTypes.element,
 
 	/** Тип бордера панели (по умолчанию 'bottom')
 	 * ['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right'] */
@@ -271,7 +270,7 @@ CommandPanel.propTypes = {
 	disabledElements: PropTypes.arrayOf(PropTypes.string),
 
 	/** Левый кастомный элемент командной панели */
-	leftCustomSideElement: PropTypes.element,
+	leftCustomSideElement: PropTypes.arrayOf(PropTypes.object),
 
 	/** Событие при нажатии на кнопку "Добавить" */
 	onClickAdd: PropTypes.func,
@@ -298,15 +297,19 @@ CommandPanel.propTypes = {
 	onSearch: PropTypes.func,
 
 	/** Правый кастомный элемент командной панели */
-	rightCustomSideElement: PropTypes.element,
+	rightCustomSideElement: PropTypes.arrayOf(PropTypes.object),
 
 	/** Массив элементов командной панели, которые надо отобразить
      ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
 	showElements: PropTypes.arrayOf(PropTypes.string),
+
+    /** Объект кастомизации системных кнопок
+     { [btnType]: { tooltip: <String>, icon: <Icon />, render: ({disabled, onClick}) => <Component /> } } */
+    systemBtnProps: PropTypes.object
 };
 
 CommandPanel.defaultProps = {
-	centerCustomSideElement: undefined,
+	centerCustomSideElement: null,
 	borderStyle: 'bottom',
 	defaultValueSearch: undefined,
 	deleteConfirm: true,
@@ -314,7 +317,7 @@ CommandPanel.defaultProps = {
 	deleteConfirmTitle: 'Подтвержение удаления',
 	deleteConfirmDescription: 'Вы действительно хотите удалить?',
 	disabledElements: [],
-	leftCustomSideElement: undefined,
+	leftCustomSideElement: null,
 	onClickAdd: noop,
 	onClickAddAsCopy: noop,
 	onClickAddGroup: noop,
@@ -323,7 +326,8 @@ CommandPanel.defaultProps = {
 	onClickUp: noop,
 	onClickDown: noop,
 	onSearch: noop,
-	rightCustomSideElement: undefined,
+	rightCustomSideElement: null,
 	showElements: [],
+    systemBtnProps: {},
 };
 export default CommandPanel;

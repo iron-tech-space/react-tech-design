@@ -1,0 +1,67 @@
+.@{rt-prefix}-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+
+    &-header {
+        padding: 16px 24px;
+        color: rgba(0, 0, 0, .85);
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        border-radius: 2px 2px 0 0;
+
+        h3.ant-typography {
+            margin-bottom: 0;
+        }
+    }
+
+    &-body {
+        flex: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        overflow: auto;
+
+        .@{ant-prefix}-tabs-card {
+            flex: 1;
+            .@{ant-prefix}-tabs-content-holder{
+                display: flex;
+                .@{ant-prefix}-tabs-content {
+                    flex: 1;
+                    .@{ant-prefix}-tabs-tabpane {
+                        display: flex;
+                    }
+                }
+            }
+        }
+
+        &-no-padding {
+            padding: 0;
+        }
+    }
+
+    &-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px 16px;
+        background: 0 0;
+        border-top: 1px solid #f0f0f0;
+        border-radius: 0 0 2px 2px;
+    }
+
+    &-table {
+        flex: auto;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.ant-modal-body{
+    .@{rt-prefix}-form {
+        &-body {
+            //overflow: visible;
+            display: block;
+        }
+    }
+}

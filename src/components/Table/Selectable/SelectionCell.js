@@ -3,8 +3,8 @@ import {Checkbox} from 'antd';
 import {
 	flatten,
 	getTableRowKeys,
-	findNodeByRowKey,
-} from '../../utils/baseUtils';
+	findNodeByRowKey, getTableRowObjects
+} from "../../utils/baseUtils";
 
 const getRowChildren = (data, rowKey) =>
 	data.map((item) => {
@@ -219,6 +219,8 @@ const SelectionCell = (props) => {
 			indeterminateRowKeys: _indeterminateRowKeys,
 		});
 
+		const keys = [...new Set(_selectedRowKeys)];
+		const _selectedRowObjects = flatten(getTableRowObjects(container.props.data, rowKey)).filter((item) => keys.includes(item[rowKey]));
 		//return [...new Set(_disabledElements)]
 		// onChange({ selected: checked, totalLength, rowData, rowIndex });
 
@@ -228,9 +230,12 @@ const SelectionCell = (props) => {
 		const totalLength = flatten(
 			getTableRowKeys(container.props.data, column.rowKey)
 		).length;
+
 		if (selectLength === 0) selectAll = false;
 		else if (totalLength === selectLength) selectAll = true;
 		else if (totalLength !== selectLength) selectAll = null;
+
+
 
 		onChange({
 			selected: checked,
@@ -240,7 +245,8 @@ const SelectionCell = (props) => {
 				rowKey: rowKey,
 			},
 			_selectAll: selectAll,
-			_selectedRowKeys: [...new Set(_selectedRowKeys)],
+			_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
+			_selectedRowObjects: _selectedRowObjects,
 			_indeterminateRowKeys: [...new Set(_indeterminateRowKeys)],
 		});
 

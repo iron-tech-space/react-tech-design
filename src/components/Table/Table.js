@@ -1,5 +1,7 @@
-import React, {useEffect, useState, forwardRef} from 'react';
+import React, {useRef, forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {notification} from 'antd';
 import SortOrder from 'react-base-table/lib/SortOrder';
 import BaseTable, {AutoResizer, callOrReturn, Column} from 'react-base-table';
@@ -9,14 +11,20 @@ import SelectionCell, {parentAnalysis} from '../Table/Selectable/SelectionCell';
 import CommandPanel from '../CommandPanel/CommandPanel';
 import FilterPanel from '../FilterPanel/FilterPanel';
 import SelectionList from '../Table/SelectionList/SelectionList';
+import {rtPrefix} from '../utils/variables';
 import {
 	flatten,
 	generateUUID,
 	getTableRowKeys,
 	findNodeByRowKey,
 	noop,
-	getTableRowObjects,
-} from '../utils/baseUtils';
+	getTableRowObjects, notificationError
+} from "../utils/baseUtils";
+import objectPath from "object-path";
+import { setDateStore } from "../../redux/rtd.actions";
+import FormItems from "../Form/FormItems";
+
+
 
 const Table = forwardRef((props, ref) => {
 	/** Состояние первоначалной настройки компонента*/
@@ -42,7 +50,9 @@ const Table = forwardRef((props, ref) => {
 
     const [_totalCountRows, setTotalCountRows] = useState(0);
 
-    const tableRef = React.useRef();
+    const [_footerShow, _setFooterShow] = useState(false);
+
+    const tableRef = useRef();
 
 	const {
 		/** Def values */
@@ -74,10 +84,12 @@ const Table = forwardRef((props, ref) => {
 		footerHeight,
 		footerShow,
         footerTitles,
+		// footerProps,
 		headerHeight,
 		rowHeight,
 		zebraStyle,
 		rowRenderer,
+		estimatedRowHeight,
 
 		/** Load Data Props */
 		loadThreshold,
@@ -106,8 +118,13 @@ const Table = forwardRef((props, ref) => {
 		/** SELECTED PANEL */
 		showSelection,
 		rowRenderShowSelection,
+
+		/** REDUX PROPS */
+		dispatchPath,
+		subscribe,
 	} = props;
 
+	// console.log('props.commandPanelProps => ', props.commandPanelProps);
 	const commandPanelProps = {
 		...CommandPanel.defaultProps,
 		...props.commandPanelProps,
@@ -117,11 +134,22 @@ const Table = forwardRef((props, ref) => {
 		...props.filterPanelProps,
 	};
 
+	const footerProps = {
+		...Table.defaultProps.footerProps,
+		...props.footerProps,
+	};
+
+	const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
+	const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
+
+
 	useEffect(() => {
-		// console.log("Инициализация дефолтных значений ");
+        // console.log("Инициализация дефолтных значений ");
+        // console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
 
 		// Инициализация дефолтных значений
-		_setRows(defaultRows);
+		// _setRows(defaultRows);
+		_setRowsHandler(defaultRows);
 		setSelectedRowKeys(defaultSelectedRowKeys);
 		setSearchValue(defaultSearchValue);
 		setFilter(defaultFilter);
@@ -130,6 +158,12 @@ const Table = forwardRef((props, ref) => {
 			defaultRows.length > 0 &&
 				defaultRows.length === defaultSelectedRowKeys.length
 		);
+		// Определение нужно ли отображать подвал
+		_setFooterShow(
+			(footerProps.showElements.length ||
+			footerProps.leftCustomSideElement ||
+			footerProps.centerCustomSideElement ||
+			footerProps.rightCustomSideElement));
 
 		if (!!expandColumnKey && !expandLazyLoad) {
 			// Открытие всех нод
@@ -169,29 +203,17 @@ const Table = forwardRef((props, ref) => {
 				reload: true,
 			});
 		}
+		// console.log("Table => props ", props);
 		setMounted(true);
 		if (ref && typeof ref === 'function') ref({reloadData});
 		else if (ref && typeof ref === 'object') ref.current = {reloadData};
 	}, []);
 
-	const reloadData = ({sortBy, filter, searchValue}) => {
-	    // console.log("reloadData params ", sortBy, filter, searchValue);
-        setSelectedRowKeys([]);
-        if(sortBy) setSortBy(sortBy);
-        if(filter) setFilter(filter);
-        if(searchValue) setSearchValue(searchValue);
-        _dataProcessing({
-			sortBy: sortBy ? sortBy : _sortBy,
-			filter: filter ? filter : _filter,
-			searchLine: searchValue ? searchValue : _searchValue,
-			reload: true,
-		});
-	};
-
 	useEffect(() => {
 		if (type === 'localSide') {
 			// console.log("Control useEffect => ", rows, selectedRowKeys, searchValue, filter, sortBy);
-			_setRows(rows);
+			// _setRows(rows);
+			_setRowsHandler(rows);
 			setSelectedRowKeys(selectedRowKeys);
 			setSearchValue(searchValue);
 			setFilter(filter);
@@ -202,9 +224,49 @@ const Table = forwardRef((props, ref) => {
 					setExpandedRowKeys(flatten(getTableRowKeys(rows, rowKey)));
 			}
 		}
-	}, [rows, selectedRowKeys, searchValue, filter, sortBy]);
+    }, [rows, selectedRowKeys, searchValue, filter, sortBy]);
+
+	/** Подписка на изменение props[subscribe.name] в сторе */
+	useEffect( () => {
+		if(subscribe.name) {
+			// console.log("Table => useEffect => subscribe.value ", props[subscribe.name]);
+			subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setReloadTable: reloadData});
+		}
+	}, [props[subscribe.name]]);
+
 
 	/** BASE FUNCTIONS */
+	const _setRowsHandler = (rows) => {
+		_setRows(rows);
+		rowsDispatch(rows);
+	};
+	const setRowsHandler = (rows) => {
+		setRows(rows);
+		rowsDispatch(rows);
+	};
+	const rowsDispatch = (rows) => {
+		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+	};
+
+	const reloadData = ({sortBy, filter, searchValue}) => {
+		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
+        if(props.value && props.value.length > 0)
+            setSelectedRowKeys(props.value.map(item => item[rowKey]));
+        else
+            setSelectedRowKeys([]);
+		// setSelectedRowKeys([]);
+		if(sortBy) setSortBy(sortBy);
+		if(filter) setFilter(filter);
+		if(searchValue) setSearchValue(searchValue);
+		_dataProcessing({
+			sortBy: sortBy ? sortBy : _sortBy,
+			filter: filter ? filter : _filter,
+			searchLine: searchValue ? searchValue : _searchValue,
+			reload: true,
+		});
+        // console.log("reloadData loading ", loading);
+    };
+
 	const _dataProcessing = (params) => {
 		// console.log('_dataProcessing', params);
 		const {sortBy, filter, searchLine, expandRow, reload} = params;
@@ -242,12 +304,15 @@ const Table = forwardRef((props, ref) => {
                                 // const result = response.data;
                                 setTotalCountRows(response.data);
                             })
-                            .catch((error) => {
-                                console.log('RequestLoadCount catch: ', error);
-                            });
+							.catch(error =>
+								notificationError(error, 'Ошибка получения количества записей по фильтру') );
                     }
 
-					requestLoadRows({
+                    // console.log('requestLoadRows => ', typeof requestLoadRows);
+                    // if(typeof requestLoadRows !== 'function'){
+                    //     setLoading(false);
+                    // }
+                    requestLoadRows({
 						params,
 						data: dataQuery,
 					})
@@ -264,7 +329,8 @@ const Table = forwardRef((props, ref) => {
 											{[rowKey]: generateUUID()},
 										];
 									});
-									_setRows(result);
+									// _setRows(result);
+									_setRowsHandler(result);
 								} else {
 									let newRows = [..._rows];
 									// (data, rowKey, rowValue)
@@ -280,7 +346,8 @@ const Table = forwardRef((props, ref) => {
 									);
 									node.children = result;
 									// console.log('newRows -> ', newRows);
-									_setRows(newRows);
+									// _setRows(newRows);
+									_setRowsHandler(newRows);
 								}
 							} else {
 								if (result && result.length < pageSize) {
@@ -289,8 +356,8 @@ const Table = forwardRef((props, ref) => {
 									setHasMore(true);
 								}
 								pageNum === 0
-									? _setRows(result)
-									: _setRows(_rows.concat(result));
+									? _setRowsHandler(result) // _setRows
+									: _setRowsHandler(_rows.concat(result)); // _setRows
 
 								// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
 								if (expandDefaultAll)
@@ -302,18 +369,8 @@ const Table = forwardRef((props, ref) => {
 							setLoading(false);
 						})
 						.catch((error) => {
-							// console.log('loadData catch: ', error);
-							if (error.response) {
-								notification.error({
-									message: `Ошибка загрузки данных [${error.response.status}]`,
-									description: error.response.data.message,
-								});
-							} else
-								notification.error({
-									message:
-										'Не удалось детектировать ошибку. См. console.log',
-								});
-							_setRows(_rows);
+							notificationError(error, 'Ошибка загрузки данных')
+							_setRowsHandler(_rows); // _setRows
 							// setHasMore(false);
 							setLoading(false);
 						});
@@ -345,7 +402,7 @@ const Table = forwardRef((props, ref) => {
 				//     });
 				//     onSelectedRowsChange([]);
 				// } else {
-				// console.log('_rowEventHandlers -> onClick', rowKey);
+				// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
 				const newRowObject = {
 					rowData: {...rowData},
 					rowIndex: rowIndex,
@@ -355,6 +412,7 @@ const Table = forwardRef((props, ref) => {
 				setSelectedRowKeys([rowKey]);
 				// setSelectedRow(newRowObject);
 				// setSelectedRowObjects([newRowObject]);
+				selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, rowData);
 				onRowClick({
 					selected: true,
 					...newRowObject,
@@ -422,20 +480,40 @@ const Table = forwardRef((props, ref) => {
 	/** VIEW FUNCTIONS */
 
 	const _footer = (
-		<div className={'BaseTable__footer__counter'}>
-			{selectable ? (
-                <React.Fragment>
-                    <span>{footerTitles.selectedRows} {_selectedRowKeys.length}</span>
-                    <span>{footerTitles.loadedRows} {flatten(getTableRowKeys(_rows, rowKey)).length}</span>
-                </React.Fragment>
-                ) : null}
+		<React.Fragment>
+			{_footerShow ? (
+					<React.Fragment>
+                        {/*className={'BaseTable__footer__counter'}>*/}
+						<div key={'footer-left-custom-side'} className={'left-custom-side'}>
+							{footerProps.leftCustomSideElement ? <FormItems items={footerProps.leftCustomSideElement} /> : null}
+						</div>
+						<div key={'footer-center-custom-side'} className={'center-custom-side'}>
+							{footerProps.centerCustomSideElement ? <FormItems items={footerProps.centerCustomSideElement} /> : null}
+						</div>
+						<div key={'footer-right-custom-side'} className={'right-custom-side'}>
+							{footerProps.rightCustomSideElement ? <FormItems items={footerProps.rightCustomSideElement} /> : null}
+						</div>
 
-            {type === 'infinity' && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad
-                ? <span>{footerTitles.totalRows} {_totalCountRows}</span>
-                : <span>{footerTitles.totalRows} {flatten(getTableRowKeys(_rows, rowKey)).length}</span>
-            }
+						{selectable ? (
+							<React.Fragment>
+								{footerProps.showElements.includes('selected')
+									? <span>{footerProps.selectedTitle} {_selectedRowKeys.length}</span>
+									: null }
+								{footerProps.showElements.includes('loaded')
+									? <span>{footerProps.loadedTitle} {flatten(getTableRowKeys(_rows, rowKey)).length}</span>
+									: null }
+							</React.Fragment>
+							) : null}
 
-            </div>
+						{footerProps.showElements.includes('total')
+							? type === 'infinity' && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad
+								? <span>{footerProps.totalTitle} {_totalCountRows}</span>
+								: <span>{footerProps.totalTitle} {flatten(getTableRowKeys(_rows, rowKey)).length}</span>
+							: null}
+
+					</React.Fragment>
+				) : null}
+		</React.Fragment>
 	);
 
 	/** Событие при рендере для стилизации */
@@ -483,6 +561,7 @@ const Table = forwardRef((props, ref) => {
 		_selectedRow,
 		_selectAll,
 		_selectedRowKeys,
+		_selectedRowObjects,
 		_indeterminateRowKeys,
 	}) => {
 		setSelectedRowKeys(_selectedRowKeys);
@@ -507,25 +586,28 @@ const Table = forwardRef((props, ref) => {
 		// 	);
 		// 	// setSelectedRowObjects(newSelectedObjects);
 		// }
-		// console.log("_handleSelectChange", _selectedRowKeys, newSelectedObjects);
+		// console.log("_handleSelectChange", props);
+		// dispatchPath && props.setTableSelectedRow && props.setTableSelectedRow(dispatchPath, _selectedRow.rowData);
+		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, _selectedRowObjects);
 		onRowClick({
 			selected,
 			rowData: _selectedRow.rowData,
 			rowIndex: _selectedRow.rowIndex,
 			rowKey,
 		});
-		onSelectedRowsChange(_selectedRowKeys);
+		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
 	};
 
 	/** Событие при изменении галочки "Выделить все" */
-	const _onSelectAllHandler = ({selected, rowKeys}) => {
+	const _onSelectAllHandler = ({selected, rowKeys, rowObjects}) => {
 		const selectedKeys = selected ? rowKeys : [];
 		setSelectedRowKeys(selectedKeys);
 		setIndeterminateRowKeys([]);
 		setSelectAll(selected);
+		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, selected ? rowObjects : []);
 		// setSelectedRowObjects(rows);
 		// console.log("_handleSelectAll", selectedKeys);
-		onSelectedRowsChange(selectedKeys);
+		onSelectedRowsChange(selectedKeys, rowObjects);
 	};
 
 	/** TREE FUNCTIONS */
@@ -594,18 +676,24 @@ const Table = forwardRef((props, ref) => {
 		let _disabledElements = [...commandPanelProps.disabledElements];
 		if (type === 'infinity') {
 			_disabledElements.push('up', 'down');
-		}
+            // console.log('_getDisabledElementsOfCommandPanel => infinity');
+        }
 		if (selectable && _selectedRowKeys.length > 1) {
 			_disabledElements.push('addAsCopy', 'edit', 'up', 'down');
-		}
+            // console.log('_getDisabledElementsOfCommandPanel => selectable');
+        }
 		if (_selectedRowKeys.length === 0) {
 			_disabledElements.push('addAsCopy', 'edit', 'delete', 'up', 'down');
-		}
-		if (expandColumnKey) {
+            // console.log('_getDisabledElementsOfCommandPanel => NO select');
+        }
+		// if (expandColumnKey) {
 			//|| !selectedRow) {
-			_disabledElements.push('up', 'down');
-		}
-		return [...new Set(_disabledElements)];
+			// _disabledElements.push('up', 'down');
+            // console.log('_getDisabledElementsOfCommandPanel => expandColumnKey');
+        // }
+        // console.log('_getDisabledElementsOfCommandPanel => ', _disabledElements, _selectedRowKeys);
+
+        return [...new Set(_disabledElements)];
 	};
 
 	const _onClickAddAsCopy = (event) => {
@@ -628,13 +716,13 @@ const Table = forwardRef((props, ref) => {
 		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
 		if (autoDeleteRows) {
 			if (type === 'localSide') {
-				setRows(
+				setRowsHandler(
 					_rows.filter(
 						(item) => !_selectedRowKeys.includes(item[rowKey])
 					)
 				);
 			} else {
-				_setRows(
+				_setRowsHandler(
 					_rows.filter(
 						(item) => !_selectedRowKeys.includes(item[rowKey])
 					)
@@ -645,52 +733,66 @@ const Table = forwardRef((props, ref) => {
 		commandPanelProps.onClickDelete(event, _selectedRowKeys);
 	};
 
+	const loop = (data, key, callback) => {
+		for (let i = 0; i < data.length; i++) {
+			if (data[i][rowKey] === key) {
+				// console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
+				return callback(data[i], i, data);
+			} else {
+				// console.log(`Other => index: [${i}], path: [${data[i].path}]`);
+			}
+			if (data[i].children) {
+				loop(data[i].children, key, callback);
+			}
+		}
+	};
+
 	const _onClickUp = (event) => {
-		// console.log("_onClickUp", selectedRow);
-		const rowIndex = _rows.findIndex(
-			(item) => item[rowKey] === _selectedRowKeys[0]
-		);
-		const newRowIndex = _getNewIndexRow(rowIndex, rowIndex - 1);
-		_changeIndexRow(rowIndex, newRowIndex);
-		// console.log("_onClickUp", rowIndex, newRowIndex);
-		commandPanelProps.onClickUp(event, {
-			rowIndex: newRowIndex,
-			rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-		});
+		const data = [..._rows];
+		const key = _selectedRowKeys[0];
+		loop(data, key, (item, index, arr)  => {
+			const newRowIndex = _getNewIndexRow(index, index - 1);
+			_changeIndexRow(index, newRowIndex, arr, data);
+			commandPanelProps.onClickUp(event, {
+				rowIndex: newRowIndex,
+				rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			}, data);
+		})
 	};
 
 	const _onClickDown = (event) => {
-		const rowIndex = _rows.findIndex(
-			(item) => item[rowKey] === _selectedRowKeys[0]
-		);
-		const newRowIndex = _getNewIndexRow(rowIndex, rowIndex + 1);
-		_changeIndexRow(rowIndex, newRowIndex);
-		// console.log("_onClickDown", rowIndex, newRowIndex);
-		commandPanelProps.onClickDown(event, {
-			rowIndex: newRowIndex,
-			rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-		});
+		const data = [..._rows];
+		const key = _selectedRowKeys[0];
+		loop(data, key, (item, index, arr)  => {
+			const newRowIndex = _getNewIndexRow(index, index + 1);
+			_changeIndexRow(index, newRowIndex, arr, data);
+			commandPanelProps.onClickDown(event, {
+				rowIndex: newRowIndex,
+				rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			}, data);
+		})
 	};
 
 	const _getNewIndexRow = (oldIndex, newIndex) =>
 		newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
 
-	const _changeIndexRow = (oldIndex, newIndex) => {
-		if (newIndex >= 0 && newIndex < _rows.length) {
-			let arr = [..._rows]; // Копируем массив
+	const _changeIndexRow = (oldIndex, newIndex, arr, data) => {
+		if (newIndex >= 0 && newIndex < arr.length) {
+			// let arr = [..._rows]; // Копируем массив
 			const item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
 			// console.log('_changeIndexRow => ',item);
 			arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
 			// console.log("_changeIndexRow", item[0]);
 			if (type === 'localSide') {
-				setRows(arr);
+				setRowsHandler(data);
 			} else {
-				_setRows(arr);
+				_setRowsHandler(data);
 			}
 		}
 	};
 
-	const _onSearch = (searchLine) => {
+	const _onSearch = (searchLine, e) => {
+        e.preventDefault();
 		// console.log("_onSearch", searchLine);
         tableRef.current.scrollToRow(0, 'auto');
 		setSearchValue(searchLine);
@@ -750,10 +852,10 @@ const Table = forwardRef((props, ref) => {
 
 	return (
 		<div
-			className={'Table__container'}
+			className={`${rtPrefix}-table`}
 			style={{width: '100%', height: '100%'}}
 		>
-			<div className={'Table__Top-panel'}>
+			<div className={`${rtPrefix}-table-top-panel`}>
 				<CommandPanel
 					{...commandPanelProps}
 					defaultValueSearch={defaultSearchValue}
@@ -774,7 +876,7 @@ const Table = forwardRef((props, ref) => {
 				/>
 				{/*) : null}*/}
 			</div>
-			<div className={'BaseTable__container'}>
+			<div className={`${rtPrefix}-baseTable`}>
 				<AutoResizer>
 					{({width, height}) => (
 						<BaseTable
@@ -794,12 +896,13 @@ const Table = forwardRef((props, ref) => {
 							rowClassName={_rowClassName}
 							emptyRenderer={empty}
 							fixed={fixWidthColumn}
-							footerHeight={footerShow ? footerHeight : 0}
+							footerHeight={_footerShow ? footerProps.height : 0}
 							headerHeight={headerHeight}
 							rowHeight={rowHeight}
 							overlayRenderer={loading ? overlay : null}
 							footerRenderer={_footer}
 							rowRenderer={rowRenderer}
+							estimatedRowHeight={estimatedRowHeight}
 							/** Load Data Props */
 							onEndReachedThreshold={loadThreshold}
 							onEndReached={
@@ -836,15 +939,20 @@ Table.propTypes = {
 	 * REQUIRED
 	 * */
 
-	/** Столбцы таблицы (обязательно) */
+	/** Столбцы таблицы */
 	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-	/** Тип таблицы.
-	 * 'infinity' - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
-	 * 'serverSide' - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
-	 * 'localSide' - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows
-	 */
+	/** Тип таблицы
+	 * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
+	 * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
+	 * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
 	type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+
+	/** Объект со свойствами Command Panel */
+	commandPanelProps: PropTypes.object,
+
+	/** Объект со свойствами Filter Panel */
+	filterPanelProps: PropTypes.object,
 
 	/**
 	 * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
@@ -866,8 +974,10 @@ Table.propTypes = {
 
 	/** Сортировка по умолчанию */
 	defaultSortBy: PropTypes.shape({
+		/** Ключ поля для сортировки */
 		key: PropTypes.string,
-		order: PropTypes.oneOf([SortOrder.ASC, SortOrder.DESC]),
+		/** Направление сортировки */
+		order: PropTypes.oneOf(['asc', 'desc']),
 	}),
 
 	/**
@@ -877,6 +987,9 @@ Table.propTypes = {
 	/** Строки таблицы. Используется для контроля таблицы из вне. */
 	rows: PropTypes.arrayOf(PropTypes.object),
 
+    /** Функция задания строк таблицы. */
+    setRows: PropTypes.func,
+
 	/** Выделенные строки таблицы. */
 	selectedRowKeys: PropTypes.arrayOf(
 		PropTypes.oneOfType([PropTypes.string, PropTypes.number])
@@ -885,16 +998,15 @@ Table.propTypes = {
 	/** Значение строки поиска */
 	searchValue: PropTypes.string,
 
-	/** Фильтр */
+	/** Объект фильтрации */
 	filter: PropTypes.object,
 
-	/** Объект сортировки ({ key: 'string', order: 'asc' }).
-	 * key - поле по которому сотрировать,
-	 * order - направление сортировки ("asc", "desc")
-	 * */
+	/** Объект сортировки */
 	sortBy: PropTypes.shape({
+		/** Ключ поля для сортировки */
 		key: PropTypes.string,
-		order: PropTypes.oneOf([SortOrder.ASC, SortOrder.DESC]),
+		/** Направление сортировки */
+		order: PropTypes.oneOf(['asc', 'desc']),
 	}),
 
 	/**
@@ -926,12 +1038,43 @@ Table.propTypes = {
 	/** Отображать ли подвал */
 	footerShow: PropTypes.bool,
 
-    /** Названия футтера */
+    /** Заголовки футтера */
     footerTitles: PropTypes.shape({
+		/** Заголовок выделенных элементов */
         selectedRows: PropTypes.string,
+		/** Заголовок загруженных элементов */
         loadedRows: PropTypes.string,
-        totalRows: PropTypes.string,
+		/** Заголовок всего элементов */
+		totalRows: PropTypes.string,
     }),
+
+	footerProps: PropTypes.shape({
+
+		/** Высота подвала */
+		height: PropTypes.number,
+
+		/** Массив элементов футтера, которые надо отобразить
+		 * ['selected', 'loaded', 'total'] */
+		showElements: PropTypes.arrayOf(PropTypes.string),
+
+		/** Заколовок для кол-ва выбранных объектов */
+		selectedTitle: PropTypes.string,
+
+		/** Заколовок для кол-ва загруженны объектов */
+		loadedTitle: PropTypes.string,
+
+		/** Заколовок для кол-ва всего объектов */
+		totalTitle: PropTypes.string,
+
+		/** Левый кастомный элемент командной панели */
+		leftCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+
+		/** Центральный кастомный элемент командной панели */
+		centerCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+
+		/** Правый кастомный элемент командной панели */
+		rightCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+	}),
 
 	/** Высота заголовка таблицы */
 	headerHeight: PropTypes.number,
@@ -1016,14 +1159,6 @@ Table.propTypes = {
 	 * Парметры - (expandedRowKeys) - массив ключей открытых нод */
 	onExpandedRowsChange: PropTypes.func,
 
-	/**
-	 *
-	 *
-	 */
-	// commandPanelProps: PropTypes.shape(CommandPanel.propTypes),
-	//
-	// filterPanelProps: PropTypes.shape(FilterPanel.propTypes),
-
 	/** SELECTED PANEL */
 
 	/** Отображать ли панель выбранных элементов */
@@ -1032,11 +1167,17 @@ Table.propTypes = {
 	/** Строка или функция для отображения элементов списка выбранных
 	 * Строка - имя поля
 	 * Функция - рендер строк.
-	 * Параметры - ({ rowData, rowIndex }) */
+	 * `({ rowData, rowIndex }) => { return <Component> }` */
 	rowRenderShowSelection: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
+
+	/** Путь в сторе куда класть выбранную строку таблицы */
+	dispatchPath: PropTypes.string,
+
+	/** Объект для подписки на изменения в STORE */
+	subscribe: PropTypes.object,
 };
 
 Table.defaultProps = {
@@ -1065,6 +1206,16 @@ Table.defaultProps = {
         loadedRows: 'Загружено записей:',
         totalRows: 'Всего записей:',
     },
+	footerProps: {
+		height: 30,
+		showElements: [],
+		selectedTitle: 'Выделено:',
+		loadedTitle: 'Загружено записей:',
+		totalTitle: 'Всего записей:',
+		leftCustomSideElement: null,
+		centerCustomSideElement: null,
+		rightCustomSideElement: null
+	},
 	headerHeight: 30,
 	rowHeight: 30,
 	zebraStyle: false,
@@ -1090,6 +1241,45 @@ Table.defaultProps = {
 	onExpandedRowsChange: noop,
 
 	showSelection: false,
+
+	subscribe: {},
 };
 
-export default Table;
+const mapStateToProps = (store, ownProps) => {
+	const {subscribe} = ownProps;
+	if(subscribe){
+		const {name, path} = subscribe;
+		if(name && path)
+			return { [name]: objectPath.get(store, path) };
+	}
+
+	return {};
+};
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators({ setDateStore: setDateStore}, dispatch);
+
+// const mapStateToProps = (store, ownProps) => {
+//     // console.log("mapStateToProps -> store", store);
+//     // const {match , section} = ownProps;
+//     // const { path } = match;
+//     // const rows = store.table[path] && store.table[path][section] ? store.table[path][section].rows : [];
+//     // console.log("mapStateToProps -> rows", rows);
+//     return { store: store };
+// };
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//     // console.log("mapDispatchToProps -> ownProps", ownProps);
+//     // const {match , section} = ownProps;
+//     // const { path } = match;
+//     // initTableStore(path, section);
+//     return bindActionCreators(
+//         {
+//             initTableStore,
+//             setRows,
+//         },
+//         dispatch
+//     );
+// };
+//
+// export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);

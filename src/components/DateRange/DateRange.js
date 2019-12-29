@@ -4,7 +4,9 @@ import moment from 'moment';
 import {DatePicker} from 'antd';
 import locale from 'antd/es/date-picker/locale/ru_RU';
 import {noop} from '../utils/baseUtils';
+import {rtPrefix} from '../utils/variables';
 import {
+	getMomentWithOffset,
 	getMomentWithOffsetTruncateDay,
 	getMomentFromStringByFormat,
 } from '../utils/datesUtils';
@@ -12,8 +14,8 @@ import {
 const DateRange = (props) => {
 	/** Состояние первоначалной настройки компонента */
 	const [mounted, setMounted] = useState(false);
-	const [startValue, setStartValue] = useState();
-	const [endValue, setEndValue] = useState();
+	const [startValue, setStartValue] = useState(undefined);
+	const [endValue, setEndValue] = useState(undefined);
 
 	const {
         className,
@@ -21,16 +23,18 @@ const DateRange = (props) => {
 		nameEnd,
 		dateFormat,
 		onChange,
+        size,
 		title,
 		valueStart,
 		valueEnd,
+		showTime,
 	} = props;
 
 	useEffect(() => {
 		if (!mounted) {
-			// console.log("DateRange mounted :", nameStart, props.defaultValueStart);
 			if (props.defaultValueStart) {
-				_onChange(
+                // console.log("DateRange mounted :", nameStart, props.defaultValueStart);
+                _onChange(
 					nameStart,
 					getMomentFromStringByFormat(
 						props.defaultValueStart,
@@ -101,25 +105,31 @@ const DateRange = (props) => {
 	};
 
 	const _onChange = (name, value) => {
-		if (value) onChange(name, getMomentWithOffsetTruncateDay(value));
+		if (value)
+			if(showTime)
+				onChange(name, getMomentWithOffset(value));
+			else
+				onChange(name, getMomentWithOffsetTruncateDay(value));
+
 		else onChange(name, value);
 	};
 
 	return (
-		<div className={`date-range-container ${className}`}>
+		<div className={`${className} ${rtPrefix}-date-range`}>
 			<div>
-				<div className={'title'}>{title}</div>
+                {title ? <div className={'title'}>{title}</div> : null}
 				<span className={'subtitleStart'}>c</span>
 				<DatePicker
 					locale={locale}
 					// defaultValue={ checkDefValue(props.defaultValueStart) }
-					size={'small'}
-					style={{width: '135px'}}
+					size={size}
+					style={{width: !!showTime ? '160px' : '135px'}}
 					disabledDate={disabledStartDate}
 					onChange={onStartChange}
 					format={dateFormat}
 					placeholder={'Выберите дату'}
 					value={startValue}
+					showTime={showTime}
 				/>
 			</div>
 			<div>
@@ -127,13 +137,14 @@ const DateRange = (props) => {
 				<DatePicker
 					locale={locale}
 					// defaultValue={ checkDefValue(props.defaultValueEnd) }
-					size={'small'}
-					style={{width: '135px'}}
+					size={size}
+					style={{width: showTime ? '160px' : '135px'}}
 					disabledDate={disabledEndDate}
 					onChange={onEndChange}
 					format={dateFormat}
 					placeholder={'Выберите дату'}
 					value={endValue}
+					showTime={showTime}
 				/>
 			</div>
 		</div>
@@ -145,10 +156,10 @@ DateRange.propTypes = {
 	dateFormat: PropTypes.string,
 
 	/** Значение по умолчанию для первого пикера */
-	defaultValueStart: PropTypes.string,
+	// defaultValueStart: PropTypes.string,
 
 	/** Значение по умолчанию для второго пикера */
-	defaultValueEnd: PropTypes.string,
+	// defaultValueEnd: PropTypes.string,
 
     /** Дополнительное имя класса для элемента */
     className: PropTypes.string,
@@ -162,22 +173,27 @@ DateRange.propTypes = {
 	/** Событие при изменении любого из пикеров */
 	onChange: PropTypes.func,
 
+    /** Размер пикера ['small', 'middle', 'large'] */
+    size: PropTypes.oneOf(['small', 'middle', 'large']),
+
 	/** Заголовок */
 	title: PropTypes.string,
 
 	/** Значение даты первого пикера (используется для управления датой из родительного компонента) */
-	valueStart: PropTypes.string,
+	// valueStart: PropTypes.string,
 
 	/** Значение даты второго пикера (используется для управления датой из родительного компонента) */
-	valueEnd: PropTypes.string,
+	// valueEnd: PropTypes.string,
 };
 
 DateRange.defaultProps = {
+    className: '',
 	nameStart: 'dateStart',
 	nameEnd: 'dateEnd',
 	dateFormat: 'DD.MM.YYYY',
 	onChange: noop,
-	title: 'Период',
+    size: 'middle',
+    // title: 'Период',
 };
 
 export default DateRange;

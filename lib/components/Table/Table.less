@@ -1,20 +1,14 @@
-.Table__container {
+.@{rt-prefix}-table {
 	width: 100%;
 	height: 100%;
-	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
-    .Table__Top-panel{
+	flex: auto;
+    &-top-panel{
         outline: 1px solid @table-outline-color;
     }
-	.command-panel-container {
-		//outline: 1px solid #eeeeee;
-		//border: 0;
-		padding: 10px 5px;
-		border-bottom-color: @cmd-panel-btn-border-color;
-	}
 
-	.BaseTable__container {
+    .@{rt-prefix}-baseTable {
 		flex: 1 1 auto;
 		//border: 1px solid #eee;
 		outline: 1px solid @table-outline-color;
@@ -37,6 +31,8 @@
 			.BaseTable__header-cell,
 			.BaseTable__row-cell {
 				//border-left: 1px solid #eee;
+				//white-space: nowrap;
+				//text-overflow: ellipsis;
 				.BaseTable__expand-icon {
 				    color: #8C99B2; //8C99B2
                     margin-right: 10px;
@@ -97,7 +93,7 @@
 		}
 	}
 
-	.show-selection-container {
+    &-selected-rows {
 		width: 100%;
 		height: 150px;
 		overflow: auto;

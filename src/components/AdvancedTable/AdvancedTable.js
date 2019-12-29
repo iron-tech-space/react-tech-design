@@ -2,6 +2,7 @@ import React, {forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
 import {notification} from 'antd';
+import { notificationError } from "../utils/baseUtils";
 
 const AdvancedTable = forwardRef((props, ref) => {
 	const [config, setConfig] = useState({});
@@ -19,22 +20,26 @@ const AdvancedTable = forwardRef((props, ref) => {
 	} = props;
 
 	useEffect(() => {
-		if (requestLoadConfig) {
-			requestLoadConfig()
-				.then((response) => {
-					// let result = response.data;
-					// console.log('requestLoadConfig -> ', response.data);
-					setConfig(response.data);
-				})
-				.catch((error) => {
-					console.log('error -> ', error);
-					notification.error({
-						message: 'Произошла ошибка получения конфигурации',
-					});
-				});
-		} else {
-			setConfig(configData);
-		}
+        let cleanupFunction = false;
+        const loadData = async () => {
+            if (requestLoadConfig) {
+                // console.log('requestLoadConfig => ', typeof requestLoadConfig);
+                // console.log('requestLoadRows => ', typeof props.requestLoadRows);
+                requestLoadConfig()
+                    .then((response) => {
+                        // let result = response.data;
+                        // console.log('requestLoadConfig -> ', response.data);
+                        if(!cleanupFunction)
+                            setConfig(response.data);
+                    })
+                    .catch(error => notificationError(error, 'Ошибка получения конфигурации') );
+            } else {
+                if(!cleanupFunction)
+                    setConfig(configData);
+            }
+        };
+        loadData();
+        return () => cleanupFunction = true;
 	}, []);
 
 	const columnsByConfig = () =>
