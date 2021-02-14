@@ -155,114 +155,126 @@ export const parentAnalysis = ({
 	return [_selectedRowKeys, _indeterminateRowKeys];
 };
 
+export const onChangeSelectionCell = (props) => {
+	const {rowData, rowIndex, column, rows, checked} = props;
+	const {
+		rowKey,
+		parentKey,
+		nodeAssociated,
+		selectedRowKeys,
+		indeterminateRowKeys,
+		onChange
+	} = column;
+
+	// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
+	// const totalLength = container.props.data.length;
+	// const checked = e.target.checked;
+	// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
+	// console.log("_handleChange: ", container);
+
+	let _selectedRowKeys = [...selectedRowKeys];
+	let _indeterminateRowKeys = [...indeterminateRowKeys];
+
+	/** Обработка себя, поиск детей, выделение / снятие их */
+	let rowChildren = [];
+	if (checked) {
+		if (rowData.children && nodeAssociated)
+			rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+
+		_selectedRowKeys = _selectedRowKeys
+			.concat([rowData[rowKey]])
+			.concat(rowChildren);
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(
+			(element) =>
+				element !== rowData[rowKey] &&
+				!rowChildren.includes(element)
+		);
+	} else {
+		if (rowData.children && nodeAssociated)
+			rowChildren = flatten(
+				getRowChildren(rowData.children, rowKey, false)
+			);
+
+		_selectedRowKeys = _selectedRowKeys.filter(
+			(element) =>
+				element !== rowData[rowKey] &&
+				!rowChildren.includes(element)
+		);
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(
+			(element) =>
+				element !== rowData[rowKey] &&
+				!rowChildren.includes(element)
+		);
+	}
+
+	[_selectedRowKeys, _indeterminateRowKeys] = parentAnalysis({
+		rowData,
+		rowKey,
+		parentKey,
+		checked,
+		nodeAssociated,
+		treeData: rows,
+		selectedRowKeys: _selectedRowKeys,
+		indeterminateRowKeys: _indeterminateRowKeys,
+	});
+
+	const keys = [...new Set(_selectedRowKeys)];
+	const _selectedRowObjects = flatten(getTableRowObjects(rows, rowKey)).filter((item) => keys.includes(item[rowKey]));
+	//return [...new Set(_disabledElements)]
+	// onChange({ selected: checked, totalLength, rowData, rowIndex });
+
+	/** Выясняем новое состояние галочки "Выделить все" */
+	let selectAll;
+	const selectLength = keys.length;
+	const totalLength = flatten(
+		getTableRowKeys(rows, column.rowKey)
+	).length;
+
+	if (selectLength === 0) selectAll = false;
+	else if (totalLength === selectLength) selectAll = true;
+	else if (totalLength !== selectLength) selectAll = null;
+
+
+
+	onChange({
+		selected: checked,
+		_selectedRow: {
+			rowData: {...rowData},
+			rowIndex: rowIndex,
+			rowKey: rowKey,
+		},
+		_selectAll: selectAll,
+		_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
+		_selectedRowObjects: _selectedRowObjects,
+		_indeterminateRowKeys: [...new Set(_indeterminateRowKeys)],
+	});
+
+	// let uniqIds = {};
+	// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
+};
+
 const SelectionCell = (props) => {
-	const _handleChange = (checked) => {
-		const {rowData, rowIndex, column, container} = props;
-		const {
-			onChange,
-			selectedRowKeys,
-			indeterminateRowKeys,
-			rowKey,
-			parentKey,
-			nodeAssociated,
-		} = column;
-
-		// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
-		// const totalLength = container.props.data.length;
-		// const checked = e.target.checked;
-		// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
-		// console.log("_handleChange: ", selectedRowKeys);
-
-		let _selectedRowKeys = [...selectedRowKeys];
-		let _indeterminateRowKeys = [...indeterminateRowKeys];
-
-		/** Обработка себя, поиск детей, выделение / снятие их */
-		let rowChildren = [];
-		if (checked) {
-			if (rowData.children && nodeAssociated)
-				rowChildren = flatten(getRowChildren(rowData.children, rowKey));
-
-			_selectedRowKeys = _selectedRowKeys
-				.concat([rowData[rowKey]])
-				.concat(rowChildren);
-			_indeterminateRowKeys = _indeterminateRowKeys.filter(
-				(element) =>
-					element !== rowData[rowKey] &&
-					!rowChildren.includes(element)
-			);
-		} else {
-			if (rowData.children && nodeAssociated)
-				rowChildren = flatten(
-					getRowChildren(rowData.children, rowKey, false)
-				);
-
-			_selectedRowKeys = _selectedRowKeys.filter(
-				(element) =>
-					element !== rowData[rowKey] &&
-					!rowChildren.includes(element)
-			);
-			_indeterminateRowKeys = _indeterminateRowKeys.filter(
-				(element) =>
-					element !== rowData[rowKey] &&
-					!rowChildren.includes(element)
-			);
-		}
-
-		[_selectedRowKeys, _indeterminateRowKeys] = parentAnalysis({
-			rowData,
-			rowKey,
-			parentKey,
-			checked,
-			nodeAssociated,
-			treeData: container.props.data,
-			selectedRowKeys: _selectedRowKeys,
-			indeterminateRowKeys: _indeterminateRowKeys,
-		});
-
-		const keys = [...new Set(_selectedRowKeys)];
-		const _selectedRowObjects = flatten(getTableRowObjects(container.props.data, rowKey)).filter((item) => keys.includes(item[rowKey]));
-		//return [...new Set(_disabledElements)]
-		// onChange({ selected: checked, totalLength, rowData, rowIndex });
-
-		/** Выясняем новое состояние галочки "Выделить все" */
-		let selectAll;
-		const selectLength = _selectedRowKeys.length;
-		const totalLength = flatten(
-			getTableRowKeys(container.props.data, column.rowKey)
-		).length;
-
-		if (selectLength === 0) selectAll = false;
-		else if (totalLength === selectLength) selectAll = true;
-		else if (totalLength !== selectLength) selectAll = null;
-
-
-
-		onChange({
-			selected: checked,
-			_selectedRow: {
-				rowData: {...rowData},
-				rowIndex: rowIndex,
-				rowKey: rowKey,
-			},
-			_selectAll: selectAll,
-			_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
-			_selectedRowObjects: _selectedRowObjects,
-			_indeterminateRowKeys: [...new Set(_indeterminateRowKeys)],
-		});
-
-		// let uniqIds = {};
-		// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
-	};
 
 	const {rowData, column} = props;
 	const {selectedRowKeys, indeterminateRowKeys, rowKey} = column;
 	const det = indeterminateRowKeys.includes(rowData[rowKey]);
 	const checked = selectedRowKeys.includes(rowData[rowKey]);
 
+	// React.useEffect(() => {
+	// 	console.log("selectionCell", props);
+	// }, [props]);
+
+	const _onChangeHandler = (checked) => {
+		const {rowData, rowIndex, column, container} = props;
+		onChangeSelectionCell({
+			rowData, rowIndex, column, rows: container.props.data, checked
+		})
+	}
+
 	return (
 		<Checkbox
 			indeterminate={det}
-			onChange={(e) => _handleChange(e.target.checked)}
+			// onChange={(e) => _onChangeHandler(e.target.checked)}
 			checked={checked}
 		/>
 	);

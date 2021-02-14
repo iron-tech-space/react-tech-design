@@ -4,23 +4,24 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import FormModal from "../Form/FormModal";
 import { notification, Button} from "antd";
-import { notificationError, dispatchToStore } from "../utils/baseUtils";
+import { notificationError, dispatchToStore, useMounted } from "../utils/baseUtils";
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
 
+const defaultProps = {
+    subscribe: [],
+    dispatch: {}
+}
+
 const Modal = props => {
 
-    const {buttonProps, modalConfig, modalData} = props;
+    const {buttonProps, modalConfig, modalData, subscribe, dispatch} = props;
 
     const [visible, setVisible] = useState(false);
     const [_modalData, _setModalData] = useState({});
     const [_buttonProps, setButtonProps] = useState({});
 
-    // Объект подписки на стор
-    const subscribe = props.subscribe ? props.subscribe : {};
-
-    // Объект публикации в стор
-    const dispatch = props.dispatch ? props.dispatch : {};
+    const isMounted = useMounted()
 
     const setModalData = (value) => {
         // console.log("setModalData: ", value);
@@ -32,13 +33,31 @@ const Modal = props => {
     }, []);
 
     /** Подписка на изменение props[subscribe.name] в сторе */
-    useEffect( () => {
-        if(subscribe.name) {
-            // console.log("Modal => subscribe: ", props[subscribe.name]);
-            subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setModalData, setButtonProps});
-        }
-        // console.log("Change Props[2]: ", props.subscribeЗф);
-    }, [props[subscribe.name]]);
+    // useEffect( () => {
+    //     if(subscribe.name) {
+    //         // console.log("Modal => subscribe: ", props[subscribe.name]);
+    //         subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setModalData, setButtonProps});
+    //     }
+    //     // console.log("Change Props[2]: ", props.subscribeЗф);
+    // }, [props[subscribe.name]]);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    subscribe.map(item => {
+        return useEffect( () => {
+            if(isMounted && item.name) {
+                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                item.onChange && item.onChange({
+                    value: props[item.name],
+                    extraData: props[`${item.name}ExtraData`],
+                    setModalData,
+                    setButtonProps,
+                    openModal: _onOpenModal,
+                    closeModal: _onCloseModal
+                });
+            }
+            // console.log("Change Props[2]: ", props.subscribeЗф);
+        }, [props[item.name]]);
+    })
 
     const _onOpenModal = () => {
         // console.log("Modal => _modalData: ", _modalData);
@@ -108,17 +127,24 @@ Modal.propTypes = {
     dispatch: PropTypes.object,
 
     /** Объект для подписки на изменения в STORE */
-    subscribe: PropTypes.object,
+    subscribe: PropTypes.arrayOf(PropTypes.object),
 };
+
+Modal.defaultProps = defaultProps;
 
 const mapStateToProps = (store, ownProps) => {
     const {subscribe} = ownProps;
-    if(subscribe){
-        const {name, path} = subscribe;
-        if(name && path)
-            return { [name]: objectPath.get(store, path) };
+    let state = {};
+    if(subscribe && subscribe.length > 0){
+        subscribe.forEach(item => {
+            const {name, path, extraData} = item;
+            if(name && path)
+                state[name] = objectPath.get(store, path);
+            if(name && extraData)
+                state[`${name}ExtraData`] = objectPath.get(store, extraData);
+        })
     }
-    return {};
+    return state;
 };
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators( { setDateStore: setDateStore, }, dispatch);

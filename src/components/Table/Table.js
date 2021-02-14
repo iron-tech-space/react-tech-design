@@ -6,7 +6,7 @@ import BaseTable, {AutoResizer, callOrReturn} from 'react-base-table';
 // import BaseTable from "./BaseTable/BaseTable";
 import {empty, overlay} from './defaultSettings';
 import SelectionHead from './Selectable/SelectionHead';
-import SelectionCell, {parentAnalysis} from './Selectable/SelectionCell';
+import SelectionCell, {parentAnalysis, onChangeSelectionCell} from './Selectable/SelectionCell';
 import SelectionList from './SelectionList/SelectionList';
 import {rtPrefix} from '../utils/variables';
 import {
@@ -20,6 +20,8 @@ import {
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
 import FormItems from "../deprecated/Form/FormItems";
+import moment from "moment";
+// import {Checkbox} from 'antd';
 
 const Table = forwardRef((props, ref) => {
 
@@ -128,6 +130,7 @@ const Table = forwardRef((props, ref) => {
 
 	const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
 	const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
+	const rowDoubleClickDispatchPath = dispatchPath && `${dispatchPath}.events.onRowDoubleClick`;
 
 	useEffect(() => {
         // console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -268,6 +271,17 @@ const Table = forwardRef((props, ref) => {
 		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
 	}
 
+	const rowDoubleClickDispatch = (value) => {
+		rowDoubleClickDispatchPath
+		&& props.setDateStore
+		&& props.setDateStore(rowDoubleClickDispatchPath, {
+			timestamp: moment(),
+			value: value
+		});
+
+
+	}
+
 	const reloadData = ({sortBy, filter, searchValue}, appendParams) => {
 		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
 		tableRef.current && tableRef.current.scrollToRow(0, 'auto');
@@ -399,34 +413,63 @@ const Table = forwardRef((props, ref) => {
 	};
 
 	/** Событие выделение одной строки в режиме без галочек */
+	const useSimpleAndDoubleClick = (actionSimpleClick, actionDoubleClick, delay = 200) => {
+		const [click, setClick] = useState(0);
+		const [data, setData] = useState(undefined);
+		useEffect(() => {
+			const timer = setTimeout(() => {
+				// simple click
+				if (click === 1) actionSimpleClick(data);
+				setClick(0);
+			}, delay);
+			if (click === 2) actionDoubleClick(data);
+			return () => clearTimeout(timer);
+		}, [click]);
+		return (_data) => {setClick(prev => prev + 1); setData(() => _data);}
+	}
+	const _onRowClick = ({rowData, rowIndex, rowKey, event}) => {
+		if (!selectable) {
+			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
+			// console.log('q onRowClick => ', rowData)
+			const newRowObject = {
+				rowData: {...rowData},
+				rowIndex: rowIndex,
+				rowKey: rowKey,
+			};
+			_setSelectedRowsHandler([rowKey], rowData);
+			onRowClick({
+				selected: true,
+				...newRowObject,
+			});
+			onSelectedRowsChange([rowKey], [rowData]);
+		} else {
+			const checked = !_selectedRowKeys.includes(rowKey);
+			onChangeSelectionCell({
+				rowData,
+				rowIndex,
+				column: _getSelectionColumnProps(),
+				rows: _rows,
+				checked: checked,
+			})
+		}
+	}
+	const _onDoubleClick = ({rowData, rowIndex, rowKey}) => {
+		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
+		// console.log('q onRowDoubleClick => ', rowData)
+		rowDoubleClickDispatch(rowData)
+		onRowDoubleClick({rowData, rowIndex, rowKey});
+	}
+
 	const _rowEventHandlers = {
-		onClick: ({rowData, rowIndex, rowKey, event}) => {
-			if (!selectable) {
-				// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
-				const newRowObject = {
-					rowData: {...rowData},
-					rowIndex: rowIndex,
-					rowKey: rowKey,
-				};
-				_setSelectedRowsHandler([rowKey], rowData);
-				// setSelectedRowKeys([rowKey]);
-				// selectedDispatch(rowData);
-				onRowClick({
-					selected: true,
-					...newRowObject,
-				});
-				onSelectedRowsChange([rowKey], [rowData]);
-				// }
-			}
-		},
-		onDoubleClick: ({rowData, rowIndex, rowKey}) => {
-			// console.log('onDoubleClick', rowData, rowIndex, rowKey);
-			onRowDoubleClick({rowData, rowIndex, rowKey});
-		},
+		// onClick: _onRowClick,
+		// onDoubleClick: _onDoubleClick,
+		onClick: useSimpleAndDoubleClick(_onRowClick, _onDoubleClick),
+		// onDoubleClick: console.log('onDoubleClick'),
 		// onContextMenu: console.log('context menu'),
 		// onMouseEnter: console.log('mouse enter'),
 		// onMouseLeave: console.log('mouse leave'),
 	};
+
 
 	/** Событие при сортировке */
 	const _onColumnSort = (sortBy) => {
@@ -535,7 +578,12 @@ const Table = forwardRef((props, ref) => {
 		_selectedRowObjects,
 		_indeterminateRowKeys,
 	}) => {
-		// console.log("_onChangeSelectHandler", _selectedRowKeys);
+		// console.group("_onChangeSelectHandler", _selectedRowKeys);
+		// console.log("_selectedRowKeys", _selectedRowKeys);
+		// console.log("_indeterminateRowKeys", _indeterminateRowKeys);
+		// console.log("_selectAll", _selectAll);
+		// console.groupEnd();
+
 		// setSelectedRowKeys(_selectedRowKeys);
 		// selectedDispatch(_selectedRowObjects);
 		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects)
@@ -562,24 +610,50 @@ const Table = forwardRef((props, ref) => {
 		// console.log("_handleSelectAll", selectedKeys);
 		onSelectedRowsChange(selectedKeys, rowObjects);
 	};
+	//
+	// const SelectionCell = (props) => {
+	// 	const {rowData, column} = props;
+	// 	const {selectedRowKeys, indeterminateRowKeys, rowKey} = column;
+	// 	const det = indeterminateRowKeys.includes(rowData[rowKey]);
+	// 	const checked = selectedRowKeys.includes(rowData[rowKey]);
+	// 	React.useEffect(() => {
+	// 		console.log("selectionCell", props);
+	// 	}, []);
+	//
+	// 	const _handleChange = (checked) => {
+	// 		console.log("_handleChange", checked);
+	// 	}
+	//
+	// 	return (
+	// 		<Checkbox
+	// 			indeterminate={det}
+	// 			onChange={(e) => _handleChange(e.target.checked)}
+	// 			checked={checked}
+	// 		/>
+	// 	);
+	// };
+
+	const _getSelectionColumnProps = () => ({
+		rowKey: rowKey,
+		parentKey: expandParentKey,
+		nodeAssociated: nodeAssociated,
+		selectedRowKeys: _selectedRowKeys,
+		indeterminateRowKeys: _indeterminateRowKeys,
+		onChange: _onChangeSelectHandler,
+	})
 
 	const _getColumns = () => {
 		const selectColumn = {
 			key: '__selection__',
 			headerRenderer: SelectionHead,
-			cellRenderer: SelectionCell,
+			cellRenderer: <SelectionCell/>,
 			width: 40,
 			flexShrink: 0,
 			resizable: false,
 			frozen: 'left',
-			rowKey: rowKey,
-			parentKey: expandParentKey,
-			selectedRowKeys: _selectedRowKeys,
-			indeterminateRowKeys: _indeterminateRowKeys,
-			nodeAssociated: nodeAssociated,
-			onChange: _onChangeSelectHandler,
 			selectAll: selectAll,
 			onSelectAll: _onSelectAllHandler,
+			..._getSelectionColumnProps()
 		};
 		return selectable ? [selectColumn, ...columns] : [...columns];
 	}

@@ -52,8 +52,9 @@ const FormItem = (props) => {
 					antFormItemProps.trigger = 'onClick';
 					Component = withStore(Button, antFormItemProps);
 					// console.log('Props field => ', field);
-					// const onClick = (e) => childProps.onClick && childProps.onClick(e, field); onClick={onClick}
-					return (<Component {...childProps}  >{childProps && childProps.label}</Component>);
+					// const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
+					const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
+					return (<Component {...childProps} onClick={onClick}>{childProps && childProps.label}</Component>);
 				case 'Title':
 					Component = withStore(TypographyTitle, antFormItemProps);
 					return (<Component {...childProps} componentType={child.componentType}/>);

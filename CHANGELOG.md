@@ -1,3 +1,11 @@
+## 0.0.56
+
+- Fix bug with `ListItems` operations
+- Change `Modal` subscribe object to array
+- Add in `Modal` subscribe onChange funcs `openModal` and `closeModal`
+- Add rowDoubleClickDispatch to `Table`
+- Add select row by rowClick if selectable table
+
 ## 0.0.55
 
 - New `Table` component

@@ -478,96 +478,97 @@ var parentAnalysis = function parentAnalysis(_ref) {
 	return [_selectedRowKeys, _indeterminateRowKeys];
 };
 
+var onChangeSelectionCell = function onChangeSelectionCell(props) {
+	var rowData = props.rowData,
+	    rowIndex = props.rowIndex,
+	    column = props.column,
+	    rows = props.rows,
+	    checked = props.checked;
+	var rowKey = column.rowKey,
+	    parentKey = column.parentKey,
+	    nodeAssociated = column.nodeAssociated,
+	    selectedRowKeys = column.selectedRowKeys,
+	    indeterminateRowKeys = column.indeterminateRowKeys,
+	    onChange = column.onChange;
+
+	// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
+	// const totalLength = container.props.data.length;
+	// const checked = e.target.checked;
+	// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
+	// console.log("_handleChange: ", container);
+
+	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
+	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
+
+	/** Обработка себя, поиск детей, выделение / снятие их */
+	var rowChildren = [];
+	if (checked) {
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+
+		_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+	} else {
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+
+		_selectedRowKeys = _selectedRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+	}
+
+	var _parentAnalysis = parentAnalysis({
+		rowData: rowData,
+		rowKey: rowKey,
+		parentKey: parentKey,
+		checked: checked,
+		nodeAssociated: nodeAssociated,
+		treeData: rows,
+		selectedRowKeys: _selectedRowKeys,
+		indeterminateRowKeys: _indeterminateRowKeys
+	});
+
+	var _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+
+	_selectedRowKeys = _parentAnalysis2[0];
+	_indeterminateRowKeys = _parentAnalysis2[1];
+
+
+	var keys = [].concat(toConsumableArray(new Set(_selectedRowKeys)));
+	var _selectedRowObjects = flatten(getTableRowObjects(rows)).filter(function (item) {
+		return keys.includes(item[rowKey]);
+	});
+	//return [...new Set(_disabledElements)]
+	// onChange({ selected: checked, totalLength, rowData, rowIndex });
+
+	/** Выясняем новое состояние галочки "Выделить все" */
+	var selectAll = void 0;
+	var selectLength = keys.length;
+	var totalLength = flatten(getTableRowKeys(rows, column.rowKey)).length;
+
+	if (selectLength === 0) selectAll = false;else if (totalLength === selectLength) selectAll = true;else if (totalLength !== selectLength) selectAll = null;
+
+	onChange({
+		selected: checked,
+		_selectedRow: {
+			rowData: _extends({}, rowData),
+			rowIndex: rowIndex,
+			rowKey: rowKey
+		},
+		_selectAll: selectAll,
+		_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
+		_selectedRowObjects: _selectedRowObjects,
+		_indeterminateRowKeys: [].concat(toConsumableArray(new Set(_indeterminateRowKeys)))
+	});
+
+	// let uniqIds = {};
+	// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
+};
+
 var SelectionCell = function SelectionCell(props) {
-	var _handleChange = function _handleChange(checked) {
-		var rowData = props.rowData,
-		    rowIndex = props.rowIndex,
-		    column = props.column,
-		    container = props.container;
-		var onChange = column.onChange,
-		    selectedRowKeys = column.selectedRowKeys,
-		    indeterminateRowKeys = column.indeterminateRowKeys,
-		    rowKey = column.rowKey,
-		    parentKey = column.parentKey,
-		    nodeAssociated = column.nodeAssociated;
-
-		// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
-		// const totalLength = container.props.data.length;
-		// const checked = e.target.checked;
-		// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
-		// console.log("_handleChange: ", selectedRowKeys);
-
-		var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
-		var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
-
-		/** Обработка себя, поиск детей, выделение / снятие их */
-		var rowChildren = [];
-		if (checked) {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
-
-			_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
-			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
-				return element !== rowData[rowKey] && !rowChildren.includes(element);
-			});
-		} else {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
-
-			_selectedRowKeys = _selectedRowKeys.filter(function (element) {
-				return element !== rowData[rowKey] && !rowChildren.includes(element);
-			});
-			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
-				return element !== rowData[rowKey] && !rowChildren.includes(element);
-			});
-		}
-
-		var _parentAnalysis = parentAnalysis({
-			rowData: rowData,
-			rowKey: rowKey,
-			parentKey: parentKey,
-			checked: checked,
-			nodeAssociated: nodeAssociated,
-			treeData: container.props.data,
-			selectedRowKeys: _selectedRowKeys,
-			indeterminateRowKeys: _indeterminateRowKeys
-		});
-
-		var _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
-
-		_selectedRowKeys = _parentAnalysis2[0];
-		_indeterminateRowKeys = _parentAnalysis2[1];
-
-
-		var keys = [].concat(toConsumableArray(new Set(_selectedRowKeys)));
-		var _selectedRowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
-			return keys.includes(item[rowKey]);
-		});
-		//return [...new Set(_disabledElements)]
-		// onChange({ selected: checked, totalLength, rowData, rowIndex });
-
-		/** Выясняем новое состояние галочки "Выделить все" */
-		var selectAll = void 0;
-		var selectLength = _selectedRowKeys.length;
-		var totalLength = flatten(getTableRowKeys(container.props.data, column.rowKey)).length;
-
-		if (selectLength === 0) selectAll = false;else if (totalLength === selectLength) selectAll = true;else if (totalLength !== selectLength) selectAll = null;
-
-		onChange({
-			selected: checked,
-			_selectedRow: {
-				rowData: _extends({}, rowData),
-				rowIndex: rowIndex,
-				rowKey: rowKey
-			},
-			_selectAll: selectAll,
-			_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
-			_selectedRowObjects: _selectedRowObjects,
-			_indeterminateRowKeys: [].concat(toConsumableArray(new Set(_indeterminateRowKeys)))
-		});
-
-		// let uniqIds = {};
-		// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
-	};
-
 	var rowData = props.rowData,
 	    column = props.column;
 	var selectedRowKeys = column.selectedRowKeys,
@@ -578,11 +579,9 @@ var SelectionCell = function SelectionCell(props) {
 	var checked = selectedRowKeys.includes(rowData[rowKey]);
 
 	return React__default['default'].createElement(_Checkbox__default['default'], {
-		indeterminate: det,
-		onChange: function onChange(e) {
-			return _handleChange(e.target.checked);
-		},
-		checked: checked
+		indeterminate: det
+		// onChange={(e) => _onChangeHandler(e.target.checked)}
+		, checked: checked
 	});
 };
 
@@ -5764,6 +5763,8 @@ FormItems.propTypes = {
     items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
 };
 
+// import {Checkbox} from 'antd';
+
 var Table$2 = React.forwardRef(function (props, ref) {
 
 	/** Наличие на сервере еще данных */
@@ -5893,6 +5894,7 @@ var Table$2 = React.forwardRef(function (props, ref) {
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
+	var rowDoubleClickDispatchPath = dispatchPath && dispatchPath + '.events.onRowDoubleClick';
 
 	React.useEffect(function () {
 		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -6024,6 +6026,13 @@ var Table$2 = React.forwardRef(function (props, ref) {
 		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
 	};
 
+	var rowDoubleClickDispatch = function rowDoubleClickDispatch(value) {
+		rowDoubleClickDispatchPath && props.setDateStore && props.setDateStore(rowDoubleClickDispatchPath, {
+			timestamp: moment__default['default'](),
+			value: value
+		});
+	};
+
 	var reloadData = function reloadData(_ref, appendParams) {
 		var sortBy = _ref.sortBy,
 		    filter = _ref.filter,
@@ -6138,38 +6147,84 @@ var Table$2 = React.forwardRef(function (props, ref) {
 	};
 
 	/** Событие выделение одной строки в режиме без галочек */
-	var _rowEventHandlers = {
-		onClick: function onClick(_ref5) {
-			var rowData = _ref5.rowData,
-			    rowIndex = _ref5.rowIndex,
-			    rowKey = _ref5.rowKey,
-			    event = _ref5.event;
+	var useSimpleAndDoubleClick = function useSimpleAndDoubleClick(actionSimpleClick, actionDoubleClick) {
+		var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 200;
 
-			if (!selectable) {
-				// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
-				var newRowObject = {
-					rowData: _extends({}, rowData),
-					rowIndex: rowIndex,
-					rowKey: rowKey
-				};
-				_setSelectedRowsHandler([rowKey], rowData);
-				// setSelectedRowKeys([rowKey]);
-				// selectedDispatch(rowData);
-				onRowClick(_extends({
-					selected: true
-				}, newRowObject));
-				onSelectedRowsChange([rowKey], [rowData]);
-				// }
-			}
-		},
-		onDoubleClick: function onDoubleClick(_ref6) {
-			var rowData = _ref6.rowData,
-			    rowIndex = _ref6.rowIndex,
-			    rowKey = _ref6.rowKey;
+		var _useState25 = React.useState(0),
+		    _useState26 = slicedToArray(_useState25, 2),
+		    click = _useState26[0],
+		    setClick = _useState26[1];
 
-			// console.log('onDoubleClick', rowData, rowIndex, rowKey);
-			onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+		var _useState27 = React.useState(undefined),
+		    _useState28 = slicedToArray(_useState27, 2),
+		    data = _useState28[0],
+		    setData = _useState28[1];
+
+		React.useEffect(function () {
+			var timer = setTimeout(function () {
+				// simple click
+				if (click === 1) actionSimpleClick(data);
+				setClick(0);
+			}, delay);
+			if (click === 2) actionDoubleClick(data);
+			return function () {
+				return clearTimeout(timer);
+			};
+		}, [click]);
+		return function (_data) {
+			setClick(function (prev) {
+				return prev + 1;
+			});setData(function () {
+				return _data;
+			});
+		};
+	};
+	var _onRowClick = function _onRowClick(_ref5) {
+		var rowData = _ref5.rowData,
+		    rowIndex = _ref5.rowIndex,
+		    rowKey = _ref5.rowKey,
+		    event = _ref5.event;
+
+		if (!selectable) {
+			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
+			// console.log('q onRowClick => ', rowData)
+			var newRowObject = {
+				rowData: _extends({}, rowData),
+				rowIndex: rowIndex,
+				rowKey: rowKey
+			};
+			_setSelectedRowsHandler([rowKey], rowData);
+			onRowClick(_extends({
+				selected: true
+			}, newRowObject));
+			onSelectedRowsChange([rowKey], [rowData]);
+		} else {
+			var checked = !_selectedRowKeys.includes(rowKey);
+			onChangeSelectionCell({
+				rowData: rowData,
+				rowIndex: rowIndex,
+				column: _getSelectionColumnProps(),
+				rows: _rows,
+				checked: checked
+			});
 		}
+	};
+	var _onDoubleClick = function _onDoubleClick(_ref6) {
+		var rowData = _ref6.rowData,
+		    rowIndex = _ref6.rowIndex,
+		    rowKey = _ref6.rowKey;
+
+		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
+		// console.log('q onRowDoubleClick => ', rowData)
+		rowDoubleClickDispatch(rowData);
+		onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+	};
+
+	var _rowEventHandlers = {
+		// onClick: _onRowClick,
+		// onDoubleClick: _onDoubleClick,
+		onClick: useSimpleAndDoubleClick(_onRowClick, _onDoubleClick)
+		// onDoubleClick: console.log('onDoubleClick'),
 		// onContextMenu: console.log('context menu'),
 		// onMouseEnter: console.log('mouse enter'),
 		// onMouseLeave: console.log('mouse leave'),
@@ -6294,7 +6349,12 @@ var Table$2 = React.forwardRef(function (props, ref) {
 		    _selectedRowObjects = _ref8._selectedRowObjects,
 		    _indeterminateRowKeys = _ref8._indeterminateRowKeys;
 
-		// console.log("_onChangeSelectHandler", _selectedRowKeys);
+		// console.group("_onChangeSelectHandler", _selectedRowKeys);
+		// console.log("_selectedRowKeys", _selectedRowKeys);
+		// console.log("_indeterminateRowKeys", _indeterminateRowKeys);
+		// console.log("_selectAll", _selectAll);
+		// console.groupEnd();
+
 		// setSelectedRowKeys(_selectedRowKeys);
 		// selectedDispatch(_selectedRowObjects);
 		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects);
@@ -6325,25 +6385,52 @@ var Table$2 = React.forwardRef(function (props, ref) {
 		// console.log("_handleSelectAll", selectedKeys);
 		onSelectedRowsChange(selectedKeys, rowObjects);
 	};
+	//
+	// const SelectionCell = (props) => {
+	// 	const {rowData, column} = props;
+	// 	const {selectedRowKeys, indeterminateRowKeys, rowKey} = column;
+	// 	const det = indeterminateRowKeys.includes(rowData[rowKey]);
+	// 	const checked = selectedRowKeys.includes(rowData[rowKey]);
+	// 	React.useEffect(() => {
+	// 		console.log("selectionCell", props);
+	// 	}, []);
+	//
+	// 	const _handleChange = (checked) => {
+	// 		console.log("_handleChange", checked);
+	// 	}
+	//
+	// 	return (
+	// 		<Checkbox
+	// 			indeterminate={det}
+	// 			onChange={(e) => _handleChange(e.target.checked)}
+	// 			checked={checked}
+	// 		/>
+	// 	);
+	// };
+
+	var _getSelectionColumnProps = function _getSelectionColumnProps() {
+		return {
+			rowKey: rowKey,
+			parentKey: expandParentKey,
+			nodeAssociated: nodeAssociated,
+			selectedRowKeys: _selectedRowKeys,
+			indeterminateRowKeys: _indeterminateRowKeys,
+			onChange: _onChangeSelectHandler
+		};
+	};
 
 	var _getColumns = function _getColumns() {
-		var selectColumn = {
+		var selectColumn = _extends({
 			key: '__selection__',
 			headerRenderer: SelectionHead,
-			cellRenderer: SelectionCell,
+			cellRenderer: React__default['default'].createElement(SelectionCell, null),
 			width: 40,
 			flexShrink: 0,
 			resizable: false,
 			frozen: 'left',
-			rowKey: rowKey,
-			parentKey: expandParentKey,
-			selectedRowKeys: _selectedRowKeys,
-			indeterminateRowKeys: _indeterminateRowKeys,
-			nodeAssociated: nodeAssociated,
-			onChange: _onChangeSelectHandler,
 			selectAll: selectAll,
 			onSelectAll: _onSelectAllHandler
-		};
+		}, _getSelectionColumnProps());
 		return selectable ? [selectColumn].concat(toConsumableArray(columns)) : [].concat(toConsumableArray(columns));
 	};
 
@@ -7547,10 +7634,17 @@ FormModal$1.propTypes = {
     saveRow: PropTypes__default['default'].func
 };
 
+var defaultProps$1 = {
+    subscribe: [],
+    dispatch: {}
+};
+
 var Modal$3 = function Modal(props) {
     var buttonProps = props.buttonProps,
         modalConfig = props.modalConfig,
-        modalData = props.modalData;
+        modalData = props.modalData,
+        subscribe = props.subscribe,
+        dispatch = props.dispatch;
 
     var _useState = React.useState(false),
         _useState2 = slicedToArray(_useState, 2),
@@ -7567,13 +7661,7 @@ var Modal$3 = function Modal(props) {
         _buttonProps = _useState6[0],
         setButtonProps = _useState6[1];
 
-    // Объект подписки на стор
-
-
-    var subscribe = props.subscribe ? props.subscribe : {};
-
-    // Объект публикации в стор
-    var dispatch = props.dispatch ? props.dispatch : {};
+    var isMounted = useMounted();
 
     var setModalData = function setModalData(value) {
         // console.log("setModalData: ", value);
@@ -7585,13 +7673,31 @@ var Modal$3 = function Modal(props) {
     }, []);
 
     /** Подписка на изменение props[subscribe.name] в сторе */
-    React.useEffect(function () {
-        if (subscribe.name) {
-            // console.log("Modal => subscribe: ", props[subscribe.name]);
-            subscribe.onChange && subscribe.onChange({ value: props[subscribe.name], setModalData: setModalData, setButtonProps: setButtonProps });
-        }
-        // console.log("Change Props[2]: ", props.subscribeЗф);
-    }, [props[subscribe.name]]);
+    // useEffect( () => {
+    //     if(subscribe.name) {
+    //         // console.log("Modal => subscribe: ", props[subscribe.name]);
+    //         subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setModalData, setButtonProps});
+    //     }
+    //     // console.log("Change Props[2]: ", props.subscribeЗф);
+    // }, [props[subscribe.name]]);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    subscribe.map(function (item) {
+        return React.useEffect(function () {
+            if (isMounted && item.name) {
+                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                item.onChange && item.onChange({
+                    value: props[item.name],
+                    extraData: props[item.name + "ExtraData"],
+                    setModalData: setModalData,
+                    setButtonProps: setButtonProps,
+                    openModal: _onOpenModal,
+                    closeModal: _onCloseModal
+                });
+            }
+            // console.log("Change Props[2]: ", props.subscribeЗф);
+        }, [props[item.name]]);
+    });
 
     var _onOpenModal = function _onOpenModal() {
         // console.log("Modal => _modalData: ", _modalData);
@@ -7666,19 +7772,26 @@ Modal$3.propTypes = {
     dispatch: PropTypes__default['default'].object,
 
     /** Объект для подписки на изменения в STORE */
-    subscribe: PropTypes__default['default'].object
+    subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
 };
+
+Modal$3.defaultProps = defaultProps$1;
 
 var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
     var subscribe = ownProps.subscribe;
 
-    if (subscribe) {
-        var name = subscribe.name,
-            path = subscribe.path;
+    var state = {};
+    if (subscribe && subscribe.length > 0) {
+        subscribe.forEach(function (item) {
+            var name = item.name,
+                path = item.path,
+                extraData = item.extraData;
 
-        if (name && path) return defineProperty({}, name, objectPath__default['default'].get(store, path));
+            if (name && path) state[name] = objectPath__default['default'].get(store, path);
+            if (name && extraData) state[name + "ExtraData"] = objectPath__default['default'].get(store, extraData);
+        });
     }
-    return {};
+    return state;
 };
 var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
     return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
@@ -8101,10 +8214,13 @@ var FormItem$1 = function FormItem(props) {
 					antFormItemProps.trigger = 'onClick';
 					Component = withStore$1(_Button__default['default'], antFormItemProps);
 					// console.log('Props field => ', field);
-					// const onClick = (e) => childProps.onClick && childProps.onClick(e, field); onClick={onClick}
+					// const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
+					var onClick = function onClick(e) {
+						return childProps.onClick && childProps.onClick(e, field);
+					};
 					return React__default['default'].createElement(
 						Component,
-						childProps,
+						_extends({}, childProps, { onClick: onClick }),
 						childProps && childProps.label
 					);
 				case 'Title':
