@@ -2,15 +2,12 @@ import React, {useRef, forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {notification} from 'antd';
-import SortOrder from 'react-base-table/lib/SortOrder';
-import BaseTable, {AutoResizer, callOrReturn, Column} from 'react-base-table';
+import BaseTable, {AutoResizer, callOrReturn} from 'react-base-table';
+// import BaseTable from "./BaseTable/BaseTable";
 import {empty, overlay} from './defaultSettings';
-import SelectionHead from '../Table/Selectable/SelectionHead';
-import SelectionCell, {parentAnalysis} from '../Table/Selectable/SelectionCell';
-import CommandPanel from '../CommandPanel/CommandPanel';
-import FilterPanel from '../FilterPanel/FilterPanel';
-import SelectionList from '../Table/SelectionList/SelectionList';
+import SelectionHead from './Selectable/SelectionHead';
+import SelectionCell, {parentAnalysis} from './Selectable/SelectionCell';
+import SelectionList from './SelectionList/SelectionList';
 import {rtPrefix} from '../utils/variables';
 import {
 	flatten,
@@ -18,28 +15,27 @@ import {
 	getTableRowKeys,
 	findNodeByRowKey,
 	noop,
-	getTableRowObjects, notificationError
+	getTableRowObjects, notificationError, dispatchToStore, useMounted
 } from "../utils/baseUtils";
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
-import FormItems from "../Form/FormItems";
-
-
+import FormItems from "../deprecated/Form/FormItems";
 
 const Table = forwardRef((props, ref) => {
-	/** Состояние первоначалной настройки компонента*/
-	const [mounted, setMounted] = useState(false);
+
 	/** Наличие на сервере еще данных */
 	const [hasMore, setHasMore] = useState(true);
 	/** Индикатор загрузки данных */
 	const [loading, setLoading] = useState(false);
 
 	/** Indoor control */
+	/** Колонки таблицы */
+	// const [_columns, _setColumns] = useState([]);
 	const [_rows, _setRows] = useState([]);
 	const [_selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [_searchValue, setSearchValue] = useState({});
 	const [_filter, setFilter] = useState(false);
-	const [_sortBy, setSortBy] = useState(false);
+	const [_sortBy, setSortBy] = useState({});
 
 	/** Selectable States */
 	const [selectAll, setSelectAll] = useState(false);
@@ -54,7 +50,14 @@ const Table = forwardRef((props, ref) => {
 
     const tableRef = useRef();
 
+	const isMounted = useMounted()
+
 	const {
+		/** Required */
+		columns,
+		// type,
+		infinityMode,
+
 		/** Def values */
 		defaultRows,
 		defaultSelectedRowKeys,
@@ -64,31 +67,25 @@ const Table = forwardRef((props, ref) => {
 
 		/** Outdoor control */
 		rows,
-		setRows,
+		setRows, // ???
 		selectedRowKeys,
 		searchValue,
 		filter,
 		sortBy,
 
-		/** Required */
-		columns,
-		type,
-
 		/** Base Props */
-		autoDeleteRows,
 		rowKey,
+		customFields,
 
 		/** View Props */
 		empty,
+		overlay,
 		fixWidthColumn,
-		footerHeight,
-		footerShow,
-        footerTitles,
 		// footerProps,
 		headerHeight,
 		rowHeight,
-		zebraStyle,
 		rowRenderer,
+		zebraStyle,
 		estimatedRowHeight,
 
 		/** Load Data Props */
@@ -104,9 +101,9 @@ const Table = forwardRef((props, ref) => {
 		/** Tree Props */
 		nodeAssociated,
 		expandColumnKey,
-		expandParentKey,
-		expandLazyLoad,
 		expandDefaultAll,
+		expandLazyLoad,
+		expandParentKey,
 
 		/** Events */
 		onRowClick,
@@ -124,16 +121,6 @@ const Table = forwardRef((props, ref) => {
 		subscribe,
 	} = props;
 
-	// console.log('props.commandPanelProps => ', props.commandPanelProps);
-	const commandPanelProps = {
-		...CommandPanel.defaultProps,
-		...props.commandPanelProps,
-	};
-	const filterPanelProps = {
-		...FilterPanel.defaultProps,
-		...props.filterPanelProps,
-	};
-
 	const footerProps = {
 		...Table.defaultProps.footerProps,
 		...props.footerProps,
@@ -142,15 +129,15 @@ const Table = forwardRef((props, ref) => {
 	const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
 	const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
 
-
 	useEffect(() => {
-        // console.log("Инициализация дефолтных значений ");
+        // console.log("Инициализация дефолтных значений ", selectColumn, columns);
         // console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
 
 		// Инициализация дефолтных значений
 		// _setRows(defaultRows);
 		_setRowsHandler(defaultRows);
-		setSelectedRowKeys(defaultSelectedRowKeys);
+		// setSelectedRowKeys(defaultSelectedRowKeys);
+		_setSelectedRowsHandler(defaultSelectedRowKeys,undefined, defaultRows)
 		setSearchValue(defaultSearchValue);
 		setFilter(defaultFilter);
 		setSortBy(defaultSortBy);
@@ -165,6 +152,7 @@ const Table = forwardRef((props, ref) => {
 			footerProps.centerCustomSideElement ||
 			footerProps.rightCustomSideElement));
 
+		// Only tree table
 		if (!!expandColumnKey && !expandLazyLoad) {
 			// Открытие всех нод
 			if (expandDefaultAll)
@@ -195,26 +183,27 @@ const Table = forwardRef((props, ref) => {
 			}
 		}
 
-		if (type !== 'localSide') {
-			_dataProcessing({
-				sortBy: defaultSortBy,
-				filter: defaultFilter,
-				searchLine: defaultSearchValue,
-				reload: true,
-			});
-		}
-		// console.log("Table => props ", props);
-		setMounted(true);
+		// if (type !== 'localSide') {
+		_dataProcessing({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchLine: defaultSearchValue,
+			reload: true,
+		});
+		// }
+		// console.log("Table => useEffect start ");
+		// setMounted(true);
 		if (ref && typeof ref === 'function') ref({reloadData});
 		else if (ref && typeof ref === 'object') ref.current = {reloadData};
 	}, []);
 
 	useEffect(() => {
-		if (type === 'localSide') {
-			// console.log("Control useEffect => ", rows, selectedRowKeys, searchValue, filter, sortBy);
+		// if (type === 'localSide') {
+		// 	console.log("Control useEffect => ", rows, selectedRowKeys, searchValue, filter, sortBy);
 			// _setRows(rows);
 			_setRowsHandler(rows);
-			setSelectedRowKeys(selectedRowKeys);
+			// setSelectedRowKeys(selectedRowKeys);
+			_setSelectedRowsHandler(selectedRowKeys, undefined, rows);
 			setSearchValue(searchValue);
 			setFilter(filter);
 			setSortBy(sortBy);
@@ -223,45 +212,80 @@ const Table = forwardRef((props, ref) => {
 				if (expandDefaultAll)
 					setExpandedRowKeys(flatten(getTableRowKeys(rows, rowKey)));
 			}
-		}
+		// }
     }, [rows, selectedRowKeys, searchValue, filter, sortBy]);
 
 	/** Подписка на изменение props[subscribe.name] в сторе */
-	useEffect( () => {
-		if(subscribe.name) {
-			// console.log("Table => useEffect => subscribe.value ", props[subscribe.name]);
-			subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setReloadTable: reloadData});
-		}
-	}, [props[subscribe.name]]);
-
+	subscribe.map(item => {
+		return useEffect( () => {
+			if(isMounted && item.name) {
+				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+				const onChangeObject = {
+					value: props[item.name],
+					extraData: props[`${item.name}ExtraData`],
+					reloadTable: reloadData,
+					addRows: _addRows,
+					addRow: _addRow,
+					addRowAsCopy: _addRowAsCopy,
+					editRow: _editRow,
+					removeRow: _removeRow,
+					moveUpRow: _moveUpRow,
+					moveDownRow: _moveDownRow,
+				}
+				item.onChange && item.onChange(onChangeObject);
+			}
+		}, [props[item.name]]);
+	})
 
 	/** BASE FUNCTIONS */
 	const _setRowsHandler = (rows) => {
 		_setRows(rows);
-		rowsDispatch(rows);
-	};
-	const setRowsHandler = (rows) => {
 		setRows(rows);
 		rowsDispatch(rows);
 	};
+
+	const _setSelectedRowsHandler = (selectedKeys = [], selectedObjects = undefined, rows = []) => {
+		setSelectedRowKeys(selectedKeys);
+		if(selectedKeys.length === 0)
+			if (selectable)
+				selectedDispatch([]);
+			else
+				selectedDispatch(undefined);
+		else if(selectedKeys.length > 0 && !selectedObjects)
+			if (selectable)
+				selectedDispatch (flatten( getTableRowObjects(rows, rowKey) ).filter((item) => selectedKeys.includes(item[rowKey])))
+			else
+				selectedDispatch (findNodeByRowKey(rows, rowKey, selectedKeys[0]))
+		else
+			selectedDispatch(selectedObjects);
+	}
+
 	const rowsDispatch = (rows) => {
 		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
 	};
 
-	const reloadData = ({sortBy, filter, searchValue}) => {
+	const selectedDispatch = (data) => {
+		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+	}
+
+	const reloadData = ({sortBy, filter, searchValue}, appendParams) => {
 		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
-        if(props.value && props.value.length > 0)
-            setSelectedRowKeys(props.value.map(item => item[rowKey]));
-        else
-            setSelectedRowKeys([]);
-		// setSelectedRowKeys([]);
-		if(sortBy) setSortBy(sortBy);
-		if(filter) setFilter(filter);
-		if(searchValue) setSearchValue(searchValue);
+		tableRef.current && tableRef.current.scrollToRow(0, 'auto');
+		if(props.value && props.value.length > 0)
+			_setSelectedRowsHandler(props.value.map(item => item[rowKey]), props.value);
+		else
+			_setSelectedRowsHandler()
+
+		const __sortBy = appendParams ? (sortBy ? sortBy : _sortBy) : sortBy;
+		const __filter = appendParams ? {..._filter, ...filter} : filter;
+		const __searchValue = appendParams ? (searchValue ? searchValue : _searchValue) : searchValue;
+		if(sortBy) setSortBy(__sortBy);
+		if(filter) setFilter(__filter);
+		if(searchValue) setSearchValue(__searchValue);
 		_dataProcessing({
-			sortBy: sortBy ? sortBy : _sortBy,
-			filter: filter ? filter : _filter,
-			searchLine: searchValue ? searchValue : _searchValue,
+			sortBy: __sortBy,
+			filter: __filter,
+			searchLine: __searchValue,
 			reload: true,
 		});
         // console.log("reloadData loading ", loading);
@@ -270,119 +294,107 @@ const Table = forwardRef((props, ref) => {
 	const _dataProcessing = (params) => {
 		// console.log('_dataProcessing', params);
 		const {sortBy, filter, searchLine, expandRow, reload} = params;
-		switch (type) {
-			case 'infinity':
-			case 'serverSide':
-				if ((hasMore || reload) && !loading) {
-					setLoading(true);
-					const pageNum = reload
-						? 0
-						: Math.floor(_rows.length / pageSize);
-					const params = {
-						page: pageNum,
-						size: pageSize,
-						sort:
-							sortBy && sortBy.key
-								? sortBy.key + ',' + sortBy.order
-								: null,
-					};
-					const dataQuery = {
-                        ...filter,
-                        ...(searchLine
-                            ? {[searchParamName]: searchLine}
-                            : null),
-                    };
-					// console.log('dataQuery', dataQuery);
+		if ((hasMore || reload) && !loading) {
+			setLoading(true);
+			const pageNum = reload
+				? 0
+				: Math.floor(_rows.length / pageSize);
+			const params = {
+				page: pageNum,
+				size: pageSize,
+				sort:
+					sortBy && sortBy.key
+						? sortBy.key + ',' + sortBy.order
+						: null,
+			};
+			const dataQuery = {
+				...filter,
+				...(searchLine
+					? {[searchParamName]: searchLine}
+					: null),
+			};
+			// console.log('dataQuery', dataQuery);
 
-                    if(type === 'infinity' && reload && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad) {
-                        requestLoadCount({
-                            params,
-                            data: dataQuery,
-                        })
-                            .then((response) => {
-                                // console.log("infinity then response", response);
-                                // const result = response.data;
-                                setTotalCountRows(response.data);
-                            })
-							.catch(error =>
-								notificationError(error, 'Ошибка получения количества записей по фильтру') );
-                    }
-
-                    // console.log('requestLoadRows => ', typeof requestLoadRows);
-                    // if(typeof requestLoadRows !== 'function'){
-                    //     setLoading(false);
-                    // }
-                    requestLoadRows({
-						params,
-						data: dataQuery,
+			if(infinityMode && reload && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad) {
+				requestLoadCount({
+					params,
+					data: dataQuery,
+				})
+					.then((response) => {
+						// console.log("infinity then response", response);
+						// const result = response.data;
+						setTotalCountRows(response.data);
 					})
-						.then((response) => {
-							// console.log("infinity then response", response);
-							const result = response.data;
-							// Если иерархия и ленивая, то ищим кому добавть полученные записи
-							if (!!expandColumnKey && expandLazyLoad) {
-								// lastExpandRow//, setLastExpandRow
-								// console.log('!!expandColumnKey && expandLazyLoad', result);
-								if (pageNum === 0) {
-									result.forEach((child) => {
-										child.children = [
-											{[rowKey]: generateUUID()},
-										];
-									});
-									// _setRows(result);
-									_setRowsHandler(result);
-								} else {
-									let newRows = [..._rows];
-									// (data, rowKey, rowValue)
-									result.forEach((child) => {
-										child.children = [
-											{[rowKey]: generateUUID()},
-										];
-									});
-									let node = findNodeByRowKey(
-										newRows,
-										rowKey,
-										expandRow[rowKey]
-									);
-									node.children = result;
-									// console.log('newRows -> ', newRows);
-									// _setRows(newRows);
-									_setRowsHandler(newRows);
-								}
-							} else {
-								if (result && result.length < pageSize) {
-									setHasMore(false);
-								} else {
-									setHasMore(true);
-								}
-								pageNum === 0
-									? _setRowsHandler(result) // _setRows
-									: _setRowsHandler(_rows.concat(result)); // _setRows
+					.catch(error =>
+						notificationError(error, 'Ошибка получения количества записей по фильтру') );
+			}
 
-								// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
-								if (expandDefaultAll)
-									setExpandedRowKeys(
-										flatten(getTableRowKeys(result, rowKey))
-									);
-							}
+			// console.log('requestLoadRows => ', typeof requestLoadRows);
+			// if(typeof requestLoadRows !== 'function'){
+			//     setLoading(false);
+			// }
+			requestLoadRows({
+				params,
+				data: dataQuery,
+			})
+				.then((response) => {
+					// console.log("infinity then response", response);
+					const result = response.data;
+					// Если иерархия и ленивая, то ищим кому добавть полученные записи
+					if (!!expandColumnKey && expandLazyLoad) {
+						// lastExpandRow//, setLastExpandRow
+						// console.log('!!expandColumnKey && expandLazyLoad', result);
+						if (pageNum === 0) {
+							result.forEach((child) => {
+								child.children = [
+									{[rowKey]: generateUUID()},
+								];
+							});
+							// _setRows(result);
+							_setRowsHandler(result);
+						} else {
+							let newRows = [..._rows];
+							// (data, rowKey, rowValue)
+							result.forEach((child) => {
+								child.children = [
+									{[rowKey]: generateUUID()},
+								];
+							});
+							let node = findNodeByRowKey(
+								newRows,
+								rowKey,
+								expandRow[rowKey]
+							);
+							node.children = result;
+							// console.log('newRows -> ', newRows);
+							// _setRows(newRows);
+							_setRowsHandler(newRows);
+						}
+					} else {
+						if (result && result.length < pageSize) {
+							setHasMore(false);
+						} else {
+							setHasMore(true);
+						}
+						pageNum === 0
+							? _setRowsHandler(result) // _setRows
+							: _setRowsHandler(_rows.concat(result)); // _setRows
 
-							setLoading(false);
-						})
-						.catch((error) => {
-							notificationError(error, 'Ошибка загрузки данных')
-							_setRowsHandler(_rows); // _setRows
-							// setHasMore(false);
-							setLoading(false);
-						});
-				}
-				break;
-			// case 'serverSide':
-			// 	setLoading(true);
-			// 	break;
-			case 'localSide':
-				break;
-			default:
-				break;
+						// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
+						if (expandDefaultAll)
+							setExpandedRowKeys(
+								flatten(getTableRowKeys(result, rowKey))
+							);
+					}
+
+					setLoading(false);
+				})
+				.catch((error) => {
+					notificationError(error, 'Ошибка загрузки данных')
+					_setRowsHandler(_rows); // _setRows
+					// setHasMore(false);
+					setLoading(false);
+				});
 		}
 	};
 
@@ -390,29 +402,15 @@ const Table = forwardRef((props, ref) => {
 	const _rowEventHandlers = {
 		onClick: ({rowData, rowIndex, rowKey, event}) => {
 			if (!selectable) {
-				// if (_selectedRowKeys.includes(rowKey)) {
-				//     setSelectedRowKeys([]);
-				//     // setSelectedRow([]);
-				//     // setSelectedRowObjects([]);
-				//     onRowClick({
-				//         selected: false,
-				//         rowData,
-				//         rowIndex,
-				//         rowKey,
-				//     });
-				//     onSelectedRowsChange([]);
-				// } else {
 				// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
 				const newRowObject = {
 					rowData: {...rowData},
 					rowIndex: rowIndex,
 					rowKey: rowKey,
 				};
-				// if(type !== 'localSide')
-				setSelectedRowKeys([rowKey]);
-				// setSelectedRow(newRowObject);
-				// setSelectedRowObjects([newRowObject]);
-				selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, rowData);
+				_setSelectedRowsHandler([rowKey], rowData);
+				// setSelectedRowKeys([rowKey]);
+				// selectedDispatch(rowData);
 				onRowClick({
 					selected: true,
 					...newRowObject,
@@ -437,9 +435,10 @@ const Table = forwardRef((props, ref) => {
 		setSortBy(sortBy);
 
 		// Для серверной сортировки - сбросить выделение
-		if (type !== 'localSide') {
-			setSelectedRowKeys([]);
-		}
+		// if (type !== 'localSide') {
+		// setSelectedRowKeys([]);
+		_setSelectedRowsHandler();
+		// }
 		const loadParams = {
 			sortBy: sortBy,
 			filter: _filter,
@@ -447,34 +446,6 @@ const Table = forwardRef((props, ref) => {
 			reload: true,
 		};
 		_dataProcessing(loadParams);
-	};
-
-	/** Получение колонок таблицы */
-	const _getColumns = () => {
-		let _columns = [...columns];
-
-		/** Создаем колонку с галочками (если надо) */
-		if (selectable) {
-			const selectColumn = {
-				key: '__selection__',
-				headerRenderer: SelectionHead,
-				cellRenderer: SelectionCell,
-				width: 40,
-				flexShrink: 0,
-				resizable: false,
-				frozen: Column.FrozenDirection.LEFT,
-				rowKey: rowKey,
-				parentKey: expandParentKey,
-				selectedRowKeys: _selectedRowKeys,
-				indeterminateRowKeys: _indeterminateRowKeys,
-				nodeAssociated: nodeAssociated,
-				onChange: _onChangeSelectHandler,
-				selectAll: selectAll,
-				onSelectAll: _onSelectAllHandler,
-			};
-			_columns.unshift(selectColumn);
-		}
-		return _columns;
 	};
 
 	/** VIEW FUNCTIONS */
@@ -506,7 +477,7 @@ const Table = forwardRef((props, ref) => {
 							) : null}
 
 						{footerProps.showElements.includes('total')
-							? type === 'infinity' && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad
+							? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad
 								? <span>{footerProps.totalTitle} {_totalCountRows}</span>
 								: <span>{footerProps.totalTitle} {flatten(getTableRowKeys(_rows, rowKey)).length}</span>
 							: null}
@@ -542,7 +513,7 @@ const Table = forwardRef((props, ref) => {
 
 		setSelectAll(selectAll);
 
-		if (type === 'infinity') {
+		if (infinityMode) {
 			const loadParams = {
 				sortBy: _sortBy,
 				filter: _filter,
@@ -564,31 +535,12 @@ const Table = forwardRef((props, ref) => {
 		_selectedRowObjects,
 		_indeterminateRowKeys,
 	}) => {
-		setSelectedRowKeys(_selectedRowKeys);
+		// console.log("_onChangeSelectHandler", _selectedRowKeys);
+		// setSelectedRowKeys(_selectedRowKeys);
+		// selectedDispatch(_selectedRowObjects);
+		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects)
 		setIndeterminateRowKeys(_indeterminateRowKeys);
 		setSelectAll(_selectAll);
-		// setSelectedRow(_selectedRow);
-
-		// let newSelectedObjects = [];
-		// if (selected) {
-		// 	if (!!expandColumnKey)
-		// 		newSelectedObjects = flatten(
-		// 			getTableRowObjects(rows, rowKey)
-		// 		).filter((item) => _selectedRowKeys.includes(item[rowKey]));
-		// 	else
-		// 		newSelectedObjects = selectedRowObjects.concat([
-		// 			_selectedRow.rowData,
-		// 		]);
-		// 	// setSelectedRowObjects(newSelectedObjects);
-		// } else {
-		// 	newSelectedObjects = selectedRowObjects.filter(
-		// 		(item) => item[rowKey] !== _selectedRow.rowData[rowKey]
-		// 	);
-		// 	// setSelectedRowObjects(newSelectedObjects);
-		// }
-		// console.log("_handleSelectChange", props);
-		// dispatchPath && props.setTableSelectedRow && props.setTableSelectedRow(dispatchPath, _selectedRow.rowData);
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, _selectedRowObjects);
 		onRowClick({
 			selected,
 			rowData: _selectedRow.rowData,
@@ -601,39 +553,40 @@ const Table = forwardRef((props, ref) => {
 	/** Событие при изменении галочки "Выделить все" */
 	const _onSelectAllHandler = ({selected, rowKeys, rowObjects}) => {
 		const selectedKeys = selected ? rowKeys : [];
-		setSelectedRowKeys(selectedKeys);
+		// setSelectedRowKeys(selectedKeys);
+		// selectedDispatch(selected ? rowObjects : []);
+		_setSelectedRowsHandler(selectedKeys, selected ? rowObjects : [])
 		setIndeterminateRowKeys([]);
 		setSelectAll(selected);
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, selected ? rowObjects : []);
 		// setSelectedRowObjects(rows);
 		// console.log("_handleSelectAll", selectedKeys);
 		onSelectedRowsChange(selectedKeys, rowObjects);
 	};
 
-	/** TREE FUNCTIONS */
+	const _getColumns = () => {
+		const selectColumn = {
+			key: '__selection__',
+			headerRenderer: SelectionHead,
+			cellRenderer: SelectionCell,
+			width: 40,
+			flexShrink: 0,
+			resizable: false,
+			frozen: 'left',
+			rowKey: rowKey,
+			parentKey: expandParentKey,
+			selectedRowKeys: _selectedRowKeys,
+			indeterminateRowKeys: _indeterminateRowKeys,
+			nodeAssociated: nodeAssociated,
+			onChange: _onChangeSelectHandler,
+			selectAll: selectAll,
+			onSelectAll: _onSelectAllHandler,
+		};
+		return selectable ? [selectColumn, ...columns] : [...columns];
+	}
 
-	/** Анализ дерева на пердмет квадратиков
-	 * Нужно для выделения по умолчанию свернутых элементов */
-	// const _postLoadTreeAnalysis = () => {
-	//     if (!!expandColumnKey && !expandLazyLoad) {
-	//         let _indeterminateRowKeys = [];
-	//         // console.log("mounted->selectedRowObjects: ", selectedRowObjects);
-	//         selectedRowObjects.map((item) => {
-	//             const [ss, ii] = parentAnalysis({
-	//                 rowData: item,
-	//                 rowKey,
-	//                 parentKey: expandParentKey,
-	//                 checked: true,
-	//                 nodeAssociated,
-	//                 treeData: _rows,
-	//                 selectedRowKeys: _selectedRowKeys,
-	//                 indeterminateRowKeys: _indeterminateRowKeys,
-	//             });
-	//             _indeterminateRowKeys.push(...ii);
-	//         });
-	//         setIndeterminateRowKeys([...new Set(_indeterminateRowKeys)]);
-	//     }
-	// }
+
+
+	/** TREE FUNCTIONS */
 
 	const _onExpandedRowsChange = (expandedRowKeys) => {
 		// console.log("_onExpandedRowsChange", expandedRowKeys);
@@ -669,70 +622,16 @@ const Table = forwardRef((props, ref) => {
 		onRowExpand({expanded, rowData, rowIndex, rowKey});
 	};
 
-	/** COMMAND PANEL FUNCTIONS */
 
-	const _getDisabledElementsOfCommandPanel = () => {
-		// console.log('commandPanelProps', commandPanelProps);
-		let _disabledElements = [...commandPanelProps.disabledElements];
-		if (type === 'infinity') {
-			_disabledElements.push('up', 'down');
-            // console.log('_getDisabledElementsOfCommandPanel => infinity');
-        }
-		if (selectable && _selectedRowKeys.length > 1) {
-			_disabledElements.push('addAsCopy', 'edit', 'up', 'down');
-            // console.log('_getDisabledElementsOfCommandPanel => selectable');
-        }
-		if (_selectedRowKeys.length === 0) {
-			_disabledElements.push('addAsCopy', 'edit', 'delete', 'up', 'down');
-            // console.log('_getDisabledElementsOfCommandPanel => NO select');
-        }
-		// if (expandColumnKey) {
-			//|| !selectedRow) {
-			// _disabledElements.push('up', 'down');
-            // console.log('_getDisabledElementsOfCommandPanel => expandColumnKey');
-        // }
-        // console.log('_getDisabledElementsOfCommandPanel => ', _disabledElements, _selectedRowKeys);
+	/** ROW CHANGE FUNCTIONS */
 
-        return [...new Set(_disabledElements)];
-	};
-
-	const _onClickAddAsCopy = (event) => {
-		// console.log("_onClickAddAsCopy", selectedRow);
-		commandPanelProps.onClickAddAsCopy(
-			event,
-			findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])
-		);
-	};
-
-	const _onClickEdit = (event) => {
-		// console.log("_onClickEdit", selectedRow);
-		commandPanelProps.onClickEdit(event, {
-			rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-		});
-		// props.onClickEdit(event, selectedRow);
-	};
-
-	const _onClickDelete = (event) => {
-		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
-		if (autoDeleteRows) {
-			if (type === 'localSide') {
-				setRowsHandler(
-					_rows.filter(
-						(item) => !_selectedRowKeys.includes(item[rowKey])
-					)
-				);
-			} else {
-				_setRowsHandler(
-					_rows.filter(
-						(item) => !_selectedRowKeys.includes(item[rowKey])
-					)
-				);
-			}
-			setSelectedRowKeys([]);
-		}
-		commandPanelProps.onClickDelete(event, _selectedRowKeys);
-	};
-
+	/**
+	 * Find row by key
+	 * @param data - table rows
+	 * @param key - key row for find
+	 * @param callback - function for return result
+	 * @returns {*}
+	 */
 	const loop = (data, key, callback) => {
 		for (let i = 0; i < data.length; i++) {
 			if (data[i][rowKey] === key) {
@@ -747,29 +646,92 @@ const Table = forwardRef((props, ref) => {
 		}
 	};
 
-	const _onClickUp = (event) => {
+	const _addRows = (rows) => {
+		let saveRows = [...rows];
+		if (customFields)
+			// Фильтрация по пользовательским параметрам
+			saveRows = saveRows.filter((sRow) => {
+				let isValid = true;
+				customFields.forEach((field) => {
+					// Валидация по пользовательской логике функции validate
+					if(field.validate)
+						isValid = field.validate(sRow, _rows);
+
+					// Создание или переобразование по пользовательской логике функции value
+					if(field.value)
+						sRow[field.name] = field.value(sRow, _rows);
+				});
+				if(isValid)
+					return sRow;
+			});
+		_setRowsHandler([..._rows, ...saveRows]);
+	}
+
+	const _addRow = (row) => {
+		let _row = {...row}
+		if (customFields)
+			customFields.forEach((field) => _row[field.name] = field.value(_row, _rows));
+		_setRowsHandler([..._rows, _row]);
+	}
+
+	const _addRowAsCopy = () => {
+		// console.log("_onClickAddAsCopy", selectedRow);
+		_setRowsHandler([..._rows, findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
+	};
+
+	const _editRow = (row) => {
+		// console.log("_onClickEdit", selectedRow);
+		const data = [..._rows];
+		const key = row[rowKey];
+		loop(data, key, (item, index, arr)  => {
+			data[index] = row;
+			_setRowsHandler(data);
+			// selectedDispatch(row)
+			_setSelectedRowsHandler(_selectedRowKeys, undefined, data);
+			// setSelectedRowKeys([]);
+		})
+		// props.onClickEdit(event, selectedRow);
+	};
+
+	const _removeRow = (event) => {
+		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
+		_setRowsHandler(
+			_rows.filter(
+				(item) => !_selectedRowKeys.includes(item[rowKey])
+			)
+		);
+		_setSelectedRowsHandler();
+		// setSelectedRowKeys([]);
+		// if (selectable)
+		// 	selectedDispatch([]);
+		// else
+		// 	selectedDispatch(undefined);
+		// commandPanelProps.onClickDelete(event, _selectedRowKeys);
+	};
+
+	const _moveUpRow = (event) => {
 		const data = [..._rows];
 		const key = _selectedRowKeys[0];
 		loop(data, key, (item, index, arr)  => {
 			const newRowIndex = _getNewIndexRow(index, index - 1);
 			_changeIndexRow(index, newRowIndex, arr, data);
-			commandPanelProps.onClickUp(event, {
-				rowIndex: newRowIndex,
-				rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-			}, data);
+			// commandPanelProps.onClickUp(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
 		})
 	};
 
-	const _onClickDown = (event) => {
+	const _moveDownRow = (event) => {
 		const data = [..._rows];
 		const key = _selectedRowKeys[0];
 		loop(data, key, (item, index, arr)  => {
 			const newRowIndex = _getNewIndexRow(index, index + 1);
 			_changeIndexRow(index, newRowIndex, arr, data);
-			commandPanelProps.onClickDown(event, {
-				rowIndex: newRowIndex,
-				rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-			}, data);
+			// commandPanelProps.onClickDown(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
 		})
 	};
 
@@ -783,48 +745,24 @@ const Table = forwardRef((props, ref) => {
 			// console.log('_changeIndexRow => ',item);
 			arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
 			// console.log("_changeIndexRow", item[0]);
-			if (type === 'localSide') {
-				setRowsHandler(data);
-			} else {
-				_setRowsHandler(data);
-			}
+			_setRowsHandler(data);
 		}
 	};
 
-	const _onSearch = (searchLine, e) => {
-        e.preventDefault();
-		// console.log("_onSearch", searchLine);
-        tableRef.current.scrollToRow(0, 'auto');
-		setSearchValue(searchLine);
-		const loadParams = {
-			sortBy: _sortBy,
-			filter: _filter,
-			searchLine: searchLine,
-			reload: true,
-		};
-		_dataProcessing(loadParams);
-		commandPanelProps.onSearch(searchLine);
-	};
-
-	/** FILTER PANEL FUNCTIONS */
-
-	const _onChangeFilter = (filter) => {
-		// console.log('_onChangeFilter', filter);
-		setHasMore(true);
-		setFilter(filter);
-		filterPanelProps.onChangeFilter(filter);
-	};
-	const _onApplyFilter = (filter) => {
-		// console.log('_onApplyFilter', filter);
-		const loadParams = {
-			sortBy: _sortBy,
-			filter: filter,
-			searchLine: _searchValue,
-			reload: true,
-		};
-		_dataProcessing(loadParams);
-		filterPanelProps.onApplyFilter(filter);
-	};
+	// const _onSearch = (searchLine, e) => {
+	// 	e.preventDefault();
+	// 	// console.log("_onSearch", searchLine);
+	// 	tableRef.current.scrollToRow(0, 'auto');
+	// 	setSearchValue(searchLine);
+	// 	const loadParams = {
+	// 		sortBy: _sortBy,
+	// 		filter: _filter,
+	// 		searchLine: searchLine,
+	// 		reload: true,
+	// 	};
+	// 	_dataProcessing(loadParams);
+	// 	commandPanelProps.onSearch(searchLine);
+	// };
 
 	/** SELECTED PANEL */
 
@@ -832,50 +770,14 @@ const Table = forwardRef((props, ref) => {
 		const newSelectedKeys = _selectedRowKeys.filter(
 			(item) => item !== dropObject[rowKey]
 		);
-		setSelectedRowKeys(newSelectedKeys);
+		// setSelectedRowKeys(newSelectedKeys);
+		_setSelectedRowsHandler(newSelectedKeys, undefined, _rows);
+		setSelectAll((newSelectedKeys.length === 0 ? false : null));
 		onSelectedRowsChange(newSelectedKeys);
 	};
 
-	// const rowProps = {
-	//     // tagName: 'button',
-	//     // onClick: e => {
-	//     //     e.preventDefault();
-	//     //     e.stopPropagation();
-	//     //     console.log(`You clicked row onClick`)
-	//     // },
-	//     onDoubleClick: e => {
-	//         e.preventDefault();
-	//         e.stopPropagation();
-	//         console.log(`You clicked row onDoubleClick`)
-	//     }
-	// };
-
 	return (
-		<div
-			className={`${rtPrefix}-table`}
-			style={{width: '100%', height: '100%'}}
-		>
-			<div className={`${rtPrefix}-table-top-panel`}>
-				<CommandPanel
-					{...commandPanelProps}
-					defaultValueSearch={defaultSearchValue}
-					disabledElements={_getDisabledElementsOfCommandPanel()}
-					onClickAddAsCopy={_onClickAddAsCopy}
-					onClickDelete={_onClickDelete}
-					onClickDown={_onClickDown}
-					onClickEdit={_onClickEdit}
-					onClickUp={_onClickUp}
-					onSearch={_onSearch}
-				/>
-				{/*{!filter ? (*/}
-				<FilterPanel
-					{...filterPanelProps}
-					defaultFilter={defaultFilter}
-					onChangeFilter={_onChangeFilter}
-					onApplyFilter={_onApplyFilter}
-				/>
-				{/*) : null}*/}
-			</div>
+		<div className={`${rtPrefix}-table`}>
 			<div className={`${rtPrefix}-baseTable`}>
 				<AutoResizer>
 					{({width, height}) => (
@@ -905,9 +807,7 @@ const Table = forwardRef((props, ref) => {
 							estimatedRowHeight={estimatedRowHeight}
 							/** Load Data Props */
 							onEndReachedThreshold={loadThreshold}
-							onEndReached={
-								type === 'infinity' ? onEndReached : undefined
-							}
+							onEndReached={infinityMode ? onEndReached : undefined}
 							disabled={loading}
 							/** Tree Props */
 							expandColumnKey={expandColumnKey}
@@ -946,13 +846,8 @@ Table.propTypes = {
 	 * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
 	 * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
 	 * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
-	type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
-
-	/** Объект со свойствами Command Panel */
-	commandPanelProps: PropTypes.object,
-
-	/** Объект со свойствами Filter Panel */
-	filterPanelProps: PropTypes.object,
+	// type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+	infinityMode: PropTypes.bool,
 
 	/**
 	 * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
@@ -1013,11 +908,12 @@ Table.propTypes = {
 	 * BASE PROPS
 	 * */
 
-	/** Автоудаление строк из таблицы по кнопке в командной панели*/
-	autoDeleteRows: PropTypes.bool,
-
 	/** Поле для уникальной идентификации строки */
 	rowKey: PropTypes.string,
+
+
+	/** Дополнительные поля и валидация в объекты таблицы */
+	customFields: PropTypes.arrayOf(PropTypes.object),
 
 	/**
 	 * VIEW PROPS
@@ -1031,22 +927,6 @@ Table.propTypes = {
 
 	/** Фиксированная ширина столбцов. Появится боковой скрол */
 	fixWidthColumn: PropTypes.bool,
-
-	/** Высота подвала */
-	footerHeight: PropTypes.number,
-
-	/** Отображать ли подвал */
-	footerShow: PropTypes.bool,
-
-    /** Заголовки футтера */
-    footerTitles: PropTypes.shape({
-		/** Заголовок выделенных элементов */
-        selectedRows: PropTypes.string,
-		/** Заголовок загруженных элементов */
-        loadedRows: PropTypes.string,
-		/** Заголовок всего элементов */
-		totalRows: PropTypes.string,
-    }),
 
 	footerProps: PropTypes.shape({
 
@@ -1088,6 +968,9 @@ Table.propTypes = {
 
 	/** Строки будут в зебро-стиле */
 	zebraStyle: PropTypes.bool,
+
+	/** Высота расширения */
+	estimatedRowHeight: PropTypes.number,
 
 	/**
 	 * LOAD DATA PROPS
@@ -1177,7 +1060,7 @@ Table.propTypes = {
 	dispatchPath: PropTypes.string,
 
 	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes.object,
+	subscribe: PropTypes.arrayOf(PropTypes.object),
 };
 
 Table.defaultProps = {
@@ -1188,24 +1071,17 @@ Table.defaultProps = {
 	defaultSortBy: {},
 
 	rows: [],
+	setRows: noop,
 	selectedRowKeys: [],
 	searchValue: '',
 	filter: {},
 	sortBy: {},
 
-	autoDeleteRows: true,
 	rowKey: 'id',
 
 	empty: empty,
 	overlay: overlay,
 	fixWidthColumn: false,
-	footerHeight: 30,
-	footerShow: false,
-    footerTitles: {
-        selectedRows: 'Выделено:',
-        loadedRows: 'Загружено записей:',
-        totalRows: 'Всего записей:',
-    },
 	footerProps: {
 		height: 30,
 		showElements: [],
@@ -1219,6 +1095,7 @@ Table.defaultProps = {
 	headerHeight: 30,
 	rowHeight: 30,
 	zebraStyle: false,
+	estimatedRowHeight: undefined,
 
 	loadThreshold: 300,
 	pageSize: 50,
@@ -1242,44 +1119,25 @@ Table.defaultProps = {
 
 	showSelection: false,
 
-	subscribe: {},
+	dispatchPath: undefined,
+	subscribe: [],
 };
 
 const mapStateToProps = (store, ownProps) => {
 	const {subscribe} = ownProps;
-	if(subscribe){
-		const {name, path} = subscribe;
-		if(name && path)
-			return { [name]: objectPath.get(store, path) };
+	let state = {};
+	if(subscribe && subscribe.length > 0){
+		subscribe.forEach(item => {
+			const {name, path, extraData} = item;
+			if(name && path)
+				state[name] = objectPath.get(store, path);
+			if(name && extraData)
+				state[`${name}ExtraData`] = objectPath.get(store, extraData);
+		})
 	}
-
-	return {};
+	return state;
 };
 const mapDispatchToProps = (dispatch) =>
 	bindActionCreators({ setDateStore: setDateStore}, dispatch);
-
-// const mapStateToProps = (store, ownProps) => {
-//     // console.log("mapStateToProps -> store", store);
-//     // const {match , section} = ownProps;
-//     // const { path } = match;
-//     // const rows = store.table[path] && store.table[path][section] ? store.table[path][section].rows : [];
-//     // console.log("mapStateToProps -> rows", rows);
-//     return { store: store };
-// };
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//     // console.log("mapDispatchToProps -> ownProps", ownProps);
-//     // const {match , section} = ownProps;
-//     // const { path } = match;
-//     // initTableStore(path, section);
-//     return bindActionCreators(
-//         {
-//             initTableStore,
-//             setRows,
-//         },
-//         dispatch
-//     );
-// };
-//
-// export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);

@@ -24,7 +24,6 @@ const DateRange = (props) => {
 		dateFormat,
 		onChange,
         size,
-		title,
 		valueStart,
 		valueEnd,
 		showTime,
@@ -117,7 +116,6 @@ const DateRange = (props) => {
 	return (
 		<div className={`${className} ${rtPrefix}-date-range`}>
 			<div>
-                {title ? <div className={'title'}>{title}</div> : null}
 				<span className={'subtitleStart'}>c</span>
 				<DatePicker
 					locale={locale}
@@ -156,10 +154,10 @@ DateRange.propTypes = {
 	dateFormat: PropTypes.string,
 
 	/** Значение по умолчанию для первого пикера */
-	// defaultValueStart: PropTypes.string,
+	defaultValueStart: PropTypes.string,
 
 	/** Значение по умолчанию для второго пикера */
-	// defaultValueEnd: PropTypes.string,
+	defaultValueEnd: PropTypes.string,
 
     /** Дополнительное имя класса для элемента */
     className: PropTypes.string,
@@ -176,23 +174,21 @@ DateRange.propTypes = {
     /** Размер пикера ['small', 'middle', 'large'] */
     size: PropTypes.oneOf(['small', 'middle', 'large']),
 
-	/** Заголовок */
-	title: PropTypes.string,
-
 	/** Значение даты первого пикера (используется для управления датой из родительного компонента) */
-	// valueStart: PropTypes.string,
+	valueStart: PropTypes.string,
 
 	/** Значение даты второго пикера (используется для управления датой из родительного компонента) */
-	// valueEnd: PropTypes.string,
+	valueEnd: PropTypes.string,
 };
 
 DateRange.defaultProps = {
     className: '',
 	nameStart: 'dateStart',
 	nameEnd: 'dateEnd',
-	dateFormat: 'DD.MM.YYYY',
+	dateFormat: 'DD.MM.YYYY', // HH:mm:ss
 	onChange: noop,
     size: 'middle',
+	showTime: false,
     // title: 'Период',
 };
 

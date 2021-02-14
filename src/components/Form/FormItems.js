@@ -2,8 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import FormItem from "./FormItem";
 import Layout from "../Layout/Layout";
-import { Row, Col, Tabs, Radio, Form as AntForm, Input, Space } from "antd";
+import { Space, Row, Col, Tabs, Radio, Form as AntForm } from "antd";
 import { getObjectExcludedProps } from "../utils/baseUtils";
+import Switcher from "../Switcher/Switcher";
+import { withStore } from "./HOCs";
+import Select from "../Select/Select";
 
 const excludeProps = ["children", "componentType"];
 
@@ -19,6 +22,14 @@ const FormItems = (props) => {
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
+                case "Space":
+                    return (
+                        <Space key={index} {...itemProps}>
+                            {item.children &&
+                            item.children.length > 0 &&
+                            getItems(item.children, antFormListParams)}
+                        </Space>
+                    );
                 case "Row":
                     return (
                         <Row key={index} {...itemProps}>
@@ -59,13 +70,15 @@ const FormItems = (props) => {
                             getItems(item.children, antFormListParams)}
                         </Tabs.TabPane>
                     );
-                case "RadioGroup":
+                case 'Switcher':
+                    const Component = withStore(Switcher, antFormListParams);
+                    // return (<Component {...childProps} />);
                     return (
-                        <Radio.Group key={index} {...itemProps}>
+                        <Component key={index} {...itemProps}>
                             {item.children &&
                             item.children.length > 0 &&
                             getItems(item.children, antFormListParams)}
-                        </Radio.Group>
+                        </Component>
                     );
                 case "Item":
                     let _item = { ...item };

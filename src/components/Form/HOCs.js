@@ -3,32 +3,34 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
-import {getObjectExcludedProps} from '../utils/baseUtils';
+import { dispatchToStore, getObjectExcludedProps, useMounted } from "../utils/baseUtils";
 import moment from "moment";
 import { Typography as AntTypography } from "antd";
-import { getISO, toFormat } from "../..";
+import { getISO, toFormat } from "../utils/datesUtils";
 
 export const withStore = (Component, antFormItemProps) => {
 
     const mapStateToProps = (store, ownProps) => {
-        const {subscribe} = ownProps;
-        if(subscribe){
-            const {name, path} = subscribe;
-            if(name && path)
-                return { [name]: objectPath.get(store, path) };
+        const {subscribe, dispatch} = ownProps;
+        let state = {};
+        if(subscribe && subscribe.length > 0){
+            subscribe.forEach(item => {
+                const {name, path, extraData} = item;
+                if(name && path)
+                    state[name] = objectPath.get(store, path);
+                if(name && extraData)
+                    state[`${name}ExtraData`] = objectPath.get(store, extraData);
+            })
+        }
+        if(dispatch && dispatch.extraData) {
+            // console.log('subscribe to ', dispatch.extraData)
+            state.dispatchExtraData = objectPath.get(store, dispatch.extraData);
         }
 
-        return {};
+        return state;
     };
     const mapDispatchToProps = (dispatch) =>
         bindActionCreators({ setDateStore: setDateStore}, dispatch);
-
-    const defaultGetValueFromEvent = (valuePropName, event) => {
-        if (event && event.target && valuePropName in event.target) {
-            return event.target[valuePropName];
-        }
-        return event;
-    };
 
     const defaultProps = {
         trigger: 'onChange',
@@ -39,61 +41,83 @@ export const withStore = (Component, antFormItemProps) => {
 
     return connect(mapStateToProps, mapDispatchToProps)( (props) => {
 
-        const {dispatchPath} = props;
+        const {componentType, setDateStore, dispatchExtraData} = props;
 
-        const subscribe = props.subscribe ? props.subscribe : {};
+        // Объект подписки на стор
+        const subscribe = props.subscribe ? props.subscribe : [];
+
+        // Объект публикации в стор
+        const dispatch = props.dispatch ? props.dispatch : {};
 
         const [subscribeProps, setSubscribeProps] = useState({});
 
-        const {trigger, getValueFromEvent, valuePropName} = withStoreProps;
+        const {trigger, valuePropName} = withStoreProps;
 
-        const excludeProps = ['componentType', 'setDateStore', 'subscribe', subscribe.name, 'dispatchPath'];
+        const excludeProps = ['componentType', 'setDateStore', 'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData'];
 
-        const getValue = (...args) => {
-            let newValue;
-            if (getValueFromEvent) {
-                newValue = getValueFromEvent(...args);
-                // console.log("storeHOC => getValueFromEvent: ", newValue);
-            } else {
-                newValue = defaultGetValueFromEvent(valuePropName, ...args);
-                // console.log("storeHOC => defaultGetValueFromEvent: ", newValue);
-            }
-            return newValue;
-        };
+        const isMounted = useMounted()
 
         /** Подписка на изменение props[subscribe.name] в сторе */
-        useEffect( () => {
-            if(subscribe.name) {
-                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setSubscribeProps});
-            }
-            // console.log("Change Props[2]: ", props.subscribeЗф);
-        }, [props[subscribe.name]]);
+        subscribe.map(item => {
+            return useEffect( () => {
+                if(isMounted && item.name) {
+                    // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                    item.onChange && item.onChange({value: props[item.name], extraData: props[`${item.name}ExtraData`], setSubscribeProps});
+                }
+                // console.log("Change Props[2]: ", props.subscribeЗф);
+            }, [props[item.name]]);
+        })
 
+        /** Подписка на изменение props и отправка данных в стор */
         useEffect(() => {
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
-            if(dispatchPath) {
-                const newValue = props[valuePropName];
-                // console.log("storeHOC => dispatch: ", newValue);
-                dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
-            }
+            let _value = props[valuePropName];
+            if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
+                _value = undefined;
+
+            // console.log(`storeHOC [${withStoreProps.name}] => `, _value);
+            // console.log(`storeHOC => `, props);
+
+            if (componentType !== 'Button' && componentType !== 'Search')
+                dispatchToStore({ dispatch, setDateStore, value: _value });
         }, [props]);
 
+        /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
         useEffect(() => {
-            if(subscribeProps.value) {
+            if(subscribeProps && subscribeProps.value) {
                 // console.log('subscribeProps.value => ', subscribeProps.value);
                 props[trigger] && props[trigger](subscribeProps.value);
             }
         }, [subscribeProps.value]);
 
         const onChange = (...args) => {
+            // console.log('withStore [trigger] ', trigger)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+            if(componentType === 'Button')
+                dispatchToStore({dispatch, setDateStore, value: args[0], extraData: dispatchExtraData});
+            // else if(componentType === 'Search')
+            //     args[1].preventDefault();
+
             props[trigger] && props[trigger](...args);
         };
 
+        const _onSearch = (searchLine, e) => {
+            e.preventDefault();
+            // console.log("_onSearch", searchLine);
+            dispatchToStore({dispatch, setDateStore, value: searchLine, extraData: dispatchExtraData});
+        };
+
         const childProps = getObjectExcludedProps(props, excludeProps);
-        return <Component {...childProps} {...subscribeProps} {...{[trigger]: onChange }}/>
+        const onSearchProps = (componentType === 'Search') ? {onSearch: _onSearch} : {}
+        return (
+            <Component
+                {...childProps}
+                {...subscribeProps}
+                {...{[trigger]: onChange}}
+                {...onSearchProps}
+            />
+        )
     })
 };
 
@@ -111,7 +135,8 @@ export const DatePickerHOC = (Component) => {
             // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
             // }
         }
-        const value = props.value ? (typeof props.value === 'string' ? moment(props.value) : props.value) : null;
+        const value = props.value ? (typeof props.value === 'string' ? moment(props.value) : props.value) : undefined;
+        // console.log("DatePickerHOC value => ", value);
         return <Component {...props} value={value} />
     };
 };
@@ -124,6 +149,6 @@ export const TypographyText = (props) =>
 
 export const TypographyDate = (props) => {
     const {label, value, format } = props;
-    const _value = value ? (format ? toFormat(value, format) : getISO(value)) : null;
+    const _value = value ? (format ? toFormat(value, format) : getISO(value)) : undefined;
     return <AntTypography.Text {...props}> {label || _value} </AntTypography.Text>;
 }

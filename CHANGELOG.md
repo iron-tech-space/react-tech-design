@@ -1,3 +1,9 @@
+## 0.0.55
+
+- New `Table` component
+- New `Select` component
+- Full refactor code
+
 ## 0.0.54
 
 - Add export **notificationError**

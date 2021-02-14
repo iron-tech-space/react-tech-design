@@ -1,0 +1,127 @@
+.@{rt-prefix}-table {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex: auto;
+    &-top-panel{
+        outline: 1px solid @table-outline-color;
+    }
+
+    .@{rt-prefix}-baseTable {
+		flex: 1 1 auto;
+		//border: 1px solid #eee;
+		outline: 1px solid @table-outline-color;
+		//width: 100%;
+		//height: 100%;
+
+		.BaseTable {
+			color: #000;
+			box-shadow: none;
+
+			.BaseTable__table-main {
+				outline: none;
+			}
+
+			.BaseTable__header-row {
+				//background-color: #eff6f9;
+				background-color: @table-header-bg;
+				font-weight: 600;
+				color: @table-header-color;
+			}
+
+			.BaseTable__header-cell,
+			.BaseTable__row-cell {
+				//border-left: 1px solid #eee;
+				//white-space: nowrap;
+				//text-overflow: ellipsis;
+				.BaseTable__expand-icon {
+				    color: #8C99B2; //8C99B2
+                    margin-right: 10px;
+				}
+			}
+
+			.BaseTable__header-cell--sortable:hover {
+				//background-color: #cce2e3;
+				background-color: @table-header-sortable-hover;
+				cursor: pointer;
+			}
+
+			.BaseTable__row {
+				font-size: 12px;
+				//color: #6E7778;
+				&.odd {
+					background-color: @table-body-odd-bg;
+				}
+				&.even {
+					background-color: @table-body-even-bg;
+				}
+				&:hover {
+					background-color: @table-body-row-hover-color;
+				}
+			}
+
+			.BaseTable__row.row-selected {
+				//background-color: #e3e3e3;
+				background-color: @table-body-row-selected-bg;
+				color: @table-body-row-selected-color;
+			}
+
+			.BaseTable__footer,
+			.BaseTable__overlay {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				height: 100%;
+				font-size: 16px;
+			}
+			.BaseTable__footer {
+				border-top: 1px solid @table-outline-color;
+				span {
+					padding: 0 15px;
+				}
+			}
+
+			.BaseTable__overlay {
+				justify-content: center;
+
+				.ant-spin {
+					background: @table-overlay-bg;
+					color: @table-overlay-color;
+					border-radius: @table-overlay-border-radius;
+					padding: 5px 15px;
+				}
+			}
+		}
+	}
+
+    &-selected-rows {
+		width: 100%;
+		height: 150px;
+		overflow: auto;
+		outline: 1px solid @table-outline-color;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		ul {
+			list-style: none;
+			padding: 0;
+			margin-bottom: 0;
+			flex: 1 1 auto;
+			height: 100%;
+
+			li {
+				padding: 3px 10px;
+				margin: 0;
+				border-bottom: 1px solid #e8e8e8;
+				display: flex;
+
+				div:last-child {
+					margin-left: auto;
+					color: @table-selection-items-btn-del-color;
+				}
+			}
+		}
+	}
+}

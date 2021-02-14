@@ -5,7 +5,7 @@ import { Form as AntForm, notification } from "antd";
 import { getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
 import { rtPrefix } from "../utils/variables";
 
-const excludeProps = ["noPadding", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+const excludeProps = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 
 const Form = (props) => {
@@ -50,6 +50,7 @@ const Form = (props) => {
     const getBodyCls = () => {
         let cls = [`${rtPrefix}-form-body`];
         props.noPadding && cls.push(`${rtPrefix}-form-body-no-padding`);
+        props.scrollable && cls.push(`${rtPrefix}-form-body-scrollable`);
         return cls.join(" ");
     };
 
@@ -109,6 +110,9 @@ Form.propTypes = {
     /** Не делать отступы у формы от краев блока */
     noPadding: PropTypes.bool,
 
+    /** Разрешит скролл внтри формы */
+    scrollable: PropTypes.bool,
+
     /** Массив объектов для шапки формы. Как правило только заголовок. */
     header: PropTypes.arrayOf(PropTypes.object),
 
@@ -137,6 +141,7 @@ Form.propTypes = {
 
 Form.defaultProps = {
     noPadding: false,
+    scrollable: false,
     loadInitData: noop,
     autoSaveForm: true
 };

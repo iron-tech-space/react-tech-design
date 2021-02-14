@@ -4,19 +4,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import FormModal from "../Form/FormModal";
 import { notification, Button} from "antd";
-import { notificationError } from "../utils/baseUtils";
+import { notificationError, dispatchToStore } from "../utils/baseUtils";
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
 
 const Modal = props => {
 
-    const {buttonProps, modalConfig, modalData, dispatchPath} = props;
+    const {buttonProps, modalConfig, modalData} = props;
 
     const [visible, setVisible] = useState(false);
     const [_modalData, _setModalData] = useState({});
     const [_buttonProps, setButtonProps] = useState({});
 
+    // Объект подписки на стор
     const subscribe = props.subscribe ? props.subscribe : {};
+
+    // Объект публикации в стор
+    const dispatch = props.dispatch ? props.dispatch : {};
 
     const setModalData = (value) => {
         // console.log("setModalData: ", value);
@@ -46,7 +50,9 @@ const Modal = props => {
     }
 
     const _onSaveRow = ({type, row, requestSaveRow}) => {
-        dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, row);
+        // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, row);
+        // console.log("Modal Events => before dispatchToStore: ", dispatch);
+        dispatchToStore({dispatch, setDateStore: props.setDateStore, value: row});
 
         if (requestSaveRow
             && ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'].includes(type)
@@ -99,7 +105,7 @@ Modal.propTypes = {
     modalData: PropTypes.object,
 
     /** Путь в сторе куда класть данных окна после закрытия */
-    dispatchPath: PropTypes.string,
+    dispatch: PropTypes.object,
 
     /** Объект для подписки на изменения в STORE */
     subscribe: PropTypes.object,

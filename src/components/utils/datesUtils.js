@@ -10,11 +10,11 @@ export const getMomentFromStringByFormat = (date, format) =>
 export const getMomentWithOffset = (date) => moment(date).format();
 
 export const getMomentWithOffsetTruncateDay = (date) =>
-	getMomentWithOffset(date)
-		.hours(0)
-		.minutes(0)
-		.seconds(0)
-		.milliseconds(0)
+	moment(date).startOf('day')
+		// .hours(0)
+		// .minutes(0)
+		// .seconds(0)
+		// .milliseconds(0)
 		.format();
 
 

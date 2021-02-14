@@ -1,4 +1,6 @@
+import React from 'react';
 import {notification} from 'antd';
+import moment from "moment";
 
 export const noop = () => {};
 
@@ -78,7 +80,7 @@ export const getValueFromSelectTable = (rows) => {
 export const getObjectExcludedProps = (object, exclude) => {
     let returnObject = {};
     Object.keys(object).forEach((key) =>
-        !exclude.includes(key) ? (returnObject[key] = object[key]) : null
+        !exclude.includes(key) ? (returnObject[key] = object[key]) : undefined // было null
     );
     return returnObject;
 };
@@ -100,3 +102,27 @@ export const notificationError = (error, message) => {
 		});
 	}
 };
+
+export const dispatchToStore = ({dispatch, setDateStore, value, extraData}) => {
+	if(dispatch.path) {
+		// console.log("storeHOC => dispatchToStore");
+		if(dispatch.type === 'event')
+			setDateStore && setDateStore(dispatch.path,  {
+				timestamp: moment(),
+				// type: dispatch.type,
+				value: value,
+				extraData: extraData
+			});
+		else
+			setDateStore && setDateStore(dispatch.path, value);
+	}
+}
+
+export function useMounted() {
+	const [isMounted, setIsMounted] = React.useState(false)
+
+	React.useEffect(() => {
+		setIsMounted(true)
+	}, [])
+	return isMounted
+}

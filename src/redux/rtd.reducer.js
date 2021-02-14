@@ -15,7 +15,12 @@ const rtdReducer = (state = {}, action) => {
 
             let newState = {...state};
             objectPath.set(newState, path, row); // obj.a is now {}
-            // console.log("SET_ROWS newState: ", newState);
+
+            // console.group("Store");
+            // console.log("Store: ", newState);
+            // console.log("New Data: ", path, row);
+            // console.groupEnd();
+
             return newState;
         }
         default:

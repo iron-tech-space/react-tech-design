@@ -1,6 +1,6 @@
 {
 	"name": "rt-design",
-	"version": "0.0.54",
+	"version": "0.0.55",
 	"description": "React technical design library",
 	"author": "Iron tech space",
 	"license": "MIT",
@@ -31,16 +31,16 @@
 	"dependencies": {
 		"@ant-design/icons": "^4.3.0",
 		"@babel/runtime": "^7.12.5",
-		"antd": "^4.9.2",
+		"antd": "^4.10.2",
 		"moment": "^2.29.1",
 		"object-path": "^0.11.5",
 		"react-base-table": "^1.12.0",
-		"react-element-to-jsx-string": "^14.3.2"
+		"prop-types": "^15.7.2"
 	},
 	"peerDependencies": {
 		"@ant-design/icons": "^4.3.0",
 		"@babel/runtime": "^7.12.5",
-		"antd": "^4.9.2",
+		"antd": "^4.10.2",
 		"moment": "^2.29.1",
 		"object-path": "^0.11.5",
 		"react-base-table": "^1.12.0",

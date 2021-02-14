@@ -2,21 +2,22 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('antd/es/input/style');
-var _Input = require('antd/es/input');
-require('antd/es/tooltip/style');
-var _Tooltip = require('antd/es/tooltip');
-require('antd/es/button/style');
-var _Button = require('antd/es/button');
-require('antd/es/popconfirm/style');
-var _Popconfirm = require('antd/es/popconfirm');
-require('antd/es/modal/style');
-var _Modal = require('antd/es/modal');
+require('antd/es/typography/style');
+var _Typography = require('antd/es/typography');
 var React = require('react');
-var PropTypes = require('prop-types');
 require('antd/es/notification/style');
 var _notification = require('antd/es/notification');
+var moment = require('moment');
+var PropTypes = require('prop-types');
+var redux = require('redux');
+var reactRedux = require('react-redux');
+var BaseTable = require('react-base-table');
+require('antd/es/spin/style');
+var _Spin = require('antd/es/spin');
 var icons = require('@ant-design/icons');
+require('antd/es/checkbox/style');
+var _Checkbox = require('antd/es/checkbox');
+var objectPath = require('object-path');
 require('antd/es/form/style');
 var _Form = require('antd/es/form');
 require('antd/es/radio/style');
@@ -31,36 +32,40 @@ require('antd/es/switch/style');
 var _Switch = require('antd/es/switch');
 require('antd/es/input-number/style');
 var _InputNumber = require('antd/es/input-number');
+require('antd/es/input/style');
+var _Input = require('antd/es/input');
 require('antd/es/date-picker/style');
 var _DatePicker = require('antd/es/date-picker');
-require('antd/es/checkbox/style');
-var _Checkbox = require('antd/es/checkbox');
 require('antd/es/divider/style');
 var _Divider = require('antd/es/divider');
-require('antd/es/typography/style');
-var _Typography = require('antd/es/typography');
-var redux = require('redux');
-var reactRedux = require('react-redux');
+require('antd/es/button/style');
+var _Button = require('antd/es/button');
 var SortOrder = require('react-base-table/lib/SortOrder');
-var BaseTable = require('react-base-table');
-require('antd/es/spin/style');
-var _Spin = require('antd/es/spin');
-var moment = require('moment');
+require('antd/es/tooltip/style');
+var _Tooltip = require('antd/es/tooltip');
+require('antd/es/popconfirm/style');
+var _Popconfirm = require('antd/es/popconfirm');
+require('antd/es/modal/style');
+var _Modal = require('antd/es/modal');
 var locale = require('antd/es/date-picker/locale/ru_RU');
-var objectPath = require('object-path');
 require('antd/es/upload/style');
 var _Upload = require('antd/es/upload');
+require('antd/es/space/style');
+var _Space = require('antd/es/space');
+require('antd/es/select/style');
+var _Select = require('antd/es/select');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var _Input__default = /*#__PURE__*/_interopDefaultLegacy(_Input);
-var _Tooltip__default = /*#__PURE__*/_interopDefaultLegacy(_Tooltip);
-var _Button__default = /*#__PURE__*/_interopDefaultLegacy(_Button);
-var _Popconfirm__default = /*#__PURE__*/_interopDefaultLegacy(_Popconfirm);
-var _Modal__default = /*#__PURE__*/_interopDefaultLegacy(_Modal);
+var _Typography__default = /*#__PURE__*/_interopDefaultLegacy(_Typography);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var _notification__default = /*#__PURE__*/_interopDefaultLegacy(_notification);
+var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
+var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
+var BaseTable__default = /*#__PURE__*/_interopDefaultLegacy(BaseTable);
+var _Spin__default = /*#__PURE__*/_interopDefaultLegacy(_Spin);
+var _Checkbox__default = /*#__PURE__*/_interopDefaultLegacy(_Checkbox);
+var objectPath__default = /*#__PURE__*/_interopDefaultLegacy(objectPath);
 var _Form__default = /*#__PURE__*/_interopDefaultLegacy(_Form);
 var _Radio__default = /*#__PURE__*/_interopDefaultLegacy(_Radio);
 var _Tabs__default = /*#__PURE__*/_interopDefaultLegacy(_Tabs);
@@ -68,166 +73,18 @@ var _Col__default = /*#__PURE__*/_interopDefaultLegacy(_Col);
 var _Row__default = /*#__PURE__*/_interopDefaultLegacy(_Row);
 var _Switch__default = /*#__PURE__*/_interopDefaultLegacy(_Switch);
 var _InputNumber__default = /*#__PURE__*/_interopDefaultLegacy(_InputNumber);
+var _Input__default = /*#__PURE__*/_interopDefaultLegacy(_Input);
 var _DatePicker__default = /*#__PURE__*/_interopDefaultLegacy(_DatePicker);
-var _Checkbox__default = /*#__PURE__*/_interopDefaultLegacy(_Checkbox);
 var _Divider__default = /*#__PURE__*/_interopDefaultLegacy(_Divider);
-var _Typography__default = /*#__PURE__*/_interopDefaultLegacy(_Typography);
+var _Button__default = /*#__PURE__*/_interopDefaultLegacy(_Button);
 var SortOrder__default = /*#__PURE__*/_interopDefaultLegacy(SortOrder);
-var BaseTable__default = /*#__PURE__*/_interopDefaultLegacy(BaseTable);
-var _Spin__default = /*#__PURE__*/_interopDefaultLegacy(_Spin);
-var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
+var _Tooltip__default = /*#__PURE__*/_interopDefaultLegacy(_Tooltip);
+var _Popconfirm__default = /*#__PURE__*/_interopDefaultLegacy(_Popconfirm);
+var _Modal__default = /*#__PURE__*/_interopDefaultLegacy(_Modal);
 var locale__default = /*#__PURE__*/_interopDefaultLegacy(locale);
-var objectPath__default = /*#__PURE__*/_interopDefaultLegacy(objectPath);
 var _Upload__default = /*#__PURE__*/_interopDefaultLegacy(_Upload);
-
-var noop = function noop() {};
-
-var flatten = function flatten(arrayOfArrays) {
-	return arrayOfArrays.reduce(function (flattened, item) {
-		return flattened.concat(Array.isArray(item) ? flatten(item) : [item]);
-	}, []);
-};
-
-var getTableRowObjects = function getTableRowObjects(data) {
-	var rowKeys = data.map(function (item) {
-		if (item.children && item.children.length) {
-			return [item, getTableRowObjects(item.children)];
-		}
-		return item;
-	});
-	return rowKeys;
-};
-
-var getTableRowKeys = function getTableRowKeys(data, rowKey) {
-	var rowKeys = data.map(function (item) {
-		if (item.children && item.children.length) {
-			return [item[rowKey], getTableRowKeys(item.children, rowKey)];
-		}
-		return item[rowKey];
-	});
-	return rowKeys;
-};
-
-var findNodeByRowKey = function findNodeByRowKey(data, rowKey, rowValue) {
-	var node = {};
-	var item = {};
-	for (var i = 0; i < data.length; i++) {
-		item = _findNodeByRowKey(data[i], rowKey, rowValue);
-		if (item !== false) return item;
-	}
-	return node;
-};
-
-var _findNodeByRowKey = function _findNodeByRowKey(currentNode, rowKey, value) {
-	var i = void 0,
-	    currentChild = void 0,
-	    result = void 0;
-
-	if (value === currentNode[rowKey]) {
-		return currentNode;
-	} else {
-		if (currentNode.children) {
-			for (i = 0; i < currentNode.children.length; i += 1) {
-				currentChild = currentNode.children[i];
-				result = _findNodeByRowKey(currentChild, rowKey, value);
-				if (result !== false) return result;
-			}
-		}
-		return false;
-	}
-};
-
-var generateUUID = function generateUUID() {
-	return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-		return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-	});
-};
-
-var getValueFromSingleSelect = function getValueFromSingleSelect(name, keys) {
-	return keys && keys.length > 0 ? keys[0] : null;
-};
-
-var getValueFromMultiSelect = function getValueFromMultiSelect(name, keys) {
-	return keys && keys.length > 0 ? keys : null;
-};
-
-var getObjectExcludedProps = function getObjectExcludedProps(object, exclude) {
-	var returnObject = {};
-	Object.keys(object).forEach(function (key) {
-		return !exclude.includes(key) ? returnObject[key] = object[key] : null;
-	});
-	return returnObject;
-};
-
-var notificationError = function notificationError(error, message) {
-	if (error.response) {
-		console.error(error.response.status, error.response.data);
-		var errorDescription = error.response.data && error.response.data.error ? error.response.data.error : "Нет описания ошибки";
-		_notification__default['default'].error({
-			message: '[' + error.response.status + '] ' + message,
-			description: errorDescription
-		});
-	} else {
-		console.error(error);
-		_notification__default['default'].error({
-			message: 'Не удалось детектировать ошибку. См. console.error'
-		});
-	}
-};
-
-var rtPrefix = 'rt';
-
-var empty = React__default['default'].createElement(
-	'div',
-	{ className: 'BaseTable__overlay' },
-	' ',
-	React__default['default'].createElement(
-		'span',
-		null,
-		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
-	),
-	' '
-);
-
-var overlay = React__default['default'].createElement(
-	'div',
-	{ className: 'BaseTable__overlay' },
-	' ',
-	React__default['default'].createElement(_Spin__default['default'], {
-		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
-		indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
-	}),
-	' '
-);
-
-var SelectionHead = function SelectionHead(props) {
-	var column = props.column,
-	    container = props.container;
-	var rowKey = column.rowKey,
-	    onSelectAll = column.onSelectAll,
-	    selectedRowKeys = column.selectedRowKeys,
-	    selectAll = column.selectAll;
-
-
-	var _handleChange = function _handleChange(e) {
-		var rowKeys = flatten(getTableRowKeys(container.props.data, column.rowKey));
-		var rowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
-			return rowKeys.includes(item[rowKey]);
-		});
-		var totalLength = rowKeys.length;
-		var selectLength = selectedRowKeys.length;
-		var checked = !(totalLength === selectLength);
-
-		// const newRowKeys = container.props.data.map((item) => { return item[column.rowKey] });
-		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
-	};
-
-	return React__default['default'].createElement(_Checkbox__default['default'], {
-		indeterminate: selectAll === null,
-		onChange: _handleChange,
-		checked: selectAll
-	});
-};
+var _Space__default = /*#__PURE__*/_interopDefaultLegacy(_Space);
+var _Select__default = /*#__PURE__*/_interopDefaultLegacy(_Select);
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -339,6 +196,183 @@ var toConsumableArray = function (arr) {
   } else {
     return Array.from(arr);
   }
+};
+
+var noop = function noop() {};
+
+var flatten = function flatten(arrayOfArrays) {
+	return arrayOfArrays.reduce(function (flattened, item) {
+		return flattened.concat(Array.isArray(item) ? flatten(item) : [item]);
+	}, []);
+};
+
+var getTableRowObjects = function getTableRowObjects(data) {
+	var rowKeys = data.map(function (item) {
+		if (item.children && item.children.length) {
+			return [item, getTableRowObjects(item.children)];
+		}
+		return item;
+	});
+	return rowKeys;
+};
+
+var getTableRowKeys = function getTableRowKeys(data, rowKey) {
+	var rowKeys = data.map(function (item) {
+		if (item.children && item.children.length) {
+			return [item[rowKey], getTableRowKeys(item.children, rowKey)];
+		}
+		return item[rowKey];
+	});
+	return rowKeys;
+};
+
+var findNodeByRowKey = function findNodeByRowKey(data, rowKey, rowValue) {
+	var node = {};
+	var item = {};
+	for (var i = 0; i < data.length; i++) {
+		item = _findNodeByRowKey(data[i], rowKey, rowValue);
+		if (item !== false) return item;
+	}
+	return node;
+};
+
+var _findNodeByRowKey = function _findNodeByRowKey(currentNode, rowKey, value) {
+	var i = void 0,
+	    currentChild = void 0,
+	    result = void 0;
+
+	if (value === currentNode[rowKey]) {
+		return currentNode;
+	} else {
+		if (currentNode.children) {
+			for (i = 0; i < currentNode.children.length; i += 1) {
+				currentChild = currentNode.children[i];
+				result = _findNodeByRowKey(currentChild, rowKey, value);
+				if (result !== false) return result;
+			}
+		}
+		return false;
+	}
+};
+
+var generateUUID = function generateUUID() {
+	return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+		return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+	});
+};
+
+var getValueFromSingleSelect = function getValueFromSingleSelect(name, keys) {
+	return keys && keys.length > 0 ? keys[0] : null;
+};
+
+var getValueFromMultiSelect = function getValueFromMultiSelect(name, keys) {
+	return keys && keys.length > 0 ? keys : null;
+};
+
+var getObjectExcludedProps = function getObjectExcludedProps(object, exclude) {
+	var returnObject = {};
+	Object.keys(object).forEach(function (key) {
+		return !exclude.includes(key) ? returnObject[key] = object[key] : undefined;
+	} // было null
+	);
+	return returnObject;
+};
+
+var notificationError = function notificationError(error, message) {
+	if (error.response) {
+		console.error(error.response.status, error.response.data);
+		var errorDescription = error.response.data && error.response.data.error ? error.response.data.error : "Нет описания ошибки";
+		_notification__default['default'].error({
+			message: '[' + error.response.status + '] ' + message,
+			description: errorDescription
+		});
+	} else {
+		console.error(error);
+		_notification__default['default'].error({
+			message: 'Не удалось детектировать ошибку. См. console.error'
+		});
+	}
+};
+
+var dispatchToStore = function dispatchToStore(_ref) {
+	var dispatch = _ref.dispatch,
+	    setDateStore = _ref.setDateStore,
+	    value = _ref.value,
+	    extraData = _ref.extraData;
+
+	if (dispatch.path) {
+		// console.log("storeHOC => dispatchToStore");
+		if (dispatch.type === 'event') setDateStore && setDateStore(dispatch.path, {
+			timestamp: moment__default['default'](),
+			// type: dispatch.type,
+			value: value,
+			extraData: extraData
+		});else setDateStore && setDateStore(dispatch.path, value);
+	}
+};
+
+function useMounted() {
+	var _React$useState = React__default['default'].useState(false),
+	    _React$useState2 = slicedToArray(_React$useState, 2),
+	    isMounted = _React$useState2[0],
+	    setIsMounted = _React$useState2[1];
+
+	React__default['default'].useEffect(function () {
+		setIsMounted(true);
+	}, []);
+	return isMounted;
+}
+
+var empty = React__default['default'].createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React__default['default'].createElement(
+		'span',
+		null,
+		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
+	),
+	' '
+);
+
+var overlay = React__default['default'].createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React__default['default'].createElement(_Spin__default['default'], {
+		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
+		indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
+	}),
+	' '
+);
+
+var SelectionHead = function SelectionHead(props) {
+	var column = props.column,
+	    container = props.container;
+	var rowKey = column.rowKey,
+	    onSelectAll = column.onSelectAll,
+	    selectedRowKeys = column.selectedRowKeys,
+	    selectAll = column.selectAll;
+
+
+	var _handleChange = function _handleChange(e) {
+		var rowKeys = flatten(getTableRowKeys(container.props.data, column.rowKey));
+		var rowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
+			return rowKeys.includes(item[rowKey]);
+		});
+		var totalLength = rowKeys.length;
+		var selectLength = selectedRowKeys.length;
+		var checked = !(totalLength === selectLength);
+
+		// const newRowKeys = container.props.data.map((item) => { return item[column.rowKey] });
+		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
+	};
+
+	return React__default['default'].createElement(_Checkbox__default['default'], {
+		indeterminate: selectAll === null,
+		onChange: _handleChange,
+		checked: selectAll
+	});
 };
 
 var getRowChildren = function getRowChildren(data, rowKey) {
@@ -552,6 +586,631 @@ var SelectionCell = function SelectionCell(props) {
 	});
 };
 
+var rtPrefix = 'rt';
+
+var SelectionList = function SelectionList(props) {
+	var selectedRowObjects = props.selectedRowObjects,
+	    rowRender = props.rowRender,
+	    onClickDropSelect = props.onClickDropSelect;
+
+	// console.log("SelectionList typeof -> ", typeof(rowRender));
+
+	return React__default['default'].createElement(
+		'div',
+		{ className: rtPrefix + '-table-selected-rows' },
+		selectedRowObjects && selectedRowObjects.length > 0 ? React__default['default'].createElement(
+			'ul',
+			null,
+			selectedRowObjects.map(function (item, index) {
+				return React__default['default'].createElement(
+					'li',
+					{ key: index },
+					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React__default['default'].createElement(
+						'div',
+						null,
+						item[rowRender]
+					),
+					React__default['default'].createElement(
+						'div',
+						{ onClick: function onClick() {
+								return onClickDropSelect(item);
+							} },
+						React__default['default'].createElement(icons.CloseCircleOutlined, null)
+					)
+				);
+			})
+		) : React__default['default'].createElement(
+			'div',
+			null,
+			'\u041D\u0435\u0442 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439'
+		)
+	);
+};
+
+SelectionList.propTypes = {
+	/** Строка или функция для отображения элементов списка
+  * Строка - имя поля
+  * Функция - рендер строк. Параметры v
+  * { rowData, rowIndex }) */
+	rowRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+
+	/** Список выделенных объектов */
+	selectedRowObjects: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+
+	/** Событие удаления элемента */
+	onClickDropSelect: PropTypes__default['default'].func.isRequired
+};
+
+SelectionList.defaultProps = {};
+
+var types = {
+    INIT_STORE: 'INIT_STORE',
+    SET_DATA_STORE: 'SET_DATA_STORE'
+};
+
+var setDateStore = function setDateStore(path, row) {
+    return {
+        type: types.SET_DATA_STORE,
+        payload: { path: path, row: row }
+    };
+};
+
+var empty$1 = React__default['default'].createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React__default['default'].createElement(
+		'span',
+		null,
+		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
+	),
+	' '
+);
+
+var overlay$1 = React__default['default'].createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React__default['default'].createElement(_Spin__default['default'], {
+		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
+		indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
+	}),
+	' '
+);
+
+var SelectionHead$1 = function SelectionHead(props) {
+	var column = props.column,
+	    container = props.container;
+	var rowKey = column.rowKey,
+	    onSelectAll = column.onSelectAll,
+	    selectedRowKeys = column.selectedRowKeys,
+	    selectAll = column.selectAll;
+
+
+	var _handleChange = function _handleChange(e) {
+		var rowKeys = flatten(getTableRowKeys(container.props.data, column.rowKey));
+		var rowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
+			return rowKeys.includes(item[rowKey]);
+		});
+		var totalLength = rowKeys.length;
+		var selectLength = selectedRowKeys.length;
+		var checked = !(totalLength === selectLength);
+
+		// const newRowKeys = container.props.data.map((item) => { return item[column.rowKey] });
+		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
+	};
+
+	return React__default['default'].createElement(_Checkbox__default['default'], {
+		indeterminate: selectAll === null,
+		onChange: _handleChange,
+		checked: selectAll
+	});
+};
+
+var getRowChildren$1 = function getRowChildren(data, rowKey) {
+	return data.map(function (item) {
+		if (item.children && item.children.length) {
+			return [item[rowKey], getRowChildren(item.children, rowKey)];
+		}
+		return item[rowKey];
+	});
+};
+
+var findBrothers$1 = function findBrothers(data, selfItem, rowKey, parentKey) {
+	var rowKeys = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+	var arr = [];
+	data.forEach(function (item) {
+		if (item[parentKey] && item[parentKey] === selfItem[parentKey] && item[rowKey] !== selfItem[rowKey]) {
+			if (rowKeys !== null) {
+				if (rowKeys.includes(item[rowKey])) {
+					arr.push(item[rowKey]);
+				}
+			} else {
+				arr.push(item[rowKey]);
+			}
+		} else if (item.children && item.children.length) {
+			arr.push(findBrothers(item.children, selfItem, rowKey, parentKey, rowKeys));
+		}
+	});
+	return arr;
+};
+
+var parentAnalysis$1 = function parentAnalysis(_ref) {
+	var rowData = _ref.rowData,
+	    rowKey = _ref.rowKey,
+	    parentKey = _ref.parentKey,
+	    checked = _ref.checked,
+	    nodeAssociated = _ref.nodeAssociated,
+	    treeData = _ref.treeData,
+	    selectedRowKeys = _ref.selectedRowKeys,
+	    indeterminateRowKeys = _ref.indeterminateRowKeys;
+
+	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
+	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
+
+	var currentRowData = rowData;
+	var parentExist = !!currentRowData[parentKey];
+	var lastTypeSelect = checked ? 'checked' : 'square';
+	var typeSelect = '';
+	var nextSquare = false;
+
+	/** Пока есть родитель */
+	while (parentExist && nodeAssociated) {
+		var indeterminateBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
+		var selectedBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
+		var allBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey));
+
+		if (checked) {
+			if (lastTypeSelect === 'checked' && selectedBrothers.length === allBrothers.length) typeSelect = 'checked';else typeSelect = 'square';
+		} else {
+			if (!checked && !nextSquare && (selectedBrothers.length || indeterminateBrothers.length)) nextSquare = true;
+			if (nextSquare) typeSelect = 'square';else typeSelect = 'none';
+		}
+
+		// console.log("allBrothers ", allBrothers);
+		// console.log("findParentById ", treeData,
+		//     rowKey,
+		//     parentKey,
+		//     currentRowData[parentKey]);
+		//
+		// console.log("findNodeByRowKey ", findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]));
+
+		// Найти родителя
+		currentRowData = findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]);
+
+		if (typeSelect === 'checked') {
+			// Выделить галкой
+			// console.log("checked");
+			lastTypeSelect = 'checked';
+			if (!_selectedRowKeys.includes(currentRowData[rowKey])) _selectedRowKeys.push(currentRowData[rowKey]);
+			var index = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
+			if (index > -1) _indeterminateRowKeys.splice(index, 1);
+		} else if (typeSelect === 'square') {
+			// Выдлеить квадратом
+			// console.log("square: ");
+			lastTypeSelect = 'square';
+			if (!_indeterminateRowKeys.includes(currentRowData[rowKey])) _indeterminateRowKeys.push(currentRowData[rowKey]);
+			var _index = _selectedRowKeys.indexOf(currentRowData[rowKey]);
+			if (_index > -1) _selectedRowKeys.splice(_index, 1);
+		} else if (typeSelect === 'none') {
+			// Снять выделение
+			// console.log("none: ");
+			lastTypeSelect = 'none';
+			var indexS = _selectedRowKeys.indexOf(currentRowData[rowKey]);
+			if (indexS > -1) _selectedRowKeys.splice(indexS, 1);
+			var indexI = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
+			if (indexI > -1) _indeterminateRowKeys.splice(indexI, 1);
+		}
+
+		parentExist = !!currentRowData[parentKey];
+		// parentExist = проверка наличия след родителя
+	}
+
+	return [_selectedRowKeys, _indeterminateRowKeys];
+};
+
+var SelectionCell$1 = function SelectionCell(props) {
+	var _handleChange = function _handleChange(checked) {
+		var rowData = props.rowData,
+		    rowIndex = props.rowIndex,
+		    column = props.column,
+		    container = props.container;
+		var onChange = column.onChange,
+		    selectedRowKeys = column.selectedRowKeys,
+		    indeterminateRowKeys = column.indeterminateRowKeys,
+		    rowKey = column.rowKey,
+		    parentKey = column.parentKey,
+		    nodeAssociated = column.nodeAssociated;
+
+		// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
+		// const totalLength = container.props.data.length;
+		// const checked = e.target.checked;
+		// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
+		// console.log("_handleChange: ", selectedRowKeys);
+
+		var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
+		var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
+
+		/** Обработка себя, поиск детей, выделение / снятие их */
+		var rowChildren = [];
+		if (checked) {
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
+
+			_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
+			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+				return element !== rowData[rowKey] && !rowChildren.includes(element);
+			});
+		} else {
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
+
+			_selectedRowKeys = _selectedRowKeys.filter(function (element) {
+				return element !== rowData[rowKey] && !rowChildren.includes(element);
+			});
+			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+				return element !== rowData[rowKey] && !rowChildren.includes(element);
+			});
+		}
+
+		var _parentAnalysis = parentAnalysis$1({
+			rowData: rowData,
+			rowKey: rowKey,
+			parentKey: parentKey,
+			checked: checked,
+			nodeAssociated: nodeAssociated,
+			treeData: container.props.data,
+			selectedRowKeys: _selectedRowKeys,
+			indeterminateRowKeys: _indeterminateRowKeys
+		});
+
+		var _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+
+		_selectedRowKeys = _parentAnalysis2[0];
+		_indeterminateRowKeys = _parentAnalysis2[1];
+
+
+		var keys = [].concat(toConsumableArray(new Set(_selectedRowKeys)));
+		var _selectedRowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
+			return keys.includes(item[rowKey]);
+		});
+		//return [...new Set(_disabledElements)]
+		// onChange({ selected: checked, totalLength, rowData, rowIndex });
+
+		/** Выясняем новое состояние галочки "Выделить все" */
+		var selectAll = void 0;
+		var selectLength = _selectedRowKeys.length;
+		var totalLength = flatten(getTableRowKeys(container.props.data, column.rowKey)).length;
+
+		if (selectLength === 0) selectAll = false;else if (totalLength === selectLength) selectAll = true;else if (totalLength !== selectLength) selectAll = null;
+
+		onChange({
+			selected: checked,
+			_selectedRow: {
+				rowData: _extends({}, rowData),
+				rowIndex: rowIndex,
+				rowKey: rowKey
+			},
+			_selectAll: selectAll,
+			_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
+			_selectedRowObjects: _selectedRowObjects,
+			_indeterminateRowKeys: [].concat(toConsumableArray(new Set(_indeterminateRowKeys)))
+		});
+
+		// let uniqIds = {};
+		// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
+	};
+
+	var rowData = props.rowData,
+	    column = props.column;
+	var selectedRowKeys = column.selectedRowKeys,
+	    indeterminateRowKeys = column.indeterminateRowKeys,
+	    rowKey = column.rowKey;
+
+	var det = indeterminateRowKeys.includes(rowData[rowKey]);
+	var checked = selectedRowKeys.includes(rowData[rowKey]);
+
+	return React__default['default'].createElement(_Checkbox__default['default'], {
+		indeterminate: det,
+		onChange: function onChange(e) {
+			return _handleChange(e.target.checked);
+		},
+		checked: checked
+	});
+};
+
+var confirm = _Modal__default['default'].confirm;
+
+
+var CommandPanel = function CommandPanel(props) {
+	var borderStyle = props.borderStyle,
+	    defaultValueSearch = props.defaultValueSearch,
+	    deleteConfirm = props.deleteConfirm,
+	    deleteConfirmType = props.deleteConfirmType,
+	    deleteConfirmTitle = props.deleteConfirmTitle,
+	    deleteConfirmDescription = props.deleteConfirmDescription,
+	    onClickAdd = props.onClickAdd,
+	    onClickAddAsCopy = props.onClickAddAsCopy,
+	    onClickAddGroup = props.onClickAddGroup,
+	    onClickDelete = props.onClickDelete,
+	    onClickEdit = props.onClickEdit,
+	    onClickUp = props.onClickUp,
+	    onClickDown = props.onClickDown,
+	    onSearch = props.onSearch,
+	    showElements = props.showElements,
+	    systemBtnProps = props.systemBtnProps,
+	    disabledElements = props.disabledElements,
+	    leftCustomSideElement = props.leftCustomSideElement,
+	    centerCustomSideElement = props.centerCustomSideElement,
+	    rightCustomSideElement = props.rightCustomSideElement;
+
+
+	var defaultSystemBtnProps = {
+		add: {
+			tooltip: 'Добавить',
+			onClick: onClickAdd,
+			icon: React__default['default'].createElement(icons.PlusOutlined, null)
+		},
+		addAsCopy: {
+			tooltip: 'Добавить копированием',
+			onClick: onClickAddAsCopy,
+			icon: React__default['default'].createElement(icons.CopyOutlined, null)
+		},
+		addGroup: {
+			tooltip: 'Добавить группу',
+			onClick: onClickAddGroup,
+			icon: React__default['default'].createElement(icons.FolderAddOutlined, null)
+		},
+		edit: {
+			tooltip: 'Изменить',
+			onClick: onClickEdit,
+			icon: React__default['default'].createElement(icons.EditOutlined, null)
+		},
+		delete: {
+			tooltip: 'Удалить',
+			icon: React__default['default'].createElement(icons.DeleteOutlined, null)
+		},
+		up: {
+			tooltip: 'Переместить вверх',
+			onClick: onClickUp,
+			icon: React__default['default'].createElement(icons.ArrowUpOutlined, null)
+		},
+		down: {
+			tooltip: 'Переместить вниз',
+			onClick: onClickDown,
+			icon: React__default['default'].createElement(icons.ArrowDownOutlined, null)
+		},
+		search: {
+			placeholder: 'Поиск',
+			onSearch: onSearch
+		},
+		settings: {
+			tooltip: 'Настройки таблицы',
+			tooltipPlacement: 'topRight',
+			onClick: function onClick() {},
+			icon: React__default['default'].createElement(icons.SettingOutlined, null)
+		},
+		filter: {
+			tooltip: 'Настройки фильтров',
+			tooltipPlacement: 'topRight',
+			onClick: function onClick() {},
+			icon: React__default['default'].createElement(icons.FilterOutlined, null)
+		}
+	};
+
+	var _onClickDelete = function _onClickDelete(event) {
+		if (deleteConfirmType === 'Modal') {
+			deleteButtonModalConfirm();
+		} else {
+			onClickDelete(event);
+		}
+	};
+
+	var deleteButtonPopupConfirm = function deleteButtonPopupConfirm() {
+		return React__default['default'].createElement(
+			_Popconfirm__default['default'],
+			{
+				placement: 'top',
+				title: deleteConfirmDescription,
+				onConfirm: onClickDelete,
+				okText: '\u0414\u0430',
+				cancelText: '\u041D\u0435\u0442'
+			},
+			renderDeleteBtn(false)
+		);
+	};
+
+	var deleteButtonModalConfirm = function deleteButtonModalConfirm() {
+		confirm({
+			title: deleteConfirmTitle,
+			icon: React__default['default'].createElement(icons.ExclamationCircleOutlined, null),
+			content: deleteConfirmDescription,
+			centered: true,
+			okText: 'Ок',
+			cancelText: 'Отмена',
+			onOk: function onOk() {
+				onClickDelete();
+			}
+		});
+	};
+
+	var renderDeleteBtn = function renderDeleteBtn(withOnClick) {
+		var genProps = _extends({}, defaultSystemBtnProps['all'], systemBtnProps['all']);
+		var btnProps = _extends({}, defaultSystemBtnProps['delete'], systemBtnProps['delete']);
+
+		return React__default['default'].createElement(
+			_Tooltip__default['default'],
+			{ title: btnProps.tooltip },
+			React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
+				className: rtPrefix + '-btn',
+				icon: btnProps.icon,
+				onClick: withOnClick ? _onClickDelete : null,
+				disabled: disabledElements.includes('delete')
+			}))
+		);
+	};
+
+	var renderBtn = function renderBtn(type) {
+		var genProps = _extends({}, defaultSystemBtnProps['all'], systemBtnProps['all']);
+		var btnProps = _extends({}, defaultSystemBtnProps[type], systemBtnProps[type]);
+
+		if (showElements.includes(type)) {
+			if (btnProps.render) return btnProps.render({
+				disabled: disabledElements.includes(type),
+				onClick: btnProps.onClick,
+				onSearch: btnProps.onSearch
+			});else if (type === 'search') return React__default['default'].createElement(_Input__default['default'].Search, {
+				disabled: disabledElements.includes(type),
+				defaultValue: defaultValueSearch,
+				placeholder: btnProps.placeholder,
+				onSearch: btnProps.onSearch,
+				className: 'search'
+			});else return React__default['default'].createElement(
+				_Tooltip__default['default'],
+				{ title: btnProps.tooltip, placement: btnProps.tooltipPlacement ? btnProps.tooltipPlacement : 'top' },
+				React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
+					className: rtPrefix + '-btn',
+					icon: btnProps.icon,
+					onClick: btnProps.onClick,
+					disabled: disabledElements.includes(type)
+				}))
+			);
+		} else return null;
+	};
+
+	return React__default['default'].createElement(
+		React__default['default'].Fragment,
+		null,
+		showElements.length || leftCustomSideElement || centerCustomSideElement || rightCustomSideElement ? React__default['default'].createElement(
+			'div',
+			{
+				className: rtPrefix + '-command-panel border-' + borderStyle
+			},
+			React__default['default'].createElement(
+				'div',
+				{ className: 'left-system-side' },
+				renderBtn('add'),
+				renderBtn('addAsCopy'),
+				renderBtn('addGroup'),
+				renderBtn('edit'),
+				showElements.includes('delete') ? deleteConfirm ? deleteConfirmType === 'Popup' ? deleteButtonPopupConfirm() : renderDeleteBtn(true) : renderDeleteBtn(true) : null,
+				renderBtn('up'),
+				renderBtn('down')
+			),
+			React__default['default'].createElement(
+				'div',
+				{ className: 'left-custom-side' },
+				leftCustomSideElement ? React__default['default'].createElement(FormItems, { items: leftCustomSideElement }) : null
+			),
+			React__default['default'].createElement(
+				'div',
+				{ className: 'center-custom-side' },
+				centerCustomSideElement ? React__default['default'].createElement(FormItems, { items: centerCustomSideElement }) : null
+			),
+			React__default['default'].createElement(
+				'div',
+				{ className: 'right-custom-side' },
+				rightCustomSideElement ? React__default['default'].createElement(FormItems, { items: rightCustomSideElement }) : null
+			),
+			React__default['default'].createElement(
+				'div',
+				{ className: 'right-system-side' },
+				renderBtn('search'),
+				renderBtn('settings'),
+				renderBtn('filter')
+			)
+		) : null
+	);
+};
+
+CommandPanel.propTypes = {
+	/** Центральный кастомный элемент командной панели */
+	centerCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object), // PropTypes.element,
+
+	/** Тип бордера панели (по умолчанию 'bottom')
+  * ['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right'] */
+	borderStyle: PropTypes__default['default'].oneOf(['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right']),
+
+	/** Значение по умолчанию для строки поиска */
+	defaultValueSearch: PropTypes__default['default'].string,
+
+	/** Нужно ли делать подтверждение на кнопке удалить */
+	deleteConfirm: PropTypes__default['default'].bool,
+
+	/** Тип подтверждения удаления 'Popup' / 'Modal' */
+	deleteConfirmType: PropTypes__default['default'].oneOf(['Popup', 'Modal']),
+
+	/** Текст подтверждения на удаление элемента */
+	deleteConfirmTitle: PropTypes__default['default'].string,
+
+	/** Текст подтверждения на удаление элемента */
+	deleteConfirmDescription: PropTypes__default['default'].string,
+
+	/** Массив элементов командной панели для блокировки
+     ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
+	disabledElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+
+	/** Левый кастомный элемент командной панели */
+	leftCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Событие при нажатии на кнопку "Добавить" */
+	onClickAdd: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Добавить копированием" */
+	onClickAddAsCopy: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Добавить группу" */
+	onClickAddGroup: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Удалить" */
+	onClickDelete: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Переместить вниз" */
+	onClickDown: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Изменить" */
+	onClickEdit: PropTypes__default['default'].func,
+
+	/** Событие при нажатии на кнопку "Переместить вверх" */
+	onClickUp: PropTypes__default['default'].func,
+
+	/** Событие при поиске */
+	onSearch: PropTypes__default['default'].func,
+
+	/** Правый кастомный элемент командной панели */
+	rightCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Массив элементов командной панели, которые надо отобразить
+     ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
+	showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+
+	/** Объект кастомизации системных кнопок
+  { [btnType]: { tooltip: <String>, icon: <Icon />, render: ({disabled, onClick}) => <Component /> } } */
+	systemBtnProps: PropTypes__default['default'].object
+};
+
+CommandPanel.defaultProps = {
+	centerCustomSideElement: null,
+	borderStyle: 'bottom',
+	defaultValueSearch: undefined,
+	deleteConfirm: true,
+	deleteConfirmType: 'Modal',
+	deleteConfirmTitle: 'Подтвержение удаления',
+	deleteConfirmDescription: 'Вы действительно хотите удалить?',
+	disabledElements: [],
+	leftCustomSideElement: null,
+	onClickAdd: noop,
+	onClickAddAsCopy: noop,
+	onClickAddGroup: noop,
+	onClickDelete: noop,
+	onClickEdit: noop,
+	onClickUp: noop,
+	onClickDown: noop,
+	onSearch: noop,
+	rightCustomSideElement: null,
+	showElements: [],
+	systemBtnProps: {}
+};
+
 var APP_TIME_OFFSET = 3;
 
 var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
@@ -565,7 +1224,12 @@ var getMomentWithOffset = function getMomentWithOffset(date) {
 };
 
 var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
-	return getMomentWithOffset(date).hours(0).minutes(0).seconds(0).milliseconds(0).format();
+	return moment__default['default'](date).startOf('day')
+	// .hours(0)
+	// .minutes(0)
+	// .seconds(0)
+	// .milliseconds(0)
+	.format();
 };
 
 var toFormat = function toFormat(dateString, format) {
@@ -1092,7 +1756,7 @@ FilterPanel.defaultProps = {
   resetFilterRender: "Сбросить"
 };
 
-var SelectionList = function SelectionList(props) {
+var SelectionList$1 = function SelectionList(props) {
 	var selectedRowObjects = props.selectedRowObjects,
 	    rowRender = props.rowRender,
 	    onClickDropSelect = props.onClickDropSelect;
@@ -1131,7 +1795,7 @@ var SelectionList = function SelectionList(props) {
 	);
 };
 
-SelectionList.propTypes = {
+SelectionList$1.propTypes = {
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
@@ -1145,19 +1809,7 @@ SelectionList.propTypes = {
 	onClickDropSelect: PropTypes__default['default'].func.isRequired
 };
 
-SelectionList.defaultProps = {};
-
-var types = {
-    INIT_STORE: 'INIT_STORE',
-    SET_DATA_STORE: 'SET_DATA_STORE'
-};
-
-var setDateStore = function setDateStore(path, row) {
-    return {
-        type: types.SET_DATA_STORE,
-        payload: { path: path, row: row }
-    };
-};
+SelectionList$1.defaultProps = {};
 
 var Table = React.forwardRef(function (props, ref) {
 	/** Состояние первоначалной настройки компонента*/
@@ -1323,7 +1975,7 @@ var Table = React.forwardRef(function (props, ref) {
 				});
 				var _indeterminateRowKeys2 = [];
 				selectedRow.forEach(function (item) {
-					var _parentAnalysis = parentAnalysis({
+					var _parentAnalysis = parentAnalysis$1({
 						rowData: item,
 						rowKey: rowKey,
 						parentKey: expandParentKey,
@@ -1586,12 +2238,12 @@ var Table = React.forwardRef(function (props, ref) {
 		if (selectable) {
 			var selectColumn = {
 				key: '__selection__',
-				headerRenderer: SelectionHead,
-				cellRenderer: SelectionCell,
+				headerRenderer: SelectionHead$1,
+				cellRenderer: SelectionCell$1,
 				width: 40,
 				flexShrink: 0,
 				resizable: false,
-				frozen: BaseTable.Column.FrozenDirection.LEFT,
+				frozen: 'left',
 				rowKey: rowKey,
 				parentKey: expandParentKey,
 				selectedRowKeys: _selectedRowKeys,
@@ -2044,7 +2696,7 @@ var Table = React.forwardRef(function (props, ref) {
 						footerHeight: _footerShow ? footerProps.height : 0,
 						headerHeight: headerHeight,
 						rowHeight: rowHeight,
-						overlayRenderer: loading ? overlay : null,
+						overlayRenderer: loading ? overlay$1 : null,
 						footerRenderer: _footer,
 						rowRenderer: rowRenderer,
 						estimatedRowHeight: estimatedRowHeight
@@ -2064,7 +2716,7 @@ var Table = React.forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React__default['default'].createElement(SelectionList, {
+		showSelection && selectable && !expandColumnKey ? React__default['default'].createElement(SelectionList$1, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -2329,8 +2981,8 @@ Table.defaultProps = {
 	autoDeleteRows: true,
 	rowKey: 'id',
 
-	empty: empty,
-	overlay: overlay,
+	empty: empty$1,
+	overlay: overlay$1,
 	fixWidthColumn: false,
 	footerHeight: 30,
 	footerShow: false,
@@ -2418,6 +3070,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 //
 // export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);
 
+/**
+ * @deprecated [#1] since version 0.0.54 [#2].
+ * */
 var Table$1 = reactRedux.connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);
 
 var Paragraph = _Typography__default['default'].Paragraph;
@@ -2998,7 +3653,7 @@ AdvancedTable.propTypes = {
 
 AdvancedTable.defaultProps = {};
 
-var excludeProps = ["noPadding", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 var Form = function Form(props) {
     var loadInitData = props.loadInitData,
@@ -3058,6 +3713,7 @@ var Form = function Form(props) {
     var getBodyCls = function getBodyCls() {
         var cls = [rtPrefix + "-form-body"];
         props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
+        props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
         return cls.join(" ");
     };
 
@@ -3123,6 +3779,10 @@ Form.propTypes = {
     /** Не делать отступы у формы от краев блока */
     noPadding: PropTypes__default['default'].bool,
 
+    /** scrollable
+     */
+    scrollable: PropTypes__default['default'].bool,
+
     /** Массив объектов для шапки формы. Как правило только заголовок. */
     header: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
 
@@ -3151,6 +3811,7 @@ Form.propTypes = {
 
 Form.defaultProps = {
     noPadding: false,
+    scrollable: false,
     loadInitData: noop,
     autoSaveForm: true
 };
@@ -4012,8 +4673,8 @@ FormTable.defaultProps = {
     autoDeleteRows: true,
     rowKey: 'id',
 
-    empty: empty,
-    overlay: overlay,
+    empty: empty$1,
+    overlay: overlay$1,
     fixWidthColumn: false,
     footerHeight: 30,
     footerShow: false,
@@ -4310,15 +4971,6 @@ var openNotificationWithIcon = function openNotificationWithIcon(type, title, ms
 		description: msg
 	});
 };
-
-/**
- *
- * Виды: дерево, плоская, парно плоская
- * Функции: скопировать, переместить, удалить, создать папку, загрузить файл
- *
- * Зашитые параметры:
- *
- */
 
 var FileManager = function FileManager(props) {
     var _ref;
@@ -4957,7 +5609,7 @@ var FormItem = function FormItem(props) {
 					return React__default['default'].createElement(Modal$2, _extends({}, childProps, { name: props.name }));
 				case 'Custom':
 					Component = withStore(child.render, antFormItemProps);
-					return React__default['default'].createElement(Component, null);
+					return React__default['default'].createElement(Component, childProps);
 				default:
 					return null;
 			}
@@ -5112,297 +5764,2742 @@ FormItems.propTypes = {
     items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
 };
 
-var confirm = _Modal__default['default'].confirm;
+var Table$2 = React.forwardRef(function (props, ref) {
+
+	/** Наличие на сервере еще данных */
+	var _useState = React.useState(true),
+	    _useState2 = slicedToArray(_useState, 2),
+	    hasMore = _useState2[0],
+	    setHasMore = _useState2[1];
+	/** Индикатор загрузки данных */
 
 
-var CommandPanel = function CommandPanel(props) {
-	var borderStyle = props.borderStyle,
-	    defaultValueSearch = props.defaultValueSearch,
-	    deleteConfirm = props.deleteConfirm,
-	    deleteConfirmType = props.deleteConfirmType,
-	    deleteConfirmTitle = props.deleteConfirmTitle,
-	    deleteConfirmDescription = props.deleteConfirmDescription,
-	    onClickAdd = props.onClickAdd,
-	    onClickAddAsCopy = props.onClickAddAsCopy,
-	    onClickAddGroup = props.onClickAddGroup,
-	    onClickDelete = props.onClickDelete,
-	    onClickEdit = props.onClickEdit,
-	    onClickUp = props.onClickUp,
-	    onClickDown = props.onClickDown,
-	    onSearch = props.onSearch,
-	    showElements = props.showElements,
-	    systemBtnProps = props.systemBtnProps,
-	    disabledElements = props.disabledElements,
-	    leftCustomSideElement = props.leftCustomSideElement,
-	    centerCustomSideElement = props.centerCustomSideElement,
-	    rightCustomSideElement = props.rightCustomSideElement;
+	var _useState3 = React.useState(false),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    loading = _useState4[0],
+	    setLoading = _useState4[1];
+
+	/** Indoor control */
+	/** Колонки таблицы */
+	// const [_columns, _setColumns] = useState([]);
 
 
-	var defaultSystemBtnProps = {
-		add: {
-			tooltip: 'Добавить',
-			onClick: onClickAdd,
-			icon: React__default['default'].createElement(icons.PlusOutlined, null)
-		},
-		addAsCopy: {
-			tooltip: 'Добавить копированием',
-			onClick: onClickAddAsCopy,
-			icon: React__default['default'].createElement(icons.CopyOutlined, null)
-		},
-		addGroup: {
-			tooltip: 'Добавить группу',
-			onClick: onClickAddGroup,
-			icon: React__default['default'].createElement(icons.FolderAddOutlined, null)
-		},
-		edit: {
-			tooltip: 'Изменить',
-			onClick: onClickEdit,
-			icon: React__default['default'].createElement(icons.EditOutlined, null)
-		},
-		delete: {
-			tooltip: 'Удалить',
-			icon: React__default['default'].createElement(icons.DeleteOutlined, null)
-		},
-		up: {
-			tooltip: 'Переместить вверх',
-			onClick: onClickUp,
-			icon: React__default['default'].createElement(icons.ArrowUpOutlined, null)
-		},
-		down: {
-			tooltip: 'Переместить вниз',
-			onClick: onClickDown,
-			icon: React__default['default'].createElement(icons.ArrowDownOutlined, null)
-		},
-		search: {
-			placeholder: 'Поиск',
-			onSearch: onSearch
-		},
-		settings: {
-			tooltip: 'Настройки таблицы',
-			tooltipPlacement: 'topRight',
-			onClick: function onClick() {},
-			icon: React__default['default'].createElement(icons.SettingOutlined, null)
-		},
-		filter: {
-			tooltip: 'Настройки фильтров',
-			tooltipPlacement: 'topRight',
-			onClick: function onClick() {},
-			icon: React__default['default'].createElement(icons.FilterOutlined, null)
-		}
-	};
+	var _useState5 = React.useState([]),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    _rows = _useState6[0],
+	    _setRows = _useState6[1];
 
-	var _onClickDelete = function _onClickDelete(event) {
-		if (deleteConfirmType === 'Modal') {
-			deleteButtonModalConfirm();
-		} else {
-			onClickDelete(event);
-		}
-	};
+	var _useState7 = React.useState([]),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    _selectedRowKeys = _useState8[0],
+	    setSelectedRowKeys = _useState8[1];
 
-	var deleteButtonPopupConfirm = function deleteButtonPopupConfirm() {
-		return React__default['default'].createElement(
-			_Popconfirm__default['default'],
-			{
-				placement: 'top',
-				title: deleteConfirmDescription,
-				onConfirm: onClickDelete,
-				okText: '\u0414\u0430',
-				cancelText: '\u041D\u0435\u0442'
-			},
-			renderDeleteBtn(false)
-		);
-	};
+	var _useState9 = React.useState({}),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    _searchValue = _useState10[0],
+	    setSearchValue = _useState10[1];
 
-	var deleteButtonModalConfirm = function deleteButtonModalConfirm() {
-		confirm({
-			title: deleteConfirmTitle,
-			icon: React__default['default'].createElement(icons.ExclamationCircleOutlined, null),
-			content: deleteConfirmDescription,
-			centered: true,
-			okText: 'Ок',
-			cancelText: 'Отмена',
-			onOk: function onOk() {
-				onClickDelete();
+	var _useState11 = React.useState(false),
+	    _useState12 = slicedToArray(_useState11, 2),
+	    _filter = _useState12[0],
+	    setFilter = _useState12[1];
+
+	var _useState13 = React.useState({}),
+	    _useState14 = slicedToArray(_useState13, 2),
+	    _sortBy = _useState14[0],
+	    setSortBy = _useState14[1];
+
+	/** Selectable States */
+
+
+	var _useState15 = React.useState(false),
+	    _useState16 = slicedToArray(_useState15, 2),
+	    selectAll = _useState16[0],
+	    setSelectAll = _useState16[1];
+
+	/** Tree States */
+
+
+	var _useState17 = React.useState([]),
+	    _useState18 = slicedToArray(_useState17, 2),
+	    _indeterminateRowKeys = _useState18[0],
+	    setIndeterminateRowKeys = _useState18[1];
+
+	var _useState19 = React.useState([]),
+	    _useState20 = slicedToArray(_useState19, 2),
+	    _expandedRowKeys = _useState20[0],
+	    setExpandedRowKeys = _useState20[1];
+
+	var _useState21 = React.useState(0),
+	    _useState22 = slicedToArray(_useState21, 2),
+	    _totalCountRows = _useState22[0],
+	    setTotalCountRows = _useState22[1];
+
+	var _useState23 = React.useState(false),
+	    _useState24 = slicedToArray(_useState23, 2),
+	    _footerShow = _useState24[0],
+	    _setFooterShow = _useState24[1];
+
+	var tableRef = React.useRef();
+
+	var isMounted = useMounted();
+
+	var columns = props.columns,
+	    infinityMode = props.infinityMode,
+	    defaultRows = props.defaultRows,
+	    defaultSelectedRowKeys = props.defaultSelectedRowKeys,
+	    defaultSearchValue = props.defaultSearchValue,
+	    defaultFilter = props.defaultFilter,
+	    defaultSortBy = props.defaultSortBy,
+	    rows = props.rows,
+	    setRows = props.setRows,
+	    selectedRowKeys = props.selectedRowKeys,
+	    searchValue = props.searchValue,
+	    filter = props.filter,
+	    sortBy = props.sortBy,
+	    rowKey = props.rowKey,
+	    customFields = props.customFields,
+	    empty = props.empty,
+	    overlay = props.overlay,
+	    fixWidthColumn = props.fixWidthColumn,
+	    headerHeight = props.headerHeight,
+	    rowHeight = props.rowHeight,
+	    rowRenderer = props.rowRenderer,
+	    zebraStyle = props.zebraStyle,
+	    estimatedRowHeight = props.estimatedRowHeight,
+	    loadThreshold = props.loadThreshold,
+	    pageSize = props.pageSize,
+	    requestLoadRows = props.requestLoadRows,
+	    requestLoadCount = props.requestLoadCount,
+	    searchParamName = props.searchParamName,
+	    selectable = props.selectable,
+	    nodeAssociated = props.nodeAssociated,
+	    expandColumnKey = props.expandColumnKey,
+	    expandDefaultAll = props.expandDefaultAll,
+	    expandLazyLoad = props.expandLazyLoad,
+	    expandParentKey = props.expandParentKey,
+	    onRowClick = props.onRowClick,
+	    onRowDoubleClick = props.onRowDoubleClick,
+	    onRowExpand = props.onRowExpand,
+	    onSelectedRowsChange = props.onSelectedRowsChange,
+	    onExpandedRowsChange = props.onExpandedRowsChange,
+	    showSelection = props.showSelection,
+	    rowRenderShowSelection = props.rowRenderShowSelection,
+	    dispatchPath = props.dispatchPath,
+	    subscribe = props.subscribe;
+
+
+	var footerProps = _extends({}, Table$2.defaultProps.footerProps, props.footerProps);
+
+	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
+	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
+
+	React.useEffect(function () {
+		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
+		// console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
+
+		// Инициализация дефолтных значений
+		// _setRows(defaultRows);
+		_setRowsHandler(defaultRows);
+		// setSelectedRowKeys(defaultSelectedRowKeys);
+		_setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows);
+		setSearchValue(defaultSearchValue);
+		setFilter(defaultFilter);
+		setSortBy(defaultSortBy);
+		setSelectAll(defaultRows.length > 0 && defaultRows.length === defaultSelectedRowKeys.length);
+		// Определение нужно ли отображать подвал
+		_setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
+
+		// Only tree table
+		if (!!expandColumnKey && !expandLazyLoad) {
+			// Открытие всех нод
+			if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(defaultRows, rowKey)));
+			// Установка квадратиков на нужных нодах
+			if (defaultSelectedRowKeys && defaultSelectedRowKeys.length > 0) {
+				var flatRows = flatten(getTableRowKeys(defaultRows, rowKey));
+				var selectedRow = flatRows.filter(function (item) {
+					return defaultSelectedRowKeys.includes(item[rowKey]);
+				});
+				var _indeterminateRowKeys2 = [];
+				selectedRow.forEach(function (item) {
+					var _parentAnalysis = parentAnalysis({
+						rowData: item,
+						rowKey: rowKey,
+						parentKey: expandParentKey,
+						checked: true,
+						nodeAssociated: nodeAssociated,
+						treeData: defaultRows,
+						selectedRowKeys: defaultSelectedRowKeys,
+						indeterminateRowKeys: _indeterminateRowKeys2
+					}),
+					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2),
+					    ss = _parentAnalysis2[0],
+					    ii = _parentAnalysis2[1];
+
+					_indeterminateRowKeys2.push.apply(_indeterminateRowKeys2, toConsumableArray(ii));
+				});
+				setIndeterminateRowKeys([].concat(toConsumableArray(new Set(_indeterminateRowKeys2))));
 			}
+		}
+
+		// if (type !== 'localSide') {
+		_dataProcessing({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchLine: defaultSearchValue,
+			reload: true
+		});
+		// }
+		// console.log("Table => useEffect start ");
+		// setMounted(true);
+		if (ref && typeof ref === 'function') ref({ reloadData: reloadData });else if (ref && (typeof ref === 'undefined' ? 'undefined' : _typeof(ref)) === 'object') ref.current = { reloadData: reloadData };
+	}, []);
+
+	React.useEffect(function () {
+		// if (type === 'localSide') {
+		// 	console.log("Control useEffect => ", rows, selectedRowKeys, searchValue, filter, sortBy);
+		// _setRows(rows);
+		_setRowsHandler(rows);
+		// setSelectedRowKeys(selectedRowKeys);
+		_setSelectedRowsHandler(selectedRowKeys, undefined, rows);
+		setSearchValue(searchValue);
+		setFilter(filter);
+		setSortBy(sortBy);
+		if (!!expandColumnKey && !expandLazyLoad) {
+			// Открытие всех нод
+			if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(rows, rowKey)));
+		}
+		// }
+	}, [rows, selectedRowKeys, searchValue, filter, sortBy]);
+
+	/** Подписка на изменение props[subscribe.name] в сторе */
+	subscribe.map(function (item) {
+		return React.useEffect(function () {
+			if (isMounted && item.name) {
+				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+				var onChangeObject = {
+					value: props[item.name],
+					extraData: props[item.name + 'ExtraData'],
+					reloadTable: reloadData,
+					addRows: _addRows,
+					addRow: _addRow,
+					addRowAsCopy: _addRowAsCopy,
+					editRow: _editRow,
+					removeRow: _removeRow,
+					moveUpRow: _moveUpRow,
+					moveDownRow: _moveDownRow
+				};
+				item.onChange && item.onChange(onChangeObject);
+			}
+		}, [props[item.name]]);
+	});
+
+	/** BASE FUNCTIONS */
+	var _setRowsHandler = function _setRowsHandler(rows) {
+		_setRows(rows);
+		setRows(rows);
+		rowsDispatch(rows);
+	};
+
+	var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
+		var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+		var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+		setSelectedRowKeys(selectedKeys);
+		if (selectedKeys.length === 0) {
+			if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
+		} else if (selectedKeys.length > 0 && !selectedObjects) {
+			if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
+				return selectedKeys.includes(item[rowKey]);
+			}));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
+		} else selectedDispatch(selectedObjects);
+	};
+
+	var rowsDispatch = function rowsDispatch(rows) {
+		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+	};
+
+	var selectedDispatch = function selectedDispatch(data) {
+		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+	};
+
+	var reloadData = function reloadData(_ref, appendParams) {
+		var sortBy = _ref.sortBy,
+		    filter = _ref.filter,
+		    searchValue = _ref.searchValue;
+
+		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
+		tableRef.current && tableRef.current.scrollToRow(0, 'auto');
+		if (props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
+			return item[rowKey];
+		}), props.value);else _setSelectedRowsHandler();
+
+		var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
+		var __filter = appendParams ? _extends({}, _filter, filter) : filter;
+		var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
+		if (sortBy) setSortBy(__sortBy);
+		if (filter) setFilter(__filter);
+		if (searchValue) setSearchValue(__searchValue);
+		_dataProcessing({
+			sortBy: __sortBy,
+			filter: __filter,
+			searchLine: __searchValue,
+			reload: true
+		});
+		// console.log("reloadData loading ", loading);
+	};
+
+	var _dataProcessing = function _dataProcessing(params) {
+		// console.log('_dataProcessing', params);
+		var sortBy = params.sortBy,
+		    filter = params.filter,
+		    searchLine = params.searchLine,
+		    expandRow = params.expandRow,
+		    reload = params.reload;
+
+		if ((hasMore || reload) && !loading) {
+			setLoading(true);
+			var pageNum = reload ? 0 : Math.floor(_rows.length / pageSize);
+			var _params = {
+				page: pageNum,
+				size: pageSize,
+				sort: sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null
+			};
+			var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
+			// console.log('dataQuery', dataQuery);
+
+			if (infinityMode && reload && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad) {
+				requestLoadCount({
+					params: _params,
+					data: dataQuery
+				}).then(function (response) {
+					// console.log("infinity then response", response);
+					// const result = response.data;
+					setTotalCountRows(response.data);
+				}).catch(function (error) {
+					return notificationError(error, 'Ошибка получения количества записей по фильтру');
+				});
+			}
+
+			// console.log('requestLoadRows => ', typeof requestLoadRows);
+			// if(typeof requestLoadRows !== 'function'){
+			//     setLoading(false);
+			// }
+			requestLoadRows({
+				params: _params,
+				data: dataQuery
+			}).then(function (response) {
+				// console.log("infinity then response", response);
+				var result = response.data;
+				// Если иерархия и ленивая, то ищим кому добавть полученные записи
+				if (!!expandColumnKey && expandLazyLoad) {
+					// lastExpandRow//, setLastExpandRow
+					// console.log('!!expandColumnKey && expandLazyLoad', result);
+					if (pageNum === 0) {
+						result.forEach(function (child) {
+							child.children = [defineProperty({}, rowKey, generateUUID())];
+						});
+						// _setRows(result);
+						_setRowsHandler(result);
+					} else {
+						var newRows = [].concat(toConsumableArray(_rows));
+						// (data, rowKey, rowValue)
+						result.forEach(function (child) {
+							child.children = [defineProperty({}, rowKey, generateUUID())];
+						});
+						var node = findNodeByRowKey(newRows, rowKey, expandRow[rowKey]);
+						node.children = result;
+						// console.log('newRows -> ', newRows);
+						// _setRows(newRows);
+						_setRowsHandler(newRows);
+					}
+				} else {
+					if (result && result.length < pageSize) {
+						setHasMore(false);
+					} else {
+						setHasMore(true);
+					}
+					pageNum === 0 ? _setRowsHandler(result) // _setRows
+					: _setRowsHandler(_rows.concat(result)); // _setRows
+
+					// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
+					if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
+				}
+
+				setLoading(false);
+			}).catch(function (error) {
+				notificationError(error, 'Ошибка загрузки данных');
+				_setRowsHandler(_rows); // _setRows
+				// setHasMore(false);
+				setLoading(false);
+			});
+		}
+	};
+
+	/** Событие выделение одной строки в режиме без галочек */
+	var _rowEventHandlers = {
+		onClick: function onClick(_ref5) {
+			var rowData = _ref5.rowData,
+			    rowIndex = _ref5.rowIndex,
+			    rowKey = _ref5.rowKey,
+			    event = _ref5.event;
+
+			if (!selectable) {
+				// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
+				var newRowObject = {
+					rowData: _extends({}, rowData),
+					rowIndex: rowIndex,
+					rowKey: rowKey
+				};
+				_setSelectedRowsHandler([rowKey], rowData);
+				// setSelectedRowKeys([rowKey]);
+				// selectedDispatch(rowData);
+				onRowClick(_extends({
+					selected: true
+				}, newRowObject));
+				onSelectedRowsChange([rowKey], [rowData]);
+				// }
+			}
+		},
+		onDoubleClick: function onDoubleClick(_ref6) {
+			var rowData = _ref6.rowData,
+			    rowIndex = _ref6.rowIndex,
+			    rowKey = _ref6.rowKey;
+
+			// console.log('onDoubleClick', rowData, rowIndex, rowKey);
+			onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+		}
+		// onContextMenu: console.log('context menu'),
+		// onMouseEnter: console.log('mouse enter'),
+		// onMouseLeave: console.log('mouse leave'),
+	};
+
+	/** Событие при сортировке */
+	var _onColumnSort = function _onColumnSort(sortBy) {
+		// console.log("sortBy", sortBy);
+		tableRef.current.scrollToRow(0, 'auto');
+		setSortBy(sortBy);
+
+		// Для серверной сортировки - сбросить выделение
+		// if (type !== 'localSide') {
+		// setSelectedRowKeys([]);
+		_setSelectedRowsHandler();
+		// }
+		var loadParams = {
+			sortBy: sortBy,
+			filter: _filter,
+			searchLine: _searchValue,
+			reload: true
+		};
+		_dataProcessing(loadParams);
+	};
+
+	/** VIEW FUNCTIONS */
+
+	var _footer = React__default['default'].createElement(
+		React__default['default'].Fragment,
+		null,
+		_footerShow ? React__default['default'].createElement(
+			React__default['default'].Fragment,
+			null,
+			React__default['default'].createElement(
+				'div',
+				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
+				footerProps.leftCustomSideElement ? React__default['default'].createElement(FormItems, { items: footerProps.leftCustomSideElement }) : null
+			),
+			React__default['default'].createElement(
+				'div',
+				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
+				footerProps.centerCustomSideElement ? React__default['default'].createElement(FormItems, { items: footerProps.centerCustomSideElement }) : null
+			),
+			React__default['default'].createElement(
+				'div',
+				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
+				footerProps.rightCustomSideElement ? React__default['default'].createElement(FormItems, { items: footerProps.rightCustomSideElement }) : null
+			),
+			selectable ? React__default['default'].createElement(
+				React__default['default'].Fragment,
+				null,
+				footerProps.showElements.includes('selected') ? React__default['default'].createElement(
+					'span',
+					null,
+					footerProps.selectedTitle,
+					' ',
+					_selectedRowKeys.length
+				) : null,
+				footerProps.showElements.includes('loaded') ? React__default['default'].createElement(
+					'span',
+					null,
+					footerProps.loadedTitle,
+					' ',
+					flatten(getTableRowKeys(_rows, rowKey)).length
+				) : null
+			) : null,
+			footerProps.showElements.includes('total') ? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React__default['default'].createElement(
+				'span',
+				null,
+				footerProps.totalTitle,
+				' ',
+				_totalCountRows
+			) : React__default['default'].createElement(
+				'span',
+				null,
+				footerProps.totalTitle,
+				' ',
+				flatten(getTableRowKeys(_rows, rowKey)).length
+			) : null
+		) : null
+	);
+
+	/** Событие при рендере для стилизации */
+	var _rowClassName = function _rowClassName(_ref7) {
+		var rowData = _ref7.rowData,
+		    rowIndex = _ref7.rowIndex;
+		var rowClassName = props.rowClassName;
+
+		var rowClass = rowClassName ? BaseTable.callOrReturn(rowClassName, { rowData: rowData, rowIndex: rowIndex }) : '';
+		// const key = {[rowKey]: rowData[rowKey], checked: true};
+		// selectedRowKeys.some((item) => (item[rowKey] === rowData[rowKey] && item.checked))
+		return [rowClass, _selectedRowKeys.includes(rowData[rowKey]) && 'row-selected'].filter(Boolean).concat(zebraStyle ? rowIndex % 2 === 0 ? 'even' : 'odd' : '').concat(' ');
+	};
+
+	/** LOAD DATA FUNCTIONS */
+	var onEndReached = function onEndReached() {
+		var selectAll = void 0;
+		var selectLength = _selectedRowKeys.length;
+		if (selectLength === 0) selectAll = false;else if (selectLength > 0) selectAll = null;
+
+		setSelectAll(selectAll);
+
+		if (infinityMode) {
+			var loadParams = {
+				sortBy: _sortBy,
+				filter: _filter,
+				searchLine: _searchValue,
+				reload: false
+			};
+			_dataProcessing(loadParams);
+		}
+	};
+
+	/** SELECTABLE FUNCTIONS */
+
+	/** Событие при изменении галочки одной строки */
+	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref8) {
+		var selected = _ref8.selected,
+		    _selectedRow = _ref8._selectedRow,
+		    _selectAll = _ref8._selectAll,
+		    _selectedRowKeys = _ref8._selectedRowKeys,
+		    _selectedRowObjects = _ref8._selectedRowObjects,
+		    _indeterminateRowKeys = _ref8._indeterminateRowKeys;
+
+		// console.log("_onChangeSelectHandler", _selectedRowKeys);
+		// setSelectedRowKeys(_selectedRowKeys);
+		// selectedDispatch(_selectedRowObjects);
+		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects);
+		setIndeterminateRowKeys(_indeterminateRowKeys);
+		setSelectAll(_selectAll);
+		onRowClick({
+			selected: selected,
+			rowData: _selectedRow.rowData,
+			rowIndex: _selectedRow.rowIndex,
+			rowKey: rowKey
+		});
+		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
+	};
+
+	/** Событие при изменении галочки "Выделить все" */
+	var _onSelectAllHandler = function _onSelectAllHandler(_ref9) {
+		var selected = _ref9.selected,
+		    rowKeys = _ref9.rowKeys,
+		    rowObjects = _ref9.rowObjects;
+
+		var selectedKeys = selected ? rowKeys : [];
+		// setSelectedRowKeys(selectedKeys);
+		// selectedDispatch(selected ? rowObjects : []);
+		_setSelectedRowsHandler(selectedKeys, selected ? rowObjects : []);
+		setIndeterminateRowKeys([]);
+		setSelectAll(selected);
+		// setSelectedRowObjects(rows);
+		// console.log("_handleSelectAll", selectedKeys);
+		onSelectedRowsChange(selectedKeys, rowObjects);
+	};
+
+	var _getColumns = function _getColumns() {
+		var selectColumn = {
+			key: '__selection__',
+			headerRenderer: SelectionHead,
+			cellRenderer: SelectionCell,
+			width: 40,
+			flexShrink: 0,
+			resizable: false,
+			frozen: 'left',
+			rowKey: rowKey,
+			parentKey: expandParentKey,
+			selectedRowKeys: _selectedRowKeys,
+			indeterminateRowKeys: _indeterminateRowKeys,
+			nodeAssociated: nodeAssociated,
+			onChange: _onChangeSelectHandler,
+			selectAll: selectAll,
+			onSelectAll: _onSelectAllHandler
+		};
+		return selectable ? [selectColumn].concat(toConsumableArray(columns)) : [].concat(toConsumableArray(columns));
+	};
+
+	/** TREE FUNCTIONS */
+
+	var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
+		// console.log("_onExpandedRowsChange", expandedRowKeys);
+		onExpandedRowsChange(expandedRowKeys);
+	};
+	var _onRowExpand = function _onRowExpand(_ref10) {
+		var expanded = _ref10.expanded,
+		    rowData = _ref10.rowData,
+		    rowIndex = _ref10.rowIndex,
+		    rowKey = _ref10.rowKey;
+
+		// console.log("_onRowExpand", rowData, expanded, rowIndex, rowKey);
+		if (expanded) {
+			setExpandedRowKeys([].concat(toConsumableArray(_expandedRowKeys), [rowKey]));
+
+			if (expandLazyLoad) {
+				var loadParams = {
+					sortBy: _sortBy,
+					filter: _extends({}, _filter, defineProperty({}, expandParentKey, rowKey)),
+					searchLine: _searchValue,
+					reload: false,
+					expandRow: rowData
+				};
+				// _callPropsOnLoad(loadParams);
+				_dataProcessing(loadParams);
+			}
+		} else {
+			var expandedRowKeys = [].concat(toConsumableArray(_expandedRowKeys));
+			var allChildKeys = flatten(getTableRowKeys(rowData.children, props.rowKey));
+			allChildKeys.push(rowKey);
+			// console.log('allChildKeys', allChildKeys);
+			setExpandedRowKeys(expandedRowKeys.filter(function (item) {
+				return !allChildKeys.includes(item);
+			}));
+		}
+		onRowExpand({ expanded: expanded, rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+	};
+
+	/** ROW CHANGE FUNCTIONS */
+
+	/**
+  * Find row by key
+  * @param data - table rows
+  * @param key - key row for find
+  * @param callback - function for return result
+  * @returns {*}
+  */
+	var loop = function loop(data, key, callback) {
+		for (var i = 0; i < data.length; i++) {
+			if (data[i][rowKey] === key) {
+				// console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
+				return callback(data[i], i, data);
+			}
+			if (data[i].children) {
+				loop(data[i].children, key, callback);
+			}
+		}
+	};
+
+	var _addRows = function _addRows(rows) {
+		var saveRows = [].concat(toConsumableArray(rows));
+		if (customFields)
+			// Фильтрация по пользовательским параметрам
+			saveRows = saveRows.filter(function (sRow) {
+				var isValid = true;
+				customFields.forEach(function (field) {
+					// Валидация по пользовательской логике функции validate
+					if (field.validate) isValid = field.validate(sRow, _rows);
+
+					// Создание или переобразование по пользовательской логике функции value
+					if (field.value) sRow[field.name] = field.value(sRow, _rows);
+				});
+				if (isValid) return sRow;
+			});
+		_setRowsHandler([].concat(toConsumableArray(_rows), toConsumableArray(saveRows)));
+	};
+
+	var _addRow = function _addRow(row) {
+		var _row = _extends({}, row);
+		if (customFields) customFields.forEach(function (field) {
+			return _row[field.name] = field.value(_row, _rows);
+		});
+		_setRowsHandler([].concat(toConsumableArray(_rows), [_row]));
+	};
+
+	var _addRowAsCopy = function _addRowAsCopy() {
+		// console.log("_onClickAddAsCopy", selectedRow);
+		_setRowsHandler([].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]));
+	};
+
+	var _editRow = function _editRow(row) {
+		// console.log("_onClickEdit", selectedRow);
+		var data = [].concat(toConsumableArray(_rows));
+		var key = row[rowKey];
+		loop(data, key, function (item, index, arr) {
+			data[index] = row;
+			_setRowsHandler(data);
+			// selectedDispatch(row)
+			_setSelectedRowsHandler(_selectedRowKeys, undefined, data);
+			// setSelectedRowKeys([]);
+		});
+		// props.onClickEdit(event, selectedRow);
+	};
+
+	var _removeRow = function _removeRow(event) {
+		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
+		_setRowsHandler(_rows.filter(function (item) {
+			return !_selectedRowKeys.includes(item[rowKey]);
+		}));
+		_setSelectedRowsHandler();
+		// setSelectedRowKeys([]);
+		// if (selectable)
+		// 	selectedDispatch([]);
+		// else
+		// 	selectedDispatch(undefined);
+		// commandPanelProps.onClickDelete(event, _selectedRowKeys);
+	};
+
+	var _moveUpRow = function _moveUpRow(event) {
+		var data = [].concat(toConsumableArray(_rows));
+		var key = _selectedRowKeys[0];
+		loop(data, key, function (item, index, arr) {
+			var newRowIndex = _getNewIndexRow(index, index - 1);
+			_changeIndexRow(index, newRowIndex, arr, data);
+			// commandPanelProps.onClickUp(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
 		});
 	};
 
-	var renderDeleteBtn = function renderDeleteBtn(withOnClick) {
-		var genProps = _extends({}, defaultSystemBtnProps['all'], systemBtnProps['all']);
-		var btnProps = _extends({}, defaultSystemBtnProps['delete'], systemBtnProps['delete']);
-
-		return React__default['default'].createElement(
-			_Tooltip__default['default'],
-			{ title: btnProps.tooltip },
-			React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
-				className: rtPrefix + '-btn',
-				icon: btnProps.icon,
-				onClick: withOnClick ? _onClickDelete : null,
-				disabled: disabledElements.includes('delete')
-			}))
-		);
+	var _moveDownRow = function _moveDownRow(event) {
+		var data = [].concat(toConsumableArray(_rows));
+		var key = _selectedRowKeys[0];
+		loop(data, key, function (item, index, arr) {
+			var newRowIndex = _getNewIndexRow(index, index + 1);
+			_changeIndexRow(index, newRowIndex, arr, data);
+			// commandPanelProps.onClickDown(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
+		});
 	};
 
-	var renderBtn = function renderBtn(type) {
-		var genProps = _extends({}, defaultSystemBtnProps['all'], systemBtnProps['all']);
-		var btnProps = _extends({}, defaultSystemBtnProps[type], systemBtnProps[type]);
+	var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
+		return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
+	};
 
-		if (showElements.includes(type)) {
-			if (btnProps.render) return btnProps.render({
-				disabled: disabledElements.includes(type),
-				onClick: btnProps.onClick,
-				onSearch: btnProps.onSearch
-			});else if (type === 'search') return React__default['default'].createElement(_Input__default['default'].Search, {
-				disabled: disabledElements.includes(type),
-				defaultValue: defaultValueSearch,
-				placeholder: btnProps.placeholder,
-				onSearch: btnProps.onSearch,
-				className: 'search'
-			});else return React__default['default'].createElement(
-				_Tooltip__default['default'],
-				{ title: btnProps.tooltip, placement: btnProps.tooltipPlacement ? btnProps.tooltipPlacement : 'top' },
-				React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
-					className: rtPrefix + '-btn',
-					icon: btnProps.icon,
-					onClick: btnProps.onClick,
-					disabled: disabledElements.includes(type)
-				}))
-			);
-		} else return null;
+	var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data) {
+		if (newIndex >= 0 && newIndex < arr.length) {
+			// let arr = [..._rows]; // Копируем массив
+			var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
+			// console.log('_changeIndexRow => ',item);
+			arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
+			// console.log("_changeIndexRow", item[0]);
+			_setRowsHandler(data);
+		}
+	};
+
+	// const _onSearch = (searchLine, e) => {
+	// 	e.preventDefault();
+	// 	// console.log("_onSearch", searchLine);
+	// 	tableRef.current.scrollToRow(0, 'auto');
+	// 	setSearchValue(searchLine);
+	// 	const loadParams = {
+	// 		sortBy: _sortBy,
+	// 		filter: _filter,
+	// 		searchLine: searchLine,
+	// 		reload: true,
+	// 	};
+	// 	_dataProcessing(loadParams);
+	// 	commandPanelProps.onSearch(searchLine);
+	// };
+
+	/** SELECTED PANEL */
+
+	var _onClickDropSelectHandler = function _onClickDropSelectHandler(dropObject) {
+		var newSelectedKeys = _selectedRowKeys.filter(function (item) {
+			return item !== dropObject[rowKey];
+		});
+		// setSelectedRowKeys(newSelectedKeys);
+		_setSelectedRowsHandler(newSelectedKeys, undefined, _rows);
+		setSelectAll(newSelectedKeys.length === 0 ? false : null);
+		onSelectedRowsChange(newSelectedKeys);
 	};
 
 	return React__default['default'].createElement(
-		React__default['default'].Fragment,
-		null,
-		showElements.length || leftCustomSideElement || centerCustomSideElement || rightCustomSideElement ? React__default['default'].createElement(
+		'div',
+		{ className: rtPrefix + '-table' },
+		React__default['default'].createElement(
 			'div',
-			{
-				className: rtPrefix + '-command-panel border-' + borderStyle
-			},
+			{ className: rtPrefix + '-baseTable' },
 			React__default['default'].createElement(
-				'div',
-				{ className: 'left-system-side' },
-				renderBtn('add'),
-				renderBtn('addAsCopy'),
-				renderBtn('addGroup'),
-				renderBtn('edit'),
-				showElements.includes('delete') ? deleteConfirm ? deleteConfirmType === 'Popup' ? deleteButtonPopupConfirm() : renderDeleteBtn(true) : renderDeleteBtn(true) : null,
-				renderBtn('up'),
-				renderBtn('down')
-			),
-			React__default['default'].createElement(
-				'div',
-				{ className: 'left-custom-side' },
-				leftCustomSideElement ? React__default['default'].createElement(FormItems, { items: leftCustomSideElement }) : null
-			),
-			React__default['default'].createElement(
-				'div',
-				{ className: 'center-custom-side' },
-				centerCustomSideElement ? React__default['default'].createElement(FormItems, { items: centerCustomSideElement }) : null
-			),
-			React__default['default'].createElement(
-				'div',
-				{ className: 'right-custom-side' },
-				rightCustomSideElement ? React__default['default'].createElement(FormItems, { items: rightCustomSideElement }) : null
-			),
-			React__default['default'].createElement(
-				'div',
-				{ className: 'right-system-side' },
-				renderBtn('search'),
-				renderBtn('settings'),
-				renderBtn('filter')
+				BaseTable.AutoResizer,
+				null,
+				function (_ref11) {
+					var width = _ref11.width,
+					    height = _ref11.height;
+					return React__default['default'].createElement(BaseTable__default['default'], {
+						ref: tableRef
+						/** Required */
+						, columns: _getColumns(),
+						data: _rows
+						/** Control Props */
+						, sortBy: _sortBy
+						/** Base Props */
+						, width: width,
+						height: height,
+						rowKey: rowKey
+						// rowProps={rowProps}
+
+						/** View Props */
+						, rowClassName: _rowClassName,
+						emptyRenderer: empty,
+						fixed: fixWidthColumn,
+						footerHeight: _footerShow ? footerProps.height : 0,
+						headerHeight: headerHeight,
+						rowHeight: rowHeight,
+						overlayRenderer: loading ? overlay : null,
+						footerRenderer: _footer,
+						rowRenderer: rowRenderer,
+						estimatedRowHeight: estimatedRowHeight
+						/** Load Data Props */
+						, onEndReachedThreshold: loadThreshold,
+						onEndReached: infinityMode ? onEndReached : undefined,
+						disabled: loading
+						/** Tree Props */
+						, expandColumnKey: expandColumnKey,
+						expandedRowKeys: _expandedRowKeys
+						/** Events */
+						, onColumnSort: _onColumnSort,
+						rowEventHandlers: _rowEventHandlers,
+						onExpandedRowsChange: _onExpandedRowsChange,
+						onRowExpand: _onRowExpand
+					});
+				}
 			)
-		) : null
+		),
+		showSelection && selectable && !expandColumnKey ? React__default['default'].createElement(SelectionList, {
+			onClickDropSelect: _onClickDropSelectHandler,
+			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
+				return _selectedRowKeys.includes(item[rowKey]);
+			}),
+			rowRender: rowRenderShowSelection
+		}) : null
+	);
+});
+
+Table$2.propTypes = {
+	/**
+  * REQUIRED
+  * */
+
+	/** Столбцы таблицы */
+	columns: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+
+	/** Тип таблицы
+  * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
+  * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
+  * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
+	// type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+	infinityMode: PropTypes__default['default'].bool,
+
+	/**
+  * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
+  * */
+
+	/** Строки по умолчанию */
+	defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Ключи выделенных по умолчанию строк */
+	defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+
+	/** Значение строки поиска по умолчанию строк */
+	defaultSearchValue: PropTypes__default['default'].string,
+
+	/** Объект фильтрации по умолчанию */
+	defaultFilter: PropTypes__default['default'].object,
+
+	/** Сортировка по умолчанию */
+	defaultSortBy: PropTypes__default['default'].shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes__default['default'].string,
+		/** Направление сортировки */
+		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+	}),
+
+	/**
+  * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
+  * */
+
+	/** Строки таблицы. Используется для контроля таблицы из вне. */
+	rows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Функция задания строк таблицы. */
+	setRows: PropTypes__default['default'].func,
+
+	/** Выделенные строки таблицы. */
+	selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+
+	/** Значение строки поиска */
+	searchValue: PropTypes__default['default'].string,
+
+	/** Объект фильтрации */
+	filter: PropTypes__default['default'].object,
+
+	/** Объект сортировки */
+	sortBy: PropTypes__default['default'].shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes__default['default'].string,
+		/** Направление сортировки */
+		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+	}),
+
+	/**
+  * BASE PROPS
+  * */
+
+	/** Поле для уникальной идентификации строки */
+	rowKey: PropTypes__default['default'].string,
+
+	/** Дополнительные поля и валидация в объекты таблицы */
+	customFields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/**
+  * VIEW PROPS
+  * */
+
+	/** Вывод когда нет данных */
+	empty: PropTypes__default['default'].element,
+
+	/** Отображение загрузки данных */
+	overlay: PropTypes__default['default'].element,
+
+	/** Фиксированная ширина столбцов. Появится боковой скрол */
+	fixWidthColumn: PropTypes__default['default'].bool,
+
+	footerProps: PropTypes__default['default'].shape({
+
+		/** Высота подвала */
+		height: PropTypes__default['default'].number,
+
+		/** Массив элементов футтера, которые надо отобразить
+   * ['selected', 'loaded', 'total'] */
+		showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+
+		/** Заколовок для кол-ва выбранных объектов */
+		selectedTitle: PropTypes__default['default'].string,
+
+		/** Заколовок для кол-ва загруженны объектов */
+		loadedTitle: PropTypes__default['default'].string,
+
+		/** Заколовок для кол-ва всего объектов */
+		totalTitle: PropTypes__default['default'].string,
+
+		/** Левый кастомный элемент командной панели */
+		leftCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+		/** Центральный кастомный элемент командной панели */
+		centerCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+		/** Правый кастомный элемент командной панели */
+		rightCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+	}),
+
+	/** Высота заголовка таблицы */
+	headerHeight: PropTypes__default['default'].number,
+
+	/** Высота строки таблицы */
+	rowHeight: PropTypes__default['default'].number,
+
+	/** Custom row renderer
+  * Параметры - ({ isScrolling, cells, columns, rowData, rowIndex, depth }) */
+	rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+
+	/** Строки будут в зебро-стиле */
+	zebraStyle: PropTypes__default['default'].bool,
+
+	/** Высота расширения */
+	estimatedRowHeight: PropTypes__default['default'].number,
+
+	/**
+  * LOAD DATA PROPS
+  * */
+
+	/** Порог в пикселях для вызова _onLoad.
+  * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
+	loadThreshold: PropTypes__default['default'].number,
+
+	/** Размер страницы */
+	pageSize: PropTypes__default['default'].number,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadRows: PropTypes__default['default'].func,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadCount: PropTypes__default['default'].func,
+
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes__default['default'].string,
+
+	/**
+  * SELECTABLE PROPS
+  * */
+
+	/** Таблица с возможностью выбора строки */
+	selectable: PropTypes__default['default'].bool,
+
+	/**
+  * TREE PROPS
+  * */
+
+	/** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
+	nodeAssociated: PropTypes__default['default'].bool,
+
+	/** Ключ колонки по которой строить иерархию */
+	expandColumnKey: PropTypes__default['default'].string,
+
+	/** Открыть по умолчанию вложенность до уровня N или 'All' */
+	expandDefaultAll: PropTypes__default['default'].bool,
+
+	/** Загружать ноды иерархии по одной */
+	expandLazyLoad: PropTypes__default['default'].bool,
+
+	/** Поле в котором хранится ссылка на родителя */
+	expandParentKey: PropTypes__default['default'].string,
+
+	/**
+  * EVENTS
+  * */
+
+	/** Событие при клике на строку (только при selectable = false)
+  * Параметр - ({selected, rowData, rowIndex}) */
+	onRowClick: PropTypes__default['default'].func,
+
+	/** Событие при двойном клике на строку.
+  * Параметр - ({rowData, rowIndex, rowKey}) */
+	onRowDoubleClick: PropTypes__default['default'].func,
+
+	/** События при открытии / закрытии ноды
+  * Парметры - ({ expanded, rowData, rowIndex, rowKey }) */
+	onRowExpand: PropTypes__default['default'].func,
+
+	/** Событие при выборе строки.
+  * Параметр - массив выбранных строе (только rowKey) */
+	onSelectedRowsChange: PropTypes__default['default'].func,
+
+	/** События при открытии / закрытии ноды
+  * Парметры - (expandedRowKeys) - массив ключей открытых нод */
+	onExpandedRowsChange: PropTypes__default['default'].func,
+
+	/** SELECTED PANEL */
+
+	/** Отображать ли панель выбранных элементов */
+	showSelection: PropTypes__default['default'].bool,
+
+	/** Строка или функция для отображения элементов списка выбранных
+  * Строка - имя поля
+  * Функция - рендер строк.
+  * `({ rowData, rowIndex }) => { return <Component> }` */
+	rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+
+	/** Путь в сторе куда класть выбранную строку таблицы */
+	dispatchPath: PropTypes__default['default'].string,
+
+	/** Объект для подписки на изменения в STORE */
+	subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+};
+
+Table$2.defaultProps = {
+	defaultRows: [],
+	defaultSelectedRowKeys: [],
+	defaultSearchValue: '',
+	defaultFilter: {},
+	defaultSortBy: {},
+
+	rows: [],
+	setRows: noop,
+	selectedRowKeys: [],
+	searchValue: '',
+	filter: {},
+	sortBy: {},
+
+	rowKey: 'id',
+
+	empty: empty,
+	overlay: overlay,
+	fixWidthColumn: false,
+	footerProps: {
+		height: 30,
+		showElements: [],
+		selectedTitle: 'Выделено:',
+		loadedTitle: 'Загружено записей:',
+		totalTitle: 'Всего записей:',
+		leftCustomSideElement: null,
+		centerCustomSideElement: null,
+		rightCustomSideElement: null
+	},
+	headerHeight: 30,
+	rowHeight: 30,
+	zebraStyle: false,
+	estimatedRowHeight: undefined,
+
+	loadThreshold: 300,
+	pageSize: 50,
+	requestLoadRows: noop,
+	requestLoadCount: noop,
+	searchParamName: 'searchLine',
+
+	selectable: false,
+
+	nodeAssociated: true,
+	expandColumnKey: undefined,
+	expandDefaultAll: true,
+	expandLazyLoad: false,
+	expandParentKey: 'parentId',
+
+	onRowClick: noop,
+	onRowDoubleClick: noop,
+	onRowExpand: noop,
+	onSelectedRowsChange: noop,
+	onExpandedRowsChange: noop,
+
+	showSelection: false,
+
+	dispatchPath: undefined,
+	subscribe: []
+};
+
+var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
+	var subscribe = ownProps.subscribe;
+
+	var state = {};
+	if (subscribe && subscribe.length > 0) {
+		subscribe.forEach(function (item) {
+			var name = item.name,
+			    path = item.path,
+			    extraData = item.extraData;
+
+			if (name && path) state[name] = objectPath__default['default'].get(store, path);
+			if (name && extraData) state[name + 'ExtraData'] = objectPath__default['default'].get(store, extraData);
+		});
+	}
+	return state;
+};
+var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
+	return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
+};
+
+var Table$3 = reactRedux.connect(mapStateToProps$2, mapDispatchToProps$3, null, { forwardRef: true })(Table$2);
+
+var _this$2 = undefined;
+
+
+var defaultProps = {
+    defaultFilter: {},
+    rowKey: 'id',
+    pageSize: 50,
+    requestLoadConfig: noop,
+    expandColumnKey: undefined,
+    expandLazyLoad: false,
+    expandParentKey: 'parentId',
+    customColumnProps: []
+};
+
+var ConfigLoader = function ConfigLoader(props) {
+
+    /** Конфигурация таблицы */
+    var _useState = React.useState(undefined),
+        _useState2 = slicedToArray(_useState, 2),
+        tableConfig = _useState2[0],
+        setTableConfig = _useState2[1];
+
+    var _defaultProps$props = _extends({}, defaultProps, props),
+        defaultFilter = _defaultProps$props.defaultFilter,
+        rowKey = _defaultProps$props.rowKey,
+        pageSize = _defaultProps$props.pageSize,
+        requestLoadConfig = _defaultProps$props.requestLoadConfig,
+        expandColumnKey = _defaultProps$props.expandColumnKey,
+        expandLazyLoad = _defaultProps$props.expandLazyLoad,
+        expandParentKey = _defaultProps$props.expandParentKey,
+        customColumnProps = _defaultProps$props.customColumnProps;
+
+    React.useEffect(function () {
+        var cleanupFunction = false;
+        var loadData = function () {
+            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (requestLoadConfig) {
+                                    // console.log('requestLoadConfig => ', typeof requestLoadConfig);
+                                    // console.log('requestLoadRows => ', typeof props.requestLoadRows);
+                                    requestLoadConfig().then(function (response) {
+                                        // let result = response.data;
+                                        // console.log('requestLoadConfig -> ', response.data);
+                                        if (!cleanupFunction) {
+                                            // setTableConfig(response.data);
+                                            configParser(response.data);
+                                        }
+                                    }).catch(function (error) {
+                                        return notificationError(error, 'Ошибка получения конфигурации');
+                                    });
+                                }
+
+                            case 1:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this$2);
+            }));
+
+            return function loadData() {
+                return _ref.apply(this, arguments);
+            };
+        }();
+        loadData().then(function (r) {
+            return r;
+        });
+        return function () {
+            return cleanupFunction = true;
+        };
+    }, []);
+
+    var configParser = function configParser(config) {
+        var _columns = [];
+        if (config && config.fields) {
+            _columns = config.fields.map(function (item) {
+                var colProps = customColumnProps && customColumnProps.find(function (render) {
+                    return render.name === item.name || render.name === item.alias;
+                });
+                return _extends({
+                    key: item.name,
+                    title: item.header ? item.header : item.name,
+                    dataKey: item.alias ? item.alias : item.name,
+                    align: item.align,
+                    width: item.width,
+                    resizable: item.resizable,
+                    sortable: item.sortable,
+                    hidden: !item.visible
+                }, colProps, {
+                    cellRenderer: function cellRenderer(object) {
+                        if (colProps && colProps.cellRenderer) return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';else return object.cellData ? React__default['default'].createElement(
+                            _Typography__default['default'].Text,
+                            { ellipsis: true, style: { width: '100%' } },
+                            object.cellData
+                        ) : '---';
+                        // return object.cellData ? object.cellData : '---';
+                    }
+                });
+            });
+        }
+
+        var _defaultFilter = void 0;
+        if (config && config.hierarchical && config.hierarchyLazyLoad) {
+            var parentKey = config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey;
+            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
+        } else _defaultFilter = defaultFilter;
+
+        setTableConfig({
+            columns: _columns,
+            defaultFilter: _defaultFilter,
+            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[0] : rowKey,
+            expandParentKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey,
+            expandColumnKey: config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey,
+            expandLazyLoad: config && config.hierarchical && config.hierarchyLazyLoad ? config.hierarchyLazyLoad : expandLazyLoad,
+            pageSize: config && config.hierarchical ? 1 : pageSize
+        });
+    };
+
+    if (tableConfig) return React__default['default'].createElement(Table$3, _extends({}, props, tableConfig));else return null;
+};
+
+var DateRange$1 = function DateRange(props) {
+	/** Состояние первоначалной настройки компонента */
+	var _useState = React.useState(false),
+	    _useState2 = slicedToArray(_useState, 2),
+	    mounted = _useState2[0],
+	    setMounted = _useState2[1];
+
+	var _useState3 = React.useState(undefined),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    startValue = _useState4[0],
+	    setStartValue = _useState4[1];
+
+	var _useState5 = React.useState(undefined),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    endValue = _useState6[0],
+	    setEndValue = _useState6[1];
+
+	var className = props.className,
+	    nameStart = props.nameStart,
+	    nameEnd = props.nameEnd,
+	    dateFormat = props.dateFormat,
+	    onChange = props.onChange,
+	    size = props.size,
+	    valueStart = props.valueStart,
+	    valueEnd = props.valueEnd,
+	    showTime = props.showTime;
+
+
+	React.useEffect(function () {
+		if (!mounted) {
+			if (props.defaultValueStart) {
+				// console.log("DateRange mounted :", nameStart, props.defaultValueStart);
+				_onChange(nameStart, getMomentFromStringByFormat(props.defaultValueStart, dateFormat));
+				setStartValue(getMomentFromStringByFormat(props.defaultValueStart, dateFormat));
+			}
+			if (props.defaultValueEnd) {
+				_onChange(nameEnd, getMomentFromStringByFormat(props.defaultValueEnd, dateFormat));
+				setEndValue(getMomentFromStringByFormat(props.defaultValueEnd, dateFormat));
+			}
+			setMounted(true);
+		}
+	}, [mounted]);
+
+	React.useEffect(function () {
+		if (valueStart) {
+			setStartValue(moment__default['default'](valueStart));
+			// console.log('useEffect -> valueStart', valueStart);
+		} else if (!props.defaultValueStart) setStartValue(null);
+	}, [valueStart]);
+	React.useEffect(function () {
+		if (valueEnd) {
+			setEndValue(moment__default['default'](valueEnd));
+			// console.log('useEffect -> valueEnd', valueEnd);
+		} else if (!props.defaultValueEnd) setEndValue(null);
+	}, [valueEnd]);
+
+	var disabledStartDate = function disabledStartDate(startValue) {
+		if (!startValue || !endValue) {
+			return false;
+		}
+		return startValue.valueOf() > endValue.valueOf();
+	};
+
+	var disabledEndDate = function disabledEndDate(endValue) {
+		if (!endValue || !startValue) {
+			return false;
+		}
+		return endValue.valueOf() <= startValue.valueOf();
+	};
+
+	var onStartChange = function onStartChange(date) {
+		setStartValue(date);
+		_onChange(nameStart, date);
+	};
+
+	var onEndChange = function onEndChange(date) {
+		setEndValue(date);
+		_onChange(nameEnd, date);
+	};
+
+	var _onChange = function _onChange(name, value) {
+		if (value) {
+			if (showTime) onChange(name, getMomentWithOffset(value));else onChange(name, getMomentWithOffsetTruncateDay(value));
+		} else onChange(name, value);
+	};
+
+	return React__default['default'].createElement(
+		'div',
+		{ className: className + ' ' + rtPrefix + '-date-range' },
+		React__default['default'].createElement(
+			'div',
+			null,
+			React__default['default'].createElement(
+				'span',
+				{ className: 'subtitleStart' },
+				'c'
+			),
+			React__default['default'].createElement(_DatePicker__default['default'], {
+				locale: locale__default['default']
+				// defaultValue={ checkDefValue(props.defaultValueStart) }
+				, size: size,
+				style: { width: !!showTime ? '160px' : '135px' },
+				disabledDate: disabledStartDate,
+				onChange: onStartChange,
+				format: dateFormat,
+				placeholder: 'Выберите дату',
+				value: startValue,
+				showTime: showTime
+			})
+		),
+		React__default['default'].createElement(
+			'div',
+			null,
+			React__default['default'].createElement(
+				'span',
+				{ className: 'subtitleEnd' },
+				'\u043F\u043E'
+			),
+			React__default['default'].createElement(_DatePicker__default['default'], {
+				locale: locale__default['default']
+				// defaultValue={ checkDefValue(props.defaultValueEnd) }
+				, size: size,
+				style: { width: showTime ? '160px' : '135px' },
+				disabledDate: disabledEndDate,
+				onChange: onEndChange,
+				format: dateFormat,
+				placeholder: 'Выберите дату',
+				value: endValue,
+				showTime: showTime
+			})
+		)
 	);
 };
 
-CommandPanel.propTypes = {
-	/** Центральный кастомный элемент командной панели */
-	centerCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object), // PropTypes.element,
+DateRange$1.propTypes = {
+	/** Формат отображения даты (не влияет на формат в onChange) */
+	dateFormat: PropTypes__default['default'].string,
 
-	/** Тип бордера панели (по умолчанию 'bottom')
-  * ['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right'] */
-	borderStyle: PropTypes__default['default'].oneOf(['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right']),
+	/** Значение по умолчанию для первого пикера */
+	defaultValueStart: PropTypes__default['default'].string,
 
-	/** Значение по умолчанию для строки поиска */
-	defaultValueSearch: PropTypes__default['default'].string,
+	/** Значение по умолчанию для второго пикера */
+	defaultValueEnd: PropTypes__default['default'].string,
 
-	/** Нужно ли делать подтверждение на кнопке удалить */
-	deleteConfirm: PropTypes__default['default'].bool,
+	/** Дополнительное имя класса для элемента */
+	className: PropTypes__default['default'].string,
 
-	/** Тип подтверждения удаления 'Popup' / 'Modal' */
-	deleteConfirmType: PropTypes__default['default'].oneOf(['Popup', 'Modal']),
+	/** Наименование параметра для первого пикера */
+	nameStart: PropTypes__default['default'].string,
 
-	/** Текст подтверждения на удаление элемента */
-	deleteConfirmTitle: PropTypes__default['default'].string,
+	/** Наименование параметра для второго пикера */
+	nameEnd: PropTypes__default['default'].string,
 
-	/** Текст подтверждения на удаление элемента */
-	deleteConfirmDescription: PropTypes__default['default'].string,
+	/** Событие при изменении любого из пикеров */
+	onChange: PropTypes__default['default'].func,
 
-	/** Массив элементов командной панели для блокировки
-     ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
-	disabledElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+	/** Размер пикера ['small', 'middle', 'large'] */
+	size: PropTypes__default['default'].oneOf(['small', 'middle', 'large']),
 
-	/** Левый кастомный элемент командной панели */
-	leftCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	/** Значение даты первого пикера (используется для управления датой из родительного компонента) */
+	valueStart: PropTypes__default['default'].string,
 
-	/** Событие при нажатии на кнопку "Добавить" */
-	onClickAdd: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Добавить копированием" */
-	onClickAddAsCopy: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Добавить группу" */
-	onClickAddGroup: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Удалить" */
-	onClickDelete: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Переместить вниз" */
-	onClickDown: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Изменить" */
-	onClickEdit: PropTypes__default['default'].func,
-
-	/** Событие при нажатии на кнопку "Переместить вверх" */
-	onClickUp: PropTypes__default['default'].func,
-
-	/** Событие при поиске */
-	onSearch: PropTypes__default['default'].func,
-
-	/** Правый кастомный элемент командной панели */
-	rightCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
-
-	/** Массив элементов командной панели, которые надо отобразить
-     ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
-	showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
-
-	/** Объект кастомизации системных кнопок
-  { [btnType]: { tooltip: <String>, icon: <Icon />, render: ({disabled, onClick}) => <Component /> } } */
-	systemBtnProps: PropTypes__default['default'].object
+	/** Значение даты второго пикера (используется для управления датой из родительного компонента) */
+	valueEnd: PropTypes__default['default'].string
 };
 
-CommandPanel.defaultProps = {
-	centerCustomSideElement: null,
-	borderStyle: 'bottom',
-	defaultValueSearch: undefined,
-	deleteConfirm: true,
-	deleteConfirmType: 'Modal',
-	deleteConfirmTitle: 'Подтвержение удаления',
-	deleteConfirmDescription: 'Вы действительно хотите удалить?',
-	disabledElements: [],
-	leftCustomSideElement: null,
-	onClickAdd: noop,
-	onClickAddAsCopy: noop,
-	onClickAddGroup: noop,
-	onClickDelete: noop,
-	onClickEdit: noop,
-	onClickUp: noop,
-	onClickDown: noop,
-	onSearch: noop,
-	rightCustomSideElement: null,
-	showElements: [],
-	systemBtnProps: {}
+DateRange$1.defaultProps = {
+	className: '',
+	nameStart: 'dateStart',
+	nameEnd: 'dateEnd',
+	dateFormat: 'DD.MM.YYYY', // HH:mm:ss
+	onChange: noop,
+	size: 'middle',
+	showTime: false
+	// title: 'Период',
+};
+
+var Layout$1 = function Layout(props) {
+
+    var itemProps = {};
+    Object.keys(props).forEach(function (key) {
+        return key !== 'children' ? itemProps[key] = props[key] : null;
+    });
+
+    var getCls = function getCls() {
+        var cls = [rtPrefix + '-layout'];
+        itemProps.className && cls.push(itemProps.className);
+        return cls.join(' ');
+    };
+
+    return React__default['default'].createElement(
+        'div',
+        _extends({}, itemProps, { className: getCls() }),
+        props.children
+    );
+};
+
+Layout$1.propTypes = {
+    /** Строка класса */
+    className: PropTypes__default['default'].string,
+
+    /** Объект стиля */
+    style: PropTypes__default['default'].object
+};
+
+var withStore$1 = function withStore(Component, antFormItemProps) {
+
+    var mapStateToProps = function mapStateToProps(store, ownProps) {
+        var subscribe = ownProps.subscribe,
+            dispatch = ownProps.dispatch;
+
+        var state = {};
+        if (subscribe && subscribe.length > 0) {
+            subscribe.forEach(function (item) {
+                var name = item.name,
+                    path = item.path,
+                    extraData = item.extraData;
+
+                if (name && path) state[name] = objectPath__default['default'].get(store, path);
+                if (name && extraData) state[name + 'ExtraData'] = objectPath__default['default'].get(store, extraData);
+            });
+        }
+        if (dispatch && dispatch.extraData) {
+            // console.log('subscribe to ', dispatch.extraData)
+            state.dispatchExtraData = objectPath__default['default'].get(store, dispatch.extraData);
+        }
+
+        return state;
+    };
+    var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+        return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
+    };
+
+    var defaultProps = {
+        trigger: 'onChange',
+        valuePropName: 'value'
+    };
+
+    var withStoreProps = _extends({}, defaultProps, antFormItemProps);
+
+    return reactRedux.connect(mapStateToProps, mapDispatchToProps)(function (props) {
+        var componentType = props.componentType,
+            setDateStore = props.setDateStore,
+            dispatchExtraData = props.dispatchExtraData;
+
+        // Объект подписки на стор
+
+        var subscribe = props.subscribe ? props.subscribe : [];
+
+        // Объект публикации в стор
+        var dispatch = props.dispatch ? props.dispatch : {};
+
+        var _useState = React.useState({}),
+            _useState2 = slicedToArray(_useState, 2),
+            subscribeProps = _useState2[0],
+            setSubscribeProps = _useState2[1];
+
+        var trigger = withStoreProps.trigger,
+            valuePropName = withStoreProps.valuePropName;
+
+
+        var excludeProps = ['componentType', 'setDateStore', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
+            return item.name;
+        })), ['dispatch', 'dispatchExtraData']);
+
+        var isMounted = useMounted();
+
+        /** Подписка на изменение props[subscribe.name] в сторе */
+        subscribe.map(function (item) {
+            return React.useEffect(function () {
+                if (isMounted && item.name) {
+                    // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                    item.onChange && item.onChange({ value: props[item.name], extraData: props[item.name + 'ExtraData'], setSubscribeProps: setSubscribeProps });
+                }
+                // console.log("Change Props[2]: ", props.subscribeЗф);
+            }, [props[item.name]]);
+        });
+
+        /** Подписка на изменение props и отправка данных в стор */
+        React.useEffect(function () {
+            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
+            var _value = props[valuePropName];
+            if (_value === null || _value === undefined || typeof _value === 'string' && _value.trim() === '') _value = undefined;
+
+            // console.log(`storeHOC [${withStoreProps.name}] => `, _value);
+            // console.log(`storeHOC => `, props);
+
+            if (componentType !== 'Button' && componentType !== 'Search') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: _value });
+        }, [props]);
+
+        /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
+        React.useEffect(function () {
+            if (subscribeProps && subscribeProps.value) {
+                // console.log('subscribeProps.value => ', subscribeProps.value);
+                props[trigger] && props[trigger](subscribeProps.value);
+            }
+        }, [subscribeProps.value]);
+
+        var onChange = function onChange() {
+            // console.log('withStore [trigger] ', trigger)
+            // const newValue = getValue(...args);
+            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+            if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
+            // else if(componentType === 'Search')
+            //     args[1].preventDefault();
+
+            props[trigger] && props[trigger].apply(props, arguments);
+        };
+
+        var _onSearch = function _onSearch(searchLine, e) {
+            e.preventDefault();
+            // console.log("_onSearch", searchLine);
+            dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: searchLine, extraData: dispatchExtraData });
+        };
+
+        var childProps = getObjectExcludedProps(props, excludeProps);
+        var onSearchProps = componentType === 'Search' ? { onSearch: _onSearch } : {};
+        return React__default['default'].createElement(Component, _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange), onSearchProps));
+    });
+};
+
+var DatePickerHOC$1 = function DatePickerHOC(Component) {
+    return function (props) {
+        // console.log("DatePickerHOC => ", props);
+        if (props.value) {
+            if (typeof props.value === 'string') {
+                // console.log("DatePickerHOC => onChange => string");
+                props.onChange(moment__default['default'](props.value), props.value);
+            }
+            // else {
+            // 	console.log("DatePickerHOC => onChange => moment");
+            // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
+            // }
+        }
+        var value = props.value ? typeof props.value === 'string' ? moment__default['default'](props.value) : props.value : undefined;
+        // console.log("DatePickerHOC value => ", value);
+        return React__default['default'].createElement(Component, _extends({}, props, { value: value }));
+    };
+};
+
+var TypographyTitle$1 = function TypographyTitle(props) {
+    return React__default['default'].createElement(
+        _Typography__default['default'].Title,
+        props,
+        ' ',
+        props.label || props.value,
+        ' '
+    );
+};
+
+var TypographyText$1 = function TypographyText(props) {
+    return React__default['default'].createElement(
+        _Typography__default['default'].Text,
+        props,
+        ' ',
+        props.label || props.value,
+        ' '
+    );
+};
+
+var TypographyDate$1 = function TypographyDate(props) {
+    var label = props.label,
+        value = props.value,
+        format = props.format;
+
+    var _value = value ? format ? toFormat(value, format) : getISO(value) : undefined;
+    return React__default['default'].createElement(
+        _Typography__default['default'].Text,
+        props,
+        ' ',
+        label || _value,
+        ' '
+    );
+};
+
+var excludeProps$5 = ['type', 'initialValues', 'form'];
+
+var FormModal$1 = function FormModal(props) {
+    var modal = props.modal,
+        selectedRow = props.selectedRow,
+        visible = props.visible,
+        setVisible = props.setVisible,
+        saveRow = props.saveRow;
+
+
+    var getDefaultFooterProps = function getDefaultFooterProps() {
+
+        var okText = '';
+        var cancelText = '';
+        var modalTitle = '';
+
+        switch (modal.type) {
+            case 'addOnServer':
+            case 'addGroupOnServer':
+                okText = 'Сохранить';
+                cancelText = 'Отмена';
+                modalTitle = 'Сохранить на сервере';
+                break;
+            case 'addOnLocal':
+            case 'addGroupOnLocal':
+                okText = 'Сохранить';
+                cancelText = 'Отмена';
+                modalTitle = 'Сохранить локально';
+                break;
+            case 'editOnServer':
+            case 'editGroupOnServer':
+                okText = 'Сохранить';
+                cancelText = 'Отмена';
+                modalTitle = 'Измененить на сервере';
+                break;
+            case 'editOnLocal':
+            case 'editGroupOnLocal':
+                okText = 'Сохранить';
+                cancelText = 'Отмена';
+                modalTitle = 'Изменение локально';
+                break;
+            case 'select':
+                okText = 'Добавить';
+                cancelText = 'Отмена';
+                modalTitle = 'Выбор';
+                break;
+            case 'viewGroup':
+            case 'viewObject':
+                okText = 'Закрыть';
+                modalTitle = 'Просмотр';
+                break;
+        }
+
+        if (modal.okText) okText = modal.okText;
+
+        if (modal.cancelText) cancelText = modal.cancelText;
+
+        if (modal.title) modalTitle = modal.title;
+
+        return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
+    };
+
+    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$5));
+
+    var onFinish = function onFinish(values) {
+        // console.log('FormModal Success:', values, selectedRow);
+        var saveObj = {};
+        if (modal.type.startsWith('add')) saveObj = _extends({}, values);else saveObj = _extends({}, selectedRow, values);
+
+        saveRow({ type: modal.type, row: saveObj, requestSaveRow: modal.requestSaveRow });
+
+        if (modalProps.onOk) modalProps.onOk(values);
+        if (modalProps.onFinish) modalProps.onFinish(values);
+    };
+
+    var onFinishFailed = function onFinishFailed(errorInfo) {
+        // console.log('FormModal Failed:', errorInfo);
+        console.error("FormModal fields failed: ", errorInfo);
+        props.onFinishFailed && props.onFinishFailed(errorInfo);
+    };
+
+    var _onCancelHandler = function _onCancelHandler(e) {
+        // setVisibleModals({ ...visibleModals, [modal.type]: false });
+        // form.resetFields();
+        setVisible(modal.type, false);
+        if (modalProps.onCancel) modalProps.onCancel(e);
+    };
+
+    var _onLoadInitData = function _onLoadInitData(callBack) {
+        // console.log("Modal => loadInitData", selectedRow);
+        formConfig.loadInitData(callBack, selectedRow);
+    };
+
+    var defaultFooter = [{
+        componentType: 'Item',
+        child: _extends({
+            componentType: 'Button',
+            label: modalProps.cancelText,
+            className: 'mr-8',
+            onClick: _onCancelHandler
+        }, modalProps.cancelButtonProps)
+    }, {
+        componentType: 'Item',
+        child: _extends({
+            componentType: 'Button',
+            label: modalProps.okText,
+            type: modalProps.okType,
+            htmlType: 'submit'
+        }, modalProps.okButtonProps)
+    }];
+
+    var formConfig = _extends({
+        footer: defaultFooter
+    }, modal.form);
+    return React__default['default'].createElement(
+        _Modal__default['default'],
+        _extends({}, modalProps, {
+            centered: true,
+            destroyOnClose: true,
+            visible: visible,
+            onCancel: _onCancelHandler,
+            bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
+            footer: null
+        }),
+        React__default['default'].createElement(Form$1, _extends({}, formConfig, {
+            onFinish: onFinish,
+            onFinishFailed: onFinishFailed,
+            loadInitData: _onLoadInitData
+        }))
+    );
+};
+
+FormModal$1.propTypes = {
+    /** Объект модального окна */
+    modal: PropTypes__default['default'].object,
+
+    /** Выделенная строка таблицы */
+    selectedRow: PropTypes__default['default'].object,
+
+    /** Состояние видимости модалки */
+    visible: PropTypes__default['default'].bool,
+
+    /** Задание состояния видимости модалки */
+    setVisible: PropTypes__default['default'].func,
+
+    /** CallBack функция для сохранения данных */
+    saveRow: PropTypes__default['default'].func
+};
+
+var Modal$3 = function Modal(props) {
+    var buttonProps = props.buttonProps,
+        modalConfig = props.modalConfig,
+        modalData = props.modalData;
+
+    var _useState = React.useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        visible = _useState2[0],
+        setVisible = _useState2[1];
+
+    var _useState3 = React.useState({}),
+        _useState4 = slicedToArray(_useState3, 2),
+        _modalData = _useState4[0],
+        _setModalData = _useState4[1];
+
+    var _useState5 = React.useState({}),
+        _useState6 = slicedToArray(_useState5, 2),
+        _buttonProps = _useState6[0],
+        setButtonProps = _useState6[1];
+
+    // Объект подписки на стор
+
+
+    var subscribe = props.subscribe ? props.subscribe : {};
+
+    // Объект публикации в стор
+    var dispatch = props.dispatch ? props.dispatch : {};
+
+    var setModalData = function setModalData(value) {
+        // console.log("setModalData: ", value);
+        _setModalData && _setModalData(value);
+    };
+
+    React.useEffect(function () {
+        _setModalData(modalData);
+    }, []);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    React.useEffect(function () {
+        if (subscribe.name) {
+            // console.log("Modal => subscribe: ", props[subscribe.name]);
+            subscribe.onChange && subscribe.onChange({ value: props[subscribe.name], setModalData: setModalData, setButtonProps: setButtonProps });
+        }
+        // console.log("Change Props[2]: ", props.subscribeЗф);
+    }, [props[subscribe.name]]);
+
+    var _onOpenModal = function _onOpenModal() {
+        // console.log("Modal => _modalData: ", _modalData);
+        setVisible(true);
+    };
+
+    var _onCloseModal = function _onCloseModal() {
+        setVisible(false);
+    };
+
+    var _onSaveRow = function _onSaveRow(_ref) {
+        var type = _ref.type,
+            row = _ref.row,
+            requestSaveRow = _ref.requestSaveRow;
+
+        // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, row);
+        // console.log("Modal Events => before dispatchToStore: ", dispatch);
+        dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: row });
+
+        if (requestSaveRow && ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'].includes(type)) {
+            var method = type === 'addOnServer' || type === 'addGroupOnServer' ? 'POST' : 'PUT';
+            // console.log("Modal Events => type: ", type, method, row, _modalData);
+            requestSaveRow({
+                method: method,
+                data: row
+            }).then(function (response) {
+                _notification__default['default'].success({
+                    message: 'Сохранение прошло успешно'
+                });
+                _onCloseModal();
+            }).catch(function (error) {
+                return notificationError(error, 'Ошибка при сохранении');
+            });
+        } else _onCloseModal();
+    };
+
+    return React__default['default'].createElement(
+        React__default['default'].Fragment,
+        null,
+        React__default['default'].createElement(
+            _Button__default['default'],
+            _extends({
+                type: "primary"
+            }, buttonProps, _buttonProps, {
+                onClick: _onOpenModal
+            }),
+            buttonProps && buttonProps.label
+        ),
+        React__default['default'].createElement(FormModal$1, {
+            modal: modalConfig,
+            selectedRow: _modalData,
+            visible: visible,
+            setVisible: _onCloseModal,
+            saveRow: _onSaveRow
+        })
+    );
+};
+
+Modal$3.propTypes = {
+
+    /** Свойства [Button](https://ant.design/components/button/) из Ant Design
+     * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
+    buttonProps: PropTypes__default['default'].object,
+
+    /** Объект модального окна. Стандартная конфигурация. */
+    modalConfig: PropTypes__default['default'].object,
+
+    /** Данные для модального окна */
+    modalData: PropTypes__default['default'].object,
+
+    /** Путь в сторе куда класть данных окна после закрытия */
+    dispatch: PropTypes__default['default'].object,
+
+    /** Объект для подписки на изменения в STORE */
+    subscribe: PropTypes__default['default'].object
+};
+
+var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
+    var subscribe = ownProps.subscribe;
+
+    if (subscribe) {
+        var name = subscribe.name,
+            path = subscribe.path;
+
+        if (name && path) return defineProperty({}, name, objectPath__default['default'].get(store, path));
+    }
+    return {};
+};
+var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
+    return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
+};
+
+var Modal$4 = reactRedux.connect(mapStateToProps$3, mapDispatchToProps$4)(Modal$3);
+
+var Select$2 = function Select(props) {
+	var defaultSortBy = props.defaultSortBy,
+	    defaultFilter = props.defaultFilter,
+	    defaultSearchValue = props.defaultSearchValue,
+	    sortBy = props.sortBy,
+	    filter = props.filter,
+	    searchValue = props.searchValue,
+	    infinityMode = props.infinityMode,
+	    requestLoadRows = props.requestLoadRows,
+	    optionConverter = props.optionConverter,
+	    options = props.options,
+	    widthControl = props.widthControl,
+	    _props$subscribe = props.subscribe,
+	    subscribe = _props$subscribe === undefined ? [] : _props$subscribe,
+	    pageSize = props.pageSize,
+	    searchParamName = props.searchParamName,
+	    mode = props.mode,
+	    onChange = props.onChange,
+	    value = props.value;
+
+	/** Наличие на сервере еще данных */
+
+	var _useState = React.useState(true),
+	    _useState2 = slicedToArray(_useState, 2),
+	    _hasMore = _useState2[0],
+	    _setHasMore = _useState2[1];
+	/** Индикатор загрузки данных */
+
+
+	var _useState3 = React.useState(false),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    _loading = _useState4[0],
+	    _setLoading = _useState4[1];
+	/** Опции селекта */
+
+
+	var _useState5 = React.useState(options),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    _options = _useState6[0],
+	    _setOptions = _useState6[1];
+	/** Индикатор достижения низа окна */
+
+
+	var _useState7 = React.useState(false),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    isEndReached = _useState8[0],
+	    setIsEndReached = _useState8[1];
+
+	/** Объект сортировки */
+
+
+	var _useState9 = React.useState(undefined),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    _sortBy = _useState10[0],
+	    _setSortBy = _useState10[1];
+	/** Объект фильтрации */
+
+
+	var _useState11 = React.useState({}),
+	    _useState12 = slicedToArray(_useState11, 2),
+	    _filter = _useState12[0],
+	    _setFilter = _useState12[1];
+	/** Строка поиска */
+
+
+	var _useState13 = React.useState(undefined),
+	    _useState14 = slicedToArray(_useState13, 2),
+	    _searchValue = _useState14[0],
+	    _setSearchValue = _useState14[1];
+
+	/** Состояние параметра выбрать все */
+
+
+	var _useState15 = React.useState(false),
+	    _useState16 = slicedToArray(_useState15, 2),
+	    _isSelectAll = _useState16[0],
+	    _setIsSelectAll = _useState16[1];
+
+	var excludeProps = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize', 'searchParamName', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
+		return item.name;
+	})), ['dispatch', 'dispatchExtraData']);
+
+	React.useEffect(function () {
+		_setSearchValue(defaultSearchValue);
+		_loadOptions({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchValue: defaultSearchValue,
+			reload: true
+		});
+	}, []);
+
+	React.useEffect(function () {
+		_setRowsHandler(options);
+	}, [options]);
+
+	React.useEffect(function () {
+		// console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
+		var __sortBy = sortBy ? sortBy : _sortBy;
+		var __filter = filter ? filter : _filter;
+		var __searchValue = searchValue ? searchValue : _searchValue;
+		_setSortBy(__sortBy);
+		_setFilter(__filter);
+		_setSearchValue(__searchValue);
+		_loadOptions({
+			sortBy: __sortBy,
+			filter: __filter,
+			searchLine: __searchValue,
+			reload: true
+		});
+	}, [sortBy, filter, searchValue]);
+
+	var _setRowsHandler = function _setRowsHandler(options) {
+		_setOptions(options);
+		// console.log('_setRowsHandler value => ', value)
+		if (mode === 'multiple') {
+			if (Array.isArray(value)) if (options.reduce(function (preValue, item) {
+				return value.includes(item.value) ? preValue + 1 : preValue;
+			}, 0) === options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
+			onChange(value);
+		}
+		// setRows(rows);
+		// rowsDispatch(rows);
+	};
+
+	var getPageNum = function getPageNum(reload) {
+		return reload ? 0 : Math.floor(_options.length / pageSize);
+	};
+
+	var getSort = function getSort(sortBy) {
+		return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
+	};
+
+	var getSearchValue = function getSearchValue(searchValue) {
+		return searchValue ? defineProperty({}, searchParamName, searchValue) : null;
+	};
+
+	var _loadOptions = function _loadOptions(params) {
+		// console.log('_dataProcessing', params);
+		var sortBy = params.sortBy,
+		    filter = params.filter,
+		    searchValue = params.searchValue,
+		    reload = params.reload;
+
+		if ((_hasMore || reload) && !_loading && requestLoadRows) {
+			_setLoading(true);
+
+			var requestOptions = {
+				params: {
+					page: getPageNum(reload),
+					size: pageSize,
+					sort: getSort(sortBy)
+				},
+				data: _extends({}, filter, getSearchValue(searchValue))
+				// console.log('dataQuery', dataQuery);
+
+			};requestLoadRows(requestOptions).then(function (response) {
+				// console.log("infinity then response", response);
+				var result = response.data;
+
+				if (result && result.length < pageSize) {
+					_setHasMore(false);
+				} else {
+					_setHasMore(true);
+					setIsEndReached(false);
+				}
+				reload ? _setRowsHandler(result.map(function (option) {
+					return optionConverter(option);
+				})) // _setRows
+				: _setRowsHandler(_options.concat(result.map(function (option) {
+					return optionConverter(option);
+				}))); // _setRows
+
+				// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
+
+				_setLoading(false);
+			}).catch(function (error) {
+				notificationError(error, 'Ошибка загрузки данных');
+				_setRowsHandler(_options); // _setRows
+				// setHasMore(false);
+				_setLoading(false);
+			});
+		}
+	};
+
+	var onScroll = function onScroll(event) {
+		var scrollTopMax = event.nativeEvent.target.scrollTopMax;
+		var scrollTop = event.nativeEvent.target.scrollTop; //.body.scrollTop
+
+		var onEndReached = scrollTopMax - scrollTop;
+
+		if (onEndReached < 300 && !isEndReached) {
+			// console.log('Load Data');
+			setIsEndReached(true);
+			_setSearchValue(defaultSearchValue);
+			if (infinityMode) {
+				_loadOptions({
+					sortBy: defaultSortBy,
+					filter: defaultFilter,
+					searchValue: defaultSearchValue,
+					reload: false
+				});
+			}
+		}
+
+		// console.log("scrollTopMax / scrollTop", scrollTopMax, scrollTop, onEndReached);
+		// const lastScrollTop = this._scroll.scrxollTop;
+		// if (args.scrollTop > lastScrollTop) this._maybeCallOnEndReached();
+	};
+
+	var onSearch = function onSearch(value) {
+		_setSearchValue(value);
+		_loadOptions({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchValue: value,
+			reload: true
+		});
+	};
+
+	var _onChangeSelectAll = function _onChangeSelectAll() {
+		// console.log(`_onChangeSelectAll`, _isSelectAll);
+		if (mode === 'multiple') {
+			if (_isSelectAll) {
+				var optionsValues = _options.map(function (item) {
+					return item.value;
+				});
+				onChange(value.filter(function (item) {
+					return !optionsValues.includes(item);
+				}));
+				_setIsSelectAll(false);
+			} else {
+				if (Array.isArray(value) && value.length > 0) onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(value), toConsumableArray(_options.map(function (item) {
+					return item.value;
+				})))))));else onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(_options.map(function (item) {
+					return item.value;
+				})))))));
+				_setIsSelectAll(true);
+			}
+		} else onChange(undefined);
+	};
+	var _onChange = function _onChange(value) {
+		// console.log(`_onChange selected`, value);
+		if (Array.isArray(value)) if (_options.reduce(function (preValue, item) {
+			return value.includes(item.value) ? preValue + 1 : preValue;
+		}, 0) === _options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
+
+		onChange(value);
+	};
+
+	var getSelectAllCls = function getSelectAllCls() {
+		var cls = ['ant-select-item', 'ant-select-item-option', 'ant-select-item-option-select-all'];
+		if (_isSelectAll) cls.push('ant-select-item-option-selected');
+		return cls.join(' ');
+	};
+
+	var childProps = getObjectExcludedProps(props, excludeProps);
+	return React__default['default'].createElement(
+		_Select__default['default'],
+		_extends({}, childProps, {
+			searchValue: _searchValue,
+			style: { width: widthControl }
+			// listHeight={heightPopup}
+			// defaultValue={['a10', 'c12']}
+			, onChange: _onChange,
+			maxTagCount: 0,
+			maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
+				return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
+			}
+			// dropdownMatchSelectWidth={200}
+			// listItemHeight={10} listHeight={250}
+			, onPopupScroll: onScroll,
+			onSearch: onSearch,
+			dropdownRender: function dropdownRender(menu) {
+				return React__default['default'].createElement(
+					React__default['default'].Fragment,
+					null,
+					mode === 'multiple' ? React__default['default'].createElement(
+						"div",
+						{ className: getSelectAllCls(), onClick: _onChangeSelectAll },
+						React__default['default'].createElement(
+							"div",
+							{ className: "ant-select-item-option-content" },
+							React__default['default'].createElement(
+								"span",
+								null,
+								"\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u0432\u0441\u0435"
+							)
+						),
+						_isSelectAll ? React__default['default'].createElement(
+							"span",
+							{ className: "ant-select-item-option-state" },
+							React__default['default'].createElement(icons.CheckOutlined, null)
+						) : null
+					) : null,
+					menu
+				);
+			}
+		}),
+		_options && _options.map(function (_ref2, i) {
+			var label = _ref2.label,
+			    value = _ref2.value,
+			    className = _ref2.className,
+			    disabled = _ref2.disabled;
+			return React__default['default'].createElement(
+				_Select__default['default'].Option,
+				{ key: i.toString(36) + i, value: value, className: className, disabled: disabled },
+				label
+			);
+		})
+	);
+};
+
+Select$2.propTypes = {
+	/** Сортировка по умолчанию */
+	defaultSortBy: PropTypes__default['default'].shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes__default['default'].string,
+		/** Направление сортировки */
+		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+	}),
+
+	/** Объект фильтрации по умолчанию */
+	defaultFilter: PropTypes__default['default'].object,
+
+	/** Значение строки поиска по умолчанию строк */
+	defaultSearchValue: PropTypes__default['default'].string,
+
+	/** Сортировка */
+	sortBy: PropTypes__default['default'].object,
+
+	/** Фильтр */
+	filter: PropTypes__default['default'].object,
+
+	/** Значение строки поиска */
+	searchValue: PropTypes__default['default'].string,
+
+	/** Режим загружки по скроллу */
+	infinityMode: PropTypes__default['default'].bool,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadRows: PropTypes__default['default'].func,
+
+	/** Функция преобразования загруженных объектов
+  * в объекты для селекта. (option) => ({})
+  * Требоваеть вернуть объект с параметрам
+  * { label: ReactNode, value: any, className: string, disabled: bool } */
+	optionConverter: PropTypes__default['default'].func,
+
+	/** Select options [{ label, value, className, disabled }] */
+	options: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Ширина поля выбора в пикселях */
+	widthControl: PropTypes__default['default'].oneOfType(PropTypes__default['default'].string, PropTypes__default['default'].number),
+
+	/** Объект для подписки на изменения в STORE */
+	subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+	/** Размер страницы */
+	pageSize: PropTypes__default['default'].number,
+
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes__default['default'].string
+};
+
+Select$2.defaultProps = {
+	// Ant Props
+	placeholder: "Выберите",
+
+	// Rt Props
+	defaultSortBy: undefined,
+	defaultFilter: {},
+	defaultSearchValue: undefined,
+	infinityMode: false,
+	requestLoadRows: undefined,
+	options: [],
+	widthControl: '100%',
+	subscribe: [],
+
+	pageSize: 50,
+	searchParamName: 'searchValue'
+};
+
+var excludeProps$6 = ['child', 'componentType', 'field'];
+
+var FormItem$1 = function FormItem(props) {
+	var child = props.child,
+	    field = props.field;
+
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$6);
+
+	// Если тип элемента Select -> добавить доп свойства к Form.Item
+	if (child && child.componentType && (child.componentType === 'SingleSelect' || child.componentType === 'MultiSelect')) {
+		antFormItemProps.valuePropName = 'defaultSelectedRowKeys';
+		antFormItemProps.getValueFromEvent = child.componentType === 'SingleSelect' ? getValueFromSingleSelect : getValueFromMultiSelect;
+		antFormItemProps.trigger = 'onChangeKeys';
+	} else if (child && child.componentType && child.componentType === 'SelectTable') ;
+	// antFormItemProps.getValueFromEvent = getValueFromSelectTable;
+	// antFormItemProps.trigger = 'onRowClick';
+
+
+	// console.log('FormItem props => ', props);
+
+	var getItem = function getItem() {
+		if (child) {
+			// const childProps = getObjectExcludedProps(child, ['componentType']);
+			var childProps = _extends({}, child);
+			// console.log('FormItem childProps => ', childProps);
+			var Component = void 0;
+			var placeholder = void 0;
+			switch (child.componentType) {
+				case 'Button':
+					antFormItemProps.trigger = 'onClick';
+					Component = withStore$1(_Button__default['default'], antFormItemProps);
+					// console.log('Props field => ', field);
+					// const onClick = (e) => childProps.onClick && childProps.onClick(e, field); onClick={onClick}
+					return React__default['default'].createElement(
+						Component,
+						childProps,
+						childProps && childProps.label
+					);
+				case 'Title':
+					Component = withStore$1(TypographyTitle$1, antFormItemProps);
+					return React__default['default'].createElement(Component, _extends({}, childProps, { componentType: child.componentType }));
+				case 'Text':
+					Component = withStore$1(TypographyText$1, antFormItemProps);
+					return React__default['default'].createElement(Component, _extends({}, childProps, { componentType: true }));
+				case 'Divider':
+					Component = withStore$1(_Divider__default['default'], antFormItemProps);
+					return React__default['default'].createElement(
+						Component,
+						childProps,
+						childProps && childProps.label
+					);
+				case 'Checkbox':
+					Component = withStore$1(_Checkbox__default['default'], antFormItemProps);
+					return React__default['default'].createElement(
+						Component,
+						childProps,
+						childProps && childProps.label
+					);
+				case 'DatePicker':
+					Component = withStore$1(DatePickerHOC$1(_DatePicker__default['default']), antFormItemProps);
+					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Выберите дату';
+					var style = _extends({ width: '100%' }, childProps && childProps.style); // locale={locale}
+					return React__default['default'].createElement(Component, _extends({}, childProps, { style: style, placeholder: placeholder }));
+				case 'DateText':
+					Component = withStore$1(TypographyDate$1, antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				case 'Input':
+					Component = withStore$1(_Input__default['default'], antFormItemProps);
+					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
+					return React__default['default'].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
+				case 'Search':
+					Component = withStore$1(_Input__default['default'].Search, antFormItemProps);
+					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Поиск';
+					return React__default['default'].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
+				case 'TextArea':
+					Component = withStore$1(_Input__default['default'].TextArea, antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				case 'Password':
+					Component = withStore$1(_Input__default['default'].Password, antFormItemProps);
+					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите пароль';
+					return React__default['default'].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
+				case 'InputNumber':
+					Component = withStore$1(_InputNumber__default['default'], antFormItemProps);
+					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
+					return React__default['default'].createElement(Component, _extends({}, childProps, { style: { width: '100%' }, placeholder: placeholder }));
+				case 'Radio':
+					Component = withStore$1(_Radio__default['default'], antFormItemProps);
+					return React__default['default'].createElement(
+						Component,
+						childProps,
+						childProps && childProps.label
+					);
+				case 'RadioButton':
+					Component = withStore$1(_Radio__default['default'].Button, antFormItemProps);
+					return React__default['default'].createElement(
+						Component,
+						childProps,
+						childProps && childProps.label
+					);
+				case 'Switch':
+					Component = withStore$1(_Switch__default['default'], antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				case "RadioGroup":
+					Component = withStore$1(_Radio__default['default'].Group, antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				// case 'SingleSelect':
+				case 'Select':
+					Component = withStore$1(Select$2, antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				// return <Select {...childProps} name={antFormItemProps.name}/>;
+				//'infinity', 'serverSide', 'localSide'
+				case 'Table':
+					return React__default['default'].createElement(ConfigLoader, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
+				// case 'FileManager':
+				// 	return <FileManager {...childProps} name={props.name} />;
+				case 'Modal':
+					return React__default['default'].createElement(Modal$4, _extends({}, childProps, { name: props.name }));
+				case 'Custom':
+					Component = withStore$1(child.render, antFormItemProps);
+					return React__default['default'].createElement(Component, childProps);
+				default:
+					return null;
+			}
+		}
+	};
+
+	if (!antFormItemProps.label) return React__default['default'].createElement(
+		_Form__default['default'].Item,
+		_extends({}, antFormItemProps, { noStyle: true }),
+		getItem()
+	);else return React__default['default'].createElement(
+		_Form__default['default'].Item,
+		antFormItemProps,
+		getItem()
+	);
+};
+
+FormItem$1.propTypes = {
+	child: PropTypes__default['default'].object.isRequired
+};
+
+var Switcher = function Switcher(props) {
+    var value = props.value;
+
+    var _useState = React.useState(0),
+        _useState2 = slicedToArray(_useState, 2),
+        _value = _useState2[0],
+        _setValue = _useState2[1];
+
+    React.useEffect(function () {
+        if (value !== undefined && value < props.children.length) {
+            _setValue(value);
+        }
+    }, [value]);
+
+    return props.children[_value];
+};
+
+var excludeProps$7 = ["children", "componentType"];
+
+var FormItems$1 = function FormItems(props) {
+    var items = props.items;
+
+    // console.log('FormItems props => ', props);
+
+    var getItems = function getItems(data, antFormListParams) {
+
+        return data && data.map(function (item, index) {
+            var itemProps = getObjectExcludedProps(item, excludeProps$7);
+            // console.log('FormItems index => ', index);
+
+            switch (item.componentType) {
+                case "Space":
+                    return React__default['default'].createElement(
+                        _Space__default['default'],
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "Row":
+                    return React__default['default'].createElement(
+                        _Row__default['default'],
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "Col":
+                    return React__default['default'].createElement(
+                        _Col__default['default'],
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "Layout":
+                    return React__default['default'].createElement(
+                        Layout$1,
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "Tabs":
+                    return React__default['default'].createElement(
+                        _Tabs__default['default'],
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "TabPane":
+                    return React__default['default'].createElement(
+                        _Tabs__default['default'].TabPane,
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case 'Switcher':
+                    var Component = withStore$1(Switcher, antFormListParams);
+                    // return (<Component {...childProps} />);
+                    return React__default['default'].createElement(
+                        Component,
+                        _extends({ key: index }, itemProps),
+                        item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
+                    );
+                case "Item":
+                    var _item = _extends({}, item);
+                    var _key = index;
+                    if (antFormListParams && antFormListParams.field) {
+                        if (_item.name) {
+                            if (Array.isArray(_item.name)) {
+                                _item.name = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                            } else {
+                                _item.name = [antFormListParams.field.name, _item.name];
+                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                            }
+                        }
+                    }
+                    // console.log('_item ', _item.name);
+                    return React__default['default'].createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                case "ListItems":
+                    return React__default['default'].createElement(
+                        _Form__default['default'].List,
+                        _extends({ key: index }, itemProps),
+                        function (fields, operation) {
+                            var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
+                            return getItems(item.children, param);
+                        }
+                    );
+                case "ListItem":
+                    // console.log('antFormListParams => ', antFormListParams);
+                    return React__default['default'].createElement(
+                        "div",
+                        { key: index },
+                        antFormListParams && antFormListParams.fields && antFormListParams.fields.map(function (field, fIndex) {
+                            // console.log('index field.key', index, field);
+                            var param = _extends({ field: _extends({}, field) }, antFormListParams);
+                            return React__default['default'].createElement(
+                                "div",
+                                { key: field.key },
+                                getItems(item.children, param),
+                                " "
+                            );
+                        })
+                    );
+
+                default:
+                    return null;
+            }
+        }) || null;
+    };
+
+    return getItems(items);
+};
+
+FormItems$1.propTypes = {
+    items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
+};
+
+var excludeProps$8 = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+
+var Form$1 = function Form(props) {
+    var loadInitData = props.loadInitData,
+        header = props.header,
+        body = props.body,
+        footer = props.footer,
+        autoSaveForm = props.autoSaveForm,
+        requestSaveForm = props.requestSaveForm,
+        methodSaveForm = props.methodSaveForm,
+        processBeforeSaveForm = props.processBeforeSaveForm;
+
+    /** Состояние первоначалной настройки компонента*/
+
+    var _useState = React.useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        loaded = _useState2[0],
+        setLoaded = _useState2[1];
+
+    var _useState3 = React.useState({}),
+        _useState4 = slicedToArray(_useState3, 2),
+        antFormProps = _useState4[0],
+        setAntFormProps = _useState4[1];
+
+    var _useState5 = React.useState({}),
+        _useState6 = slicedToArray(_useState5, 2),
+        initFormData = _useState6[0],
+        setInitFormData = _useState6[1];
+
+    React.useEffect(function () {
+        if (!loaded) {
+            if (loadInitData !== noop) loadInitData(_setInitFormData);else setLoaded(true);
+        }
+    }, [loaded]);
+
+    React.useEffect(function () {
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$8));
+        // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
+    }, [props]);
+
+    var _setInitFormData = function _setInitFormData(data) {
+        // console.log("Form loaded init data => ", data);
+        setInitFormData(data);
+        setLoaded(true);
+    };
+
+    var antForm = void 0;
+    if (props && props.form) {
+        antForm = props.form;
+    } else {
+        var _AntForm$useForm = _Form__default['default'].useForm(),
+            _AntForm$useForm2 = slicedToArray(_AntForm$useForm, 1),
+            form = _AntForm$useForm2[0];
+
+        antForm = form;
+    }
+
+    var getBodyCls = function getBodyCls() {
+        var cls = [rtPrefix + "-form-body"];
+        props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
+        props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
+        return cls.join(" ");
+    };
+
+    var onFinish = function onFinish(rawValues) {
+        var values = processBeforeSaveForm ? processBeforeSaveForm(rawValues) : rawValues;
+        console.log("Success form [" + (props.name ? props.name : 'no name form') + "]: ", values);
+        if (autoSaveForm && requestSaveForm) {
+            var saveObject = _extends({}, initFormData, values);
+            requestSaveForm({
+                method: methodSaveForm,
+                data: saveObject
+            }).then(function (response) {
+                _notification__default['default'].success({
+                    message: "Сохранение прошло успешно"
+                });
+                if (props.onFinish) props.onFinish(values);
+            }).catch(function (error) {
+                return notificationError(error, 'Ошибка при сохранении');
+            });
+        } else if (props.onFinish) props.onFinish(values);
+    };
+
+    var onFinishFailed = function onFinishFailed(errorInfo) {
+        console.error("Failed:", errorInfo);
+        props.onFinishFailed && props.onFinishFailed(errorInfo);
+    };
+
+    return React__default['default'].createElement(
+        React__default['default'].Fragment,
+        null,
+        loaded ? React__default['default'].createElement(
+            _Form__default['default'],
+            _extends({
+                form: antForm
+            }, antFormProps, {
+                className: antFormProps.className + " " + rtPrefix + "-form",
+                style: _extends({}, antFormProps.style, { width: '100%', height: '100%' }),
+                initialValues: _extends({}, antFormProps.initialValues, initFormData),
+                onFinish: onFinish,
+                onFinishFailed: onFinishFailed
+            }),
+            header ? React__default['default'].createElement(
+                "div",
+                { className: rtPrefix + "-form-header" },
+                React__default['default'].createElement(FormItems$1, { items: header })
+            ) : null,
+            React__default['default'].createElement(
+                "div",
+                { className: getBodyCls() },
+                React__default['default'].createElement(FormItems$1, { items: body })
+            ),
+            footer ? React__default['default'].createElement(
+                "div",
+                { className: rtPrefix + "-form-footer" },
+                React__default['default'].createElement(FormItems$1, { items: footer })
+            ) : null
+        ) : null
+    );
+};
+
+Form$1.propTypes = {
+
+    /** Не делать отступы у формы от краев блока */
+    noPadding: PropTypes__default['default'].bool,
+
+    /** Разрешит скролл внтри формы */
+    scrollable: PropTypes__default['default'].bool,
+
+    /** Массив объектов для шапки формы. Как правило только заголовок. */
+    header: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+    /** Массив объектов для тела формы */
+    body: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+
+    /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
+    footer: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+    /** Ссылка на функцию загрузки значений по умолчанию
+     * (callBack) => callBack(initObject) */
+    loadInitData: PropTypes__default['default'].func,
+
+    /** Производить ли автоматическое сохранение по параметрам requestSaveForm и methodSaveForm */
+    autoSaveForm: PropTypes__default['default'].bool,
+
+    /** Запрос для автоматического сохранения формы */
+    requestSaveForm: PropTypes__default['default'].func,
+
+    /** HTTP Метод, передаваемый в запрос сохранения */
+    methodSaveForm: PropTypes__default['default'].string,
+
+    /** Функция обработки перед сохранением формы */
+    processBeforeSaveForm: PropTypes__default['default'].func
+};
+
+Form$1.defaultProps = {
+    noPadding: false,
+    scrollable: false,
+    loadInitData: noop,
+    autoSaveForm: true
 };
 
 /**
@@ -5474,12 +8571,25 @@ var rtdReducer = function rtdReducer() {
 
                 var _newState = _extends({}, state);
                 objectPath__default['default'].set(_newState, _path, row); // obj.a is now {}
-                // console.log("SET_ROWS newState: ", newState);
+
+                // console.group("Store");
+                // console.log("Store: ", newState);
+                // console.log("New Data: ", path, row);
+                // console.groupEnd();
+
                 return _newState;
             }
         default:
             return state;
     }
+};
+
+var components = {
+    Table: ConfigLoader,
+    DateRange: DateRange$1,
+    Layout: Layout$1,
+    Form: Form$1,
+    Select: Select$2
 };
 
 exports.APP_TIME_OFFSET = APP_TIME_OFFSET;
@@ -5494,6 +8604,7 @@ exports.Modal = Modal$2;
 exports.Select = Select$1;
 exports.SingleDate = SingleDate;
 exports.Table = Table$1;
+exports.components = components;
 exports.getISO = getISO;
 exports.getMomentFromStringByFormat = getMomentFromStringByFormat;
 exports.getMomentWithOffset = getMomentWithOffset;
