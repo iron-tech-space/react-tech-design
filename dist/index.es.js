@@ -6150,31 +6150,9 @@ var Table$2 = forwardRef(function (props, ref) {
 		    rowKey = _ref5.rowKey,
 		    event = _ref5.event;
 
-		if (!selectable) {
-			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
-			// console.log('q onRowClick => ', rowData)
-			var newRowObject = {
-				rowData: _extends({}, rowData),
-				rowIndex: rowIndex,
-				rowKey: rowKey
-			};
-			_setSelectedRowsHandler([rowKey], rowData);
-			onRowClick(_extends({
-				selected: true
-			}, newRowObject));
-			onSelectedRowsChange([rowKey], [rowData]);
-		} else {
-			var checked = !_selectedRowKeys.includes(rowKey);
-			onChangeSelectionCell({
-				rowData: rowData,
-				rowIndex: rowIndex,
-				column: _getSelectionColumnProps(),
-				rows: _rows,
-				checked: checked
-			});
-		}
+		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
 	};
-	var _onDoubleClick = function _onDoubleClick(_ref6) {
+	var _onRowDoubleClick = function _onRowDoubleClick(_ref6) {
 		var rowData = _ref6.rowData,
 		    rowIndex = _ref6.rowIndex,
 		    rowKey = _ref6.rowKey;
@@ -6182,13 +6160,40 @@ var Table$2 = forwardRef(function (props, ref) {
 		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
 		// console.log('q onRowDoubleClick => ', rowData)
 		rowDoubleClickDispatch(rowData);
-		onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
+	};
+
+	var _rowSelectAfterClick = function _rowSelectAfterClick(_ref7) {
+		var rowData = _ref7.rowData,
+		    rowIndex = _ref7.rowIndex,
+		    rowKey = _ref7.rowKey,
+		    onClick = _ref7.onClick;
+
+		var checked = !_selectedRowKeys.includes(rowKey);
+		var newRowObject = {
+			rowData: _extends({}, rowData),
+			rowIndex: rowIndex,
+			rowKey: rowKey
+		};
+		if (!selectable) {
+			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
+			// console.log('q onRowClick => ', rowData)
+			_setSelectedRowsHandler([rowKey], rowData);
+			onSelectedRowsChange([rowKey], [rowData]);
+		} else {
+			onChangeSelectionCell(_extends({}, newRowObject, {
+				column: _getSelectionColumnProps(),
+				rows: _rows,
+				checked: checked
+			}));
+		}
+		onClick(_extends({ selected: checked }, newRowObject));
 	};
 
 	var _rowEventHandlers = {
 		// onClick: _onRowClick,
 		// onDoubleClick: _onDoubleClick,
-		onClick: useSimpleAndDoubleClick(_onRowClick, _onDoubleClick)
+		onClick: useSimpleAndDoubleClick(_onRowClick, _onRowDoubleClick)
 		// onDoubleClick: console.log('onDoubleClick'),
 		// onContextMenu: console.log('context menu'),
 		// onMouseEnter: console.log('mouse enter'),
@@ -6273,9 +6278,9 @@ var Table$2 = forwardRef(function (props, ref) {
 	);
 
 	/** Событие при рендере для стилизации */
-	var _rowClassName = function _rowClassName(_ref7) {
-		var rowData = _ref7.rowData,
-		    rowIndex = _ref7.rowIndex;
+	var _rowClassName = function _rowClassName(_ref8) {
+		var rowData = _ref8.rowData,
+		    rowIndex = _ref8.rowIndex;
 		var rowClassName = props.rowClassName;
 
 		var rowClass = rowClassName ? callOrReturn(rowClassName, { rowData: rowData, rowIndex: rowIndex }) : '';
@@ -6306,13 +6311,13 @@ var Table$2 = forwardRef(function (props, ref) {
 	/** SELECTABLE FUNCTIONS */
 
 	/** Событие при изменении галочки одной строки */
-	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref8) {
-		var selected = _ref8.selected,
-		    _selectedRow = _ref8._selectedRow,
-		    _selectAll = _ref8._selectAll,
-		    _selectedRowKeys = _ref8._selectedRowKeys,
-		    _selectedRowObjects = _ref8._selectedRowObjects,
-		    _indeterminateRowKeys = _ref8._indeterminateRowKeys;
+	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref9) {
+		var selected = _ref9.selected,
+		    _selectedRow = _ref9._selectedRow,
+		    _selectAll = _ref9._selectAll,
+		    _selectedRowKeys = _ref9._selectedRowKeys,
+		    _selectedRowObjects = _ref9._selectedRowObjects,
+		    _indeterminateRowKeys = _ref9._indeterminateRowKeys;
 
 		// console.group("_onChangeSelectHandler", _selectedRowKeys);
 		// console.log("_selectedRowKeys", _selectedRowKeys);
@@ -6325,20 +6330,14 @@ var Table$2 = forwardRef(function (props, ref) {
 		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects);
 		setIndeterminateRowKeys(_indeterminateRowKeys);
 		setSelectAll(_selectAll);
-		onRowClick({
-			selected: selected,
-			rowData: _selectedRow.rowData,
-			rowIndex: _selectedRow.rowIndex,
-			rowKey: rowKey
-		});
 		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
 	};
 
 	/** Событие при изменении галочки "Выделить все" */
-	var _onSelectAllHandler = function _onSelectAllHandler(_ref9) {
-		var selected = _ref9.selected,
-		    rowKeys = _ref9.rowKeys,
-		    rowObjects = _ref9.rowObjects;
+	var _onSelectAllHandler = function _onSelectAllHandler(_ref10) {
+		var selected = _ref10.selected,
+		    rowKeys = _ref10.rowKeys,
+		    rowObjects = _ref10.rowObjects;
 
 		var selectedKeys = selected ? rowKeys : [];
 		// setSelectedRowKeys(selectedKeys);
@@ -6405,11 +6404,11 @@ var Table$2 = forwardRef(function (props, ref) {
 		// console.log("_onExpandedRowsChange", expandedRowKeys);
 		onExpandedRowsChange(expandedRowKeys);
 	};
-	var _onRowExpand = function _onRowExpand(_ref10) {
-		var expanded = _ref10.expanded,
-		    rowData = _ref10.rowData,
-		    rowIndex = _ref10.rowIndex,
-		    rowKey = _ref10.rowKey;
+	var _onRowExpand = function _onRowExpand(_ref11) {
+		var expanded = _ref11.expanded,
+		    rowData = _ref11.rowData,
+		    rowIndex = _ref11.rowIndex,
+		    rowKey = _ref11.rowKey;
 
 		// console.log("_onRowExpand", rowData, expanded, rowIndex, rowKey);
 		if (expanded) {
@@ -6595,9 +6594,9 @@ var Table$2 = forwardRef(function (props, ref) {
 			React.createElement(
 				AutoResizer,
 				null,
-				function (_ref11) {
-					var width = _ref11.width,
-					    height = _ref11.height;
+				function (_ref12) {
+					var width = _ref12.width,
+					    height = _ref12.height;
 					return React.createElement(BaseTable, {
 						ref: tableRef
 						/** Required */

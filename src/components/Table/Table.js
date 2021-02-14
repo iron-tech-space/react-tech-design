@@ -428,42 +428,42 @@ const Table = forwardRef((props, ref) => {
 		return (_data) => {setClick(prev => prev + 1); setData(() => _data);}
 	}
 	const _onRowClick = ({rowData, rowIndex, rowKey, event}) => {
+		_rowSelectAfterClick({rowData, rowIndex, rowKey, onClick: onRowClick})
+	}
+	const _onRowDoubleClick = ({rowData, rowIndex, rowKey}) => {
+		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
+		// console.log('q onRowDoubleClick => ', rowData)
+		rowDoubleClickDispatch(rowData);
+		_rowSelectAfterClick({rowData, rowIndex, rowKey, onClick: onRowDoubleClick})
+	}
+
+	const _rowSelectAfterClick = ({rowData, rowIndex, rowKey, onClick}) => {
+		const checked = !_selectedRowKeys.includes(rowKey);
+		const newRowObject = {
+			rowData: {...rowData},
+			rowIndex: rowIndex,
+			rowKey: rowKey,
+		};
 		if (!selectable) {
 			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
 			// console.log('q onRowClick => ', rowData)
-			const newRowObject = {
-				rowData: {...rowData},
-				rowIndex: rowIndex,
-				rowKey: rowKey,
-			};
 			_setSelectedRowsHandler([rowKey], rowData);
-			onRowClick({
-				selected: true,
-				...newRowObject,
-			});
 			onSelectedRowsChange([rowKey], [rowData]);
 		} else {
-			const checked = !_selectedRowKeys.includes(rowKey);
 			onChangeSelectionCell({
-				rowData,
-				rowIndex,
+				...newRowObject,
 				column: _getSelectionColumnProps(),
 				rows: _rows,
 				checked: checked,
 			})
 		}
-	}
-	const _onDoubleClick = ({rowData, rowIndex, rowKey}) => {
-		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
-		// console.log('q onRowDoubleClick => ', rowData)
-		rowDoubleClickDispatch(rowData)
-		onRowDoubleClick({rowData, rowIndex, rowKey});
+		onClick({ selected: checked, ...newRowObject });
 	}
 
 	const _rowEventHandlers = {
 		// onClick: _onRowClick,
 		// onDoubleClick: _onDoubleClick,
-		onClick: useSimpleAndDoubleClick(_onRowClick, _onDoubleClick),
+		onClick: useSimpleAndDoubleClick(_onRowClick, _onRowDoubleClick),
 		// onDoubleClick: console.log('onDoubleClick'),
 		// onContextMenu: console.log('context menu'),
 		// onMouseEnter: console.log('mouse enter'),
@@ -589,12 +589,6 @@ const Table = forwardRef((props, ref) => {
 		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects)
 		setIndeterminateRowKeys(_indeterminateRowKeys);
 		setSelectAll(_selectAll);
-		onRowClick({
-			selected,
-			rowData: _selectedRow.rowData,
-			rowIndex: _selectedRow.rowIndex,
-			rowKey,
-		});
 		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
 	};
 

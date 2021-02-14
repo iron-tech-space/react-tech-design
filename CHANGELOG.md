@@ -1,3 +1,7 @@
+## 0.0.57
+
+- Fix bug "Add select row on a double click"
+
 ## 0.0.56
 
 - Fix bug with `ListItems` operations
