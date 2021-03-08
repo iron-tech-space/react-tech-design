@@ -57,6 +57,8 @@ const Select = props => {
 		'pageSize', 'searchParamName',
 		'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData'];
 
+	const isMounted = useMounted()
+
 	useEffect(() => {
 		_setSearchValue(defaultSearchValue);
 		_loadOptions({
@@ -73,18 +75,20 @@ const Select = props => {
 
 	useEffect(() => {
 		// console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
-		const __sortBy = sortBy ? sortBy : _sortBy;
-		const __filter = filter ? filter : _filter;
-		const __searchValue = searchValue ? searchValue : _searchValue;
-		_setSortBy(__sortBy);
-		_setFilter(__filter);
-		_setSearchValue(__searchValue);
-		_loadOptions({
-			sortBy: __sortBy,
-			filter: __filter,
-			searchLine: __searchValue,
-			reload: true,
-		});
+		if(isMounted) {
+			const __sortBy = sortBy ? sortBy : _sortBy;
+			const __filter = filter ? filter : _filter;
+			const __searchValue = searchValue ? searchValue : _searchValue;
+			_setSortBy(__sortBy);
+			_setFilter(__filter);
+			_setSearchValue(__searchValue);
+			_loadOptions({
+				sortBy: __sortBy,
+				filter: __filter,
+				searchLine: __searchValue,
+				reload: true,
+			});
+		}
 	}, [sortBy, filter, searchValue]);
 
 	const _setRowsHandler = (options) => {

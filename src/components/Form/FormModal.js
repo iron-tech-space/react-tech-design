@@ -131,6 +131,7 @@ const FormModal = props => {
 
     const formConfig =  {
         footer: defaultFooter,
+        loadInitData: (callBack, row) => callBack(row),
         ...modal.form
     };
     return (
@@ -148,7 +149,7 @@ const FormModal = props => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 loadInitData={_onLoadInitData}
-            />
+            >{props.children}</Form>
         </Modal>
     )
 };

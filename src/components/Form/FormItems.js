@@ -1,12 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import FormItem from "./FormItem";
-import Layout from "../Layout/Layout";
-import { Space, Row, Col, Tabs, Radio, Form as AntForm } from "antd";
+import { Form as AntForm } from "antd";
 import { getObjectExcludedProps } from "../utils/baseUtils";
-import Switcher from "../Switcher/Switcher";
-import { withStore } from "./HOCs";
-import Select from "../Select/Select";
+import { renderDeclarativeByName } from "../declarative";
 
 const excludeProps = ["children", "componentType"];
 
@@ -22,64 +19,6 @@ const FormItems = (props) => {
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
-                case "Space":
-                    return (
-                        <Space key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Space>
-                    );
-                case "Row":
-                    return (
-                        <Row key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Row>
-                    );
-                case "Col":
-                    return (
-                        <Col key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Col>
-                    );
-                case "Layout":
-                    return (
-                        <Layout key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Layout>
-                    );
-                case "Tabs":
-                    return (
-                        <Tabs key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Tabs>
-                    );
-                case "TabPane":
-                    return (
-                        <Tabs.TabPane key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Tabs.TabPane>
-                    );
-                case 'Switcher':
-                    const Component = withStore(Switcher, antFormListParams);
-                    // return (<Component {...childProps} />);
-                    return (
-                        <Component key={index} {...itemProps}>
-                            {item.children &&
-                            item.children.length > 0 &&
-                            getItems(item.children, antFormListParams)}
-                        </Component>
-                    );
                 case "Item":
                     let _item = { ...item };
                     let _key = index;
@@ -116,10 +55,8 @@ const FormItems = (props) => {
                             })}
                         </div>
                     );
-
-
                 default:
-                    return null;
+                    return renderDeclarativeByName(item.componentType)({ key: index, ...itemProps })(getItems(item.children, antFormListParams))
             }
         })) || null;
     };

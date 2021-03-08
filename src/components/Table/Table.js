@@ -15,11 +15,11 @@ import {
 	getTableRowKeys,
 	findNodeByRowKey,
 	noop,
-	getTableRowObjects, notificationError, dispatchToStore, useMounted
+	getTableRowObjects, notificationError, useMounted
 } from "../utils/baseUtils";
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
-import FormItems from "../deprecated/Form/FormItems";
+import FormItems from "../Form/FormItems";
 import moment from "moment";
 // import {Checkbox} from 'antd';
 
@@ -493,19 +493,32 @@ const Table = forwardRef((props, ref) => {
 
 	/** VIEW FUNCTIONS */
 
+
 	const _footer = (
 		<React.Fragment>
 			{_footerShow ? (
 					<React.Fragment>
                         {/*className={'BaseTable__footer__counter'}>*/}
 						<div key={'footer-left-custom-side'} className={'left-custom-side'}>
-							{footerProps.leftCustomSideElement ? <FormItems items={footerProps.leftCustomSideElement} /> : null}
+							{footerProps.leftCustomSideElement
+								? Array.isArray(footerProps.leftCustomSideElement)
+									? <FormItems items={footerProps.leftCustomSideElement} />
+									: <footerProps.leftCustomSideElement/>
+								: null}
 						</div>
 						<div key={'footer-center-custom-side'} className={'center-custom-side'}>
-							{footerProps.centerCustomSideElement ? <FormItems items={footerProps.centerCustomSideElement} /> : null}
+							{footerProps.centerCustomSideElement
+								? Array.isArray(footerProps.centerCustomSideElement)
+									? <FormItems items={footerProps.centerCustomSideElement} />
+									: <footerProps.centerCustomSideElement/>
+								: null}
 						</div>
 						<div key={'footer-right-custom-side'} className={'right-custom-side'}>
-							{footerProps.rightCustomSideElement ? <FormItems items={footerProps.rightCustomSideElement} /> : null}
+							{footerProps.rightCustomSideElement
+								? Array.isArray(footerProps.rightCustomSideElement)
+									? <FormItems items={footerProps.rightCustomSideElement} />
+									: <footerProps.rightCustomSideElement/>
+								: null}
 						</div>
 
 						{selectable ? (
@@ -1015,13 +1028,13 @@ Table.propTypes = {
 		totalTitle: PropTypes.string,
 
 		/** Левый кастомный элемент командной панели */
-		leftCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+		leftCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
 
 		/** Центральный кастомный элемент командной панели */
-		centerCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+		centerCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
 
 		/** Правый кастомный элемент командной панели */
-		rightCustomSideElement: PropTypes.arrayOf(PropTypes.object),
+		rightCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
 	}),
 
 	/** Высота заголовка таблицы */

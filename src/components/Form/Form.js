@@ -5,7 +5,7 @@ import { Form as AntForm, notification } from "antd";
 import { getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
 import { rtPrefix } from "../utils/variables";
 
-const excludeProps = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+const excludeProps = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 
 const Form = (props) => {
@@ -84,10 +84,13 @@ const Form = (props) => {
         props.onFinishFailed && props.onFinishFailed(errorInfo);
     };
 
+    const Header = (header) => <div className={`${rtPrefix}-form-header`}><FormItems items={header}/></div>
+    const Footer = (footer) => <div className={`${rtPrefix}-form-footer`}><FormItems items={footer}/></div>
+
     return (
         <React.Fragment>
-            {loaded ?
-                <AntForm
+            {loaded
+                ? <AntForm
                     form={antForm}
                     {...antFormProps}
                     className={`${antFormProps.className} ${rtPrefix}-form`}
@@ -96,9 +99,12 @@ const Form = (props) => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                 >
-                    {header ? <div className={`${rtPrefix}-form-header`}><FormItems items={header}/></div> : null}
-                    <div className={getBodyCls()}><FormItems items={body}/></div>
-                    {footer ? <div className={`${rtPrefix}-form-footer`}><FormItems items={footer}/></div> : null}
+                    <React.Fragment>
+                        {header ? Header(header) : null}
+                        {body ? <div className={getBodyCls()}><FormItems items={body}/></div> : null}
+                        {props.children}
+                        {footer ? Footer(footer) : null}
+                    </React.Fragment>
                 </AntForm>
                 : null}
         </React.Fragment>
@@ -117,7 +123,7 @@ Form.propTypes = {
     header: PropTypes.arrayOf(PropTypes.object),
 
     /** Массив объектов для тела формы */
-    body: PropTypes.arrayOf(PropTypes.object).isRequired,
+    body: PropTypes.arrayOf(PropTypes.object),
 
     /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
     footer: PropTypes.arrayOf(PropTypes.object),

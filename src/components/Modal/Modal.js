@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import FormModal from "../Form/FormModal";
-import { notification, Button} from "antd";
-import { notificationError, dispatchToStore, useMounted } from "../utils/baseUtils";
+import { notification, Button, Tooltip} from "antd";
+import { notificationError, dispatchToStore, useMounted, getObjectExcludedProps } from "../utils/baseUtils";
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
 
@@ -13,9 +13,11 @@ const defaultProps = {
     dispatch: {}
 }
 
+const excludeProps = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
+
 const Modal = props => {
 
-    const {buttonProps, modalConfig, modalData, subscribe, dispatch} = props;
+    const {buttonProps, toolTipProps, modalConfig, modalData, subscribe, dispatch} = props;
 
     const [visible, setVisible] = useState(false);
     const [_modalData, _setModalData] = useState({});
@@ -94,19 +96,21 @@ const Modal = props => {
 
     return (
         <React.Fragment>
-            <Button
-                type="primary"
-                {...buttonProps}
-                {..._buttonProps}
-                onClick={_onOpenModal}
-            >{buttonProps && buttonProps.label}</Button>
+            <Tooltip {...toolTipProps}>
+                <Button
+                    type="primary"
+                    {...buttonProps}
+                    {..._buttonProps}
+                    onClick={_onOpenModal}
+                >{buttonProps && buttonProps.label}</Button>
+            </Tooltip>
             <FormModal
-                modal={modalConfig}
+                modal={ modalConfig }
                 selectedRow={_modalData}
                 visible={visible}
                 setVisible={_onCloseModal}
                 saveRow={_onSaveRow}
-            />
+            >{props.children}</FormModal>
         </React.Fragment>
     )
 };

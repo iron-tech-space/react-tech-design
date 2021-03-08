@@ -1,0 +1,329 @@
+[
+  {
+    "id": "e2346164-06b3-48cb-b530-289970b8c05f",
+    "code": 3,
+    "name": "Группа КТ №2",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": [
+      {
+        "id": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+        "code": 4,
+        "name": "Группа КТ №3",
+        "isGroup": true,
+        "parentId": "e2346164-06b3-48cb-b530-289970b8c05f",
+        "parentName": "Группа КТ №2",
+        "children": [
+          {
+            "id": "0f716d64-e8e4-44ed-999b-8ebf480eaab8",
+            "code": 2,
+            "name": "Контрольная точка #1",
+            "isGroup": false,
+            "parentId": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+            "parentName": "Группа КТ №3",
+            "children": []
+          },
+          {
+            "id": "153dae42-44cf-42fb-87b7-bacc8b128979",
+            "code": 8,
+            "name": "Контрольная точка #2",
+            "isGroup": false,
+            "parentId": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+            "parentName": "Группа КТ №3",
+            "children": []
+          },
+          {
+            "id": "bd3c2f8b-a9cb-4783-a091-4fc4d8563e79",
+            "code": 91,
+            "name": "Контрольная точка #7",
+            "isGroup": false,
+            "parentId": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+            "parentName": "Группа КТ №3",
+            "children": []
+          },
+          {
+            "id": "ebda1613-3154-4298-abcc-4fc240bd6bb0",
+            "code": 92,
+            "name": "Контрольная точка #8",
+            "isGroup": false,
+            "parentId": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+            "parentName": "Группа КТ №3",
+            "children": []
+          },
+          {
+            "id": "93eb966c-5548-471c-a70d-72b5922e4590",
+            "code": 99,
+            "name": "Группа КТ №30",
+            "isGroup": true,
+            "parentId": "2c490dc8-4a4c-410c-b770-336d164d6f49",
+            "parentName": "Группа КТ №3",
+            "children": [
+              {
+                "id": "e2e7ab12-cb4c-4c5b-aedb-59d21fa969ce",
+                "code": 97,
+                "name": "Контрольная точка #14",
+                "isGroup": false,
+                "parentId": "93eb966c-5548-471c-a70d-72b5922e4590",
+                "parentName": "Группа КТ №30",
+                "children": []
+              },
+              {
+                "id": "13cb0376-b3b5-4429-9bff-7f6d274cd53d",
+                "code": 98,
+                "name": "Контрольная точка #13",
+                "isGroup": false,
+                "parentId": "93eb966c-5548-471c-a70d-72b5922e4590",
+                "parentName": "Группа КТ №30",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "e97ad3ec-40c7-4af9-a1ca-76dd6a1a83f5",
+        "code": 5,
+        "name": "Группа КТ №4",
+        "isGroup": true,
+        "parentId": "e2346164-06b3-48cb-b530-289970b8c05f",
+        "parentName": "Группа КТ №2",
+        "children": [
+          {
+            "id": "0ac514c5-4ab3-4062-a2ca-a25d1434c4ea",
+            "code": 6,
+            "name": "Группа КТ №6",
+            "isGroup": true,
+            "parentId": "e97ad3ec-40c7-4af9-a1ca-76dd6a1a83f5",
+            "parentName": "Группа КТ №4",
+            "children": [
+              {
+                "id": "282c4b0d-67b8-4b0d-8304-632b6d1e5d94",
+                "code": 88,
+                "name": "Контрольная точка #4",
+                "isGroup": false,
+                "parentId": "0ac514c5-4ab3-4062-a2ca-a25d1434c4ea",
+                "parentName": "Группа КТ №6",
+                "children": []
+              },
+              {
+                "id": "b952743c-69e3-4dc7-aeca-efa77a897946",
+                "code": 89,
+                "name": "Контрольная точка #5",
+                "isGroup": false,
+                "parentId": "0ac514c5-4ab3-4062-a2ca-a25d1434c4ea",
+                "parentName": "Группа КТ №6",
+                "children": []
+              },
+              {
+                "id": "531e5f9b-d75c-407c-974b-c66884f7ebd3",
+                "code": 96,
+                "name": "Контрольная точка #11",
+                "isGroup": false,
+                "parentId": "0ac514c5-4ab3-4062-a2ca-a25d1434c4ea",
+                "parentName": "Группа КТ №6",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "e5d5ce34-af00-4000-808b-928644dca5f7",
+        "code": 7,
+        "name": "Группа КТ №7",
+        "isGroup": true,
+        "parentId": "e2346164-06b3-48cb-b530-289970b8c05f",
+        "parentName": "Группа КТ №2",
+        "children": [
+          {
+            "id": "3244445c-9df8-4a5c-a123-106c1cdb4023",
+            "code": 1,
+            "name": "Группа КТ №1",
+            "isGroup": true,
+            "parentId": "e5d5ce34-af00-4000-808b-928644dca5f7",
+            "parentName": "Группа КТ №7",
+            "children": [
+              {
+                "id": "352339ef-9de8-453f-bef9-fd493ff2a8c8",
+                "code": 2,
+                "name": "Контрольная точка #3",
+                "isGroup": false,
+                "parentId": "3244445c-9df8-4a5c-a123-106c1cdb4023",
+                "parentName": "Группа КТ №1",
+                "children": []
+              },
+              {
+                "id": "67275749-f677-43c8-b923-742f9183e9f1",
+                "code": 93,
+                "name": "Контрольная точка #9",
+                "isGroup": false,
+                "parentId": "3244445c-9df8-4a5c-a123-106c1cdb4023",
+                "parentName": "Группа КТ №1",
+                "children": []
+              },
+              {
+                "id": "22cda717-2f96-4aa6-8abc-5c55357d7591",
+                "code": 94,
+                "name": "Контрольная точка #10",
+                "isGroup": false,
+                "parentId": "3244445c-9df8-4a5c-a123-106c1cdb4023",
+                "parentName": "Группа КТ №1",
+                "children": []
+              },
+              {
+                "id": "6e5ed1c7-3746-496e-9334-2c467a55409c",
+                "code": 102,
+                "name": "Контрольная точка #12",
+                "isGroup": false,
+                "parentId": "3244445c-9df8-4a5c-a123-106c1cdb4023",
+                "parentName": "Группа КТ №1",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "980b5d5a-c044-45ce-a396-63ddfe665671",
+        "code": 103,
+        "name": "Группа КТ №9",
+        "isGroup": true,
+        "parentId": "e2346164-06b3-48cb-b530-289970b8c05f",
+        "parentName": "Группа КТ №2",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "97d4c3fb-0195-4cea-9a31-3e787f63ac78",
+    "code": 95,
+    "name": "Группа КТ №8",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": [
+      {
+        "id": "74cacb65-4b08-48fb-9a9a-0449654f6e13",
+        "code": 90,
+        "name": "Контрольная точка #6",
+        "isGroup": false,
+        "parentId": "97d4c3fb-0195-4cea-9a31-3e787f63ac78",
+        "parentName": "Группа КТ №8",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "8cfe2969-4ebb-4d87-b2c0-540f362a72fb",
+    "code": 101,
+    "name": "Контрольная точка #15",
+    "isGroup": false,
+    "parentId": null,
+    "parentName": null,
+    "children": []
+  },
+  {
+    "id": "d9aeb9d6-b3b9-4cff-9ed2-cb8f6162a4d8",
+    "code": 104,
+    "name": "Группа КТ №10",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": []
+  },
+  {
+    "id": "e0cf26ed-5fbd-4c34-8d18-d446042b5eef",
+    "code": 106,
+    "name": "Гараж",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": [
+      {
+        "id": "334d0658-5ac1-4968-a558-1a70837fff10",
+        "code": 105,
+        "name": "Подъемник №1",
+        "isGroup": false,
+        "parentId": "e0cf26ed-5fbd-4c34-8d18-d446042b5eef",
+        "parentName": "Гараж",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "77357524-ecb3-4881-944a-3cd5e3fefe40",
+    "code": 107,
+    "name": "XBO-II",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": [
+      {
+        "id": "10ab0eae-b29b-4df3-a11c-0954ad67955d",
+        "code": 108,
+        "name": "Ф1",
+        "isGroup": true,
+        "parentId": "77357524-ecb3-4881-944a-3cd5e3fefe40",
+        "parentName": "XBO-II",
+        "children": [
+          {
+            "id": "0bd6db50-1c90-4b4c-bf7a-1700bf94aeed",
+            "code": 109,
+            "name": "Т3",
+            "isGroup": false,
+            "parentId": "10ab0eae-b29b-4df3-a11c-0954ad67955d",
+            "parentName": "Ф1",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "414a1df7-1c48-4a98-a5bc-6eccde52825a",
+        "code": 110,
+        "name": "Ф2",
+        "isGroup": true,
+        "parentId": "77357524-ecb3-4881-944a-3cd5e3fefe40",
+        "parentName": "XBO-II",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "b744bc15-0fa2-4a67-b743-c524409272d7",
+    "code": 111,
+    "name": "XBO-2",
+    "isGroup": true,
+    "parentId": null,
+    "parentName": null,
+    "children": [
+      {
+        "id": "dc1158b4-28cc-42d3-a304-cc670c21e45f",
+        "code": 112,
+        "name": "Т1",
+        "isGroup": false,
+        "parentId": "b744bc15-0fa2-4a67-b743-c524409272d7",
+        "parentName": "XBO-2",
+        "children": []
+      },
+      {
+        "id": "c8df77f6-b96d-4d1a-a163-75c17d74f3d3",
+        "code": 113,
+        "name": "Т2",
+        "isGroup": false,
+        "parentId": "b744bc15-0fa2-4a67-b743-c524409272d7",
+        "parentName": "XBO-2",
+        "children": []
+      },
+      {
+        "id": "2ca62ca8-33d4-44c0-8065-9f1d05462350",
+        "code": 114,
+        "name": "Т3",
+        "isGroup": false,
+        "parentId": "b744bc15-0fa2-4a67-b743-c524409272d7",
+        "parentName": "XBO-2",
+        "children": []
+      }
+    ]
+  }
+]

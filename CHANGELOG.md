@@ -1,3 +1,14 @@
+## 0.0.58
+
+- Add components
+  - FormHeader
+  - FormBody
+  - FormFooter
+  - TreeSelect
+  - UploadFile
+- Add `JSX` style components
+- Add `declarative` style components
+
 ## 0.0.57
 
 - Fix bug "Add select row on a double click"
@@ -69,7 +80,7 @@
 
 ## 0.0.45
 
-- Fix `index.js` (add `FileManager`)
+- Fix `declarative.js` (add `FileManager`)
 
 ## 0.0.44
 

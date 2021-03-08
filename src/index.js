@@ -1,19 +1,8 @@
-import Table from './components/Table/ConfigLoader'
-import DateRange from './components/DateRange/DateRange';
-import Layout from "./components/Layout/Layout";
-import Form from './components/Form/Form';
-import Select from "./components/Select/Select";
+import {classic, declarative} from './components/declarative';
 
-const components = {
-    Table,
-    DateRange,
-    Layout,
-    Form,
-    Select
-};
+const components = { Form: classic.Form };
 
-export {components};
-
+export {components, classic, declarative}
 
 /** deprecated */
 // Базовые копоненты

@@ -1,0 +1,44 @@
+POST https://mobinspect.dias-dev.ru/api/dynamicdq/data/hierarchical/controlPoints?page=0&size=1
+Content-Type: application/json
+userId: 0be7f31d-3320-43db-91a5-3c44c99329ab
+Authorization: Bearer 10b9a592-c803-42aa-9ee0-fcfbe440604f
+
+{}
+
+<> 2021-03-09T193120.200.json
+
+###
+
+POST https://mobinspect.dias-dev.ru/api/dynamicdq/data/hierarchical/controlPoints?page=0&size=1
+Accept: application/json
+userId: 0be7f31d-3320-43db-91a5-3c44c99329ab
+Authorization: Bearer 10b9a592-c803-42aa-9ee0-fcfbe440604f
+
+{}
+
+<> 2021-03-09T193044.415.json
+
+###
+
+POST https://mobinspect.dias-dev.ru/api/dynamicdq/data/hierarchical/controlPoints?page=0&size=1
+Accept: application/json, text/plain, */*
+userId: 0be7f31d-3320-43db-91a5-3c44c99329ab
+Authorization: Bearer 10b9a592-c803-42aa-9ee0-fcfbe440604f
+
+{}
+
+<> 2021-03-09T193021.415.json
+
+###
+
+POST https://mobinspect.dias-dev.ru/api/dynamicdq/data/hierarchical/controlPoints?page=0&size=1
+Accept: application/json, text/plain, */*
+userId: 0be7f31d-3320-43db-91a5-3c44c99329ab
+Authorization: Bearer 10b9a592-c803-42aa-9ee0-fcfbe440604f
+
+{}
+
+<> 2021-03-09T193012.415.json
+
+###
+

@@ -75,7 +75,7 @@ export const withStore = (Component, antFormItemProps) => {
             if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
                 _value = undefined;
 
-            // console.log(`storeHOC [${withStoreProps.name}] => `, _value);
+            // console.log(`storeHOC [${dispatch.name}] => `, _value);
             // console.log(`storeHOC => `, props);
 
             if (componentType !== 'Button' && componentType !== 'Search')
@@ -91,7 +91,7 @@ export const withStore = (Component, antFormItemProps) => {
         }, [subscribeProps.value]);
 
         const onChange = (...args) => {
-            // console.log('withStore [trigger] ', trigger)
+            // console.log('withStore [trigger] ', props.componentType)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
             if(componentType === 'Button')
@@ -110,13 +110,14 @@ export const withStore = (Component, antFormItemProps) => {
 
         const childProps = getObjectExcludedProps(props, excludeProps);
         const onSearchProps = (componentType === 'Search') ? {onSearch: _onSearch} : {}
+        // console.log(`storeHOC Component => `, componentType, Component);
         return (
             <Component
                 {...childProps}
                 {...subscribeProps}
                 {...{[trigger]: onChange}}
                 {...onSearchProps}
-            />
+            >{props.children}</Component>
         )
     })
 };
@@ -136,8 +137,9 @@ export const DatePickerHOC = (Component) => {
             // }
         }
         const value = props.value ? (typeof props.value === 'string' ? moment(props.value) : props.value) : undefined;
+        const style = {width: '100%', ...(props && props.style)}; // locale={locale}
         // console.log("DatePickerHOC value => ", value);
-        return <Component {...props} value={value} />
+        return <Component {...props} style={style} value={value} />
     };
 };
 
