@@ -15,6 +15,7 @@ const defaultProps = {
     buttonProps: {}
 }
 
+/** Компонент загрузки файлов */
 const UploadFile = props => {
 
     const {
@@ -28,7 +29,7 @@ const UploadFile = props => {
     } = props
 
     const _uploadFile = (file) => {
-        // console.log('beforeUpload fileList => ', fileList);
+        // console.log('beforeUpload dataObject => ', dataObject);
         notification(file, 'loading');
         if (requestUploadFile) {
             requestUploadFile({ file: file, dataObject })
@@ -89,13 +90,25 @@ const UploadFile = props => {
 };
 
 UploadFile.propTypes = {
+    /** Функция запроса для отправки файла с данным на сервер */
     requestUploadFile: PropTypes.func.isRequired,
+
+    /** Данные, прикрепляемые к файлу */
     dataObject: PropTypes.object,
+
+    /** Функция, вызываемая при удачной загрузке файла */
     onCompletedUpload: PropTypes.func,
+
+    /** Функция, вызываемая при НЕ удачной загрузке файла */
     onFailedUpload: PropTypes.func,
 
+    /** Ant Props для [Upload](https://ant.design/components/upload/) компонента */
     uploadProps: PropTypes.object,
+
+    /** Ant Props для [Tooltip](https://ant.design/components/tooltip/) компонента */
     toolTipProps: PropTypes.object,
+
+    /** Ant Props для [Button](https://ant.design/components/button/) компонента */
     buttonProps: PropTypes.object,
 };
 

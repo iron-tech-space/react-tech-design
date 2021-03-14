@@ -23,6 +23,7 @@ import FormItems from "../Form/FormItems";
 import moment from "moment";
 // import {Checkbox} from 'antd';
 
+/** Компонент таблицы */
 const Table = forwardRef((props, ref) => {
 
 	/** Наличие на сервере еще данных */
@@ -923,11 +924,7 @@ Table.propTypes = {
 	/** Столбцы таблицы */
 	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-	/** Тип таблицы
-	 * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
-	 * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
-	 * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
-	// type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+	/** Режим загрузки данных по скроллу */
 	infinityMode: PropTypes.bool,
 
 	/**
@@ -993,8 +990,44 @@ Table.propTypes = {
 	rowKey: PropTypes.string,
 
 
-	/** Дополнительные поля и валидация в объекты таблицы */
+	/** Дополнительные поля и валидация в объекты таблицы
+	 * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
+	 * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
+	 * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
+	 * ```json
+	 * [
+	 * 	{
+	 * 		name: <String>,
+	 * 		value: <func>,
+	 * 		validate: <func>
+	 * 	}
+	 * ]
+	 * ```
+	 * `name` – Имя параметра в объекте
+	 * `value` – Функция формирования значения - `(row, rows) => { return {} }`
+	 * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
+	 * Параметра **validate** работает **только** для модельного окна тип `select`.
+	 * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
+	 */
 	customFields: PropTypes.arrayOf(PropTypes.object),
+
+	/**
+	 * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
+	 * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
+	 * ```json
+	 * [
+	 * 	{
+	 * 		name: <String>,
+	 * 		cellRenderer: <func>,
+	 * 		...advancedColProps
+	 * 	}
+	 * ]
+	 * ```
+	 * `name` – key колонки к которой надо применить дополнительные пропсы
+	 * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
+	 * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
+	 */
+	customColumnProps: PropTypes.arrayOf(PropTypes.object),
 
 	/**
 	 * VIEW PROPS
@@ -1044,7 +1077,7 @@ Table.propTypes = {
 	rowHeight: PropTypes.number,
 
 	/** Custom row renderer
-	 * Параметры - ({ isScrolling, cells, columns, rowData, rowIndex, depth }) */
+	 * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
 	rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 
 	/** Строки будут в зебро-стиле */
@@ -1063,6 +1096,9 @@ Table.propTypes = {
 
 	/** Размер страницы */
 	pageSize: PropTypes.number,
+
+	/** Функция запроса для конфигурации */
+	requestLoadConfig: PropTypes.func,
 
 	/** Функция запроса для загрузки строк (данных) */
 	requestLoadRows: PropTypes.func,
@@ -1084,7 +1120,7 @@ Table.propTypes = {
 	 * TREE PROPS
 	 * */
 
-	/** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
+	/** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
 	nodeAssociated: PropTypes.bool,
 
 	/** Ключ колонки по которой строить иерархию */
@@ -1103,24 +1139,24 @@ Table.propTypes = {
 	 * EVENTS
 	 * */
 
-	/** Событие при клике на строку (только при selectable = false)
-	 * Параметр - ({selected, rowData, rowIndex}) */
+	/** Событие при клике на строку (только при `selectable` = `false`)
+	 * `({selected, rowData, rowIndex}) => {}` */
 	onRowClick: PropTypes.func,
 
 	/** Событие при двойном клике на строку.
-	 * Параметр - ({rowData, rowIndex, rowKey}) */
+	 * `({rowData, rowIndex, rowKey}) => {}` */
 	onRowDoubleClick: PropTypes.func,
 
 	/** События при открытии / закрытии ноды
-	 * Парметры - ({ expanded, rowData, rowIndex, rowKey }) */
+	 * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
 	onRowExpand: PropTypes.func,
 
 	/** Событие при выборе строки.
-	 * Параметр - массив выбранных строе (только rowKey) */
+	 * `([rowKeys], [rowDatas]) => {}` */
 	onSelectedRowsChange: PropTypes.func,
 
 	/** События при открытии / закрытии ноды
-	 * Парметры - (expandedRowKeys) - массив ключей открытых нод */
+	 * `(expandedRowKeys) => {}` - массив ключей открытых нод */
 	onExpandedRowsChange: PropTypes.func,
 
 	/** SELECTED PANEL */

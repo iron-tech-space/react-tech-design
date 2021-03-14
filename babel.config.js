@@ -9,9 +9,10 @@ module.exports = {
                 useBuiltIns: 'usage',
             },
         ],
+        "stage-0",
         'react',
     ],
-    plugins: [
-        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }] // `style: true` for less
-    ],
+    // plugins: [
+    //     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }] // `style: true` for less
+    // ],
 };

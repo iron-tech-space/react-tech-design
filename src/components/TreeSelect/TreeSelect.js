@@ -3,50 +3,44 @@ import PropTypes from "prop-types";
 import { TreeSelect as AntTreeSelect } from "antd";
 import { getObjectExcludedProps, notificationError, useMounted } from "../utils/baseUtils";
 
+const excludeProps = [
+    'componentType',
+    'defaultSortBy',
+    'defaultFilter',
+    'defaultSearchValue',
+    'sortBy',
+    'filter',
+    'searchValue',
+    'searchParamName',
+    'requestLoadRows',
+    'optionConverter',
+    'treeData'
+];
+
+/** Компонент выбора элемента(ов) из древовидного списка */
 const TreeSelect = props => {
 
     const {
+        // Rt Props
         defaultSortBy,
         defaultFilter,
         defaultSearchValue,
         sortBy,
         filter,
         searchValue,
-        // infinityMode,
+        searchParamName,
         requestLoadRows,
         optionConverter,
         treeData,
-        // widthControl,
-        subscribe = [],
-        // pageSize,
-        searchParamName,
-        //
-        // // Ant Props
-        // mode,
-        // onChange,
-        // value,
     } = props;
     /** Индикатор загрузки данных */
     const [_loading, _setLoading] = useState(false);
     /** Опции селекта */
     const [_treeData, _setTreeData] = useState(treeData);
-    /** Объект сортировки */
-    const [_sortBy, _setSortBy] = useState(undefined);
-    /** Объект фильтрации */
-    const [_filter, _setFilter] = useState({});
-    /** Строка поиска */
-    const [_searchValue, _setSearchValue] = useState(undefined);
-
-    const excludeProps = [
-        'componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue',
-        'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl',
-        'pageSize', 'searchParamName',
-        'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData'];
 
     const isMounted = useMounted()
 
     useEffect(() => {
-        _setSearchValue(defaultSearchValue);
         _loadOptions({
             sortBy: defaultSortBy,
             filter: defaultFilter,
@@ -55,23 +49,17 @@ const TreeSelect = props => {
         });
     }, []);
 
-    // useEffect(() => {
-    //     // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
-    //     if(isMounted) {
-    //         const __sortBy = sortBy ? sortBy : _sortBy;
-    //         const __filter = filter ? filter : _filter;
-    //         const __searchValue = searchValue ? searchValue : _searchValue;
-    //         _setSortBy(__sortBy);
-    //         _setFilter(__filter);
-    //         _setSearchValue(__searchValue);
-    //         _loadOptions({
-    //             sortBy: __sortBy,
-    //             filter: __filter,
-    //             searchLine: __searchValue,
-    //             reload: true,
-    //         });
-    //     }
-    // }, [sortBy, filter, searchValue]);
+    useEffect(() => {
+        // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
+        if(isMounted) {
+            _loadOptions({
+                sortBy: sortBy,
+                filter: filter,
+                searchLine: searchValue,
+                reload: true,
+            });
+        }
+    }, [sortBy, filter, searchValue]);
 
     const getSort = (sortBy) =>
         sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
@@ -132,12 +120,61 @@ const TreeSelect = props => {
 };
 
 TreeSelect.propTypes = {
+    /** Сортировка по умолчанию */
+    defaultSortBy: PropTypes.shape({
+        /** Ключ поля для сортировки */
+        key: PropTypes.string,
+        /** Направление сортировки */
+        order: PropTypes.oneOf(['asc', 'desc']),
+    }),
 
+    /** Объект фильтрации по умолчанию */
+    defaultFilter: PropTypes.object,
+
+    /** Значение строки поиска по умолчанию строк */
+    defaultSearchValue: PropTypes.string,
+
+    /** Сортировка */
+    sortBy: PropTypes.object,
+
+    /** Фильтр */
+    filter: PropTypes.object,
+
+    /** Значение строки поиска */
+    searchValue: PropTypes.string,
+
+    /** Имя параметра для поиска */
+    searchParamName: PropTypes.string,
+
+    /** Функция запроса для загрузки строк (данных) */
+    requestLoadRows: PropTypes.func,
+
+    /** Функция преобразования загруженных объектов в объекты для селекта.
+     * Сигнатура `(option) => ({})`
+     * Требоваеть вернуть объект с параметрам
+     * `{ label: ReactNode, value: any, children: any, checkable: bool, selectable: bool }`
+     * ##### Example:
+     * ``` JS
+     * (option) => ({
+     * 	label: (<span><MehOutlined />{option.name}</span>),
+     * 	value: option.id,
+     * 	children: option.children,
+     * 	checkable: !option.isGroup,
+     * 	selectable: !option.isGroup,
+     * })
+     * ```*/
+    optionConverter: PropTypes.func.isRequired,
+
+    /** Select options `[{ label, value, children, checkable, selectable }]` */
+    options: PropTypes.arrayOf(PropTypes.object),
 };
 
 TreeSelect.defaultProps = {
-    // Ant Props
-    placeholder: "Выберите",
+    // Rt Props
+    defaultSortBy: undefined,
+    defaultFilter: {},
+    defaultSearchValue: undefined,
+    requestLoadRows: undefined,
 };
 
 export default TreeSelect;

@@ -8,23 +8,41 @@ import {
 
 import { CheckOutlined } from '@ant-design/icons';
 
+const excludeProps = [
+	'componentType',
+	'defaultSortBy',
+	'defaultFilter',
+	'defaultSearchValue',
+	'sortBy',
+	'filter',
+	'searchValue',
+	'searchParamName',
+	'infinityMode',
+	'requestLoadRows',
+	'optionConverter',
+	'options',
+	'widthControl',
+	'pageSize'
+];
+
+/** Компонент выбора элемента(ов) из списка */
 const Select = props => {
 
 	const {
+		// Rt Props
 		defaultSortBy,
 		defaultFilter,
 		defaultSearchValue,
 		sortBy,
 		filter,
 		searchValue,
+		searchParamName,
 		infinityMode,
 		requestLoadRows,
 		optionConverter,
 		options,
 		widthControl,
-		subscribe = [],
 		pageSize,
-		searchParamName,
 
 		// Ant Props
 		mode,
@@ -50,12 +68,6 @@ const Select = props => {
 
 	/** Состояние параметра выбрать все */
 	const [_isSelectAll, _setIsSelectAll] = useState(false);
-
-	const excludeProps = [
-		'componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue',
-		'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl',
-		'pageSize', 'searchParamName',
-		'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData'];
 
 	const isMounted = useMounted()
 
@@ -293,38 +305,42 @@ Select.propTypes = {
 	/** Значение строки поиска */
 	searchValue: PropTypes.string,
 
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes.string,
+
 	/** Режим загружки по скроллу */
 	infinityMode: PropTypes.bool,
 
 	/** Функция запроса для загрузки строк (данных) */
 	requestLoadRows: PropTypes.func,
 
-	/** Функция преобразования загруженных объектов
-	 * в объекты для селекта. (option) => ({})
+	/** Функция преобразования загруженных объектов в объекты для селекта.
+	 * Сигнатура `(option) => ({})`
 	 * Требоваеть вернуть объект с параметрам
-	 * { label: ReactNode, value: any, className: string, disabled: bool } */
-	optionConverter: PropTypes.func,
+	 * `{ label: ReactNode, value: any, className: string, disabled: bool }`
+	 * ##### Example:
+	 * ``` JS
+	 * (option) => ({
+	 * 	label: (<span><MehOutlined />{option.name}</span>),
+	 * 	value: option.id,
+	 * 	className: 'some-class',
+	 * 	disabled: false,
+	 * })
+	 * ```
+	 */
+	optionConverter: PropTypes.func.isRequired,
 
-	/** Select options [{ label, value, className, disabled }] */
+	/** Select options `[{ label, value, className, disabled }]` */
 	options: PropTypes.arrayOf(PropTypes.object),
 
 	/** Ширина поля выбора в пикселях */
-	widthControl: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
-
-	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes.arrayOf(PropTypes.object),
+	widthControl: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
 	/** Размер страницы */
 	pageSize: PropTypes.number,
-
-	/** Имя параметра для поиска */
-	searchParamName: PropTypes.string,
 };
 
 Select.defaultProps = {
-	// Ant Props
-	placeholder: "Выберите",
-
 	// Rt Props
 	defaultSortBy: undefined,
 	defaultFilter: {},
@@ -333,8 +349,6 @@ Select.defaultProps = {
 	requestLoadRows: undefined,
 	options: [],
 	widthControl: '100%',
-	subscribe: [],
-
 	pageSize: 50,
 	searchParamName: 'searchValue',
 }

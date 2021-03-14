@@ -5,12 +5,32 @@ import { Form as AntForm, notification } from "antd";
 import { getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
 import { rtPrefix } from "../utils/variables";
 
-const excludeProps = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+const excludeProps = [
+    "componentType",
+    "noPadding",
+    "scrollable",
+    "header",
+    "body",
+    "footer",
+    "loadInitData",
+    "autoSaveForm",
+    "requestSaveForm",
+    "methodSaveForm",
+    "processBeforeSaveForm"
+];
 
-
+/** Компонент формы */
 const Form = (props) => {
-    const { loadInitData, header, body, footer,
-        autoSaveForm, requestSaveForm, methodSaveForm, processBeforeSaveForm } = props;
+    const {
+        loadInitData,
+        header,
+        body,
+        footer,
+        autoSaveForm,
+        requestSaveForm,
+        methodSaveForm,
+        processBeforeSaveForm
+    } = props;
 
     /** Состояние первоначалной настройки компонента*/
     const [loaded, setLoaded] = useState(false);
@@ -113,10 +133,10 @@ const Form = (props) => {
 
 Form.propTypes = {
 
-    /** Не делать отступы у формы от краев блока */
+    /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding: PropTypes.bool,
 
-    /** Разрешит скролл внтри формы */
+    /** Разрешит скролл внтри формы. **Only config Form** */
     scrollable: PropTypes.bool,
 
     /** Массив объектов для шапки формы. Как правило только заголовок. */
@@ -129,10 +149,10 @@ Form.propTypes = {
     footer: PropTypes.arrayOf(PropTypes.object),
 
     /** Ссылка на функцию загрузки значений по умолчанию
-     * (callBack) => callBack(initObject) */
+     * `(callBack) => callBack(initObject)` */
     loadInitData: PropTypes.func,
 
-    /** Производить ли автоматическое сохранение по параметрам requestSaveForm и methodSaveForm */
+    /** Производить ли автоматическое сохранение по параметрам `requestSaveForm` и `methodSaveForm` */
     autoSaveForm: PropTypes.bool,
 
     /** Запрос для автоматического сохранения формы */
@@ -142,7 +162,7 @@ Form.propTypes = {
     methodSaveForm: PropTypes.string,
 
     /** Функция обработки перед сохранением формы */
-    processBeforeSaveForm: PropTypes.func,
+    processBeforeSaveForm: PropTypes.func
 };
 
 Form.defaultProps = {

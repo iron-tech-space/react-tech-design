@@ -6,8 +6,6 @@ import 'antd/es/input-number/style';
 import _InputNumber from 'antd/es/input-number';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
-import 'antd/es/date-picker/style';
-import _DatePicker from 'antd/es/date-picker';
 import 'antd/es/checkbox/style';
 import _Checkbox from 'antd/es/checkbox';
 import 'antd/es/divider/style';
@@ -22,17 +20,19 @@ import 'antd/es/row/style';
 import _Row from 'antd/es/row';
 import 'antd/es/space/style';
 import _Space from 'antd/es/space';
-import 'antd/es/button/style';
-import _Button from 'antd/es/button';
 import 'antd/es/form/style';
 import _Form from 'antd/es/form';
 import React, { useState, useEffect, forwardRef, useRef } from 'react';
+import 'antd/es/button/style';
+import _Button from 'antd/es/button';
+import 'antd/es/date-picker/style';
+import _DatePicker from 'antd/es/date-picker';
+import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import objectPath from 'object-path';
 import 'antd/es/notification/style';
 import _notification from 'antd/es/notification';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import BaseTable, { AutoResizer, callOrReturn } from 'react-base-table';
 import 'antd/es/spin/style';
@@ -42,16 +42,65 @@ import 'antd/es/select/style';
 import _Select from 'antd/es/select';
 import 'antd/es/tree-select/style';
 import _TreeSelect from 'antd/es/tree-select';
-import 'antd/es/tooltip/style';
-import _Tooltip from 'antd/es/tooltip';
 import 'antd/es/modal/style';
 import _Modal from 'antd/es/modal';
+import 'antd/es/tooltip/style';
+import _Tooltip from 'antd/es/tooltip';
 import 'antd/es/upload/style';
 import _Upload from 'antd/es/upload';
 import 'antd/es/popconfirm/style';
 import _Popconfirm from 'antd/es/popconfirm';
 import SortOrder from 'react-base-table/lib/SortOrder';
 import locale from 'antd/es/date-picker/locale/ru_RU';
+
+var APP_TIME_OFFSET = 3;
+
+var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
+	return date ? moment(date, format).utcOffset(APP_TIME_OFFSET) : null;
+};
+
+// export const getMomentWithOffset = (date) =>
+// 	moment(date).utcOffset(APP_TIME_OFFSET);
+var getMomentWithOffset = function getMomentWithOffset(date) {
+	return moment(date).format();
+};
+
+var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
+	return moment(date).startOf('day')
+	// .hours(0)
+	// .minutes(0)
+	// .seconds(0)
+	// .milliseconds(0)
+	.format();
+};
+
+var toFormat = function toFormat(dateString, format) {
+	if (!dateString) {
+		return '';
+	}
+	var mom = moment(dateString);
+	return mom.isValid() ? mom.format(format) : dateString;
+};
+
+var toDDMMYYYYdot = function toDDMMYYYYdot(dateString) {
+	return toFormat(dateString, 'DD.MM.YYYY');
+};
+
+var toDDMMYYYYdotAltDashDash = function toDDMMYYYYdotAltDashDash(dateString) {
+	return toDDMMYYYYdot(dateString) || '--';
+};
+
+var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
+	return toFormat(dateString, 'DD.MM.YYYY HH:mm:ss') || '--';
+};
+
+var toDDMMYYYYdash = function toDDMMYYYYdash(dateString) {
+	return toFormat(dateString, 'DD-MM-YYYY');
+};
+
+var getISO = function getISO(date) {
+	return moment(date).utcOffset(APP_TIME_OFFSET).toISOString();
+};
 
 var types = {
     INIT_STORE: 'INIT_STORE',
@@ -302,56 +351,7 @@ function useMounted() {
 	return isMounted;
 }
 
-var APP_TIME_OFFSET = 3;
-
-var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
-	return date ? moment(date, format).utcOffset(APP_TIME_OFFSET) : null;
-};
-
-// export const getMomentWithOffset = (date) =>
-// 	moment(date).utcOffset(APP_TIME_OFFSET);
-var getMomentWithOffset = function getMomentWithOffset(date) {
-	return moment(date).format();
-};
-
-var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
-	return moment(date).startOf('day')
-	// .hours(0)
-	// .minutes(0)
-	// .seconds(0)
-	// .milliseconds(0)
-	.format();
-};
-
-var toFormat = function toFormat(dateString, format) {
-	if (!dateString) {
-		return '';
-	}
-	var mom = moment(dateString);
-	return mom.isValid() ? mom.format(format) : dateString;
-};
-
-var toDDMMYYYYdot = function toDDMMYYYYdot(dateString) {
-	return toFormat(dateString, 'DD.MM.YYYY');
-};
-
-var toDDMMYYYYdotAltDashDash = function toDDMMYYYYdotAltDashDash(dateString) {
-	return toDDMMYYYYdot(dateString) || '--';
-};
-
-var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
-	return toFormat(dateString, 'DD.MM.YYYY HH:mm:ss') || '--';
-};
-
-var toDDMMYYYYdash = function toDDMMYYYYdash(dateString) {
-	return toFormat(dateString, 'DD-MM-YYYY');
-};
-
-var getISO = function getISO(date) {
-	return moment(date).utcOffset(APP_TIME_OFFSET).toISOString();
-};
-
-var withStore = function withStore(Component, antFormItemProps) {
+var withStore$1 = function withStore(Component, antFormItemProps) {
 
     var mapStateToProps = function mapStateToProps(store, ownProps) {
         var subscribe = ownProps.subscribe,
@@ -472,27 +472,29 @@ var withStore = function withStore(Component, antFormItemProps) {
     });
 };
 
-var DatePickerHOC = function DatePickerHOC(Component) {
-    return function (props) {
-        // console.log("DatePickerHOC => ", props);
-        if (props.value) {
-            if (typeof props.value === 'string') {
-                // console.log("DatePickerHOC => onChange => string");
-                props.onChange(moment(props.value), props.value);
-            }
-            // else {
-            // 	console.log("DatePickerHOC => onChange => moment");
-            // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
-            // }
+var rtPrefix = 'rt';
+
+/** Компонент выбора даты */
+var DatePicker = function DatePicker(props) {
+    // console.log("DatePickerHOC => ", props);
+    if (props.value) {
+        if (typeof props.value === 'string') {
+            // console.log("DatePickerHOC => onChange => string");
+            props.onChange(moment(props.value), props.value);
         }
-        var value = props.value ? typeof props.value === 'string' ? moment(props.value) : props.value : undefined;
-        var style = _extends({ width: '100%' }, props && props.style); // locale={locale}
-        // console.log("DatePickerHOC value => ", value);
-        return React.createElement(Component, _extends({}, props, { style: style, value: value }));
-    };
+        // else {
+        // 	console.log("DatePickerHOC => onChange => moment");
+        // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
+        // }
+    }
+    var value = props.value ? typeof props.value === 'string' ? moment(props.value) : props.value : undefined;
+    var style = _extends({ width: '100%' }, props && props.style); // locale={locale}
+    // console.log("DatePickerHOC value => ", value);
+    return React.createElement(_DatePicker, _extends({}, props, { style: style, value: value }));
 };
 
-var TypographyDate = function TypographyDate(props) {
+/** Компонент вывода даты в текстовом виде */
+var TypographyDate$1 = function TypographyDate(props) {
     var label = props.label,
         value = props.value,
         format = props.format;
@@ -501,28 +503,85 @@ var TypographyDate = function TypographyDate(props) {
     return React.createElement(
         _Typography.Text,
         props,
-        ' ',
+        " ",
         label || _value,
-        ' '
+        " "
     );
 };
 
-var excludeProps = ['child', 'componentType', 'field'];
-var FormItem = function FormItem(props) {
+/** Компонент кнопки со всеми пропрами AntButton */
+var Button = function Button(props) {
+    var Component = withStore$1(_Button, { trigger: 'onClick' });
+    // console.log('Props classic field renderClassic => ', props.field);
+    // const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
+    var onClick = function onClick(e) {
+        return props.onClick && props.onClick(e, props.field);
+    };
+    return renderClassicWithLabel(Component)(_extends({}, props, { onClick: onClick }));
+};
+
+/** Custom компонент */
+var Custom = function Custom(props) {
+    return renderClassic(props.render)(_extends({}, props, { componentType: 'Custom' }));
+};
+
+/** Компонент заголовка формы */
+var FormHeader = function FormHeader(props) {
+    return React.createElement(
+        "div",
+        { className: rtPrefix + "-form-header" },
+        props.children
+    );
+};
+
+/** Компонент тела формы */
+var FormBody = function FormBody(props) {
+    var cls = [rtPrefix + "-form-body"];
+    props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
+    props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
+    return React.createElement(
+        "div",
+        { className: cls.join(" ") },
+        props.children
+    );
+};
+
+/** Компонент подвала формы */
+var FormFooter = function FormFooter(props) {
+    return React.createElement(
+        "div",
+        { className: rtPrefix + "-form-footer" },
+        props.children
+    );
+};
+
+var TabPane = function TabPane(props) {
+    var cls = [];
+    props.className && cls.push(props.className);
+    props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
+    return React.createElement(
+        _Tabs.TabPane,
+        _extends({}, props, { className: cls.join(" ") }),
+        props.children
+    );
+};
+
+var excludeProps$a = ['child', 'componentType', 'field'];
+var FormItem$1 = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$a);
 	if (child) return renderClassicByName(child.componentType)(_extends({ itemProps: _extends({}, antFormItemProps) }, child, { field: field }));else return null;
 };
 
-FormItem.propTypes = {
+FormItem$1.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
-var excludeProps$1 = ["children", "componentType"];
+var excludeProps$9 = ["children", "componentType"];
 
-var FormItems = function FormItems(props) {
+var FormItems$1 = function FormItems(props) {
     var items = props.items;
 
     // console.log('FormItems props => ', props);
@@ -530,7 +589,7 @@ var FormItems = function FormItems(props) {
     var getItems = function getItems(data, antFormListParams) {
 
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$1);
+            var itemProps = getObjectExcludedProps(item, excludeProps$9);
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
@@ -549,7 +608,7 @@ var FormItems = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React.createElement(FormItem, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
                 case "ListItems":
                     return React.createElement(
                         _Form.List,
@@ -584,15 +643,14 @@ var FormItems = function FormItems(props) {
     return getItems(items);
 };
 
-FormItems.propTypes = {
+FormItems$1.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-var rtPrefix = 'rt';
+var excludeProps$8 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
-var excludeProps$2 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
-
-var Form = function Form(props) {
+/** Компонент формы */
+var Form$1 = function Form(props) {
     var loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
@@ -626,7 +684,7 @@ var Form = function Form(props) {
     }, [loaded]);
 
     useEffect(function () {
-        setAntFormProps(getObjectExcludedProps(props, excludeProps$2));
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$8));
         // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
     }, [props]);
 
@@ -682,14 +740,14 @@ var Form = function Form(props) {
         return React.createElement(
             "div",
             { className: rtPrefix + "-form-header" },
-            React.createElement(FormItems, { items: header })
+            React.createElement(FormItems$1, { items: header })
         );
     };
     var Footer = function Footer(footer) {
         return React.createElement(
             "div",
             { className: rtPrefix + "-form-footer" },
-            React.createElement(FormItems, { items: footer })
+            React.createElement(FormItems$1, { items: footer })
         );
     };
 
@@ -714,7 +772,7 @@ var Form = function Form(props) {
                 body ? React.createElement(
                     "div",
                     { className: getBodyCls() },
-                    React.createElement(FormItems, { items: body })
+                    React.createElement(FormItems$1, { items: body })
                 ) : null,
                 props.children,
                 footer ? Footer(footer) : null
@@ -723,12 +781,12 @@ var Form = function Form(props) {
     );
 };
 
-Form.propTypes = {
+Form$1.propTypes = {
 
-    /** Не делать отступы у формы от краев блока */
+    /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding: PropTypes.bool,
 
-    /** Разрешит скролл внтри формы */
+    /** Разрешит скролл внтри формы. **Only config Form** */
     scrollable: PropTypes.bool,
 
     /** Массив объектов для шапки формы. Как правило только заголовок. */
@@ -741,10 +799,10 @@ Form.propTypes = {
     footer: PropTypes.arrayOf(PropTypes.object),
 
     /** Ссылка на функцию загрузки значений по умолчанию
-     * (callBack) => callBack(initObject) */
+     * `(callBack) => callBack(initObject)` */
     loadInitData: PropTypes.func,
 
-    /** Производить ли автоматическое сохранение по параметрам requestSaveForm и methodSaveForm */
+    /** Производить ли автоматическое сохранение по параметрам `requestSaveForm` и `methodSaveForm` */
     autoSaveForm: PropTypes.bool,
 
     /** Запрос для автоматического сохранения формы */
@@ -757,39 +815,27 @@ Form.propTypes = {
     processBeforeSaveForm: PropTypes.func
 };
 
-Form.defaultProps = {
+Form$1.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
     autoSaveForm: true
 };
 
-var Layout = function Layout(props) {
-
-    var itemProps = {};
-    Object.keys(props).forEach(function (key) {
-        return key !== 'children' ? itemProps[key] = props[key] : null;
-    });
+/** Компонент обертка со всеми пропрами div */
+var Layout$1 = function Layout(props) {
 
     var getCls = function getCls() {
         var cls = [rtPrefix + '-layout'];
-        itemProps.className && cls.push(itemProps.className);
+        props.className && cls.push(props.className);
         return cls.join(' ');
     };
 
     return React.createElement(
         'div',
-        _extends({}, itemProps, { className: getCls() }),
+        _extends({}, props, { className: getCls() }),
         props.children
     );
-};
-
-Layout.propTypes = {
-    /** Строка класса */
-    className: PropTypes.string,
-
-    /** Объект стиля */
-    style: PropTypes.object
 };
 
 var Switcher = function Switcher(props) {
@@ -809,7 +855,7 @@ var Switcher = function Switcher(props) {
     return props.children[_value];
 };
 
-var empty = React.createElement(
+var empty$1 = React.createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
@@ -821,7 +867,7 @@ var empty = React.createElement(
 	' '
 );
 
-var overlay = React.createElement(
+var overlay$1 = React.createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
@@ -832,7 +878,7 @@ var overlay = React.createElement(
 	' '
 );
 
-var SelectionHead = function SelectionHead(props) {
+var SelectionHead$1 = function SelectionHead(props) {
 	var column = props.column,
 	    container = props.container;
 	var rowKey = column.rowKey,
@@ -861,7 +907,7 @@ var SelectionHead = function SelectionHead(props) {
 	});
 };
 
-var getRowChildren = function getRowChildren(data, rowKey) {
+var getRowChildren$1 = function getRowChildren(data, rowKey) {
 	return data.map(function (item) {
 		if (item.children && item.children.length) {
 			return [item[rowKey], getRowChildren(item.children, rowKey)];
@@ -870,7 +916,7 @@ var getRowChildren = function getRowChildren(data, rowKey) {
 	});
 };
 
-var findBrothers = function findBrothers(data, selfItem, rowKey, parentKey) {
+var findBrothers$1 = function findBrothers(data, selfItem, rowKey, parentKey) {
 	var rowKeys = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
 	var arr = [];
@@ -890,7 +936,7 @@ var findBrothers = function findBrothers(data, selfItem, rowKey, parentKey) {
 	return arr;
 };
 
-var parentAnalysis = function parentAnalysis(_ref) {
+var parentAnalysis$1 = function parentAnalysis(_ref) {
 	var rowData = _ref.rowData,
 	    rowKey = _ref.rowKey,
 	    parentKey = _ref.parentKey,
@@ -911,9 +957,9 @@ var parentAnalysis = function parentAnalysis(_ref) {
 
 	/** Пока есть родитель */
 	while (parentExist && nodeAssociated) {
-		var indeterminateBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
-		var selectedBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
-		var allBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey));
+		var indeterminateBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
+		var selectedBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
+		var allBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey));
 
 		if (checked) {
 			if (lastTypeSelect === 'checked' && selectedBrothers.length === allBrothers.length) typeSelect = 'checked';else typeSelect = 'square';
@@ -989,14 +1035,14 @@ var onChangeSelectionCell = function onChangeSelectionCell(props) {
 	/** Обработка себя, поиск детей, выделение / снятие их */
 	var rowChildren = [];
 	if (checked) {
-		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
 
 		_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
 		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
 			return element !== rowData[rowKey] && !rowChildren.includes(element);
 		});
 	} else {
-		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
 
 		_selectedRowKeys = _selectedRowKeys.filter(function (element) {
 			return element !== rowData[rowKey] && !rowChildren.includes(element);
@@ -1006,7 +1052,7 @@ var onChangeSelectionCell = function onChangeSelectionCell(props) {
 		});
 	}
 
-	var _parentAnalysis = parentAnalysis({
+	var _parentAnalysis = parentAnalysis$1({
 		rowData: rowData,
 		rowKey: rowKey,
 		parentKey: parentKey,
@@ -1054,7 +1100,7 @@ var onChangeSelectionCell = function onChangeSelectionCell(props) {
 	// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
 };
 
-var SelectionCell = function SelectionCell(props) {
+var SelectionCell$1 = function SelectionCell(props) {
 	var rowData = props.rowData,
 	    column = props.column;
 	var selectedRowKeys = column.selectedRowKeys,
@@ -1071,7 +1117,7 @@ var SelectionCell = function SelectionCell(props) {
 	});
 };
 
-var SelectionList = function SelectionList(props) {
+var SelectionList$1 = function SelectionList(props) {
 	var selectedRowObjects = props.selectedRowObjects,
 	    rowRender = props.rowRender,
 	    onClickDropSelect = props.onClickDropSelect;
@@ -1110,7 +1156,7 @@ var SelectionList = function SelectionList(props) {
 	);
 };
 
-SelectionList.propTypes = {
+SelectionList$1.propTypes = {
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
@@ -1124,11 +1170,12 @@ SelectionList.propTypes = {
 	onClickDropSelect: PropTypes.func.isRequired
 };
 
-SelectionList.defaultProps = {};
+SelectionList$1.defaultProps = {};
 
 // import {Checkbox} from 'antd';
 
-var Table = forwardRef(function (props, ref) {
+/** Компонент таблицы */
+var Table$2 = forwardRef(function (props, ref) {
 
 	/** Наличие на сервере еще данных */
 	var _useState = useState(true),
@@ -1253,7 +1300,7 @@ var Table = forwardRef(function (props, ref) {
 	    subscribe = props.subscribe;
 
 
-	var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$2.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -1287,7 +1334,7 @@ var Table = forwardRef(function (props, ref) {
 				});
 				var _indeterminateRowKeys2 = [];
 				selectedRow.forEach(function (item) {
-					var _parentAnalysis = parentAnalysis({
+					var _parentAnalysis = parentAnalysis$1({
 						rowData: item,
 						rowKey: rowKey,
 						parentKey: expandParentKey,
@@ -1297,9 +1344,9 @@ var Table = forwardRef(function (props, ref) {
 						selectedRowKeys: defaultSelectedRowKeys,
 						indeterminateRowKeys: _indeterminateRowKeys2
 					}),
-					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2),
-					    ss = _parentAnalysis2[0],
-					    ii = _parentAnalysis2[1];
+					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+					    _parentAnalysis2[0];
+					    var ii = _parentAnalysis2[1];
 
 					_indeterminateRowKeys2.push.apply(_indeterminateRowKeys2, toConsumableArray(ii));
 				});
@@ -1545,8 +1592,8 @@ var Table = forwardRef(function (props, ref) {
 	var _onRowClick = function _onRowClick(_ref5) {
 		var rowData = _ref5.rowData,
 		    rowIndex = _ref5.rowIndex,
-		    rowKey = _ref5.rowKey,
-		    event = _ref5.event;
+		    rowKey = _ref5.rowKey;
+		    _ref5.event;
 
 		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
 	};
@@ -1629,17 +1676,17 @@ var Table = forwardRef(function (props, ref) {
 			React.createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
+				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
+				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
+				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
 			),
 			selectable ? React.createElement(
 				React.Fragment,
@@ -1710,9 +1757,9 @@ var Table = forwardRef(function (props, ref) {
 
 	/** Событие при изменении галочки одной строки */
 	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref9) {
-		var selected = _ref9.selected,
-		    _selectedRow = _ref9._selectedRow,
-		    _selectAll = _ref9._selectAll,
+		_ref9.selected;
+		    _ref9._selectedRow;
+		    var _selectAll = _ref9._selectAll,
 		    _selectedRowKeys = _ref9._selectedRowKeys,
 		    _selectedRowObjects = _ref9._selectedRowObjects,
 		    _indeterminateRowKeys = _ref9._indeterminateRowKeys;
@@ -1784,8 +1831,8 @@ var Table = forwardRef(function (props, ref) {
 	var _getColumns = function _getColumns() {
 		var selectColumn = _extends({
 			key: '__selection__',
-			headerRenderer: SelectionHead,
-			cellRenderer: React.createElement(SelectionCell, null),
+			headerRenderer: SelectionHead$1,
+			cellRenderer: React.createElement(SelectionCell$1, null),
 			width: 40,
 			flexShrink: 0,
 			resizable: false,
@@ -2035,7 +2082,7 @@ var Table = forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList, {
+		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList$1, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -2045,7 +2092,7 @@ var Table = forwardRef(function (props, ref) {
 	);
 });
 
-Table.propTypes = {
+Table$2.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -2053,11 +2100,7 @@ Table.propTypes = {
 	/** Столбцы таблицы */
 	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-	/** Тип таблицы
-  * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
-  * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
-  * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
-	// type: PropTypes.oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+	/** Режим загрузки данных по скроллу */
 	infinityMode: PropTypes.bool,
 
 	/**
@@ -2118,8 +2161,44 @@ Table.propTypes = {
 	/** Поле для уникальной идентификации строки */
 	rowKey: PropTypes.string,
 
-	/** Дополнительные поля и валидация в объекты таблицы */
+	/** Дополнительные поля и валидация в объекты таблицы
+  * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
+  * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
+  * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
+  * ```json
+  * [
+  * 	{
+  * 		name: <String>,
+  * 		value: <func>,
+  * 		validate: <func>
+  * 	}
+  * ]
+  * ```
+  * `name` – Имя параметра в объекте
+  * `value` – Функция формирования значения - `(row, rows) => { return {} }`
+  * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
+  * Параметра **validate** работает **только** для модельного окна тип `select`.
+  * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
+  */
 	customFields: PropTypes.arrayOf(PropTypes.object),
+
+	/**
+  * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
+  * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
+  * ```json
+  * [
+  * 	{
+  * 		name: <String>,
+  * 		cellRenderer: <func>,
+  * 		...advancedColProps
+  * 	}
+  * ]
+  * ```
+  * `name` – key колонки к которой надо применить дополнительные пропсы
+  * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
+  * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
+  */
+	customColumnProps: PropTypes.arrayOf(PropTypes.object),
 
 	/**
   * VIEW PROPS
@@ -2169,7 +2248,7 @@ Table.propTypes = {
 	rowHeight: PropTypes.number,
 
 	/** Custom row renderer
-  * Параметры - ({ isScrolling, cells, columns, rowData, rowIndex, depth }) */
+  * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
 	rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 
 	/** Строки будут в зебро-стиле */
@@ -2188,6 +2267,9 @@ Table.propTypes = {
 
 	/** Размер страницы */
 	pageSize: PropTypes.number,
+
+	/** Функция запроса для конфигурации */
+	requestLoadConfig: PropTypes.func,
 
 	/** Функция запроса для загрузки строк (данных) */
 	requestLoadRows: PropTypes.func,
@@ -2209,7 +2291,7 @@ Table.propTypes = {
   * TREE PROPS
   * */
 
-	/** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
+	/** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
 	nodeAssociated: PropTypes.bool,
 
 	/** Ключ колонки по которой строить иерархию */
@@ -2228,24 +2310,24 @@ Table.propTypes = {
   * EVENTS
   * */
 
-	/** Событие при клике на строку (только при selectable = false)
-  * Параметр - ({selected, rowData, rowIndex}) */
+	/** Событие при клике на строку (только при `selectable` = `false`)
+  * `({selected, rowData, rowIndex}) => {}` */
 	onRowClick: PropTypes.func,
 
 	/** Событие при двойном клике на строку.
-  * Параметр - ({rowData, rowIndex, rowKey}) */
+  * `({rowData, rowIndex, rowKey}) => {}` */
 	onRowDoubleClick: PropTypes.func,
 
 	/** События при открытии / закрытии ноды
-  * Парметры - ({ expanded, rowData, rowIndex, rowKey }) */
+  * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
 	onRowExpand: PropTypes.func,
 
 	/** Событие при выборе строки.
-  * Параметр - массив выбранных строе (только rowKey) */
+  * `([rowKeys], [rowDatas]) => {}` */
 	onSelectedRowsChange: PropTypes.func,
 
 	/** События при открытии / закрытии ноды
-  * Парметры - (expandedRowKeys) - массив ключей открытых нод */
+  * `(expandedRowKeys) => {}` - массив ключей открытых нод */
 	onExpandedRowsChange: PropTypes.func,
 
 	/** SELECTED PANEL */
@@ -2266,7 +2348,7 @@ Table.propTypes = {
 	subscribe: PropTypes.arrayOf(PropTypes.object)
 };
 
-Table.defaultProps = {
+Table$2.defaultProps = {
 	defaultRows: [],
 	defaultSelectedRowKeys: [],
 	defaultSearchValue: '',
@@ -2282,8 +2364,8 @@ Table.defaultProps = {
 
 	rowKey: 'id',
 
-	empty: empty,
-	overlay: overlay,
+	empty: empty$1,
+	overlay: overlay$1,
 	fixWidthColumn: false,
 	footerProps: {
 		height: 30,
@@ -2326,7 +2408,7 @@ Table.defaultProps = {
 	subscribe: []
 };
 
-var mapStateToProps = function mapStateToProps(store, ownProps) {
+var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
 	var subscribe = ownProps.subscribe;
 
 	var state = {};
@@ -2342,16 +2424,16 @@ var mapStateToProps = function mapStateToProps(store, ownProps) {
 	}
 	return state;
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Table$1 = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);
+var Table$3 = connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$2);
 
-var _this = undefined;
+var _this$2 = undefined;
 
 
-var defaultProps = {
+var defaultProps$2 = {
     defaultFilter: {},
     rowKey: 'id',
     pageSize: 50,
@@ -2370,7 +2452,7 @@ var ConfigLoader = function ConfigLoader(props) {
         tableConfig = _useState2[0],
         setTableConfig = _useState2[1];
 
-    var _defaultProps$props = _extends({}, defaultProps, props),
+    var _defaultProps$props = _extends({}, defaultProps$2, props),
         defaultFilter = _defaultProps$props.defaultFilter,
         rowKey = _defaultProps$props.rowKey,
         pageSize = _defaultProps$props.pageSize,
@@ -2408,7 +2490,7 @@ var ConfigLoader = function ConfigLoader(props) {
                                 return _context.stop();
                         }
                     }
-                }, _callee, _this);
+                }, _callee, _this$2);
             }));
 
             return function loadData() {
@@ -2469,25 +2551,26 @@ var ConfigLoader = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React.createElement(Table$1, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React.createElement(Table$3, _extends({}, props, tableConfig));else return null;
 };
 
-var Select = function Select(props) {
+var excludeProps$7 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
+
+/** Компонент выбора элемента(ов) из списка */
+var Select$2 = function Select(props) {
 	var defaultSortBy = props.defaultSortBy,
 	    defaultFilter = props.defaultFilter,
 	    defaultSearchValue = props.defaultSearchValue,
 	    sortBy = props.sortBy,
 	    filter = props.filter,
 	    searchValue = props.searchValue,
+	    searchParamName = props.searchParamName,
 	    infinityMode = props.infinityMode,
 	    requestLoadRows = props.requestLoadRows,
 	    optionConverter = props.optionConverter,
 	    options = props.options,
 	    widthControl = props.widthControl,
-	    _props$subscribe = props.subscribe,
-	    subscribe = _props$subscribe === undefined ? [] : _props$subscribe,
 	    pageSize = props.pageSize,
-	    searchParamName = props.searchParamName,
 	    mode = props.mode,
 	    onChange = props.onChange,
 	    value = props.value;
@@ -2549,10 +2632,6 @@ var Select = function Select(props) {
 	    _useState16 = slicedToArray(_useState15, 2),
 	    _isSelectAll = _useState16[0],
 	    _setIsSelectAll = _useState16[1];
-
-	var excludeProps = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize', 'searchParamName', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
-		return item.name;
-	})), ['dispatch', 'dispatchExtraData']);
 
 	var isMounted = useMounted();
 
@@ -2732,7 +2811,7 @@ var Select = function Select(props) {
 		return cls.join(' ');
 	};
 
-	var childProps = getObjectExcludedProps(props, excludeProps);
+	var childProps = getObjectExcludedProps(props, excludeProps$7);
 	return React.createElement(
 		_Select,
 		_extends({}, childProps, {
@@ -2789,7 +2868,7 @@ var Select = function Select(props) {
 	);
 };
 
-Select.propTypes = {
+Select$2.propTypes = {
 	/** Сортировка по умолчанию */
 	defaultSortBy: PropTypes.shape({
 		/** Ключ поля для сортировки */
@@ -2813,38 +2892,42 @@ Select.propTypes = {
 	/** Значение строки поиска */
 	searchValue: PropTypes.string,
 
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes.string,
+
 	/** Режим загружки по скроллу */
 	infinityMode: PropTypes.bool,
 
 	/** Функция запроса для загрузки строк (данных) */
 	requestLoadRows: PropTypes.func,
 
-	/** Функция преобразования загруженных объектов
-  * в объекты для селекта. (option) => ({})
+	/** Функция преобразования загруженных объектов в объекты для селекта.
+  * Сигнатура `(option) => ({})`
   * Требоваеть вернуть объект с параметрам
-  * { label: ReactNode, value: any, className: string, disabled: bool } */
-	optionConverter: PropTypes.func,
+  * `{ label: ReactNode, value: any, className: string, disabled: bool }`
+  * ##### Example:
+  * ``` JS
+  * (option) => ({
+  * 	label: (<span><MehOutlined />{option.name}</span>),
+  * 	value: option.id,
+  * 	className: 'some-class',
+  * 	disabled: false,
+  * })
+  * ```
+  */
+	optionConverter: PropTypes.func.isRequired,
 
-	/** Select options [{ label, value, className, disabled }] */
+	/** Select options `[{ label, value, className, disabled }]` */
 	options: PropTypes.arrayOf(PropTypes.object),
 
 	/** Ширина поля выбора в пикселях */
-	widthControl: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
-
-	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes.arrayOf(PropTypes.object),
+	widthControl: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
 	/** Размер страницы */
-	pageSize: PropTypes.number,
-
-	/** Имя параметра для поиска */
-	searchParamName: PropTypes.string
+	pageSize: PropTypes.number
 };
 
-Select.defaultProps = {
-	// Ant Props
-	placeholder: "Выберите",
-
+Select$2.defaultProps = {
 	// Rt Props
 	defaultSortBy: undefined,
 	defaultFilter: {},
@@ -2853,12 +2936,13 @@ Select.defaultProps = {
 	requestLoadRows: undefined,
 	options: [],
 	widthControl: '100%',
-	subscribe: [],
-
 	pageSize: 50,
 	searchParamName: 'searchValue'
 };
 
+var excludeProps$6 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
+
+/** Компонент выбора элемента(ов) из древовидного списка */
 var TreeSelect = function TreeSelect(props) {
     var defaultSortBy = props.defaultSortBy,
         defaultFilter = props.defaultFilter,
@@ -2866,12 +2950,10 @@ var TreeSelect = function TreeSelect(props) {
         sortBy = props.sortBy,
         filter = props.filter,
         searchValue = props.searchValue,
+        searchParamName = props.searchParamName,
         requestLoadRows = props.requestLoadRows,
         optionConverter = props.optionConverter,
-        treeData = props.treeData,
-        _props$subscribe = props.subscribe,
-        subscribe = _props$subscribe === undefined ? [] : _props$subscribe,
-        searchParamName = props.searchParamName;
+        treeData = props.treeData;
     /** Индикатор загрузки данных */
 
     var _useState = useState(false),
@@ -2885,36 +2967,10 @@ var TreeSelect = function TreeSelect(props) {
         _useState4 = slicedToArray(_useState3, 2),
         _treeData = _useState4[0],
         _setTreeData = _useState4[1];
-    /** Объект сортировки */
-
-
-    var _useState5 = useState(undefined),
-        _useState6 = slicedToArray(_useState5, 2),
-        _sortBy = _useState6[0],
-        _setSortBy = _useState6[1];
-    /** Объект фильтрации */
-
-
-    var _useState7 = useState({}),
-        _useState8 = slicedToArray(_useState7, 2),
-        _filter = _useState8[0],
-        _setFilter = _useState8[1];
-    /** Строка поиска */
-
-
-    var _useState9 = useState(undefined),
-        _useState10 = slicedToArray(_useState9, 2),
-        _searchValue = _useState10[0],
-        _setSearchValue = _useState10[1];
-
-    var excludeProps = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize', 'searchParamName', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
-        return item.name;
-    })), ['dispatch', 'dispatchExtraData']);
 
     var isMounted = useMounted();
 
     useEffect(function () {
-        _setSearchValue(defaultSearchValue);
         _loadOptions({
             sortBy: defaultSortBy,
             filter: defaultFilter,
@@ -2923,23 +2979,17 @@ var TreeSelect = function TreeSelect(props) {
         });
     }, []);
 
-    // useEffect(() => {
-    //     // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
-    //     if(isMounted) {
-    //         const __sortBy = sortBy ? sortBy : _sortBy;
-    //         const __filter = filter ? filter : _filter;
-    //         const __searchValue = searchValue ? searchValue : _searchValue;
-    //         _setSortBy(__sortBy);
-    //         _setFilter(__filter);
-    //         _setSearchValue(__searchValue);
-    //         _loadOptions({
-    //             sortBy: __sortBy,
-    //             filter: __filter,
-    //             searchLine: __searchValue,
-    //             reload: true,
-    //         });
-    //     }
-    // }, [sortBy, filter, searchValue]);
+    useEffect(function () {
+        // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
+        if (isMounted) {
+            _loadOptions({
+                sortBy: sortBy,
+                filter: filter,
+                searchLine: searchValue,
+                reload: true
+            });
+        }
+    }, [sortBy, filter, searchValue]);
 
     var getSort = function getSort(sortBy) {
         return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
@@ -2984,7 +3034,7 @@ var TreeSelect = function TreeSelect(props) {
         }
     };
 
-    var childProps = getObjectExcludedProps(props, excludeProps);
+    var childProps = getObjectExcludedProps(props, excludeProps$6);
     return React.createElement(_TreeSelect, _extends({}, childProps, {
         maxTagCount: 0,
         maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
@@ -2996,104 +3046,232 @@ var TreeSelect = function TreeSelect(props) {
     }));
 };
 
-TreeSelect.propTypes = {};
+TreeSelect.propTypes = {
+    /** Сортировка по умолчанию */
+    defaultSortBy: PropTypes.shape({
+        /** Ключ поля для сортировки */
+        key: PropTypes.string,
+        /** Направление сортировки */
+        order: PropTypes.oneOf(['asc', 'desc'])
+    }),
 
-TreeSelect.defaultProps = {
-    // Ant Props
-    placeholder: "Выберите"
+    /** Объект фильтрации по умолчанию */
+    defaultFilter: PropTypes.object,
+
+    /** Значение строки поиска по умолчанию строк */
+    defaultSearchValue: PropTypes.string,
+
+    /** Сортировка */
+    sortBy: PropTypes.object,
+
+    /** Фильтр */
+    filter: PropTypes.object,
+
+    /** Значение строки поиска */
+    searchValue: PropTypes.string,
+
+    /** Имя параметра для поиска */
+    searchParamName: PropTypes.string,
+
+    /** Функция запроса для загрузки строк (данных) */
+    requestLoadRows: PropTypes.func,
+
+    /** Функция преобразования загруженных объектов в объекты для селекта.
+     * Сигнатура `(option) => ({})`
+     * Требоваеть вернуть объект с параметрам
+     * `{ label: ReactNode, value: any, children: any, checkable: bool, selectable: bool }`
+     * ##### Example:
+     * ``` JS
+     * (option) => ({
+     * 	label: (<span><MehOutlined />{option.name}</span>),
+     * 	value: option.id,
+     * 	children: option.children,
+     * 	checkable: !option.isGroup,
+     * 	selectable: !option.isGroup,
+     * })
+     * ```*/
+    optionConverter: PropTypes.func.isRequired,
+
+    /** Select options `[{ label, value, children, checkable, selectable }]` */
+    options: PropTypes.arrayOf(PropTypes.object)
 };
 
-var excludeProps$3 = ['type', 'initialValues', 'form'];
+TreeSelect.defaultProps = {
+    // Rt Props
+    defaultSortBy: undefined,
+    defaultFilter: {},
+    defaultSearchValue: undefined,
+    requestLoadRows: undefined
+};
 
-var FormModal = function FormModal(props) {
-    var modal = props.modal,
-        selectedRow = props.selectedRow,
-        visible = props.visible,
-        setVisible = props.setVisible,
-        saveRow = props.saveRow;
+var excludeProps$5 = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
+var serverModalTypes = ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'];
+var localModalTypes = ['addOnLocal', 'addGroupOnLocal', 'editOnLocal', 'editGroupOnLocal'];
+var allModalTypes = [].concat(serverModalTypes, localModalTypes, ['select', 'viewGroup', 'viewObject']);
 
+var defaultProps$1 = {
+    subscribe: [],
+    dispatch: {}
+};
 
-    var getDefaultFooterProps = function getDefaultFooterProps() {
+var getDefaultFooterProps = function getDefaultFooterProps(modal) {
 
-        var okText = '';
-        var cancelText = '';
-        var modalTitle = '';
+    var okText = '';
+    var cancelText = '';
+    var modalTitle = '';
 
-        switch (modal.type) {
-            case 'addOnServer':
-            case 'addGroupOnServer':
-                okText = 'Сохранить';
-                cancelText = 'Отмена';
-                modalTitle = 'Сохранить на сервере';
-                break;
-            case 'addOnLocal':
-            case 'addGroupOnLocal':
-                okText = 'Сохранить';
-                cancelText = 'Отмена';
-                modalTitle = 'Сохранить локально';
-                break;
-            case 'editOnServer':
-            case 'editGroupOnServer':
-                okText = 'Сохранить';
-                cancelText = 'Отмена';
-                modalTitle = 'Измененить на сервере';
-                break;
-            case 'editOnLocal':
-            case 'editGroupOnLocal':
-                okText = 'Сохранить';
-                cancelText = 'Отмена';
-                modalTitle = 'Изменение локально';
-                break;
-            case 'select':
-                okText = 'Добавить';
-                cancelText = 'Отмена';
-                modalTitle = 'Выбор';
-                break;
-            case 'viewGroup':
-            case 'viewObject':
-                okText = 'Закрыть';
-                modalTitle = 'Просмотр';
-                break;
-        }
+    switch (modal.type) {
+        case 'addOnServer':
+        case 'addGroupOnServer':
+            okText = 'Сохранить';
+            cancelText = 'Отмена';
+            modalTitle = 'Сохранить на сервере';
+            break;
+        case 'addOnLocal':
+        case 'addGroupOnLocal':
+            okText = 'Сохранить';
+            cancelText = 'Отмена';
+            modalTitle = 'Сохранить локально';
+            break;
+        case 'editOnServer':
+        case 'editGroupOnServer':
+            okText = 'Сохранить';
+            cancelText = 'Отмена';
+            modalTitle = 'Измененить на сервере';
+            break;
+        case 'editOnLocal':
+        case 'editGroupOnLocal':
+            okText = 'Сохранить';
+            cancelText = 'Отмена';
+            modalTitle = 'Изменение локально';
+            break;
+        case 'select':
+            okText = 'Добавить';
+            cancelText = 'Отмена';
+            modalTitle = 'Выбор';
+            break;
+        case 'viewGroup':
+        case 'viewObject':
+            okText = 'Закрыть';
+            modalTitle = 'Просмотр';
+            break;
+    }
 
-        if (modal.okText) okText = modal.okText;
+    if (modal.okText) okText = modal.okText;
 
-        if (modal.cancelText) cancelText = modal.cancelText;
+    if (modal.cancelText) cancelText = modal.cancelText;
 
-        if (modal.title) modalTitle = modal.title;
+    if (modal.title) modalTitle = modal.title;
 
-        return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
+    return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
+};
+
+/**
+ * Компонент модального окна
+ */
+var Modal$3 = function Modal(props) {
+    var buttonProps = props.buttonProps,
+        toolTipProps = props.toolTipProps,
+        modalConfig = props.modalConfig,
+        modalData = props.modalData,
+        subscribe = props.subscribe,
+        dispatch = props.dispatch;
+
+    var modalProps = _extends({}, getDefaultFooterProps(modalConfig), getObjectExcludedProps(modalConfig, excludeProps$5));
+
+    var _useState = useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        visible = _useState2[0],
+        setVisible = _useState2[1];
+
+    var _useState3 = useState({}),
+        _useState4 = slicedToArray(_useState3, 2),
+        _modalData = _useState4[0],
+        _setModalData = _useState4[1];
+
+    var _useState5 = useState({}),
+        _useState6 = slicedToArray(_useState5, 2),
+        _buttonProps = _useState6[0],
+        setButtonProps = _useState6[1];
+
+    var isMounted = useMounted();
+
+    useEffect(function () {
+        _setModalData(modalData);
+    }, []);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    subscribe.map(function (item) {
+        return useEffect(function () {
+            if (isMounted && item.name) {
+                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                item.onChange && item.onChange({
+                    value: props[item.name],
+                    extraData: props[item.name + "ExtraData"],
+                    setModalData: setModalData,
+                    setButtonProps: setButtonProps,
+                    openModal: _onOpenModal,
+                    closeModal: _onCloseModal
+                });
+            }
+            // console.log("Change Props[2]: ", props.subscribeЗф);
+        }, [props[item.name]]);
+    });
+
+    var setModalData = function setModalData(value) {
+        return _setModalData && _setModalData(value);
+    };
+    var _onOpenModal = function _onOpenModal() {
+        return setVisible(true);
+    };
+    var _onCloseModal = function _onCloseModal() {
+        return setVisible(false);
     };
 
-    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$3));
+    var onFinishHandler = function onFinishHandler(values) {
+        //} {type, row, requestSaveRow}) => {
+        // console.log("Modal Events => before dispatchToStore: ", dispatch);
 
-    var onFinish = function onFinish(values) {
-        // console.log('FormModal Success:', values, selectedRow);
-        var saveObj = {};
-        if (modal.type.startsWith('add')) saveObj = _extends({}, values);else saveObj = _extends({}, selectedRow, values);
+        var saveObj = void 0;
+        if (modalProps.type.startsWith('add')) saveObj = _extends({}, values);else saveObj = _extends({}, _modalData, values);
 
-        saveRow({ type: modal.type, row: saveObj, requestSaveRow: modal.requestSaveRow });
+        dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
+
+        if (modalProps.requestSaveRow && serverModalTypes.includes(modalProps.type)) {
+            var method = modalProps.type === 'addOnServer' || modalProps.type === 'addGroupOnServer' ? 'POST' : 'PUT';
+            // console.log("Modal Events => type: ", type, method, row, _modalData);
+            modalProps.requestSaveRow({
+                method: method,
+                data: saveObj
+            }).then(function (response) {
+                _notification.success({
+                    message: 'Сохранение прошло успешно'
+                });
+                _onCloseModal();
+            }).catch(function (error) {
+                return notificationError(error, 'Ошибка при сохранении');
+            });
+        } else _onCloseModal();
 
         if (modalProps.onOk) modalProps.onOk(values);
         if (modalProps.onFinish) modalProps.onFinish(values);
     };
 
-    var onFinishFailed = function onFinishFailed(errorInfo) {
+    var onFinishFailedHandler = function onFinishFailedHandler(errorInfo) {
         // console.log('FormModal Failed:', errorInfo);
         console.error("FormModal fields failed: ", errorInfo);
         props.onFinishFailed && props.onFinishFailed(errorInfo);
     };
 
+    var loadInitDataHandler = function loadInitDataHandler(callBack) {
+        return formConfig.loadInitData(callBack, _modalData);
+    };
+
     var _onCancelHandler = function _onCancelHandler(e) {
         // setVisibleModals({ ...visibleModals, [modal.type]: false });
         // form.resetFields();
-        setVisible(modal.type, false);
+        _onCloseModal();
         if (modalProps.onCancel) modalProps.onCancel(e);
-    };
-
-    var _onLoadInitData = function _onLoadInitData(callBack) {
-        // console.log("Modal => loadInitData", selectedRow);
-        formConfig.loadInitData(callBack, selectedRow);
     };
 
     var defaultFooter = [{
@@ -3119,146 +3297,7 @@ var FormModal = function FormModal(props) {
         loadInitData: function loadInitData(callBack, row) {
             return callBack(row);
         }
-    }, modal.form);
-    return React.createElement(
-        _Modal,
-        _extends({}, modalProps, {
-            centered: true,
-            destroyOnClose: true,
-            visible: visible,
-            onCancel: _onCancelHandler,
-            bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
-            footer: null
-        }),
-        React.createElement(
-            Form,
-            _extends({}, formConfig, {
-                onFinish: onFinish,
-                onFinishFailed: onFinishFailed,
-                loadInitData: _onLoadInitData
-            }),
-            props.children
-        )
-    );
-};
-
-FormModal.propTypes = {
-    /** Объект модального окна */
-    modal: PropTypes.object,
-
-    /** Выделенная строка таблицы */
-    selectedRow: PropTypes.object,
-
-    /** Состояние видимости модалки */
-    visible: PropTypes.bool,
-
-    /** Задание состояния видимости модалки */
-    setVisible: PropTypes.func,
-
-    /** CallBack функция для сохранения данных */
-    saveRow: PropTypes.func
-};
-
-var defaultProps$1 = {
-    subscribe: [],
-    dispatch: {}
-};
-
-var Modal = function Modal(props) {
-    var buttonProps = props.buttonProps,
-        toolTipProps = props.toolTipProps,
-        modalConfig = props.modalConfig,
-        modalData = props.modalData,
-        subscribe = props.subscribe,
-        dispatch = props.dispatch;
-
-    var _useState = useState(false),
-        _useState2 = slicedToArray(_useState, 2),
-        visible = _useState2[0],
-        setVisible = _useState2[1];
-
-    var _useState3 = useState({}),
-        _useState4 = slicedToArray(_useState3, 2),
-        _modalData = _useState4[0],
-        _setModalData = _useState4[1];
-
-    var _useState5 = useState({}),
-        _useState6 = slicedToArray(_useState5, 2),
-        _buttonProps = _useState6[0],
-        setButtonProps = _useState6[1];
-
-    var isMounted = useMounted();
-
-    var setModalData = function setModalData(value) {
-        // console.log("setModalData: ", value);
-        _setModalData && _setModalData(value);
-    };
-
-    useEffect(function () {
-        _setModalData(modalData);
-    }, []);
-
-    /** Подписка на изменение props[subscribe.name] в сторе */
-    // useEffect( () => {
-    //     if(subscribe.name) {
-    //         // console.log("Modal => subscribe: ", props[subscribe.name]);
-    //         subscribe.onChange && subscribe.onChange({value: props[subscribe.name], setModalData, setButtonProps});
-    //     }
-    //     // console.log("Change Props[2]: ", props.subscribeЗф);
-    // }, [props[subscribe.name]]);
-
-    /** Подписка на изменение props[subscribe.name] в сторе */
-    subscribe.map(function (item) {
-        return useEffect(function () {
-            if (isMounted && item.name) {
-                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                item.onChange && item.onChange({
-                    value: props[item.name],
-                    extraData: props[item.name + "ExtraData"],
-                    setModalData: setModalData,
-                    setButtonProps: setButtonProps,
-                    openModal: _onOpenModal,
-                    closeModal: _onCloseModal
-                });
-            }
-            // console.log("Change Props[2]: ", props.subscribeЗф);
-        }, [props[item.name]]);
-    });
-
-    var _onOpenModal = function _onOpenModal() {
-        // console.log("Modal => _modalData: ", _modalData);
-        setVisible(true);
-    };
-
-    var _onCloseModal = function _onCloseModal() {
-        setVisible(false);
-    };
-
-    var _onSaveRow = function _onSaveRow(_ref) {
-        var type = _ref.type,
-            row = _ref.row,
-            requestSaveRow = _ref.requestSaveRow;
-
-        // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, row);
-        // console.log("Modal Events => before dispatchToStore: ", dispatch);
-        dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: row });
-
-        if (requestSaveRow && ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'].includes(type)) {
-            var method = type === 'addOnServer' || type === 'addGroupOnServer' ? 'POST' : 'PUT';
-            // console.log("Modal Events => type: ", type, method, row, _modalData);
-            requestSaveRow({
-                method: method,
-                data: row
-            }).then(function (response) {
-                _notification.success({
-                    message: 'Сохранение прошло успешно'
-                });
-                _onCloseModal();
-            }).catch(function (error) {
-                return notificationError(error, 'Ошибка при сохранении');
-            });
-        } else _onCloseModal();
-    };
+    }, modalProps.form);
 
     return React.createElement(
         React.Fragment,
@@ -3277,27 +3316,46 @@ var Modal = function Modal(props) {
             )
         ),
         React.createElement(
-            FormModal,
-            {
-                modal: modalConfig,
-                selectedRow: _modalData,
+            _Modal,
+            _extends({}, modalProps, {
+                centered: true,
+                destroyOnClose: true,
                 visible: visible,
-                setVisible: _onCloseModal,
-                saveRow: _onSaveRow
-            },
-            props.children
+                onCancel: _onCancelHandler,
+                bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
+                footer: null
+            }),
+            React.createElement(
+                Form$1,
+                _extends({}, formConfig, {
+                    onFinish: onFinishHandler,
+                    onFinishFailed: onFinishFailedHandler,
+                    loadInitData: loadInitDataHandler
+                }),
+                props.children
+            )
         )
     );
 };
 
-Modal.propTypes = {
+Modal$3.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
     buttonProps: PropTypes.object,
 
     /** Объект модального окна. Стандартная конфигурация. */
-    modalConfig: PropTypes.object,
+    modalConfig: PropTypes.shape({
+        /** Тип модального окна */
+        type: PropTypes.oneOf(allModalTypes),
+
+        /** Ссылка на функцию сохранения данных */
+        requestSaveRow: PropTypes.func,
+
+        /** Пропсы формы.
+         * Если верстка через конфиги, то пропс body обязателен */
+        form: PropTypes.object
+    }),
 
     /** Данные для модального окна */
     modalData: PropTypes.object,
@@ -3305,13 +3363,20 @@ Modal.propTypes = {
     /** Путь в сторе куда класть данных окна после закрытия */
     dispatch: PropTypes.object,
 
-    /** Объект для подписки на изменения в STORE */
+    /** Объект для подписки на изменения в STORE.
+     * Параметры в `onChange`:
+     * * `value`: значение за которым ведется наблюдение,
+     * * `extraData`: дополнительные данные, передаваемые при срабатывании события
+     * * `setModalData`: функция задания объекта формы
+     * * `setButtonProps`: функция задания пропсов кнопке
+     * * `openModal`: функция открытия модального окна
+     * * `closeModal`: функция закрытия модального окна */
     subscribe: PropTypes.arrayOf(PropTypes.object)
 };
 
-Modal.defaultProps = defaultProps$1;
+Modal$3.defaultProps = defaultProps$1;
 
-var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
+var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
     var subscribe = ownProps.subscribe;
 
     var state = {};
@@ -3327,13 +3392,13 @@ var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
     }
     return state;
 };
-var mapDispatchToProps$1 = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
     return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var RtModal = connect(mapStateToProps$1, mapDispatchToProps$1)(Modal);
+var RtModal = connect(mapStateToProps$2, mapDispatchToProps$3)(Modal$3);
 
-var defaultProps$2 = {
+var defaultProps = {
     requestUploadFile: noop,
     dataObject: {},
     onCompletedUpload: noop,
@@ -3341,9 +3406,9 @@ var defaultProps$2 = {
     uploadProps: {},
     toolTipProps: {},
     buttonProps: {}
-};
 
-var UploadFile = function UploadFile(props) {
+    /** Компонент загрузки файлов */
+};var UploadFile = function UploadFile(props) {
     var requestUploadFile = props.requestUploadFile,
         dataObject = props.dataObject,
         onCompletedUpload = props.onCompletedUpload,
@@ -3354,7 +3419,7 @@ var UploadFile = function UploadFile(props) {
 
 
     var _uploadFile = function _uploadFile(file) {
-        // console.log('beforeUpload fileList => ', fileList);
+        // console.log('beforeUpload dataObject => ', dataObject);
         notification(file, 'loading');
         if (requestUploadFile) {
             requestUploadFile({ file: file, dataObject: dataObject }).then(function (response) {
@@ -3423,30 +3488,32 @@ var UploadFile = function UploadFile(props) {
 };
 
 UploadFile.propTypes = {
+    /** Функция запроса для отправки файла с данным на сервер */
     requestUploadFile: PropTypes.func.isRequired,
+
+    /** Данные, прикрепляемые к файлу */
     dataObject: PropTypes.object,
+
+    /** Функция, вызываемая при удачной загрузке файла */
     onCompletedUpload: PropTypes.func,
+
+    /** Функция, вызываемая при НЕ удачной загрузке файла */
     onFailedUpload: PropTypes.func,
 
+    /** Ant Props для [Upload](https://ant.design/components/upload/) компонента */
     uploadProps: PropTypes.object,
+
+    /** Ant Props для [Tooltip](https://ant.design/components/tooltip/) компонента */
     toolTipProps: PropTypes.object,
+
+    /** Ant Props для [Button](https://ant.design/components/button/) компонента */
     buttonProps: PropTypes.object
 };
 
-UploadFile.defaultProps = defaultProps$2;
-
-// console.log("RtTable => ", RtTable)
-// console.log("RtSelect => ", RtSelect)
-// console.log("RtTreeSelect => ", RtTreeSelect)
+UploadFile.defaultProps = defaultProps;
 
 /**
  * Renders
- *
- * Clear render
- * Label render
- * FormItem render
- * FormItem Label render
- *
  */
 var renderClassic = function renderClassic(Component) {
     return function (props) {
@@ -3512,9 +3579,6 @@ var renderDeclarative = function renderDeclarative(Component) {
     };
 };
 
-/**
- * HOCs
- */
 var renderFormItemComponent = function renderFormItemComponent(Component) {
     return function (props) {
         var componentProps = getObjectExcludedProps(props, ['itemProps']);
@@ -3522,32 +3586,23 @@ var renderFormItemComponent = function renderFormItemComponent(Component) {
     };
 };
 
-/**
- * Компонент withStore
- *
- * Clear render
- * Label render
- *
- * FormItem render
- * FormItem Label render
- */
-
+/** */
 var ComponentClassic = function ComponentClassic(Component) {
     return function (props) {
         // console.log("ComponentClassic => ", Component)
-        var StoreComponent = withStore(Component, {});
+        var StoreComponent = withStore$1(Component, {});
         return renderFormItemComponent(StoreComponent)(props);
     };
 };
 var ComponentClassicWithLabel = function ComponentClassicWithLabel(Component) {
     return function (props) {
-        var StoreComponent = withStore(Component, {});
+        var StoreComponent = withStore$1(Component, {});
         return renderFormItemComponent(renderClassicWithLabel(StoreComponent))(props);
     };
 };
 var ComponentClassicWithPlaceholder = function ComponentClassicWithPlaceholder(Component, placeholder) {
     return function (props) {
-        var StoreComponent = withStore(Component, {});
+        var StoreComponent = withStore$1(Component, {});
         var _placeholder = props && props.placeholder ? props.placeholder : placeholder;
         return renderFormItemComponent(StoreComponent)(_extends({}, props, { placeholder: _placeholder }));
     };
@@ -3559,80 +3614,40 @@ var ComponentClassicWithOutStore = function ComponentClassicWithOutStore(Compone
     };
 };
 
-/**
- * Components
- */
-var Button = function Button(props) {
-    var Component = withStore(_Button, { trigger: 'onClick' });
-    // console.log('Props classic field renderClassic => ', props.field);
-    // const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
-    var onClick = function onClick(e) {
-        return props.onClick && props.onClick(e, props.field);
-    };
-    return renderClassicWithLabel(Component)(_extends({}, props, { onClick: onClick }));
-};
-var Custom = function Custom(props) {
-    return renderClassic(props.render)(_extends({}, props, { componentType: 'Custom' }));
-};
-var FormHeader = function FormHeader(props) {
-    return React.createElement(
-        "div",
-        { className: rtPrefix + "-form-header" },
-        props.children
-    );
-};
-var FormBody = function FormBody(props) {
-    var cls = [rtPrefix + "-form-body"];
-    props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
-    props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
-    return React.createElement(
-        "div",
-        { className: cls.join(" ") },
-        props.children
-    );
-};
-var FormFooter = function FormFooter(props) {
-    return React.createElement(
-        "div",
-        { className: rtPrefix + "-form-footer" },
-        props.children
-    );
-};
-
 var classicComponents = {
-    Form: Form,
-    FormHeader: FormHeader,
-    FormBody: FormBody,
-    FormFooter: FormFooter,
-    Space: _Space,
-    Row: _Row,
-    Col: _Col,
-    Layout: Layout,
-    Tabs: _Tabs,
-    TabPane: _Tabs.TabPane
+    Form: Form$1, // +
+    FormHeader: FormHeader, // +
+    FormBody: FormBody, // +
+    FormFooter: FormFooter, // +
+    Space: renderFormItemComponent(_Space), // +
+    Row: renderFormItemComponent(_Row), // +
+    Col: renderFormItemComponent(_Col), // +
+    Layout: renderFormItemComponent(Layout$1), // +
+    Tabs: _Tabs, // +
+    TabPane: TabPane // +
 };
 var withComponentType = {
-    Button: ComponentClassicWithOutStore(Button),
-    Title: ComponentClassicWithLabel(_Typography.Title),
-    Text: ComponentClassicWithLabel(_Typography.Text),
-    Divider: ComponentClassicWithLabel(_Divider),
-    Checkbox: ComponentClassicWithLabel(_Checkbox),
-    DatePicker: ComponentClassicWithPlaceholder(DatePickerHOC(_DatePicker), 'Выберите дату'),
-    DateText: ComponentClassic(TypographyDate),
-    Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'),
-    Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'),
-    TextArea: ComponentClassicWithPlaceholder(_Input.TextArea, 'Введите текст'),
-    Password: ComponentClassicWithPlaceholder(_Input.Password, 'Введите пароль'),
-    InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'),
-    Switch: ComponentClassic(_Switch),
-    RadioGroup: ComponentClassic(_Radio.Group),
-    Select: ComponentClassic(Select),
-    TreeSelect: ComponentClassic(TreeSelect),
+    Button: ComponentClassicWithOutStore(Button), // +
+    Title: ComponentClassicWithLabel(_Typography.Title), // +
+    Text: ComponentClassicWithLabel(_Typography.Text), // +
+    Divider: ComponentClassicWithLabel(_Divider), // +
+    Checkbox: ComponentClassicWithLabel(_Checkbox), // +
+    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'), // +
+    DateText: ComponentClassic(TypographyDate$1), // +
+    Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'), // +
+    Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'), // +
+    TextArea: ComponentClassicWithPlaceholder(_Input.TextArea, 'Введите текст'), // +
+    Password: ComponentClassicWithPlaceholder(_Input.Password, 'Введите пароль'), // +
+    InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'), // +
+    Switch: ComponentClassic(_Switch), // +
+    RadioGroup: ComponentClassic(_Radio.Group), // +
+    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'), // +
+    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'), // +
     Table: ComponentClassicWithOutStore(ConfigLoader),
-    Modal: ComponentClassicWithOutStore(RtModal),
-    Custom: ComponentClassicWithOutStore(Custom),
-    Switcher: ComponentClassic(Switcher),
-    UploadFile: ComponentClassic(UploadFile)
+    Modal: ComponentClassicWithOutStore(RtModal), // +
+    Custom: ComponentClassic(Custom), // +
+    Switcher: ComponentClassic(Switcher), // +
+    UploadFile: ComponentClassic(UploadFile) // +
 };
 
 var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {
@@ -3643,7 +3658,7 @@ var declarative = Object.keys(classic).reduce(function (obj, key) {
     return _extends({}, obj, defineProperty({}, key, renderDeclarative(classic[key])));
 }, {});
 
-var empty$1 = React.createElement(
+var empty = React.createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
@@ -3655,7 +3670,7 @@ var empty$1 = React.createElement(
 	' '
 );
 
-var overlay$1 = React.createElement(
+var overlay = React.createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
@@ -3666,7 +3681,7 @@ var overlay$1 = React.createElement(
 	' '
 );
 
-var SelectionHead$1 = function SelectionHead(props) {
+var SelectionHead = function SelectionHead(props) {
 	var column = props.column,
 	    container = props.container;
 	var rowKey = column.rowKey,
@@ -3695,7 +3710,7 @@ var SelectionHead$1 = function SelectionHead(props) {
 	});
 };
 
-var getRowChildren$1 = function getRowChildren(data, rowKey) {
+var getRowChildren = function getRowChildren(data, rowKey) {
 	return data.map(function (item) {
 		if (item.children && item.children.length) {
 			return [item[rowKey], getRowChildren(item.children, rowKey)];
@@ -3704,7 +3719,7 @@ var getRowChildren$1 = function getRowChildren(data, rowKey) {
 	});
 };
 
-var findBrothers$1 = function findBrothers(data, selfItem, rowKey, parentKey) {
+var findBrothers = function findBrothers(data, selfItem, rowKey, parentKey) {
 	var rowKeys = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
 	var arr = [];
@@ -3724,7 +3739,7 @@ var findBrothers$1 = function findBrothers(data, selfItem, rowKey, parentKey) {
 	return arr;
 };
 
-var parentAnalysis$1 = function parentAnalysis(_ref) {
+var parentAnalysis = function parentAnalysis(_ref) {
 	var rowData = _ref.rowData,
 	    rowKey = _ref.rowKey,
 	    parentKey = _ref.parentKey,
@@ -3745,9 +3760,9 @@ var parentAnalysis$1 = function parentAnalysis(_ref) {
 
 	/** Пока есть родитель */
 	while (parentExist && nodeAssociated) {
-		var indeterminateBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
-		var selectedBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
-		var allBrothers = flatten(findBrothers$1(treeData, currentRowData, rowKey, parentKey));
+		var indeterminateBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
+		var selectedBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
+		var allBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey));
 
 		if (checked) {
 			if (lastTypeSelect === 'checked' && selectedBrothers.length === allBrothers.length) typeSelect = 'checked';else typeSelect = 'square';
@@ -3798,7 +3813,7 @@ var parentAnalysis$1 = function parentAnalysis(_ref) {
 	return [_selectedRowKeys, _indeterminateRowKeys];
 };
 
-var SelectionCell$1 = function SelectionCell(props) {
+var SelectionCell = function SelectionCell(props) {
 	var _handleChange = function _handleChange(checked) {
 		var rowData = props.rowData,
 		    rowIndex = props.rowIndex,
@@ -3823,14 +3838,14 @@ var SelectionCell$1 = function SelectionCell(props) {
 		/** Обработка себя, поиск детей, выделение / снятие их */
 		var rowChildren = [];
 		if (checked) {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
 
 			_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
 			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
 				return element !== rowData[rowKey] && !rowChildren.includes(element);
 			});
 		} else {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
 
 			_selectedRowKeys = _selectedRowKeys.filter(function (element) {
 				return element !== rowData[rowKey] && !rowChildren.includes(element);
@@ -3840,7 +3855,7 @@ var SelectionCell$1 = function SelectionCell(props) {
 			});
 		}
 
-		var _parentAnalysis = parentAnalysis$1({
+		var _parentAnalysis = parentAnalysis({
 			rowData: rowData,
 			rowKey: rowKey,
 			parentKey: parentKey,
@@ -4295,7 +4310,7 @@ var FilterPanel = function FilterPanel(props) {
             }));
           case "MultiSelect":
           case "SingleSelect":
-            return React.createElement(Select$2, _extends({
+            return React.createElement(Select$1, _extends({
               key: index
             }, item, {
               type: item.componentType,
@@ -4402,7 +4417,7 @@ FilterPanel.defaultProps = {
   resetFilterRender: "Сбросить"
 };
 
-var SelectionList$1 = function SelectionList(props) {
+var SelectionList = function SelectionList(props) {
 	var selectedRowObjects = props.selectedRowObjects,
 	    rowRender = props.rowRender,
 	    onClickDropSelect = props.onClickDropSelect;
@@ -4441,7 +4456,7 @@ var SelectionList$1 = function SelectionList(props) {
 	);
 };
 
-SelectionList$1.propTypes = {
+SelectionList.propTypes = {
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
@@ -4455,14 +4470,14 @@ SelectionList$1.propTypes = {
 	onClickDropSelect: PropTypes.func.isRequired
 };
 
-SelectionList$1.defaultProps = {};
+SelectionList.defaultProps = {};
 
-var Table$2 = forwardRef(function (props, ref) {
+var Table = forwardRef(function (props, ref) {
 	/** Состояние первоначалной настройки компонента*/
 	var _useState = useState(false),
-	    _useState2 = slicedToArray(_useState, 2),
-	    mounted = _useState2[0],
-	    setMounted = _useState2[1];
+	    _useState2 = slicedToArray(_useState, 2);
+	    _useState2[0];
+	    var setMounted = _useState2[1];
 	/** Наличие на сервере еще данных */
 
 
@@ -4555,11 +4570,11 @@ var Table$2 = forwardRef(function (props, ref) {
 	    autoDeleteRows = props.autoDeleteRows,
 	    rowKey = props.rowKey,
 	    empty = props.empty,
-	    fixWidthColumn = props.fixWidthColumn,
-	    footerHeight = props.footerHeight,
-	    footerShow = props.footerShow,
-	    footerTitles = props.footerTitles,
-	    headerHeight = props.headerHeight,
+	    fixWidthColumn = props.fixWidthColumn;
+	    props.footerHeight;
+	    props.footerShow;
+	    props.footerTitles;
+	    var headerHeight = props.headerHeight,
 	    rowHeight = props.rowHeight,
 	    zebraStyle = props.zebraStyle,
 	    rowRenderer = props.rowRenderer,
@@ -4590,7 +4605,7 @@ var Table$2 = forwardRef(function (props, ref) {
 	var commandPanelProps = _extends({}, CommandPanel.defaultProps, props.commandPanelProps);
 	var filterPanelProps = _extends({}, FilterPanel.defaultProps, props.filterPanelProps);
 
-	var footerProps = _extends({}, Table$2.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -4621,7 +4636,7 @@ var Table$2 = forwardRef(function (props, ref) {
 				});
 				var _indeterminateRowKeys2 = [];
 				selectedRow.forEach(function (item) {
-					var _parentAnalysis = parentAnalysis$1({
+					var _parentAnalysis = parentAnalysis({
 						rowData: item,
 						rowKey: rowKey,
 						parentKey: expandParentKey,
@@ -4631,9 +4646,9 @@ var Table$2 = forwardRef(function (props, ref) {
 						selectedRowKeys: defaultSelectedRowKeys,
 						indeterminateRowKeys: _indeterminateRowKeys2
 					}),
-					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2),
-					    ss = _parentAnalysis2[0],
-					    ii = _parentAnalysis2[1];
+					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+					    _parentAnalysis2[0];
+					    var ii = _parentAnalysis2[1];
 
 					_indeterminateRowKeys2.push.apply(_indeterminateRowKeys2, toConsumableArray(ii));
 				});
@@ -4810,8 +4825,8 @@ var Table$2 = forwardRef(function (props, ref) {
 		onClick: function onClick(_ref5) {
 			var rowData = _ref5.rowData,
 			    rowIndex = _ref5.rowIndex,
-			    rowKey = _ref5.rowKey,
-			    event = _ref5.event;
+			    rowKey = _ref5.rowKey;
+			    _ref5.event;
 
 			if (!selectable) {
 				// if (_selectedRowKeys.includes(rowKey)) {
@@ -4884,8 +4899,8 @@ var Table$2 = forwardRef(function (props, ref) {
 		if (selectable) {
 			var selectColumn = {
 				key: '__selection__',
-				headerRenderer: SelectionHead$1,
-				cellRenderer: SelectionCell$1,
+				headerRenderer: SelectionHead,
+				cellRenderer: SelectionCell,
 				width: 40,
 				flexShrink: 0,
 				resizable: false,
@@ -4915,17 +4930,17 @@ var Table$2 = forwardRef(function (props, ref) {
 			React.createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : null
+				footerProps.leftCustomSideElement ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : null
+				footerProps.centerCustomSideElement ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : null
+				footerProps.rightCustomSideElement ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : null
 			),
 			selectable ? React.createElement(
 				React.Fragment,
@@ -5342,7 +5357,7 @@ var Table$2 = forwardRef(function (props, ref) {
 						footerHeight: _footerShow ? footerProps.height : 0,
 						headerHeight: headerHeight,
 						rowHeight: rowHeight,
-						overlayRenderer: loading ? overlay$1 : null,
+						overlayRenderer: loading ? overlay : null,
 						footerRenderer: _footer,
 						rowRenderer: rowRenderer,
 						estimatedRowHeight: estimatedRowHeight
@@ -5362,7 +5377,7 @@ var Table$2 = forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList$1, {
+		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -5372,7 +5387,7 @@ var Table$2 = forwardRef(function (props, ref) {
 	);
 });
 
-Table$2.propTypes = {
+Table.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -5611,7 +5626,7 @@ Table$2.propTypes = {
 	subscribe: PropTypes.object
 };
 
-Table$2.defaultProps = {
+Table.defaultProps = {
 	defaultRows: [],
 	defaultSelectedRowKeys: [],
 	defaultSearchValue: '',
@@ -5627,8 +5642,8 @@ Table$2.defaultProps = {
 	autoDeleteRows: true,
 	rowKey: 'id',
 
-	empty: empty$1,
-	overlay: overlay$1,
+	empty: empty,
+	overlay: overlay,
 	fixWidthColumn: false,
 	footerHeight: 30,
 	footerShow: false,
@@ -5676,7 +5691,7 @@ Table$2.defaultProps = {
 	subscribe: {}
 };
 
-var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
+var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
 	var subscribe = ownProps.subscribe;
 
 	if (subscribe) {
@@ -5719,12 +5734,12 @@ var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
 /**
  * @deprecated [#1] since version 0.0.54 [#2].
  * */
-var Table$3 = connect(mapStateToProps$2, mapDispatchToProps$2, null, { forwardRef: true })(Table$2);
+var Table$1 = connect(mapStateToProps$1, mapDispatchToProps$2, null, { forwardRef: true })(Table);
 
 var Paragraph = _Typography.Paragraph;
 
 
-var Select$1 = function Select(props) {
+var Select = function Select(props) {
 	var _useState = useState([]),
 	    _useState2 = slicedToArray(_useState, 2),
 	    _selectedRowKeys = _useState2[0],
@@ -5756,10 +5771,10 @@ var Select$1 = function Select(props) {
 	    widthControl = props.widthControl,
 	    widthPopup = props.widthPopup,
 	    heightPopup = props.heightPopup,
-	    onChangeKeys = props.onChangeKeys,
-	    defaultValue = props.defaultValue,
-	    value = props.value,
-	    defaultSelectedRowKeys = props.defaultSelectedRowKeys,
+	    onChangeKeys = props.onChangeKeys;
+	    props.defaultValue;
+	    props.value;
+	    var defaultSelectedRowKeys = props.defaultSelectedRowKeys,
 	    rowKey = props.rowKey,
 	    expandColumnKey = props.expandColumnKey,
 	    showSelection = props.showSelection,
@@ -5951,9 +5966,9 @@ var Select$1 = function Select(props) {
 	};
 
 	var _SingleSelectRow = function _SingleSelectRow(_ref3) {
-		var selected = _ref3.selected,
-		    rowData = _ref3.rowData,
-		    rowIndex = _ref3.rowIndex;
+		_ref3.selected;
+		    var rowData = _ref3.rowData;
+		    _ref3.rowIndex;
 
 		// console.log("_SingleSelectRow => ", rowData);
 		setSelectedRowData(rowData);
@@ -6018,7 +6033,7 @@ var Select$1 = function Select(props) {
 		isSelectOpened ? React.createElement(
 			'div',
 			{ className: _getPopupCls(), style: _getPopupStyle() },
-			React.createElement(Table$3, _extends({}, props, {
+			React.createElement(Table$1, _extends({}, props, {
 				commandPanelProps: _extends({}, props.commandPanelProps, {
 					showElements: getEvents() // getShowElements(),
 				}),
@@ -6053,7 +6068,7 @@ var Select$1 = function Select(props) {
 	);
 };
 
-Select$1.propTypes = {
+Select.propTypes = {
 	/** Имя параметра селекта (вернется в onChangeKeys и onChangeObjects) */
 	name: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))]).isRequired,
 
@@ -6136,7 +6151,7 @@ Select$1.propTypes = {
 	expandParentKey: PropTypes.string
 };
 
-Select$1.defaultProps = {
+Select.defaultProps = {
 	onChangeKeys: noop,
 	// onChangeObjects: noop,
 	placeholder: 'Выбрать',
@@ -6161,11 +6176,11 @@ Select$1.defaultProps = {
 	expandLazyLoad: false,
 	expandParentKey: 'parentId'
 };
-var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps$1 = function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Select$2 = connect(null, mapDispatchToProps$3)(Select$1);
+var Select$1 = connect(null, mapDispatchToProps$1)(Select);
 
 var _this$1 = undefined;
 
@@ -6258,7 +6273,7 @@ var AdvancedTable = forwardRef(function (props, ref) {
 
 	if (config && config.fields) {
 		// console.log('AdvancedTable render table -> ', config);
-		return React.createElement(Table$3, _extends({}, props, {
+		return React.createElement(Table$1, _extends({}, props, {
 			ref: ref,
 			columns: columnsByConfig(),
 			defaultFilter: getDefaultFilter(),
@@ -6301,7 +6316,7 @@ AdvancedTable.defaultProps = {};
 
 var excludeProps$4 = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
-var Form$1 = function Form(props) {
+var Form = function Form(props) {
     var loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
@@ -6404,23 +6419,23 @@ var Form$1 = function Form(props) {
             header ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-header" },
-                React.createElement(FormItems$1, { items: header })
+                React.createElement(FormItems, { items: header })
             ) : null,
             React.createElement(
                 "div",
                 { className: getBodyCls() },
-                React.createElement(FormItems$1, { items: body })
+                React.createElement(FormItems, { items: body })
             ),
             footer ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-footer" },
-                React.createElement(FormItems$1, { items: footer })
+                React.createElement(FormItems, { items: footer })
             ) : null
         ) : null
     );
 };
 
-Form$1.propTypes = {
+Form.propTypes = {
 
     /** Не делать отступы у формы от краев блока */
     noPadding: PropTypes.bool,
@@ -6455,16 +6470,16 @@ Form$1.propTypes = {
     processBeforeSaveForm: PropTypes.func
 };
 
-Form$1.defaultProps = {
+Form.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
     autoSaveForm: true
 };
 
-var excludeProps$5 = ['type', 'initialValues', 'form'];
+var excludeProps$3 = ['type', 'initialValues', 'form'];
 
-var FormModal$1 = function FormModal(props) {
+var FormModal = function FormModal(props) {
     var modal = props.modal,
         selectedRow = props.selectedRow,
         visible = props.visible,
@@ -6524,7 +6539,7 @@ var FormModal$1 = function FormModal(props) {
         return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
     };
 
-    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$5));
+    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$3));
 
     var onFinish = function onFinish(values) {
         // console.log('FormModal Success:', values, selectedRow);
@@ -6586,7 +6601,7 @@ var FormModal$1 = function FormModal(props) {
             bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
             footer: null
         }),
-        React.createElement(Form$1, _extends({}, formConfig, {
+        React.createElement(Form, _extends({}, formConfig, {
             onFinish: onFinish,
             onFinishFailed: onFinishFailed,
             loadInitData: _onLoadInitData
@@ -6594,7 +6609,7 @@ var FormModal$1 = function FormModal(props) {
     );
 };
 
-FormModal$1.propTypes = {
+FormModal.propTypes = {
     /** Объект модального окна */
     modal: PropTypes.object,
 
@@ -6611,9 +6626,9 @@ FormModal$1.propTypes = {
     saveRow: PropTypes.func
 };
 
-var _this$2 = undefined;
+var _this = undefined;
 
-var excludeProps$6 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
+var excludeProps$2 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
 
 var FormTable = forwardRef(function (props, ref) {
 
@@ -6715,7 +6730,7 @@ var FormTable = forwardRef(function (props, ref) {
                                     return _context.stop();
                             }
                         }
-                    }, _callee, _this$2);
+                    }, _callee, _this);
                 }));
 
                 return function loadData() {
@@ -6746,7 +6761,7 @@ var FormTable = forwardRef(function (props, ref) {
     /** Получить рендер модалок */
     var getModals = function getModals() {
         return modals.map(function (modal, index) {
-            return React.createElement(FormModal$1, {
+            return React.createElement(FormModal, {
                 key: index,
                 modal: modal,
                 selectedRow: tableSelectedRow,
@@ -7058,7 +7073,7 @@ var FormTable = forwardRef(function (props, ref) {
         { className: getTableCls(), style: props.style },
         React.createElement(AdvancedTable, _extends({
             ref: _setTableRef
-        }, getObjectExcludedProps(props, excludeProps$6), {
+        }, getObjectExcludedProps(props, excludeProps$2), {
             rows: tableRows,
             setRows: setTableRows
             // selectedRowKeys={tableSelectedRow[rowKey] ? [tableSelectedRow[rowKey]] : []}
@@ -7319,8 +7334,8 @@ FormTable.defaultProps = {
     autoDeleteRows: true,
     rowKey: 'id',
 
-    empty: empty$1,
-    overlay: overlay$1,
+    empty: empty,
+    overlay: overlay,
     fixWidthColumn: false,
     footerHeight: 30,
     footerShow: false,
@@ -7360,7 +7375,7 @@ FormTable.defaultProps = {
     isGroupKey: 'isGroup'
 };
 
-var withStore$1 = function withStore(Component, antFormItemProps) {
+var withStore = function withStore(Component, antFormItemProps) {
 
     var mapStateToProps = function mapStateToProps(store, ownProps) {
         var subscribe = ownProps.subscribe;
@@ -7396,9 +7411,9 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
             subscribeProps = _useState2[0],
             setSubscribeProps = _useState2[1];
 
-        var trigger = withStoreProps.trigger,
-            getValueFromEvent = withStoreProps.getValueFromEvent,
-            valuePropName = withStoreProps.valuePropName;
+        var trigger = withStoreProps.trigger;
+            withStoreProps.getValueFromEvent;
+            var valuePropName = withStoreProps.valuePropName;
 
 
         var excludeProps = ['componentType', 'setDateStore', 'subscribe', subscribe.name, 'dispatchPath'];
@@ -7439,7 +7454,7 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
     });
 };
 
-var DatePickerHOC$1 = function DatePickerHOC(Component) {
+var DatePickerHOC = function DatePickerHOC(Component) {
     return function (props) {
         // console.log("DatePickerHOC => ", props);
         if (props.value) {
@@ -7477,7 +7492,7 @@ var TypographyText = function TypographyText(props) {
     );
 };
 
-var TypographyDate$1 = function TypographyDate(props) {
+var TypographyDate = function TypographyDate(props) {
     var label = props.label,
         value = props.value,
         format = props.format;
@@ -7498,7 +7513,7 @@ var getTitle = function getTitle(type, element) {
     } else return 'Изменение файла';
 };
 
-var Modal$1 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
+var Modal$2 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
     // console.log("FolderModal", type, requestSaveRow, processBeforeSaveForm, parentLoadHandler, requestLoadRows);
     var selectedRow = void 0;
     return {
@@ -7556,21 +7571,21 @@ var AddFolderModal = function AddFolderModal() {
         args[_key] = arguments[_key];
     }
 
-    return Modal$1.apply(undefined, ['add', 'Group'].concat(args));
+    return Modal$2.apply(undefined, ['add', 'Group'].concat(args));
 };
 var EditFolderModal = function EditFolderModal() {
     for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
     }
 
-    return Modal$1.apply(undefined, ['edit', 'Group'].concat(args));
+    return Modal$2.apply(undefined, ['edit', 'Group'].concat(args));
 };
 var EditFileModal = function EditFileModal() {
     for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
     }
 
-    return Modal$1.apply(undefined, ['edit', ''].concat(args));
+    return Modal$2.apply(undefined, ['edit', ''].concat(args));
 };
 
 var copyTextToClipboard = function copyTextToClipboard(text) {
@@ -7999,7 +8014,7 @@ FileManager.defaultProps = {
     expandParentKey: 'parentId'
 };
 
-var Modal$2 = function Modal(props) {
+var Modal = function Modal(props) {
     var buttonProps = props.buttonProps,
         modalConfig = props.modalConfig,
         modalData = props.modalData,
@@ -8085,7 +8100,7 @@ var Modal$2 = function Modal(props) {
             }),
             buttonProps && buttonProps.label
         ),
-        React.createElement(FormModal$1, {
+        React.createElement(FormModal, {
             modal: modalConfig,
             selectedRow: _modalData,
             visible: visible,
@@ -8095,7 +8110,7 @@ var Modal$2 = function Modal(props) {
     );
 };
 
-Modal$2.propTypes = {
+Modal.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
@@ -8114,7 +8129,7 @@ Modal$2.propTypes = {
     subscribe: PropTypes.object
 };
 
-var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
+var mapStateToProps = function mapStateToProps(store, ownProps) {
     var subscribe = ownProps.subscribe;
 
     if (subscribe) {
@@ -8125,19 +8140,19 @@ var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
     }
     return {};
 };
-var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Modal$3 = connect(mapStateToProps$3, mapDispatchToProps$4)(Modal$2);
+var Modal$1 = connect(mapStateToProps, mapDispatchToProps)(Modal);
 
-var excludeProps$7 = ['child', 'componentType', 'field'];
+var excludeProps$1 = ['child', 'componentType', 'field'];
 
-var FormItem$1 = function FormItem(props) {
+var FormItem = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$7);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$1);
 
 	// Если тип элемента Select -> добавить доп свойства к Form.Item
 	if (child && child.componentType && (child.componentType === 'SingleSelect' || child.componentType === 'MultiSelect')) {
@@ -8160,7 +8175,7 @@ var FormItem$1 = function FormItem(props) {
 			var placeholder = void 0;
 			switch (child.componentType) {
 				case 'Button':
-					Component = withStore$1(_Button, antFormItemProps);
+					Component = withStore(_Button, antFormItemProps);
 					// console.log('Props field => ', field);
 					var onClick = function onClick(e) {
 						return childProps.onClick && childProps.onClick(e, field);
@@ -8171,71 +8186,71 @@ var FormItem$1 = function FormItem(props) {
 						childProps && childProps.label
 					);
 				case 'Title':
-					Component = withStore$1(TypographyTitle, antFormItemProps);
+					Component = withStore(TypographyTitle, antFormItemProps);
 					return React.createElement(Component, _extends({}, child, { componentType: child.componentType }));
 				case 'Text':
-					Component = withStore$1(TypographyText, antFormItemProps);
+					Component = withStore(TypographyText, antFormItemProps);
 					return React.createElement(Component, _extends({}, child, { componentType: true }));
 				case 'Divider':
-					Component = withStore$1(_Divider, antFormItemProps);
+					Component = withStore(_Divider, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Checkbox':
-					Component = withStore$1(_Checkbox, antFormItemProps);
+					Component = withStore(_Checkbox, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'DatePicker':
-					Component = withStore$1(DatePickerHOC$1(_DatePicker), antFormItemProps);
+					Component = withStore(DatePickerHOC(_DatePicker), antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Выберите дату';
 					var style = _extends({ width: '100%' }, childProps && childProps.style);
 					return React.createElement(Component, _extends({}, childProps, { style: style, placeholder: placeholder }));
 				case 'DateText':
-					Component = withStore$1(TypographyDate$1, antFormItemProps);
+					Component = withStore(TypographyDate, antFormItemProps);
 					return React.createElement(Component, child);
 				case 'Input':
-					Component = withStore$1(_Input, antFormItemProps);
+					Component = withStore(_Input, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
 					return React.createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'TextArea':
-					Component = withStore$1(_Input.TextArea, antFormItemProps);
+					Component = withStore(_Input.TextArea, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case 'Password':
-					Component = withStore$1(_Input.Password, antFormItemProps);
+					Component = withStore(_Input.Password, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите пароль';
 					return React.createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'InputNumber':
-					Component = withStore$1(_InputNumber, antFormItemProps);
+					Component = withStore(_InputNumber, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
 					return React.createElement(Component, _extends({}, childProps, { style: { width: '100%' }, placeholder: placeholder }));
 				case 'Radio':
-					Component = withStore$1(_Radio, antFormItemProps);
+					Component = withStore(_Radio, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'RadioButton':
-					Component = withStore$1(_Radio.Button, antFormItemProps);
+					Component = withStore(_Radio.Button, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Switch':
-					Component = withStore$1(_Switch, antFormItemProps);
+					Component = withStore(_Switch, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case "RadioGroup":
-					Component = withStore$1(_Radio.Group, antFormItemProps);
+					Component = withStore(_Radio.Group, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case 'SingleSelect':
 				case 'MultiSelect':
-					return React.createElement(Select$2, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
+					return React.createElement(Select$1, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
 				//'infinity', 'serverSide', 'localSide'
 				case 'InfinityTable':
 					childProps.type = 'infinity';
@@ -8252,9 +8267,9 @@ var FormItem$1 = function FormItem(props) {
 				case 'FileManager':
 					return React.createElement(FileManager, _extends({}, childProps, { name: props.name }));
 				case 'Modal':
-					return React.createElement(Modal$3, _extends({}, childProps, { name: props.name }));
+					return React.createElement(Modal$1, _extends({}, childProps, { name: props.name }));
 				case 'Custom':
-					Component = withStore$1(child.render, antFormItemProps);
+					Component = withStore(child.render, antFormItemProps);
 					return React.createElement(Component, childProps);
 				default:
 					return null;
@@ -8273,11 +8288,11 @@ var FormItem$1 = function FormItem(props) {
 	);
 };
 
-FormItem$1.propTypes = {
+FormItem.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
-var Layout$1 = function Layout(props) {
+var Layout = function Layout(props) {
 
     var itemProps = {};
     Object.keys(props).forEach(function (key) {
@@ -8297,7 +8312,7 @@ var Layout$1 = function Layout(props) {
     );
 };
 
-Layout$1.propTypes = {
+Layout.propTypes = {
     /** Строка класса */
     className: PropTypes.string,
 
@@ -8305,9 +8320,9 @@ Layout$1.propTypes = {
     style: PropTypes.object
 };
 
-var excludeProps$8 = ["children", "componentType"];
+var excludeProps = ["children", "componentType"];
 
-var FormItems$1 = function FormItems(props) {
+var FormItems = function FormItems(props) {
     var items = props.items;
 
     // console.log('FormItems props => ', props);
@@ -8315,7 +8330,7 @@ var FormItems$1 = function FormItems(props) {
     var getItems = function getItems(data, antFormListParams) {
 
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$8);
+            var itemProps = getObjectExcludedProps(item, excludeProps);
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
@@ -8333,7 +8348,7 @@ var FormItems$1 = function FormItems(props) {
                     );
                 case "Layout":
                     return React.createElement(
-                        Layout$1,
+                        Layout,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
@@ -8370,7 +8385,7 @@ var FormItems$1 = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React.createElement(FormItem, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
                 case "ListItems":
                     return React.createElement(
                         _Form.List,
@@ -8406,7 +8421,7 @@ var FormItems$1 = function FormItems(props) {
     return getItems(items);
 };
 
-FormItems$1.propTypes = {
+FormItems.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
@@ -8591,17 +8606,17 @@ var CommandPanel = function CommandPanel(props) {
 			React.createElement(
 				'div',
 				{ className: 'left-custom-side' },
-				leftCustomSideElement ? React.createElement(FormItems$1, { items: leftCustomSideElement }) : null
+				leftCustomSideElement ? React.createElement(FormItems, { items: leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'center-custom-side' },
-				centerCustomSideElement ? React.createElement(FormItems$1, { items: centerCustomSideElement }) : null
+				centerCustomSideElement ? React.createElement(FormItems, { items: centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'right-custom-side' },
-				rightCustomSideElement ? React.createElement(FormItems$1, { items: rightCustomSideElement }) : null
+				rightCustomSideElement ? React.createElement(FormItems, { items: rightCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
@@ -8726,7 +8741,7 @@ var List = function List(props) {
 			);
 		}
 	}];
-	return React.createElement(Table$3, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
+	return React.createElement(Table$1, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
 };
 
 List.propTypes = {
@@ -8773,7 +8788,7 @@ var rtdReducer = function rtdReducer() {
                 var _newState = _extends({}, state);
                 objectPath.set(_newState, _path, row); // obj.a is now {}
 
-                // console.log("Store change: ", path);
+                console.log("Store change: ", _path, row);
                 // console.group("Store");
                 // console.log("Store: ", newState);
                 // console.log("New Data: ", path, row);
@@ -8788,5 +8803,5 @@ var rtdReducer = function rtdReducer() {
 
 var components = { Form: classic.Form };
 
-export { APP_TIME_OFFSET, AdvancedTable, CommandPanel, DateRange, FileManager, FilterPanel, Form$1 as Form, List, Modal$3 as Modal, Select$2 as Select, SingleDate, Table$3 as Table, classic, components, declarative, getISO, getMomentFromStringByFormat, getMomentWithOffset, getMomentWithOffsetTruncateDay, notificationError, rtdReducer, setDateStore, toDDMMYYYYHHMMSS, toDDMMYYYYdash, toDDMMYYYYdot, toDDMMYYYYdotAltDashDash, toFormat };
+export { APP_TIME_OFFSET, AdvancedTable, CommandPanel, DateRange, FileManager, FilterPanel, Form, List, Modal$1 as Modal, Select$1 as Select, SingleDate, Table$1 as Table, classic, components, declarative, getISO, getMomentFromStringByFormat, getMomentWithOffset, getMomentWithOffsetTruncateDay, notificationError, rtdReducer, setDateStore, toDDMMYYYYHHMMSS, toDDMMYYYYdash, toDDMMYYYYdot, toDDMMYYYYdotAltDashDash, toFormat };
 //# sourceMappingURL=index.es.js.map

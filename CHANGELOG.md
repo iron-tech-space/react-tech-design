@@ -1,3 +1,7 @@
+## 0.0.59
+
+- Refactoring code
+
 ## 0.0.58
 
 - Add components

@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import objectPath from "object-path";
 import { setDateStore } from "../../redux/rtd.actions";
 import { dispatchToStore, getObjectExcludedProps, useMounted } from "../utils/baseUtils";
-import moment from "moment";
-import { Typography as AntTypography } from "antd";
-import { getISO, toFormat } from "../utils/datesUtils";
 
 export const withStore = (Component, antFormItemProps) => {
 
@@ -121,36 +118,3 @@ export const withStore = (Component, antFormItemProps) => {
         )
     })
 };
-
-
-export const DatePickerHOC = (Component) => {
-    return props => {
-        // console.log("DatePickerHOC => ", props);
-        if(props.value){
-            if(typeof props.value === 'string'){
-                // console.log("DatePickerHOC => onChange => string");
-                props.onChange(moment(props.value), props.value);
-            }
-            // else {
-            // 	console.log("DatePickerHOC => onChange => moment");
-            // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
-            // }
-        }
-        const value = props.value ? (typeof props.value === 'string' ? moment(props.value) : props.value) : undefined;
-        const style = {width: '100%', ...(props && props.style)}; // locale={locale}
-        // console.log("DatePickerHOC value => ", value);
-        return <Component {...props} style={style} value={value} />
-    };
-};
-
-export const TypographyTitle = (props) =>
-    <AntTypography.Title {...props}> {props.label || props.value} </AntTypography.Title>;
-
-export const TypographyText = (props) =>
-    <AntTypography.Text {...props}> {props.label || props.value} </AntTypography.Text>;
-
-export const TypographyDate = (props) => {
-    const {label, value, format } = props;
-    const _value = value ? (format ? toFormat(value, format) : getISO(value)) : undefined;
-    return <AntTypography.Text {...props}> {label || _value} </AntTypography.Text>;
-}
