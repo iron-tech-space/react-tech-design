@@ -23,6 +23,7 @@ import {
     Row as AntRow,
     Col as AntCol,
     Tabs as AntTabs,
+    List as AntList
 } from "antd";
 import RtForm from "./Form/Form";
 import RtLayout from "./Layout/Layout";
@@ -102,39 +103,41 @@ const ComponentClassicWithOutStore = (Component) => (props) => {
 }
 
 const classicComponents = {
-    Form:       RtForm, // +
-    FormHeader: FormHeader, // +
-    FormBody:   FormBody, // +
-    FormFooter: FormFooter, // +
-    Space:      renderFormItemComponent(AntSpace), // +
-    Row:        renderFormItemComponent(AntRow), // +
-    Col:        renderFormItemComponent(AntCol), // +
-    Layout:     renderFormItemComponent(RtLayout), // +
-    Tabs:       AntTabs, // +
-    TabPane:    RtTabPane, // +
+    Form:       RtForm,
+    FormHeader: FormHeader,
+    FormBody:   FormBody,
+    FormFooter: FormFooter,
+    FormList:   AntForm.List,
+    Space:      renderFormItemComponent(AntSpace),
+    Row:        renderFormItemComponent(AntRow),
+    Col:        renderFormItemComponent(AntCol),
+    Layout:     renderFormItemComponent(RtLayout),
+    Tabs:       AntTabs,
+    TabPane:    RtTabPane,
+    List:       renderFormItemComponent(AntList),
 }
 const withComponentType = {
-    Button:     ComponentClassicWithOutStore(RtButton), // +
-    Title:      ComponentClassicWithLabel(AntTypography.Title), // +
-    Text:       ComponentClassicWithLabel(AntTypography.Text), // +
-    Divider:    ComponentClassicWithLabel(AntDivider), // +
-    Checkbox:   ComponentClassicWithLabel(AntCheckbox), // +
-    DatePicker: ComponentClassicWithPlaceholder(RtDatePicker, 'Выберите дату'), // +
-    DateText:   ComponentClassic(TypographyDate), // +
-    Input:      ComponentClassicWithPlaceholder(AntInput, 'Введите значение'), // +
-    Search:     ComponentClassicWithPlaceholder(AntInput.Search, 'Поиск'), // +
-    TextArea:   ComponentClassicWithPlaceholder(AntInput.TextArea, 'Введите текст'), // +
-    Password:   ComponentClassicWithPlaceholder(AntInput.Password, 'Введите пароль'), // +
-    InputNumber:ComponentClassicWithPlaceholder(AntInputNumber, 'Введите значение'), // +
-    Switch:     ComponentClassic(AntSwitch), // +
-    RadioGroup: ComponentClassic(AntRadio.Group), // +
-    Select:     ComponentClassicWithPlaceholder(RtSelect, 'Выберите значение'),  // +
-    TreeSelect: ComponentClassicWithPlaceholder(RtTreeSelect, 'Выберите значение'),  // +
+    Button:     ComponentClassicWithOutStore(RtButton),
+    Title:      ComponentClassicWithLabel(AntTypography.Title),
+    Text:       ComponentClassicWithLabel(AntTypography.Text),
+    Divider:    ComponentClassicWithLabel(AntDivider),
+    Checkbox:   ComponentClassicWithLabel(AntCheckbox),
+    DatePicker: ComponentClassicWithPlaceholder(RtDatePicker, 'Выберите дату'),
+    DateText:   ComponentClassic(TypographyDate),
+    Input:      ComponentClassicWithPlaceholder(AntInput, 'Введите значение'),
+    Search:     ComponentClassicWithPlaceholder(AntInput.Search, 'Поиск'),
+    TextArea:   ComponentClassicWithPlaceholder(AntInput.TextArea, 'Введите текст'),
+    Password:   ComponentClassicWithPlaceholder(AntInput.Password, 'Введите пароль'),
+    InputNumber:ComponentClassicWithPlaceholder(AntInputNumber, 'Введите значение'),
+    Switch:     ComponentClassic(AntSwitch),
+    RadioGroup: ComponentClassic(AntRadio.Group),
+    Select:     ComponentClassicWithPlaceholder(RtSelect, 'Выберите значение'),
+    TreeSelect: ComponentClassicWithPlaceholder(RtTreeSelect, 'Выберите значение'),
     Table:      ComponentClassicWithOutStore(RtTable),
-    Modal:      ComponentClassicWithOutStore(RtModal), // +
-    Custom:     ComponentClassic(Custom),  // +
-    Switcher:   ComponentClassic(RtSwitcher), // +
-    UploadFile: ComponentClassic(RtUploadFile) // +
+    Modal:      ComponentClassicWithOutStore(RtModal),
+    Custom:     ComponentClassic(Custom),
+    Switcher:   ComponentClassic(RtSwitcher),
+    UploadFile: ComponentClassic(RtUploadFile)
 }
 
 export const classic = {

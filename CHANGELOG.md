@@ -1,3 +1,7 @@
+## 0.0.60
+
+- Add `FormList` and `List`
+
 ## 0.0.59
 
 - Refactoring code

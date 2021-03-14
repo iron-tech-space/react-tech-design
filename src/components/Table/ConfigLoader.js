@@ -75,7 +75,8 @@ const ConfigLoader = props => {
                     ...colProps,
                     cellRenderer: (object) => {
                         if (colProps && colProps.cellRenderer)
-                            return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                            return <colProps.cellRenderer {...object}/>
+                            // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
                         else
                             return object.cellData ? <Typography.Text ellipsis={true} style={{width: '100%'}}>{object.cellData}</Typography.Text> : '---';
                             // return object.cellData ? object.cellData : '---';

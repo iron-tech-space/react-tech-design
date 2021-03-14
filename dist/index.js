@@ -16,6 +16,8 @@ require('antd/es/divider/style');
 var _Divider = require('antd/es/divider');
 require('antd/es/typography/style');
 var _Typography = require('antd/es/typography');
+require('antd/es/list/style');
+var _List = require('antd/es/list');
 require('antd/es/tabs/style');
 var _Tabs = require('antd/es/tabs');
 require('antd/es/col/style');
@@ -66,6 +68,7 @@ var _Input__default = /*#__PURE__*/_interopDefaultLegacy(_Input);
 var _Checkbox__default = /*#__PURE__*/_interopDefaultLegacy(_Checkbox);
 var _Divider__default = /*#__PURE__*/_interopDefaultLegacy(_Divider);
 var _Typography__default = /*#__PURE__*/_interopDefaultLegacy(_Typography);
+var _List__default = /*#__PURE__*/_interopDefaultLegacy(_List);
 var _Tabs__default = /*#__PURE__*/_interopDefaultLegacy(_Tabs);
 var _Col__default = /*#__PURE__*/_interopDefaultLegacy(_Col);
 var _Row__default = /*#__PURE__*/_interopDefaultLegacy(_Row);
@@ -2559,11 +2562,13 @@ var ConfigLoader = function ConfigLoader(props) {
                     hidden: !item.visible
                 }, colProps, {
                     cellRenderer: function cellRenderer(object) {
-                        if (colProps && colProps.cellRenderer) return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';else return object.cellData ? React__default['default'].createElement(
-                            _Typography__default['default'].Text,
-                            { ellipsis: true, style: { width: '100%' } },
-                            object.cellData
-                        ) : '---';
+                        if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, object);
+                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                        else return object.cellData ? React__default['default'].createElement(
+                                _Typography__default['default'].Text,
+                                { ellipsis: true, style: { width: '100%' } },
+                                object.cellData
+                            ) : '---';
                         // return object.cellData ? object.cellData : '---';
                     }
                 });
@@ -3651,39 +3656,41 @@ var ComponentClassicWithOutStore = function ComponentClassicWithOutStore(Compone
 };
 
 var classicComponents = {
-    Form: Form$1, // +
-    FormHeader: FormHeader, // +
-    FormBody: FormBody, // +
-    FormFooter: FormFooter, // +
-    Space: renderFormItemComponent(_Space__default['default']), // +
-    Row: renderFormItemComponent(_Row__default['default']), // +
-    Col: renderFormItemComponent(_Col__default['default']), // +
-    Layout: renderFormItemComponent(Layout$1), // +
-    Tabs: _Tabs__default['default'], // +
-    TabPane: TabPane // +
+    Form: Form$1,
+    FormHeader: FormHeader,
+    FormBody: FormBody,
+    FormFooter: FormFooter,
+    FormList: _Form__default['default'].List,
+    Space: renderFormItemComponent(_Space__default['default']),
+    Row: renderFormItemComponent(_Row__default['default']),
+    Col: renderFormItemComponent(_Col__default['default']),
+    Layout: renderFormItemComponent(Layout$1),
+    Tabs: _Tabs__default['default'],
+    TabPane: TabPane,
+    List: renderFormItemComponent(_List__default['default'])
 };
 var withComponentType = {
-    Button: ComponentClassicWithOutStore(Button), // +
-    Title: ComponentClassicWithLabel(_Typography__default['default'].Title), // +
-    Text: ComponentClassicWithLabel(_Typography__default['default'].Text), // +
-    Divider: ComponentClassicWithLabel(_Divider__default['default']), // +
-    Checkbox: ComponentClassicWithLabel(_Checkbox__default['default']), // +
-    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'), // +
-    DateText: ComponentClassic(TypographyDate$1), // +
-    Input: ComponentClassicWithPlaceholder(_Input__default['default'], 'Введите значение'), // +
-    Search: ComponentClassicWithPlaceholder(_Input__default['default'].Search, 'Поиск'), // +
-    TextArea: ComponentClassicWithPlaceholder(_Input__default['default'].TextArea, 'Введите текст'), // +
-    Password: ComponentClassicWithPlaceholder(_Input__default['default'].Password, 'Введите пароль'), // +
-    InputNumber: ComponentClassicWithPlaceholder(_InputNumber__default['default'], 'Введите значение'), // +
-    Switch: ComponentClassic(_Switch__default['default']), // +
-    RadioGroup: ComponentClassic(_Radio__default['default'].Group), // +
-    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'), // +
-    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'), // +
+    Button: ComponentClassicWithOutStore(Button),
+    Title: ComponentClassicWithLabel(_Typography__default['default'].Title),
+    Text: ComponentClassicWithLabel(_Typography__default['default'].Text),
+    Divider: ComponentClassicWithLabel(_Divider__default['default']),
+    Checkbox: ComponentClassicWithLabel(_Checkbox__default['default']),
+    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'),
+    DateText: ComponentClassic(TypographyDate$1),
+    Input: ComponentClassicWithPlaceholder(_Input__default['default'], 'Введите значение'),
+    Search: ComponentClassicWithPlaceholder(_Input__default['default'].Search, 'Поиск'),
+    TextArea: ComponentClassicWithPlaceholder(_Input__default['default'].TextArea, 'Введите текст'),
+    Password: ComponentClassicWithPlaceholder(_Input__default['default'].Password, 'Введите пароль'),
+    InputNumber: ComponentClassicWithPlaceholder(_InputNumber__default['default'], 'Введите значение'),
+    Switch: ComponentClassic(_Switch__default['default']),
+    RadioGroup: ComponentClassic(_Radio__default['default'].Group),
+    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'),
+    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'),
     Table: ComponentClassicWithOutStore(ConfigLoader),
-    Modal: ComponentClassicWithOutStore(RtModal), // +
-    Custom: ComponentClassic(Custom), // +
-    Switcher: ComponentClassic(Switcher), // +
-    UploadFile: ComponentClassic(UploadFile) // +
+    Modal: ComponentClassicWithOutStore(RtModal),
+    Custom: ComponentClassic(Custom),
+    Switcher: ComponentClassic(Switcher),
+    UploadFile: ComponentClassic(UploadFile)
 };
 
 var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {

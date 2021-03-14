@@ -12,6 +12,8 @@ import 'antd/es/divider/style';
 import _Divider from 'antd/es/divider';
 import 'antd/es/typography/style';
 import _Typography from 'antd/es/typography';
+import 'antd/es/list/style';
+import _List from 'antd/es/list';
 import 'antd/es/tabs/style';
 import _Tabs from 'antd/es/tabs';
 import 'antd/es/col/style';
@@ -2523,11 +2525,13 @@ var ConfigLoader = function ConfigLoader(props) {
                     hidden: !item.visible
                 }, colProps, {
                     cellRenderer: function cellRenderer(object) {
-                        if (colProps && colProps.cellRenderer) return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';else return object.cellData ? React.createElement(
-                            _Typography.Text,
-                            { ellipsis: true, style: { width: '100%' } },
-                            object.cellData
-                        ) : '---';
+                        if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, object);
+                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                        else return object.cellData ? React.createElement(
+                                _Typography.Text,
+                                { ellipsis: true, style: { width: '100%' } },
+                                object.cellData
+                            ) : '---';
                         // return object.cellData ? object.cellData : '---';
                     }
                 });
@@ -3615,39 +3619,41 @@ var ComponentClassicWithOutStore = function ComponentClassicWithOutStore(Compone
 };
 
 var classicComponents = {
-    Form: Form$1, // +
-    FormHeader: FormHeader, // +
-    FormBody: FormBody, // +
-    FormFooter: FormFooter, // +
-    Space: renderFormItemComponent(_Space), // +
-    Row: renderFormItemComponent(_Row), // +
-    Col: renderFormItemComponent(_Col), // +
-    Layout: renderFormItemComponent(Layout$1), // +
-    Tabs: _Tabs, // +
-    TabPane: TabPane // +
+    Form: Form$1,
+    FormHeader: FormHeader,
+    FormBody: FormBody,
+    FormFooter: FormFooter,
+    FormList: _Form.List,
+    Space: renderFormItemComponent(_Space),
+    Row: renderFormItemComponent(_Row),
+    Col: renderFormItemComponent(_Col),
+    Layout: renderFormItemComponent(Layout$1),
+    Tabs: _Tabs,
+    TabPane: TabPane,
+    List: renderFormItemComponent(_List)
 };
 var withComponentType = {
-    Button: ComponentClassicWithOutStore(Button), // +
-    Title: ComponentClassicWithLabel(_Typography.Title), // +
-    Text: ComponentClassicWithLabel(_Typography.Text), // +
-    Divider: ComponentClassicWithLabel(_Divider), // +
-    Checkbox: ComponentClassicWithLabel(_Checkbox), // +
-    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'), // +
-    DateText: ComponentClassic(TypographyDate$1), // +
-    Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'), // +
-    Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'), // +
-    TextArea: ComponentClassicWithPlaceholder(_Input.TextArea, 'Введите текст'), // +
-    Password: ComponentClassicWithPlaceholder(_Input.Password, 'Введите пароль'), // +
-    InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'), // +
-    Switch: ComponentClassic(_Switch), // +
-    RadioGroup: ComponentClassic(_Radio.Group), // +
-    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'), // +
-    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'), // +
+    Button: ComponentClassicWithOutStore(Button),
+    Title: ComponentClassicWithLabel(_Typography.Title),
+    Text: ComponentClassicWithLabel(_Typography.Text),
+    Divider: ComponentClassicWithLabel(_Divider),
+    Checkbox: ComponentClassicWithLabel(_Checkbox),
+    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'),
+    DateText: ComponentClassic(TypographyDate$1),
+    Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'),
+    Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'),
+    TextArea: ComponentClassicWithPlaceholder(_Input.TextArea, 'Введите текст'),
+    Password: ComponentClassicWithPlaceholder(_Input.Password, 'Введите пароль'),
+    InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'),
+    Switch: ComponentClassic(_Switch),
+    RadioGroup: ComponentClassic(_Radio.Group),
+    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'),
+    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'),
     Table: ComponentClassicWithOutStore(ConfigLoader),
-    Modal: ComponentClassicWithOutStore(RtModal), // +
-    Custom: ComponentClassic(Custom), // +
-    Switcher: ComponentClassic(Switcher), // +
-    UploadFile: ComponentClassic(UploadFile) // +
+    Modal: ComponentClassicWithOutStore(RtModal),
+    Custom: ComponentClassic(Custom),
+    Switcher: ComponentClassic(Switcher),
+    UploadFile: ComponentClassic(UploadFile)
 };
 
 var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {
