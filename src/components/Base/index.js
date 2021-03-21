@@ -43,7 +43,26 @@ const Button = (props) => {
 
 /** Custom компонент */
 const Custom = (props) => {
-    return renderClassic(props.render)({...props, componentType: 'Custom' })
+    const {children} = props
+    let childNode = null;
+    let childProps = null;
+
+    if (Array.isArray(children)) {
+        console.warn('Custom component: `children` is array. Don\'t render component')
+        return null;
+    } else if(props.render) {
+        // console.log('childNode = props.render')
+        childNode = props.render;
+        childProps = { ...props, componentType: 'Custom' };
+        return renderClassic(childNode)(childProps)
+    } else if(React.isValidElement(children)) {
+        // console.log('childNode = children')
+        childProps = { ...children.props, ...props, componentType: 'Custom' };
+        return  React.cloneElement(children, childProps);
+    } else {
+        console.warn('Custom component: not exist valid render')
+        return null;
+    }
 }
 
 /** Компонент заголовка формы */

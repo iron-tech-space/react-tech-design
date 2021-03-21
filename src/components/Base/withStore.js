@@ -54,12 +54,18 @@ export const withStore = (Component, antFormItemProps) => {
 
         const isMounted = useMounted()
 
+        const setSubscribePropsHandler = (value) =>
+            setSubscribeProps((prevState) => ({ ...prevState, ...value}) );
+
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(item => {
             return useEffect( () => {
                 if(isMounted && item.name) {
                     // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                    item.onChange && item.onChange({value: props[item.name], extraData: props[`${item.name}ExtraData`], setSubscribeProps});
+                    item.onChange && item.onChange({
+                        value: props[item.name],
+                        extraData: props[`${item.name}ExtraData`],
+                        setSubscribeProps: setSubscribePropsHandler});
                 }
                 // console.log("Change Props[2]: ", props.subscribeЗф);
             }, [props[item.name]]);
@@ -88,13 +94,18 @@ export const withStore = (Component, antFormItemProps) => {
         }, [subscribeProps.value]);
 
         const onChange = (...args) => {
-            // console.log('withStore [trigger] ', props.componentType)
+            // console.log('withStore [trigger] ', subscribeProps)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
             if(componentType === 'Button')
                 dispatchToStore({dispatch, setDateStore, value: args[0], extraData: dispatchExtraData});
             // else if(componentType === 'Search')
             //     args[1].preventDefault();
+
+            if(subscribeProps && subscribeProps.hasOwnProperty('value')) {
+                const {value, ..._subscribeProps} = subscribeProps
+                setSubscribePropsHandler(_subscribeProps)
+            }
 
             props[trigger] && props[trigger](...args);
         };

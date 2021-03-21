@@ -180,6 +180,18 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
+var objectWithoutProperties = function (obj, keys) {
+  var target = {};
+
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+
+  return target;
+};
+
 var slicedToArray = function () {
   function sliceIterator(arr, i) {
     var _arr = [];
@@ -415,12 +427,21 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
 
         var isMounted = useMounted();
 
+        var setSubscribePropsHandler = function setSubscribePropsHandler(value) {
+            return setSubscribeProps(function (prevState) {
+                return _extends({}, prevState, value);
+            });
+        };
+
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(function (item) {
             return useEffect(function () {
                 if (isMounted && item.name) {
                     // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                    item.onChange && item.onChange({ value: props[item.name], extraData: props[item.name + 'ExtraData'], setSubscribeProps: setSubscribeProps });
+                    item.onChange && item.onChange({
+                        value: props[item.name],
+                        extraData: props[item.name + 'ExtraData'],
+                        setSubscribeProps: setSubscribePropsHandler });
                 }
                 // console.log("Change Props[2]: ", props.subscribeЗф);
             }, [props[item.name]]);
@@ -447,12 +468,19 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
         }, [subscribeProps.value]);
 
         var onChange = function onChange() {
-            // console.log('withStore [trigger] ', props.componentType)
+            // console.log('withStore [trigger] ', subscribeProps)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
             if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
             // else if(componentType === 'Search')
             //     args[1].preventDefault();
+
+            if (subscribeProps && subscribeProps.hasOwnProperty('value')) {
+                subscribeProps.value;
+                    var _subscribeProps = objectWithoutProperties(subscribeProps, ['value']);
+
+                setSubscribePropsHandler(_subscribeProps);
+            }
 
             props[trigger] && props[trigger].apply(props, arguments);
         };
@@ -524,7 +552,27 @@ var Button = function Button(props) {
 
 /** Custom компонент */
 var Custom = function Custom(props) {
-    return renderClassic(props.render)(_extends({}, props, { componentType: 'Custom' }));
+    var children = props.children;
+
+    var childNode = null;
+    var childProps = null;
+
+    if (Array.isArray(children)) {
+        console.warn('Custom component: `children` is array. Don\'t render component');
+        return null;
+    } else if (props.render) {
+        // console.log('childNode = props.render')
+        childNode = props.render;
+        childProps = _extends({}, props, { componentType: 'Custom' });
+        return renderClassic(childNode)(childProps);
+    } else if (React.isValidElement(children)) {
+        // console.log('childNode = children')
+        childProps = _extends({}, children.props, props, { componentType: 'Custom' });
+        return React.cloneElement(children, childProps);
+    } else {
+        console.warn('Custom component: not exist valid render');
+        return null;
+    }
 };
 
 /** Компонент заголовка формы */
@@ -8877,7 +8925,7 @@ var rtdReducer = function rtdReducer() {
                 var _newState = _extends({}, state);
                 objectPath.set(_newState, _path, row); // obj.a is now {}
 
-                console.log("Store change: ", _path, row);
+                console.debug("Store change: ", _path, row);
                 // console.group("Store");
                 // console.log("Store: ", newState);
                 // console.log("New Data: ", path, row);

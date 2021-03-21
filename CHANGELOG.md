@@ -1,10 +1,15 @@
+## 0.0.62
+
+- Add support children for `Custom` component
+- Add `setSubscribePropsHandler` in HOC withStore
+
 ## 0.0.61
 
-- Remove def padding for cell.  
+- Remove def padding for cell.
   Need add `rt-table-cell` in `cellRenderer` for add padding
 - Add `Table` props `cellBordered`, `rowBordered`, `editMode`, `value` and `onChange`
 - Add `setSubscribeProps` from `Table`
-- Add dispatch new events to `${dispatchPath}.events.${nameEvent}`: 
+- Add dispatch new events to `${dispatchPath}.events.${nameEvent}`:
   - `onAddRows`
   - `onAddRow`
   - `onAddRowAsCopy`
