@@ -1,3 +1,18 @@
+## 0.0.61
+
+- Remove def padding for cell.  
+  Need add `rt-table-cell` in `cellRenderer` for add padding
+- Add `Table` props `cellBordered`, `rowBordered`, `editMode`, `value` and `onChange`
+- Add `setSubscribeProps` from `Table`
+- Add dispatch new events to `${dispatchPath}.events.${nameEvent}`: 
+  - `onAddRows`
+  - `onAddRow`
+  - `onAddRowAsCopy`
+  - `onEditRow`
+  - `onRemoveRow`
+  - `onMoveUpRow`
+  - `onMoveDownRow`
+
 ## 0.0.60
 
 - Add `FormList` and `List`

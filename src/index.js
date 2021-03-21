@@ -26,6 +26,7 @@ export {setDateStore} from './redux/rtd.actions';
 
 // Utils
 export {notificationError} from './components/utils/baseUtils'
+export { executeRequest } from "./components/utils/api";
 export * from './components/utils/datesUtils';
 
 

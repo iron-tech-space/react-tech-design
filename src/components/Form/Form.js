@@ -76,13 +76,24 @@ const Form = (props) => {
 
     const onFinish = (rawValues) => {
         const values = processBeforeSaveForm ? processBeforeSaveForm(rawValues) : rawValues;
-        console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, values);
+        // console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, values);
+        const saveObject = {
+            ...initFormData,
+            ...values,
+            // dateStart: getISO(values['dateStart'])
+        };
+
+        // console.group(`Success form [${props.name ? props.name : 'no name form'}]:`);
+        // console.log("values: ", values);
+        // console.log("saveObject: ", saveObject);
+        // console.groupEnd();
+        console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, saveObject);
         if (autoSaveForm && requestSaveForm) {
-            const saveObject = {
-                ...initFormData,
-                ...values,
-                // dateStart: getISO(values['dateStart'])
-            };
+            // const saveObject = {
+            //     ...initFormData,
+            //     ...values,
+            //     // dateStart: getISO(values['dateStart'])
+            // };
             requestSaveForm({
                 method: methodSaveForm,
                 data: saveObject

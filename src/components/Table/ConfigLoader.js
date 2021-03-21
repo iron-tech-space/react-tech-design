@@ -28,6 +28,7 @@ const ConfigLoader = props => {
         expandLazyLoad,
         expandParentKey,
         customColumnProps,
+        cellBordered,
     } = {...defaultProps, ...props};
 
     useEffect(() => {
@@ -71,6 +72,8 @@ const ConfigLoader = props => {
                     resizable: item.resizable,
                     sortable: item.sortable,
                     hidden: !item.visible,
+                    className: [cellBordered ? 'bordered' : ''].join(' '),
+                    headerClassName: [cellBordered ? 'bordered' : ''].join(' '),
                     // cellRenderer: cellR && cellR.cellRender,
                     ...colProps,
                     cellRenderer: (object) => {
@@ -78,7 +81,9 @@ const ConfigLoader = props => {
                             return <colProps.cellRenderer {...object}/>
                             // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
                         else
-                            return object.cellData ? <Typography.Text ellipsis={true} style={{width: '100%'}}>{object.cellData}</Typography.Text> : '---';
+                            return object.cellData
+                                ? <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{object.cellData}</Typography.Text>
+                                : <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>---</Typography.Text> ;
                             // return object.cellData ? object.cellData : '---';
                     },
                 };

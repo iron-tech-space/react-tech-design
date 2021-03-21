@@ -517,18 +517,12 @@ const Table = forwardRef((props, ref) => {
 	/** Событие при рендере для стилизации */
 	const _rowClassName = ({rowData, rowIndex}) => {
 		const {rowClassName} = props;
-		const rowClass = rowClassName
-			? callOrReturn(rowClassName, {rowData, rowIndex})
-			: '';
-		// const key = {[rowKey]: rowData[rowKey], checked: true};
-		// selectedRowKeys.some((item) => (item[rowKey] === rowData[rowKey] && item.checked))
 		return [
-			rowClass,
+			rowClassName,
 			_selectedRowKeys.includes(rowData[rowKey]) && 'row-selected',
-		]
-			.filter(Boolean)
-			.concat(zebraStyle ? (rowIndex % 2 === 0 ? 'even' : 'odd') : '')
-			.concat(' ');
+			zebraStyle ? (rowIndex % 2 === 0 ? 'even' : 'odd') : '',
+			'bordered'
+		].join(' ')
 	};
 
 	/** LOAD DATA FUNCTIONS */

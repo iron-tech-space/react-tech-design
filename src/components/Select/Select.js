@@ -105,7 +105,7 @@ const Select = props => {
 
 	const _setRowsHandler = (options) => {
 			_setOptions(options);
-			// console.log('_setRowsHandler value => ', value)
+			// console.log('Select _setRowsHandler value => ', options)
 			if(mode === 'multiple') {
 				if(Array.isArray(value))
 					if(options.reduce((preValue, item) => value.includes(item.value) ? preValue + 1 : preValue, 0) === options.length)

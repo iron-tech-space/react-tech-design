@@ -143,7 +143,7 @@ const Select = (props) => {
 			cellRenderer:
 				typeof rowRender === 'function'
 					? rowRender
-					: ({rowData}) => <div>{rowData[rowRender]}</div>,
+					: ({rowData}) => <div className={'rt-table-cell'}>{rowData[rowRender]}</div>,
 		},
 	];
 

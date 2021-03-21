@@ -1,7 +1,7 @@
 import React, {forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Table from '../Table/Table';
-import {notification} from 'antd';
+import { notification, Typography } from "antd";
 import { notificationError } from "../../utils/baseUtils";
 
 const AdvancedTable = forwardRef((props, ref) => {
@@ -65,10 +65,14 @@ const AdvancedTable = forwardRef((props, ref) => {
 				// cellRenderer: cellR && cellR.cellRender,
                 ...colProps,
                 cellRenderer: (object) => {
-                    if(colProps && colProps.cellRenderer)
-                        return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                    else
-                        return object.cellData ? object.cellData : '---';
+					if (colProps && colProps.cellRenderer)
+						return <colProps.cellRenderer {...object}/>
+					// return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+					else
+						return object.cellData
+							? <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{object.cellData}</Typography.Text>
+							: <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>---</Typography.Text> ;
+					// return object.cellData ? object.cellData : '---';
                 },
 			};
 		});

@@ -7,6 +7,10 @@
     &-top-panel{
         outline: 1px solid @table-outline-color;
     }
+	//
+	&-cell {
+		padding: 0 11px;
+	}
 
     .@{rt-prefix}-baseTable {
 		flex: 1 1 auto;
@@ -28,14 +32,23 @@
 				color: @table-header-color;
 			}
 
-			.BaseTable__header-cell,
+			//.BaseTable__header-cell,
 			.BaseTable__row-cell {
 				//border-left: 1px solid #eee;
 				//white-space: nowrap;
 				//text-overflow: ellipsis;
+				&.bordered {
+					border-left: 1px solid #eeeeee;
+				}
+				padding: 1px;
 				.BaseTable__expand-icon {
 				    color: #8C99B2; //8C99B2
                     margin-right: 10px;
+				}
+			}
+			.BaseTable__header-cell{
+				&.bordered {
+					border-left: 1px solid #d0d0d0;
 				}
 			}
 
@@ -47,6 +60,10 @@
 
 			.BaseTable__row {
 				font-size: 12px;
+				border-bottom: 0;
+				&.bordered {
+					border-bottom: 1px solid #eeeeee;
+				}
 				//color: #6E7778;
 				&.odd {
 					background-color: @table-body-odd-bg;
