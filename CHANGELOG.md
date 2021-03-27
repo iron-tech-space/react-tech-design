@@ -1,3 +1,8 @@
+## 0.0.63
+
+- Add `_setLoadedRowsHandler` in `Table` for call `onChange` after load data
+- Add dispatch `onRowClick`
+
 ## 0.0.62
 
 - Add support children for `Custom` component

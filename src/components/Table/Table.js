@@ -2,8 +2,7 @@ import React, {useRef, forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import BaseTable, {AutoResizer, callOrReturn} from 'react-base-table';
-// import BaseTable from "./BaseTable/BaseTable";
+import BaseTable, {AutoResizer} from 'react-base-table';
 import {empty, overlay} from './defaultSettings';
 import SelectionHead from './Selectable/SelectionHead';
 import SelectionCell, {parentAnalysis, onChangeSelectionCell} from './Selectable/SelectionCell';
@@ -148,7 +147,6 @@ const Table = forwardRef((props, ref) => {
 
 	const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
 	const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
-	const rowDoubleClickDispatchPath = dispatchPath && `${dispatchPath}.events.onRowDoubleClick`;
 
 	useEffect(() => {
         // console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -278,6 +276,10 @@ const Table = forwardRef((props, ref) => {
 		// }, 2000)
 	}
 
+	const _setLoadedRowsHandler = (rows) => {
+		_setRowsHandler(rows)
+		onChange && onChange(rows)
+	};
 	const _setRowsHandler = (rows) => {
 		// console.log('_setRowsHandler onChange');
 		_setRows(rows);
@@ -310,15 +312,6 @@ const Table = forwardRef((props, ref) => {
 		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
 	}
 
-	const rowDoubleClickDispatch = (value) => {
-		rowDoubleClickDispatchPath
-		&& props.setDateStore
-		&& props.setDateStore(rowDoubleClickDispatchPath, {
-			timestamp: moment(),
-			value: value
-		});
-	}
-
 	const onTableEventsDispatch = (nameEvent, value) => {
 		const dp = dispatchPath && `${dispatchPath}.events.${nameEvent}`;
 		dp && props.setDateStore && props.setDateStore(dp, {
@@ -326,7 +319,7 @@ const Table = forwardRef((props, ref) => {
 			value: value
 		});
 		// console.log('onTableEventsDispatch onChange');
-		onChange && onChange(value)
+		Array.isArray(value) && onChange && onChange(value)
 	}
 
 	const setFilterHandler = (filter) => {
@@ -418,7 +411,7 @@ const Table = forwardRef((props, ref) => {
 									];
 								});
 								// _setRows(result);
-								_setRowsHandler(result);
+								_setLoadedRowsHandler(result);
 							} else {
 								let newRows = [..._rows];
 								// (data, rowKey, rowValue)
@@ -435,7 +428,7 @@ const Table = forwardRef((props, ref) => {
 								node.children = result;
 								// console.log('newRows -> ', newRows);
 								// _setRows(newRows);
-								_setRowsHandler(newRows);
+								_setLoadedRowsHandler(newRows);
 							}
 						} else {
 							if (result && result.length < pageSize) {
@@ -444,8 +437,8 @@ const Table = forwardRef((props, ref) => {
 								setHasMore(true);
 							}
 							pageNum === 0
-								? _setRowsHandler(result) // _setRows
-								: _setRowsHandler(_rows.concat(result)); // _setRows
+								? _setLoadedRowsHandler(result) // _setRows
+								: _setLoadedRowsHandler(_rows.concat(result)); // _setRows
 
 							// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
 							if (expandDefaultAll)
@@ -458,7 +451,7 @@ const Table = forwardRef((props, ref) => {
 					})
 					.catch((error) => {
 						notificationError(error, 'Ошибка загрузки данных')
-						_setRowsHandler(_rows); // _setRows
+						_setLoadedRowsHandler(_rows); // _setRows
 						// setHasMore(false);
 						setLoading(false);
 					});
@@ -496,12 +489,14 @@ const Table = forwardRef((props, ref) => {
 
 	const _onRowClick = ({rowData, rowIndex, rowKey}) => {
 		// console.log('actionSimpleClick')
+		onTableEventsDispatch('onRowClick', rowData)
 		_rowSelectAfterClick({rowData, rowIndex, rowKey, onClick: onRowClick})
 	}
 	const _onRowDoubleClick = ({rowData, rowIndex, rowKey}) => {
 		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
 		// console.log('actionDoubleClick')
-		rowDoubleClickDispatch(rowData);
+		// rowDoubleClickDispatch(rowData);
+		onTableEventsDispatch('onRowDoubleClick', rowData)
 		_rowSelectAfterClick({rowData, rowIndex, rowKey, onClick: onRowDoubleClick})
 	}
 

@@ -1389,7 +1389,6 @@ var Table$2 = forwardRef(function (props, ref) {
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
-	var rowDoubleClickDispatchPath = dispatchPath && dispatchPath + '.events.onRowDoubleClick';
 
 	useEffect(function () {
 		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -1510,6 +1509,10 @@ var Table$2 = forwardRef(function (props, ref) {
 		// }, 2000)
 	};
 
+	var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
+		_setRowsHandler(rows);
+		onChange && onChange(rows);
+	};
 	var _setRowsHandler = function _setRowsHandler(rows) {
 		// console.log('_setRowsHandler onChange');
 		_setRows(rows);
@@ -1541,13 +1544,6 @@ var Table$2 = forwardRef(function (props, ref) {
 		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
 	};
 
-	var rowDoubleClickDispatch = function rowDoubleClickDispatch(value) {
-		rowDoubleClickDispatchPath && props.setDateStore && props.setDateStore(rowDoubleClickDispatchPath, {
-			timestamp: moment(),
-			value: value
-		});
-	};
-
 	var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
 		var dp = dispatchPath && dispatchPath + '.events.' + nameEvent;
 		dp && props.setDateStore && props.setDateStore(dp, {
@@ -1555,7 +1551,7 @@ var Table$2 = forwardRef(function (props, ref) {
 			value: value
 		});
 		// console.log('onTableEventsDispatch onChange');
-		onChange && onChange(value);
+		Array.isArray(value) && onChange && onChange(value);
 	};
 
 	var setFilterHandler = function setFilterHandler(filter) {
@@ -1641,7 +1637,7 @@ var Table$2 = forwardRef(function (props, ref) {
 								child.children = [defineProperty({}, rowKey, generateUUID())];
 							});
 							// _setRows(result);
-							_setRowsHandler(result);
+							_setLoadedRowsHandler(result);
 						} else {
 							var newRows = [].concat(toConsumableArray(_rows));
 							// (data, rowKey, rowValue)
@@ -1652,7 +1648,7 @@ var Table$2 = forwardRef(function (props, ref) {
 							node.children = result;
 							// console.log('newRows -> ', newRows);
 							// _setRows(newRows);
-							_setRowsHandler(newRows);
+							_setLoadedRowsHandler(newRows);
 						}
 					} else {
 						if (result && result.length < pageSize) {
@@ -1660,8 +1656,8 @@ var Table$2 = forwardRef(function (props, ref) {
 						} else {
 							setHasMore(true);
 						}
-						pageNum === 0 ? _setRowsHandler(result) // _setRows
-						: _setRowsHandler(_rows.concat(result)); // _setRows
+						pageNum === 0 ? _setLoadedRowsHandler(result) // _setRows
+						: _setLoadedRowsHandler(_rows.concat(result)); // _setRows
 
 						// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
 						if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
@@ -1670,7 +1666,7 @@ var Table$2 = forwardRef(function (props, ref) {
 					setLoading(false);
 				}).catch(function (error) {
 					notificationError(error, 'Ошибка загрузки данных');
-					_setRowsHandler(_rows); // _setRows
+					_setLoadedRowsHandler(_rows); // _setRows
 					// setHasMore(false);
 					setLoading(false);
 				});
@@ -1684,6 +1680,7 @@ var Table$2 = forwardRef(function (props, ref) {
 		    rowKey = _ref5.rowKey;
 
 		// console.log('actionSimpleClick')
+		onTableEventsDispatch('onRowClick', rowData);
 		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
 	};
 	var _onRowDoubleClick = function _onRowDoubleClick(_ref6) {
@@ -1693,7 +1690,8 @@ var Table$2 = forwardRef(function (props, ref) {
 
 		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
 		// console.log('actionDoubleClick')
-		rowDoubleClickDispatch(rowData);
+		// rowDoubleClickDispatch(rowData);
+		onTableEventsDispatch('onRowDoubleClick', rowData);
 		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
 	};
 
