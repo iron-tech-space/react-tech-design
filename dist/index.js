@@ -473,12 +473,6 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
 
         var isMounted = useMounted();
 
-        var setSubscribePropsHandler = function setSubscribePropsHandler(value) {
-            return setSubscribeProps(function (prevState) {
-                return _extends({}, prevState, value);
-            });
-        };
-
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(function (item) {
             return React.useEffect(function () {
@@ -495,38 +489,44 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
 
         /** Подписка на изменение props и отправка данных в стор */
         React.useEffect(function () {
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
             var _value = props[valuePropName];
+            // console.log(`storeHOC => `, _value);
             // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
             //     _value = undefined;
-
-            // console.log(`storeHOC [${dispatch.name}] => `, _value);
-            // console.log(`storeHOC => `, props);
-
             if (componentType !== 'Button' && componentType !== 'Search') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: _value });
-        }, [props]);
+        }, [props[valuePropName]]);
 
         /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
-        React.useEffect(function () {
-            if (subscribeProps && subscribeProps.value) {
-                // console.log('subscribeProps.value => ', subscribeProps.value);
-                props[trigger] && props[trigger](subscribeProps.value);
+        // useEffect(() => {
+        //     if(isMounted) {
+        //         console.log('onChange subscribeProps.value => ', subscribeProps.value);
+        //         props[trigger] && props[trigger](subscribeProps.value);
+        //     }
+        // }, [subscribeProps.value]);
+
+        var setSubscribePropsHandler = function setSubscribePropsHandler(_subscribeProps) {
+            // console.log('onChange setSubscribePropsHandler => ', value);
+            setSubscribeProps(function (prevState) {
+                return _extends({}, prevState, _subscribeProps);
+            });
+            if (_subscribeProps && objectPath__default['default'].has(_subscribeProps, valuePropName)) {
+                var value = _subscribeProps[valuePropName];
+                // console.log('setSubscribePropsHandler => ', componentType, value);
+                if (componentType === 'Search') _searchDispatchToStore(value);
+
+                props[trigger] && props[trigger](value);
             }
-        }, [subscribeProps.value]);
+        };
 
         var onChange = function onChange() {
-            // console.log('withStore [trigger] ', args)
-            // const newValue = getValue(...args);
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+            // console.log('withStore [trigger] ',  props[trigger], args)
             if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
-            // else if(componentType === 'Search')
-            //     args[1].preventDefault();
 
-            if (subscribeProps && subscribeProps.hasOwnProperty('value')) {
-                subscribeProps.value;
-                    var _subscribeProps = objectWithoutProperties(subscribeProps, ['value']);
-
-                setSubscribePropsHandler(_subscribeProps);
+            if (subscribeProps && objectPath__default['default'].has(subscribeProps, valuePropName)) {
+                var _subscribeProps = _extends({}, subscribeProps);
+                objectPath__default['default'].del(_subscribeProps, valuePropName);
+                // console.log('onClear subscribeProps[valuePropName] => ', _subscribeProps);
+                setSubscribeProps(_subscribeProps);
             }
 
             props[trigger] && props[trigger].apply(props, arguments);
@@ -535,7 +535,10 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
         var _onSearch = function _onSearch(searchLine, e) {
             e.preventDefault();
             // console.log("_onSearch", searchLine);
-            dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: searchLine, extraData: dispatchExtraData });
+            _searchDispatchToStore(searchLine);
+        };
+        var _searchDispatchToStore = function _searchDispatchToStore(searchLine) {
+            return dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: searchLine, extraData: dispatchExtraData });
         };
 
         var childProps = getObjectExcludedProps(props, excludeProps);
@@ -1529,9 +1532,15 @@ var Table$4 = React.forwardRef(function (props, ref) {
 		return React.useEffect(function () {
 			if (isMounted && item.name) {
 				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+				var extraData = {};
+				if (item.extraData) {
+					if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
+						return extraData[key] = props[item.name + '.extraData.' + key];
+					});else extraData = props[item.name + 'ExtraData'];
+				}
 				var onChangeObject = {
 					value: props[item.name],
-					extraData: props[item.name + 'ExtraData'],
+					extraData: extraData, //props[`${item.name}ExtraData`],
 					reloadTable: reloadData,
 					addRows: _addRows,
 					addRow: _addRow,
@@ -1620,9 +1629,9 @@ var Table$4 = React.forwardRef(function (props, ref) {
 		var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
 		var __filter = appendParams ? _extends({}, _filter, filter) : filter;
 		var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
-		if (sortBy) setSortBy(__sortBy);
-		if (filter) setFilterHandler(__filter);
-		if (searchValue) setSearchValue(__searchValue);
+		setSortBy(__sortBy);
+		setFilterHandler(__filter);
+		setSearchValue(__searchValue);
 		_dataProcessing({
 			sortBy: __sortBy,
 			filter: __filter,
@@ -2590,7 +2599,9 @@ var mapStateToProps$4 = function mapStateToProps(store, ownProps) {
 			    extraData = item.extraData;
 
 			if (name && path) state[name] = objectPath__default['default'].get(store, path);
-			if (name && extraData) state[name + 'ExtraData'] = objectPath__default['default'].get(store, extraData);
+			if (name && extraData) if ((typeof extraData === 'undefined' ? 'undefined' : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
+				return state[name + '.extraData.' + key] = objectPath__default['default'].get(store, extraData[key]);
+			});else state[name + 'ExtraData'] = objectPath__default['default'].get(store, extraData);
 		});
 	}
 	return state;
@@ -2785,7 +2796,7 @@ HeaderRow.propTypes = {
     setHeaderHeight: PropTypes__default['default'].func
 };
 
-var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName"];
+var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName", "onRowClick", "onRowDoubleClick"];
 
 var Table$2 = function Table(props) {
   /** Индикатор загрузки данных */
@@ -2875,12 +2886,6 @@ var Table$2 = function Table(props) {
       headerHeight = _useState24[0],
       setHeaderHeight = _useState24[1];
 
-  // const tableRef = useRef();
-
-
-  var tableRef = {
-    body: React__default['default'].useRef()
-  };
   var isMounted = useMounted();
 
   var _props$subscribeProps = _extends({}, props, subscribeProps),
@@ -2939,7 +2944,7 @@ var Table$2 = function Table(props) {
       searchLine: defaultSearchValue,
       reload: true
     });
-    console.log("tableRef", tableRef);
+    // console.log("tableRef", tableRef);
   }, []);
 
   React.useEffect(function () {
@@ -2954,10 +2959,16 @@ var Table$2 = function Table(props) {
   subscribe.map(function (item) {
     return React.useEffect(function () {
       if (isMounted && item.name) {
-        // console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+        // console.log("Table => useEffect => ", props); //item.name, props[item.name]
+        var extraData = {};
+        if (item.extraData) {
+          if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
+            return extraData[key] = props[item.name + ".extraData." + key];
+          });else extraData = props[item.name + "ExtraData"];
+        }
         var onChangeObject = {
           value: props[item.name],
-          extraData: props[item.name + "ExtraData"],
+          extraData: extraData, //props[`${item.name}ExtraData`],
           reloadTable: reloadData,
           addRows: _addRows,
           addRow: _addRow,
@@ -3036,9 +3047,10 @@ var Table$2 = function Table(props) {
     var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
     var __filter = appendParams ? _extends({}, _filter, filter) : filter;
     var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
-    if (sortBy) setSortBy(__sortBy);
-    if (filter) setFilter(__filter);
-    if (searchValue) setSearchValue(__searchValue);
+    setSortBy(__sortBy);
+    setFilter(__filter);
+    setSearchValue(__searchValue);
+    // console.log("reloadData params ", sortBy, filter, searchValue, loading);
     _loadRows({
       sortBy: __sortBy,
       filter: __filter,
@@ -3332,12 +3344,12 @@ var Table$2 = function Table(props) {
 
   /** SELECTABLE FUNCTIONS */
   var onChangeSelectedHandler = function onChangeSelectedHandler(selectedRowKeys, selectedRows) {
-    console.log("onChangeSelectedHandler");
+    // console.log("onChangeSelectedHandler");
     _setSelectedRowsHandler(selectedRowKeys, selectedRows);
   };
 
   var onSelectAllHandler = function onSelectAllHandler(selected, selectedRows, changeRows) {
-    console.log("onSelectAllHandler");
+    // console.log("onSelectAllHandler");
     var selectedKeys = selected ? selectedRows.map(function (row) {
       return row[rowKey];
     }) : [];
@@ -3867,7 +3879,11 @@ var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
           extraData = item.extraData;
 
       if (name && path) state[name] = objectPath__default['default'].get(store, path);
-      if (name && extraData) state[name + "ExtraData"] = objectPath__default['default'].get(store, extraData);
+      if (name && extraData) {
+        if ((typeof extraData === "undefined" ? "undefined" : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
+          return state[name + ".extraData." + key] = objectPath__default['default'].get(store, extraData[key]);
+        });else state[name + "ExtraData"] = objectPath__default['default'].get(store, extraData);
+      }
     });
   }
   return state;
@@ -4023,7 +4039,7 @@ var ConfigLoader = function ConfigLoader(props) {
             _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
         } else _defaultFilter = defaultFilter;
 
-        console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
+        // console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
         setTableConfig({
             columns: _columns,
             defaultFilter: _defaultFilter,
@@ -10297,7 +10313,8 @@ var rtdReducer = function rtdReducer() {
 
 
                 var _newState = _extends({}, state);
-                objectPath__default['default'].set(_newState, _path, row); // obj.a is now {}
+                if (row === undefined) objectPath__default['default'].del(_newState, _path); // newState[path] is now undefined
+                else objectPath__default['default'].set(_newState, _path, row); // newState[path] is now row
 
                 console.debug("Store change: ", _path, row);
                 // console.group("Store");

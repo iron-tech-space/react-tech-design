@@ -1,3 +1,12 @@
+## 0.0.65
+
+- Fix bug withClear fields
+- Add support new struct extraData for `Table`
+  Example: `extraData: { filter: <path>, searchValue: <path> }`
+- Change reducer. If set undefined value then remove field
+
+
+
 ## 0.0.64
 
 - Fix isValid for Table props `customFields`

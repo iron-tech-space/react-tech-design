@@ -31,7 +31,9 @@ const excludeProps = [
   "rows",
   "requestLoadRows",
   "pageSize",
-  "searchParamName"
+  "searchParamName",
+  "onRowClick",
+  "onRowDoubleClick",
 ];
 
 const Table = props => {
@@ -68,10 +70,6 @@ const Table = props => {
 
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  // const tableRef = useRef();
-  const tableRef = {
-    body: React.useRef()
-  };
   const isMounted = useMounted();
 
   const {
@@ -185,7 +183,7 @@ const Table = props => {
       searchLine: defaultSearchValue,
       reload: true
     });
-    console.log("tableRef", tableRef);
+    // console.log("tableRef", tableRef);
   }, []);
 
   useEffect(() => {
@@ -201,10 +199,17 @@ const Table = props => {
   subscribe.map(item => {
     return useEffect(() => {
       if (isMounted && item.name) {
-        // console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+        // console.log("Table => useEffect => ", props); //item.name, props[item.name]
+        let extraData = {};
+        if (item.extraData) {
+          if (typeof item.extraData === 'object')
+            Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+          else
+            extraData = props[`${item.name}ExtraData`];
+        }
         const onChangeObject = {
           value: props[item.name],
-          extraData: props[`${item.name}ExtraData`],
+          extraData: extraData, //props[`${item.name}ExtraData`],
           reloadTable: reloadData,
           addRows: _addRows,
           addRow: _addRow,
@@ -281,9 +286,10 @@ const Table = props => {
     const __sortBy = appendParams ? (sortBy ? sortBy : _sortBy) : sortBy;
     const __filter = appendParams ? { ..._filter, ...filter } : filter;
     const __searchValue = appendParams ? (searchValue ? searchValue : _searchValue) : searchValue;
-    if (sortBy) setSortBy(__sortBy);
-    if (filter) setFilter(__filter);
-    if (searchValue) setSearchValue(__searchValue);
+    setSortBy(__sortBy);
+    setFilter(__filter);
+    setSearchValue(__searchValue);
+    // console.log("reloadData params ", sortBy, filter, searchValue, loading);
     _loadRows({
       sortBy: __sortBy,
       filter: __filter,
@@ -577,12 +583,12 @@ const Table = props => {
 
   /** SELECTABLE FUNCTIONS */
   const onChangeSelectedHandler = (selectedRowKeys, selectedRows) => {
-    console.log("onChangeSelectedHandler");
+    // console.log("onChangeSelectedHandler");
     _setSelectedRowsHandler(selectedRowKeys, selectedRows);
   };
 
   const onSelectAllHandler = (selected, selectedRows, changeRows) => {
-    console.log("onSelectAllHandler");
+    // console.log("onSelectAllHandler");
     const selectedKeys = selected ? selectedRows.map(row => row[rowKey]) : [];
     _setSelectedRowsHandler(selectedKeys, selectedRows);
   };
@@ -1089,8 +1095,12 @@ const mapStateToProps = (store, ownProps) => {
       const { name, path, extraData } = item;
       if (name && path)
         state[name] = objectPath.get(store, path);
-      if (name && extraData)
-        state[`${name}ExtraData`] = objectPath.get(store, extraData);
+      if (name && extraData){
+        if(typeof extraData === 'object')
+          Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+        else
+          state[`${name}ExtraData`] = objectPath.get(store, extraData);
+      }
     });
   }
   return state;

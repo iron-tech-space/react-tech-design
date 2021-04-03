@@ -54,9 +54,6 @@ export const withStore = (Component, antFormItemProps) => {
 
         const isMounted = useMounted()
 
-        const setSubscribePropsHandler = (value) =>
-            setSubscribeProps((prevState) => ({ ...prevState, ...value}) );
-
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(item => {
             return useEffect( () => {
@@ -73,38 +70,45 @@ export const withStore = (Component, antFormItemProps) => {
 
         /** Подписка на изменение props и отправка данных в стор */
         useEffect(() => {
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
             let _value = props[valuePropName];
+            // console.log(`storeHOC => `, _value);
             // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
             //     _value = undefined;
-
-            // console.log(`storeHOC [${dispatch.name}] => `, _value);
-            // console.log(`storeHOC => `, props);
-
             if (componentType !== 'Button' && componentType !== 'Search')
                 dispatchToStore({ dispatch, setDateStore, value: _value });
-        }, [props]);
+        }, [props[valuePropName]]);
 
         /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
-        useEffect(() => {
-            if(subscribeProps && subscribeProps.value) {
-                // console.log('subscribeProps.value => ', subscribeProps.value);
-                props[trigger] && props[trigger](subscribeProps.value);
+        // useEffect(() => {
+        //     if(isMounted) {
+        //         console.log('onChange subscribeProps.value => ', subscribeProps.value);
+        //         props[trigger] && props[trigger](subscribeProps.value);
+        //     }
+        // }, [subscribeProps.value]);
+
+        const setSubscribePropsHandler = (_subscribeProps) => {
+            // console.log('onChange setSubscribePropsHandler => ', value);
+            setSubscribeProps((prevState) => ({ ...prevState, ..._subscribeProps }));
+            if(_subscribeProps && objectPath.has(_subscribeProps, valuePropName)) {
+                const value = _subscribeProps[valuePropName]
+                // console.log('setSubscribePropsHandler => ', componentType, value);
+                if(componentType === 'Search')
+                    _searchDispatchToStore(value)
+
+                props[trigger] && props[trigger](value);
             }
-        }, [subscribeProps.value]);
+        }
 
         const onChange = (...args) => {
-            // console.log('withStore [trigger] ', args)
-            // const newValue = getValue(...args);
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+            // console.log('withStore [trigger] ',  props[trigger], args)
             if(componentType === 'Button')
                 dispatchToStore({dispatch, setDateStore, value: args[0], extraData: dispatchExtraData});
-            // else if(componentType === 'Search')
-            //     args[1].preventDefault();
 
-            if(subscribeProps && subscribeProps.hasOwnProperty('value')) {
-                const {value, ..._subscribeProps} = subscribeProps
-                setSubscribePropsHandler(_subscribeProps)
+            if(subscribeProps && objectPath.has(subscribeProps, valuePropName)) {
+                const _subscribeProps = {...subscribeProps}
+                objectPath.del(_subscribeProps, valuePropName);
+                // console.log('onClear subscribeProps[valuePropName] => ', _subscribeProps);
+                setSubscribeProps(_subscribeProps)
             }
 
             props[trigger] && props[trigger](...args);
@@ -113,8 +117,10 @@ export const withStore = (Component, antFormItemProps) => {
         const _onSearch = (searchLine, e) => {
             e.preventDefault();
             // console.log("_onSearch", searchLine);
-            dispatchToStore({dispatch, setDateStore, value: searchLine, extraData: dispatchExtraData});
+            _searchDispatchToStore(searchLine)
         };
+        const _searchDispatchToStore = (searchLine) =>
+          dispatchToStore({dispatch, setDateStore, value: searchLine, extraData: dispatchExtraData});
 
         const childProps = getObjectExcludedProps(props, excludeProps);
         const onSearchProps = (componentType === 'Search') ? {onSearch: _onSearch} : {}

@@ -138,7 +138,7 @@ const ConfigLoader = props => {
             _defaultFilter = { ...defaultFilter, [parentKey]: null };
         } else _defaultFilter = defaultFilter;
 
-        console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
+        // console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
         setTableConfig({
             columns: _columns,
             defaultFilter: _defaultFilter,

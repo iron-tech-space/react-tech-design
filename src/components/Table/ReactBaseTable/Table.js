@@ -249,9 +249,16 @@ const Table = forwardRef((props, ref) => {
 		return useEffect( () => {
 			if(isMounted && item.name) {
 				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+				let extraData = {};
+				if (item.extraData) {
+					if (typeof item.extraData === 'object')
+						Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+					else
+						extraData = props[`${item.name}ExtraData`];
+				}
 				const onChangeObject = {
 					value: props[item.name],
-					extraData: props[`${item.name}ExtraData`],
+					extraData: extraData, //props[`${item.name}ExtraData`],
 					reloadTable: reloadData,
 					addRows: _addRows,
 					addRow: _addRow,
@@ -338,9 +345,9 @@ const Table = forwardRef((props, ref) => {
 		const __sortBy = appendParams ? (sortBy ? sortBy : _sortBy) : sortBy;
 		const __filter = appendParams ? {..._filter, ...filter} : filter;
 		const __searchValue = appendParams ? (searchValue ? searchValue : _searchValue) : searchValue;
-		if(sortBy) setSortBy(__sortBy);
-		if(filter) setFilterHandler(__filter);
-		if(searchValue) setSearchValue(__searchValue);
+		setSortBy(__sortBy);
+		setFilterHandler(__filter);
+		setSearchValue(__searchValue);
 		_dataProcessing({
 			sortBy: __sortBy,
 			filter: __filter,
@@ -1375,7 +1382,10 @@ const mapStateToProps = (store, ownProps) => {
 			if(name && path)
 				state[name] = objectPath.get(store, path);
 			if(name && extraData)
-				state[`${name}ExtraData`] = objectPath.get(store, extraData);
+				if(typeof extraData === 'object')
+					Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+				else
+					state[`${name}ExtraData`] = objectPath.get(store, extraData);
 		})
 	}
 	return state;

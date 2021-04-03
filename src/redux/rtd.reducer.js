@@ -14,7 +14,10 @@ const rtdReducer = (state = {}, action) => {
             const {path, row} = action.payload;
 
             let newState = {...state};
-            objectPath.set(newState, path, row); // obj.a is now {}
+            if(row === undefined)
+                objectPath.del(newState, path); // newState[path] is now undefined
+            else
+                objectPath.set(newState, path, row); // newState[path] is now row
 
             console.debug("Store change: ", path, row);
             // console.group("Store");
