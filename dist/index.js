@@ -3218,7 +3218,10 @@ var Table$2 = function Table(props) {
   /** ROW CHANGE FUNCTIONS */
   var _addRows = function _addRows(rows) {
     var saveRows = [].concat(toConsumableArray(rows));
-    if (customFields)
+    if (!expandColumnKey) saveRows = saveRows.map(function (row) {
+      row.children = undefined;return row;
+    });
+    if (customFields) {
       // Фильтрация по пользовательским параметрам
       saveRows = saveRows.filter(function (sRow) {
         var isValid = [];
@@ -3229,9 +3232,10 @@ var Table$2 = function Table(props) {
           // Создание или переобразование по пользовательской логике функции value
           if (field.value) sRow[field.name] = field.value(sRow, _rows);
         });
-        console.log("_addRows isValid", isValid);
+        // console.log("_addRows isValid", isValid);
         if (!isValid.includes(false)) return sRow;
       });
+    }
     var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
     _setRowsHandler(_localRows);
     onTableEventsDispatch("onAddRows", _localRows);
@@ -3239,6 +3243,7 @@ var Table$2 = function Table(props) {
 
   var _addRow = function _addRow(row) {
     var _row = _extends({}, row);
+    if (!expandColumnKey) _row.children = undefined;
     var isValid = true;
     if (customFields) {
       var validations = [];

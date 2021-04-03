@@ -459,7 +459,9 @@ const Table = props => {
   /** ROW CHANGE FUNCTIONS */
   const _addRows = (rows) => {
     let saveRows = [...rows];
-    if (customFields)
+    if(!expandColumnKey)
+      saveRows = saveRows.map(row => { row.children = undefined; return row; });
+    if (customFields) {
       // Фильтрация по пользовательским параметрам
       saveRows = saveRows.filter((sRow) => {
         let isValid = [];
@@ -472,10 +474,11 @@ const Table = props => {
           if (field.value)
             sRow[field.name] = field.value(sRow, _rows);
         });
-        console.log("_addRows isValid", isValid);
+        // console.log("_addRows isValid", isValid);
         if (!isValid.includes(false))
           return sRow;
       });
+    }
     const _localRows = [..._rows, ...saveRows];
     _setRowsHandler(_localRows);
     onTableEventsDispatch("onAddRows", _localRows);
@@ -483,6 +486,8 @@ const Table = props => {
 
   const _addRow = (row) => {
     let _row = { ...row };
+    if(!expandColumnKey)
+      _row.children = undefined;
     let isValid = true;
     if (customFields) {
       let validations = [];
