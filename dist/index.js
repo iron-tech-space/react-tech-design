@@ -44,6 +44,13 @@ var BaseTable = require('react-base-table');
 require('antd/es/spin/style');
 var _Spin = require('antd/es/spin');
 var icons = require('@ant-design/icons');
+require('antd/es/table/style');
+var _Table = require('antd/es/table');
+require('@babel/runtime/helpers/esm/extends');
+require('@babel/runtime/helpers/esm/inheritsLoose');
+require('@babel/runtime/helpers/esm/assertThisInitialized');
+require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose');
+var ColumnResizer = require('react-base-table/lib/ColumnResizer');
 require('antd/es/select/style');
 var _Select = require('antd/es/select');
 require('antd/es/tree-select/style');
@@ -83,6 +90,8 @@ var _notification__default = /*#__PURE__*/_interopDefaultLegacy(_notification);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var BaseTable__default = /*#__PURE__*/_interopDefaultLegacy(BaseTable);
 var _Spin__default = /*#__PURE__*/_interopDefaultLegacy(_Spin);
+var _Table__default = /*#__PURE__*/_interopDefaultLegacy(_Table);
+var ColumnResizer__default = /*#__PURE__*/_interopDefaultLegacy(ColumnResizer);
 var _Select__default = /*#__PURE__*/_interopDefaultLegacy(_Select);
 var _TreeSelect__default = /*#__PURE__*/_interopDefaultLegacy(_TreeSelect);
 var _Modal__default = /*#__PURE__*/_interopDefaultLegacy(_Modal);
@@ -488,7 +497,8 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
         React.useEffect(function () {
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
             var _value = props[valuePropName];
-            if (_value === null || _value === undefined || typeof _value === 'string' && _value.trim() === '') _value = undefined;
+            // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
+            //     _value = undefined;
 
             // console.log(`storeHOC [${dispatch.name}] => `, _value);
             // console.log(`storeHOC => `, props);
@@ -505,7 +515,7 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
         }, [subscribeProps.value]);
 
         var onChange = function onChange() {
-            // console.log('withStore [trigger] ', subscribeProps)
+            // console.log('withStore [trigger] ', args)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
             if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
@@ -653,12 +663,12 @@ var TabPane = function TabPane(props) {
     );
 };
 
-var excludeProps$a = ['child', 'componentType', 'field'];
+var excludeProps$b = ['child', 'componentType', 'field'];
 var FormItem$1 = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$a);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$b);
 	if (child) return renderClassicByName(child.componentType)(_extends({ itemProps: _extends({}, antFormItemProps) }, child, { field: field }));else return null;
 };
 
@@ -666,7 +676,7 @@ FormItem$1.propTypes = {
 	child: PropTypes__default['default'].object.isRequired
 };
 
-var excludeProps$9 = ["children", "componentType"];
+var excludeProps$a = ["children", "componentType"];
 
 var FormItems$1 = function FormItems(props) {
     var items = props.items;
@@ -676,7 +686,7 @@ var FormItems$1 = function FormItems(props) {
     var getItems = function getItems(data, antFormListParams) {
 
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$9);
+            var itemProps = getObjectExcludedProps(item, excludeProps$a);
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
@@ -734,7 +744,7 @@ FormItems$1.propTypes = {
     items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
 };
 
-var excludeProps$8 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$9 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 /** Компонент формы */
 var Form$1 = function Form(props) {
@@ -771,7 +781,7 @@ var Form$1 = function Form(props) {
     }, [loaded]);
 
     React.useEffect(function () {
-        setAntFormProps(getObjectExcludedProps(props, excludeProps$8));
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$9));
         // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
     }, [props]);
 
@@ -1271,7 +1281,7 @@ SelectionList$1.propTypes = {
 SelectionList$1.defaultProps = {};
 
 /** Компонент таблицы */
-var Table$2 = React.forwardRef(function (props, ref) {
+var Table$4 = React.forwardRef(function (props, ref) {
 
 	/** LOADING AND INFINITY MODE STATES */
 	var _useState = React.useState(true),
@@ -1422,7 +1432,7 @@ var Table$2 = React.forwardRef(function (props, ref) {
 	    value = _props$subscribeProps.value,
 	    onChange = _props$subscribeProps.onChange;
 
-	var footerProps = _extends({}, Table$2.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$4.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -2015,7 +2025,6 @@ var Table$2 = React.forwardRef(function (props, ref) {
   * @param data - table rows
   * @param key - key row for find
   * @param callback - function for return result
-  * @returns {*}
   */
 	var loop = function loop(data, key, callback) {
 		for (var i = 0; i < data.length; i++) {
@@ -2034,15 +2043,16 @@ var Table$2 = React.forwardRef(function (props, ref) {
 		if (customFields)
 			// Фильтрация по пользовательским параметрам
 			saveRows = saveRows.filter(function (sRow) {
-				var isValid = true;
+				var isValid = [];
 				customFields.forEach(function (field) {
 					// Валидация по пользовательской логике функции validate
-					if (field.validate) isValid = field.validate(sRow, _rows);
+					if (field.validate) isValid.push(field.validate(sRow, _rows));
 
 					// Создание или переобразование по пользовательской логике функции value
 					if (field.value) sRow[field.name] = field.value(sRow, _rows);
 				});
-				if (isValid) return sRow;
+				// console.log('_addRows isValid', isValid);
+				if (!isValid.includes(false)) return sRow;
 			});
 		var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
 		_setRowsHandler(_localRows);
@@ -2051,12 +2061,21 @@ var Table$2 = React.forwardRef(function (props, ref) {
 
 	var _addRow = function _addRow(row) {
 		var _row = _extends({}, row);
-		if (customFields) customFields.forEach(function (field) {
-			return _row[field.name] = field.value(_row, _rows);
-		});
-		var _localRows = [].concat(toConsumableArray(_rows), [_row]);
-		_setRowsHandler(_localRows);
-		onTableEventsDispatch('onAddRow', _localRows);
+		var isValid = true;
+		if (customFields) {
+			var validations = [];
+			customFields.forEach(function (field) {
+				if (field.validate) validations.push(field.validate(_row, _rows));
+
+				if (field.value) _row[field.name] = field.value(_row, _rows);
+			});
+			isValid = !validations.includes(false);
+		}
+		if (isValid) {
+			var _localRows = [].concat(toConsumableArray(_rows), [_row]);
+			_setRowsHandler(_localRows);
+			onTableEventsDispatch('onAddRow', _localRows);
+		}
 	};
 
 	var _addRowAsCopy = function _addRowAsCopy() {
@@ -2159,7 +2178,6 @@ var Table$2 = React.forwardRef(function (props, ref) {
 	// };
 
 	/** SELECTED PANEL */
-
 	var _onClickDropSelectHandler = function _onClickDropSelectHandler(dropObject) {
 		var newSelectedKeys = _selectedRowKeys.filter(function (item) {
 			return item !== dropObject[rowKey];
@@ -2235,7 +2253,7 @@ var Table$2 = React.forwardRef(function (props, ref) {
 	);
 });
 
-Table$2.propTypes = {
+Table$4.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -2497,7 +2515,7 @@ Table$2.propTypes = {
 	subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
 };
 
-Table$2.defaultProps = {
+Table$4.defaultProps = {
 	infinityMode: false,
 	editMode: false,
 	defaultRows: [],
@@ -2528,8 +2546,8 @@ Table$2.defaultProps = {
 		centerCustomSideElement: null,
 		rightCustomSideElement: null
 	},
-	headerHeight: 30,
-	rowHeight: 30,
+	headerHeight: 36,
+	rowHeight: 36,
 	zebraStyle: false,
 	estimatedRowHeight: undefined,
 	cellBordered: false,
@@ -2561,7 +2579,7 @@ Table$2.defaultProps = {
 	subscribe: []
 };
 
-var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
+var mapStateToProps$4 = function mapStateToProps(store, ownProps) {
 	var subscribe = ownProps.subscribe;
 
 	var state = {};
@@ -2577,16 +2595,16 @@ var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
 	}
 	return state;
 };
-var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps$5 = function mapDispatchToProps(dispatch) {
 	return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Table$3 = reactRedux.connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$2);
+var Table$5 = reactRedux.connect(mapStateToProps$4, mapDispatchToProps$5, null, { forwardRef: true })(Table$4);
 
-var _this$2 = undefined;
+var _this$3 = undefined;
 
 
-var defaultProps$2 = {
+var defaultProps$3 = {
     defaultFilter: {},
     rowKey: 'id',
     pageSize: 50,
@@ -2597,7 +2615,7 @@ var defaultProps$2 = {
     customColumnProps: []
 };
 
-var ConfigLoader = function ConfigLoader(props) {
+var ConfigLoader$1 = function ConfigLoader(props) {
 
     /** Конфигурация таблицы */
     var _useState = React.useState(undefined),
@@ -2605,7 +2623,7 @@ var ConfigLoader = function ConfigLoader(props) {
         tableConfig = _useState2[0],
         setTableConfig = _useState2[1];
 
-    var _defaultProps$props = _extends({}, defaultProps$2, props),
+    var _defaultProps$props = _extends({}, defaultProps$3, props),
         defaultFilter = _defaultProps$props.defaultFilter,
         rowKey = _defaultProps$props.rowKey,
         pageSize = _defaultProps$props.pageSize,
@@ -2644,7 +2662,7 @@ var ConfigLoader = function ConfigLoader(props) {
                                 return _context.stop();
                         }
                     }
-                }, _callee, _this$2);
+                }, _callee, _this$3);
             }));
 
             return function loadData() {
@@ -2709,6 +2727,1312 @@ var ConfigLoader = function ConfigLoader(props) {
             expandParentKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey,
             expandColumnKey: config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey,
             expandLazyLoad: config && config.hierarchical && config.hierarchyLazyLoad ? config.hierarchyLazyLoad : expandLazyLoad,
+            pageSize: config && config.hierarchical ? 1 : pageSize
+        });
+    };
+
+    if (tableConfig) return React__default['default'].createElement(Table$5, _extends({}, props, tableConfig));else return null;
+};
+
+if (process.env.NODE_ENV !== 'production') ;
+
+if (process.env.NODE_ENV !== 'production') ;
+
+var HeaderCell = function HeaderCell(props) {
+    var onResize = props.onResize,
+        width = props.width,
+        resizable = props.resizable,
+        restProps = objectWithoutProperties(props, ['onResize', 'width', 'resizable']);
+
+    if (!width) return React__default['default'].createElement('th', restProps);
+    return React__default['default'].createElement(
+        'th',
+        restProps,
+        restProps.children,
+        resizable && React__default['default'].createElement(ColumnResizer__default['default'], {
+            className: 'BaseTable__column-resizer',
+            column: { width: width, maxWidth: 1000 },
+            onResize: onResize
+        })
+    );
+};
+
+HeaderCell.propTypes = {
+    onResize: PropTypes__default['default'].func,
+    width: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]),
+    resizable: PropTypes__default['default'].bool
+};
+
+var HeaderRow = function HeaderRow(props) {
+    var headerRowRef = React.useRef();
+    var headerHeight = props.headerHeight,
+        setHeaderHeight = props.setHeaderHeight,
+        restProps = objectWithoutProperties(props, ['headerHeight', 'setHeaderHeight']);
+
+    React.useEffect(function () {
+
+        var newHeight = headerRowRef && headerRowRef.current && headerRowRef.current.clientHeight;
+        if (headerHeight !== newHeight) {
+            // console.log('Row height', newHeight) //clientHeight
+            setHeaderHeight(newHeight);
+        }
+    });
+    return React__default['default'].createElement('tr', _extends({}, restProps, { ref: headerRowRef }));
+};
+
+HeaderRow.propTypes = {
+    headerHeight: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]),
+    setHeaderHeight: PropTypes__default['default'].func
+};
+
+var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName"];
+
+var Table$2 = function Table(props) {
+  /** Индикатор загрузки данных */
+  var _useState = React.useState(false),
+      _useState2 = slicedToArray(_useState, 2),
+      loading = _useState2[0],
+      setLoading = _useState2[1];
+
+  /** TABLE STATES */
+  /** Столбцы таблицы */
+
+
+  var _useState3 = React.useState([]),
+      _useState4 = slicedToArray(_useState3, 2),
+      _columns = _useState4[0],
+      _setColumns = _useState4[1];
+  /** Строки таблицы */
+
+
+  var _useState5 = React.useState([]),
+      _useState6 = slicedToArray(_useState5, 2),
+      _rows = _useState6[0],
+      _setRows = _useState6[1];
+  /** Ключи выделенных строк */
+
+
+  var _useState7 = React.useState([]),
+      _useState8 = slicedToArray(_useState7, 2),
+      _selectedRowKeys = _useState8[0],
+      setSelectedRowKeys = _useState8[1];
+  /** Значение строки поиска */
+
+
+  var _useState9 = React.useState(""),
+      _useState10 = slicedToArray(_useState9, 2),
+      _searchValue = _useState10[0],
+      setSearchValue = _useState10[1];
+  /** Объект фильтра */
+
+
+  var _useState11 = React.useState({}),
+      _useState12 = slicedToArray(_useState11, 2),
+      _filter = _useState12[0],
+      setFilter = _useState12[1];
+  /** Объект соритировки */
+
+
+  var _useState13 = React.useState({}),
+      _useState14 = slicedToArray(_useState13, 2),
+      _sortBy = _useState14[0],
+      setSortBy = _useState14[1];
+
+  /** TREE STATES */
+  /** Ключи строк с кубиками при selectable = true */
+  // const [_indeterminateRowKeys, setIndeterminateRowKeys] = useState([]);
+  /** Ключи раскрытых строк при selectable = true */
+
+
+  var _useState15 = React.useState([]),
+      _useState16 = slicedToArray(_useState15, 2),
+      _expandedRowKeys = _useState16[0],
+      setExpandedRowKeys = _useState16[1];
+
+  /** FOOTER STATES */
+  /** Отображать ли footer */
+
+
+  var _useState17 = React.useState(false),
+      _useState18 = slicedToArray(_useState17, 2),
+      _footerShow = _useState18[0],
+      _setFooterShow = _useState18[1];
+  /** Всего строк по фильтру в таблице */
+
+
+  var _useState19 = React.useState(0),
+      _useState20 = slicedToArray(_useState19, 2),
+      _totalCountRows = _useState20[0],
+      setTotalCountRows = _useState20[1];
+
+  var _useState21 = React.useState({}),
+      _useState22 = slicedToArray(_useState21, 2),
+      subscribeProps = _useState22[0],
+      setSubscribeProps = _useState22[1];
+
+  var _useState23 = React.useState(0),
+      _useState24 = slicedToArray(_useState23, 2),
+      headerHeight = _useState24[0],
+      setHeaderHeight = _useState24[1];
+
+  // const tableRef = useRef();
+
+
+  var tableRef = {
+    body: React__default['default'].useRef()
+  };
+  var isMounted = useMounted();
+
+  var _props$subscribeProps = _extends({}, props, subscribeProps),
+      columns = _props$subscribeProps.columns;
+      _props$subscribeProps.infinityMode;
+      var defaultRows = _props$subscribeProps.defaultRows,
+      defaultSearchValue = _props$subscribeProps.defaultSearchValue,
+      defaultFilter = _props$subscribeProps.defaultFilter,
+      defaultSortBy = _props$subscribeProps.defaultSortBy,
+      rows = _props$subscribeProps.rows,
+      rowKey = _props$subscribeProps.rowKey,
+      customFields = _props$subscribeProps.customFields,
+      zebraStyle = _props$subscribeProps.zebraStyle,
+      className = _props$subscribeProps.className,
+      style = _props$subscribeProps.style,
+      pageSize = _props$subscribeProps.pageSize,
+      requestLoadRows = _props$subscribeProps.requestLoadRows,
+      requestLoadCount = _props$subscribeProps.requestLoadCount,
+      searchParamName = _props$subscribeProps.searchParamName,
+      rowSelection = _props$subscribeProps.rowSelection,
+      selectable = _props$subscribeProps.selectable,
+      expandable = _props$subscribeProps.expandable,
+      nodeAssociated = _props$subscribeProps.nodeAssociated,
+      expandColumnKey = _props$subscribeProps.expandColumnKey,
+      expandDefaultAll = _props$subscribeProps.expandDefaultAll,
+      onRowClick = _props$subscribeProps.onRowClick,
+      onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
+      onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
+      dispatchPath = _props$subscribeProps.dispatchPath,
+      subscribe = _props$subscribeProps.subscribe,
+      value = _props$subscribeProps.value,
+      onChange = _props$subscribeProps.onChange;
+
+  var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
+
+  var selectedDispatchPath = dispatchPath && dispatchPath + ".selected";
+  var rowsDispatchPath = dispatchPath && dispatchPath + ".rows";
+
+  React.useEffect(function () {
+    // console.log("Инициализация дефолтных значений ", selectColumn, columns);
+    // console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
+
+    // Инициализация дефолтных значений
+    // _setRows(defaultRows);
+    if (defaultRows.length > 0) _setRowsHandler(defaultRows);else if (rows.length > 0) _setRowsHandler(rows);
+    setSearchValue(defaultSearchValue);
+    setFilter(defaultFilter);
+    setSortBy(defaultSortBy);
+
+    // Определение нужно ли отображать подвал
+    _setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
+
+    _loadRows({
+      sortBy: defaultSortBy,
+      filter: defaultFilter,
+      searchLine: defaultSearchValue,
+      reload: true
+    });
+    console.log("tableRef", tableRef);
+  }, []);
+
+  React.useEffect(function () {
+    _setColumns(columns);
+  }, [columns]);
+
+  React.useEffect(function () {
+    if (value && Array.isArray(value)) _setRowsHandler(value);
+  }, [value]);
+
+  /** Подписка на изменение props[subscribe.name] в сторе */
+  subscribe.map(function (item) {
+    return React.useEffect(function () {
+      if (isMounted && item.name) {
+        // console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+        var onChangeObject = {
+          value: props[item.name],
+          extraData: props[item.name + "ExtraData"],
+          reloadTable: reloadData,
+          addRows: _addRows,
+          addRow: _addRow,
+          addRowAsCopy: _addRowAsCopy,
+          editRow: _editRow,
+          removeRow: _removeRow,
+          moveUpRow: _moveUpRow,
+          moveDownRow: _moveDownRow,
+          setSubscribeProps: _setSubscribeProps
+        };
+        item.onChange && item.onChange(onChangeObject);
+      }
+    }, [props[item.name]]);
+  });
+
+  /** BASE FUNCTIONS */
+  var _setSubscribeProps = function _setSubscribeProps(props) {
+    setSubscribeProps(_extends({}, subscribeProps, props));
+  };
+
+  var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
+    _setRowsHandler(rows);
+    onChange && onChange(rows);
+  };
+  var _setRowsHandler = function _setRowsHandler(rows) {
+    // console.log('_setRowsHandler onChange');
+    _setRows(rows);
+    // setRows(rows);
+    rowsDispatch(rows);
+  };
+
+  var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
+    var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+    var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+    // console.log('_setSelectedRowsHandler => ', selectedKeys)
+    setSelectedRowKeys(selectedKeys);
+    if (selectedKeys.length === 0) {
+      if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
+    } else if (selectedKeys.length > 0 && !selectedObjects) {
+      if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
+        return selectedKeys.includes(item[rowKey]);
+      }));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
+    } else selectedDispatch(selectedObjects);
+  };
+
+  var rowsDispatch = function rowsDispatch(rows) {
+    rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+  };
+
+  var selectedDispatch = function selectedDispatch(data) {
+    selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+  };
+
+  var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
+    var dp = dispatchPath && dispatchPath + ".events." + nameEvent;
+    dp && props.setDateStore && props.setDateStore(dp, {
+      timestamp: moment__default['default'](),
+      value: value
+    });
+    // console.log('onTableEventsDispatch onChange');
+    Array.isArray(value) && onChange && onChange(value);
+  };
+
+  var reloadData = function reloadData(_ref, appendParams) {
+    var sortBy = _ref.sortBy,
+        filter = _ref.filter,
+        searchValue = _ref.searchValue;
+
+    // console.log("reloadData params ", sortBy, filter, searchValue, loading);
+    if (selectable && props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
+      return item[rowKey];
+    }), props.value);else _setSelectedRowsHandler();
+
+    var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
+    var __filter = appendParams ? _extends({}, _filter, filter) : filter;
+    var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
+    if (sortBy) setSortBy(__sortBy);
+    if (filter) setFilter(__filter);
+    if (searchValue) setSearchValue(__searchValue);
+    _loadRows({
+      sortBy: __sortBy,
+      filter: __filter,
+      searchLine: __searchValue,
+      reload: true
+    });
+  };
+
+  var _loadRows = function _loadRows(params) {
+    var sortBy = params.sortBy,
+        filter = params.filter,
+        searchLine = params.searchLine;
+        params.expandRow;
+        var reload = params.reload;
+
+    if (!loading && requestLoadRows) {
+      setLoading(true);
+      var _params = {
+        page: 0,
+        size: pageSize,
+        sort: sortBy && sortBy.key ? sortBy.key + "," + sortBy.order : null
+      };
+      var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
+      if (reload && requestLoadCount !== noop && !expandColumnKey) {
+        requestLoadCount({ params: _params, data: dataQuery }).then(function (response) {
+          // console.log("infinity then response", response);
+          setTotalCountRows(response.data);
+        }).catch(function (error) {
+          return notificationError(error, 'Ошибка получения количества записей по фильтру');
+        });
+      }
+      requestLoadRows({ params: _params, data: dataQuery }).then(function (response) {
+        // console.log("infinity then response", response);
+        var result = response.data;
+        _setLoadedRowsHandler(result); // _setRows
+
+        if (expandColumnKey) {
+          expandDefaultAll && setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
+        }
+
+        setLoading(false);
+      }).catch(function (error) {
+        notificationError(error, "Ошибка загрузки данных");
+        _setLoadedRowsHandler(_rows); // _setRows
+        // setHasMore(false);
+        setLoading(false);
+      });
+    }
+  };
+
+  var onChangeTable = function onChangeTable(pagination, filters, sorter, extra) {
+    // console.log('Table onChange', pagination, filters, sorter, extra)
+    switch (extra.action) {
+      case "paginate":
+        break;
+      case "sort":
+        onSort(sorter);
+        break;
+    }
+  };
+
+  var onSort = function onSort(sorter) {
+    // console.log("Table onSort from RT", sorter);
+    var sortBy = sorter.order ? { key: sorter.field, order: sorter.order === "ascend" ? "asc" : "desc" } : {};
+    setSortBy(sortBy);
+    _loadRows({
+      sortBy: sortBy,
+      filter: _filter,
+      searchLine: _searchValue,
+      reload: true
+    });
+  };
+
+  var _onRowClick = function _onRowClick(_ref3) {
+    var rowData = _ref3.rowData,
+        rowIndex = _ref3.rowIndex,
+        rowKey = _ref3.rowKey;
+
+    // console.log('onClick', rowData, rowIndex, rowKey)
+    // console.log('onClick', _selectedRowKeys)
+    onTableEventsDispatch("onRowClick", rowData);
+    _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
+  };
+  var _onRowDoubleClick = function _onRowDoubleClick(_ref4) {
+    var rowData = _ref4.rowData,
+        rowIndex = _ref4.rowIndex,
+        rowKey = _ref4.rowKey;
+
+    // console.log('onDoubleClick', rowData, rowIndex, rowKey);
+    // console.log('actionDoubleClick')
+    onTableEventsDispatch("onRowDoubleClick", rowData);
+    _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
+  };
+
+  var _rowSelectAfterClick = function _rowSelectAfterClick(_ref5) {
+    var rowData = _ref5.rowData,
+        rowIndex = _ref5.rowIndex,
+        rowKey = _ref5.rowKey,
+        onClick = _ref5.onClick;
+
+    var checked = !_selectedRowKeys.includes(rowKey);
+    var newRowObject = {
+      rowData: _extends({}, rowData),
+      rowIndex: rowIndex,
+      rowKey: rowKey
+    };
+    // _setSelectedRowsHandler([rowKey], rowData);
+    // if (!expandColumnKey) {
+    // setSelectedRowKeys([rowKey]);
+    if (selectable) {
+      // console.log('_rowSelectAfterClick ', checked);
+      if (checked && !expandColumnKey) _setSelectedRowsHandler([].concat(toConsumableArray(_selectedRowKeys), [rowKey]), undefined, _rows);else {
+        // console.log('_rowSelectAfterClick', _selectedRowKeys.filter(row => row !== rowKey), rowKey);
+        _setSelectedRowsHandler(_selectedRowKeys.filter(function (row) {
+          return row !== rowKey;
+        }), undefined, _rows);
+      }
+    } else {
+      _setSelectedRowsHandler([rowKey], rowData);
+    }
+    // onSelectedRowsChange([rowKey], [rowData]);
+    onClick(_extends({ selected: checked }, newRowObject));
+  };
+
+  var onHeaderRowProps = function onHeaderRowProps() {
+    return { headerHeight: headerHeight, setHeaderHeight: setHeaderHeight };
+  };
+
+  var onRowEvents = function onRowEvents(rowData, rowIndex) {
+    return {
+      onClick: function onClick(event) {
+        return _onRowClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
+      }, // click row
+      onDoubleClick: function onDoubleClick(event) {
+        return _onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
+      } // double click row
+      // onScroll: console.log
+      // onContextMenu: event => {}, // right button click row
+      // onMouseEnter: event => {}, // mouse enter row
+      // onMouseLeave: event => {}, // mouse leave row
+    };
+  };
+
+  var onResizeHandler = function onResizeHandler(index) {
+    return function (_ref6, width) {
+      _ref6.key;
+
+      // console.log('handleResize index ', index, width)
+      _setColumns(function (columns) {
+        var nextColumns = [].concat(toConsumableArray(columns));
+        nextColumns[index] = _extends({}, nextColumns[index], {
+          width: width
+        });
+        return nextColumns;
+      });
+    };
+  };
+
+  /** Utile function
+   * Find row by key
+   * @param data - table rows
+   * @param key - key row for find
+   * @param callback - function for return result
+   */
+  var loop = function loop(data, key, callback) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i][rowKey] === key) {
+        // console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
+        return callback(data[i], i, data);
+      }
+      if (data[i].children) {
+        loop(data[i].children, key, callback);
+      }
+    }
+  };
+
+  /** ROW CHANGE FUNCTIONS */
+  var _addRows = function _addRows(rows) {
+    var saveRows = [].concat(toConsumableArray(rows));
+    if (customFields)
+      // Фильтрация по пользовательским параметрам
+      saveRows = saveRows.filter(function (sRow) {
+        var isValid = [];
+        customFields.forEach(function (field) {
+          // Валидация по пользовательской логике функции validate
+          if (field.validate) isValid.push(field.validate(sRow, _rows));
+
+          // Создание или переобразование по пользовательской логике функции value
+          if (field.value) sRow[field.name] = field.value(sRow, _rows);
+        });
+        console.log("_addRows isValid", isValid);
+        if (!isValid.includes(false)) return sRow;
+      });
+    var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
+    _setRowsHandler(_localRows);
+    onTableEventsDispatch("onAddRows", _localRows);
+  };
+
+  var _addRow = function _addRow(row) {
+    var _row = _extends({}, row);
+    var isValid = true;
+    if (customFields) {
+      var validations = [];
+      customFields.forEach(function (field) {
+        if (field.validate) validations.push(field.validate(_row, _rows));
+
+        if (field.value) _row[field.name] = field.value(_row, _rows);
+      });
+      isValid = !validations.includes(false);
+    }
+    if (isValid) {
+      var _localRows = [].concat(toConsumableArray(_rows), [_row]);
+      _setRowsHandler(_localRows);
+      onTableEventsDispatch("onAddRow", _localRows);
+    }
+  };
+
+  var _addRowAsCopy = function _addRowAsCopy() {
+    // console.log("_onClickAddAsCopy", selectedRow);
+    var _localRows = [].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
+    _setRowsHandler(_localRows);
+    onTableEventsDispatch("onAddRowAsCopy", _localRows);
+  };
+
+  var _editRow = function _editRow(row) {
+    // console.log("_onClickEdit", selectedRow);
+    var data = [].concat(toConsumableArray(_rows));
+    var key = row[rowKey];
+    loop(data, key, function (item, index, arr) {
+      data[index] = row;
+      _setRowsHandler(data);
+      _setSelectedRowsHandler(_selectedRowKeys, undefined, data);
+      onTableEventsDispatch("onEditRow", data);
+    });
+  };
+
+  var _removeRow = function _removeRow(event) {
+    // console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
+    var _localRows = _rows.filter(function (item) {
+      return !_selectedRowKeys.includes(item[rowKey]);
+    });
+    _setRowsHandler(_localRows);
+    _setSelectedRowsHandler();
+    onTableEventsDispatch("onRemoveRow", _localRows);
+  };
+
+  var _moveUpRow = function _moveUpRow(event) {
+    var data = [].concat(toConsumableArray(_rows));
+    var key = _selectedRowKeys[0];
+    loop(data, key, function (item, index, arr) {
+      var newRowIndex = _getNewIndexRow(index, index - 1);
+      _changeIndexRow(index, newRowIndex, arr, data, "onMoveUpRow");
+    });
+  };
+
+  var _moveDownRow = function _moveDownRow(event) {
+    var data = [].concat(toConsumableArray(_rows));
+    var key = _selectedRowKeys[0];
+    loop(data, key, function (item, index, arr) {
+      var newRowIndex = _getNewIndexRow(index, index + 1);
+      _changeIndexRow(index, newRowIndex, arr, data, "onMoveDownRow");
+    });
+  };
+
+  var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
+    return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
+  };
+
+  var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data, nameEvent) {
+    if (newIndex >= 0 && newIndex < arr.length) {
+      // let arr = [..._rows]; // Копируем массив
+      var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
+      // console.log('_changeIndexRow => ',item);
+      arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
+      // console.log("_changeIndexRow", item[0]);
+      _setRowsHandler(data);
+      onTableEventsDispatch(nameEvent, data);
+    }
+  };
+
+  /** TREE FUNCTIONS */
+  var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
+    setExpandedRowKeys(expandedRowKeys);
+    onExpandedRowsChange(expandedRowKeys);
+  };
+
+  /** SELECTABLE FUNCTIONS */
+  var onChangeSelectedHandler = function onChangeSelectedHandler(selectedRowKeys, selectedRows) {
+    console.log("onChangeSelectedHandler");
+    _setSelectedRowsHandler(selectedRowKeys, selectedRows);
+  };
+
+  var onSelectAllHandler = function onSelectAllHandler(selected, selectedRows, changeRows) {
+    console.log("onSelectAllHandler");
+    var selectedKeys = selected ? selectedRows.map(function (row) {
+      return row[rowKey];
+    }) : [];
+    _setSelectedRowsHandler(selectedKeys, selectedRows);
+  };
+
+  /** VIEW FUNCTIONS */
+  var _rowClassName = function _rowClassName(rowData, rowIndex) {
+    // const {rowClassName} = props;
+    return [
+    // rowClassName,
+    _selectedRowKeys.includes(rowData[rowKey]) && "ant-table-row-selected", //
+    zebraStyle ? rowIndex % 2 === 0 ? "even" : "odd" : ""
+    // rowBordered ? 'bordered' : ''
+    ].join(" ");
+  };
+
+  var ExpandIcon = function ExpandIcon(_ref7) {
+    var Icon = _ref7.Icon,
+        restProps = objectWithoutProperties(_ref7, ["Icon"]);
+    return React__default['default'].createElement(
+      "span",
+      _extends({}, restProps, { className: rtPrefix + "-table-expand-icon" }),
+      React__default['default'].createElement(Icon, null)
+    );
+  };
+
+  var expandIconRender = function expandIconRender(_ref8) {
+    var expanded = _ref8.expanded,
+        onExpand = _ref8.onExpand,
+        record = _ref8.record;
+    return record.children && record.children.length === 0 ? React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretUpOutlined, style: { visibility: "hidden" } }) : expanded ? React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretDownOutlined, onClick: function onClick(e) {
+        return onExpand(record, e);
+      } }) : React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretRightOutlined, onClick: function onClick(e) {
+        return onExpand(record, e);
+      } });
+  };
+
+  var _footer = function _footer(currentPageData) {
+    // console.log('_footer => ', currentPageData);
+    return _footerShow ? React__default['default'].createElement(
+      React__default['default'].Fragment,
+      null,
+      React__default['default'].createElement(
+        "div",
+        { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
+        footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React__default['default'].createElement(footerProps.leftCustomSideElement, null) : null
+      ),
+      React__default['default'].createElement(
+        "div",
+        { key: "footer-center-custom-side", className: rtPrefix + "-footer-center-custom-side" },
+        footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React__default['default'].createElement(footerProps.centerCustomSideElement, null) : null
+      ),
+      React__default['default'].createElement(
+        "div",
+        { key: "footer-right-custom-side", className: rtPrefix + "-footer-right-custom-side" },
+        footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React__default['default'].createElement(footerProps.rightCustomSideElement, null) : null
+      ),
+      React__default['default'].createElement(
+        "div",
+        { className: rtPrefix + "-footer-right-system-side" },
+        React__default['default'].createElement(
+          _Space__default['default'],
+          null,
+          selectable ? React__default['default'].createElement(
+            React__default['default'].Fragment,
+            null,
+            footerProps.showElements.includes("selected") ? React__default['default'].createElement(
+              "span",
+              null,
+              footerProps.selectedTitle,
+              " ",
+              _selectedRowKeys.length
+            ) : null,
+            footerProps.showElements.includes("loaded") ? React__default['default'].createElement(
+              "span",
+              null,
+              footerProps.loadedTitle,
+              " ",
+              flatten(getTableRowKeys(_rows, rowKey)).length
+            ) : null
+          ) : null,
+          footerProps.showElements.includes("total") ? requestLoadCount !== noop && !expandColumnKey ? React__default['default'].createElement(
+            "span",
+            null,
+            footerProps.totalTitle,
+            " ",
+            _totalCountRows
+          ) : React__default['default'].createElement(
+            "span",
+            null,
+            footerProps.totalTitle,
+            " ",
+            flatten(getTableRowKeys(_rows, rowKey)).length
+          ) : null
+        )
+      )
+    ) : undefined;
+  };
+
+  var getColumns = function getColumns() {
+    return _columns.map(function (col, index) {
+      return _extends({}, col, {
+        onHeaderCell: function onHeaderCell(column) {
+          return {
+            resizable: column.resizable,
+            width: column.width,
+            onResize: onResizeHandler(index)
+          };
+        }
+      });
+    });
+  };
+
+  var restProps = getObjectExcludedProps(props, excludeProps$8);
+  var expandableProps = expandColumnKey ? _extends({
+    defaultExpandAllRows: expandDefaultAll,
+    expandIcon: expandIconRender
+  }, expandable, {
+    expandedRowKeys: _expandedRowKeys,
+    onExpandedRowsChange: _onExpandedRowsChange
+  }) : {};
+
+  var rowSelectionProps = selectable ? _extends({
+    type: "checkbox",
+    fixed: true,
+    checkStrictly: !nodeAssociated,
+    selectedRowKeys: _selectedRowKeys,
+    onChange: onChangeSelectedHandler,
+    onSelectAll: onSelectAllHandler
+  }, rowSelection) : undefined;
+
+  return React__default['default'].createElement(
+    "div",
+    { className: rtPrefix + "-table " + className, style: style },
+    React__default['default'].createElement(
+      "div",
+      { className: rtPrefix + "-baseTable" },
+      React__default['default'].createElement(
+        BaseTable.AutoResizer
+        // onResize={({ height, width }) => {setHeight(height); setWidth(width)} }
+        ,
+        null,
+        function (_ref9) {
+          var height = _ref9.height,
+              width = _ref9.width;
+          return React__default['default'].createElement(
+            "div",
+            { style: { width: width, height: height } },
+            React__default['default'].createElement(_Table__default['default'], _extends({}, restProps, {
+
+              /** Required */
+              columns: getColumns(),
+              dataSource: _rows
+              // scroll={{ x: width, y: height - headerHeight }}
+              , scroll: { y: height - headerHeight },
+              pagination: _extends({ position: ["none", "none"] }, restProps.pagination, { pageSize: _rows.length })
+
+              /** Base Props */
+              , loading: loading
+
+              /** Tree Props */
+              , expandable: _extends({}, expandableProps)
+              /** Selection Props */
+              , rowSelection: rowSelectionProps
+
+              /** View Props */
+              , rowClassName: _rowClassName,
+              footer: _footerShow ? _footer : undefined,
+              components: {
+                header: {
+                  row: HeaderRow,
+                  cell: HeaderCell
+                }
+              }
+
+              /** Events */
+              , onChange: onChangeTable,
+              onHeaderRow: onHeaderRowProps,
+              onRow: onRowEvents
+            }))
+          );
+        }
+      )
+    )
+  );
+};
+
+Table$2.propTypes = {
+  /**
+   * REQUIRED
+   * */
+
+  /** Столбцы таблицы */
+  columns: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+
+  /** Режим загрузки данных по скроллу */
+  infinityMode: PropTypes__default['default'].bool,
+
+  /**
+   * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
+   * */
+
+  /** Строки по умолчанию */
+  defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+  /** Ключи выделенных по умолчанию строк */
+  defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+
+  /** Значение строки поиска по умолчанию строк */
+  defaultSearchValue: PropTypes__default['default'].string,
+
+  /** Объект фильтрации по умолчанию */
+  defaultFilter: PropTypes__default['default'].object,
+
+  /** Сортировка по умолчанию */
+  defaultSortBy: PropTypes__default['default'].shape({
+    /** Ключ поля для сортировки */
+    key: PropTypes__default['default'].string,
+    /** Направление сортировки */
+    order: PropTypes__default['default'].oneOf(["asc", "desc"])
+  }),
+
+  /**
+   * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
+   * */
+
+  /** Строки таблицы. Используется для контроля таблицы из вне. */
+  rows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+  /** Функция задания строк таблицы. */
+  setRows: PropTypes__default['default'].func,
+
+  /** Выделенные строки таблицы. */
+  selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+
+  /** Значение строки поиска */
+  searchValue: PropTypes__default['default'].string,
+
+  /** Объект фильтрации */
+  filter: PropTypes__default['default'].object,
+
+  /** Объект сортировки */
+  sortBy: PropTypes__default['default'].shape({
+    /** Ключ поля для сортировки */
+    key: PropTypes__default['default'].string,
+    /** Направление сортировки */
+    order: PropTypes__default['default'].oneOf(["asc", "desc"])
+  }),
+
+  /**
+   * BASE PROPS
+   * */
+
+  /** Поле для уникальной идентификации строки */
+  rowKey: PropTypes__default['default'].string,
+
+  /** Дополнительные поля и валидация в объекты таблицы
+   * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
+   * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
+   * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
+   * ```json
+   * [
+   *  {
+   * 		name: <String>,
+   * 		value: <func>,
+   * 		validate: <func>
+   * 	}
+   * ]
+   * ```
+   * `name` – Имя параметра в объекте
+   * `value` – Функция формирования значения - `(row, rows) => { return {} }`
+   * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
+   * Параметра **validate** работает **только** для модельного окна тип `select`.
+   * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
+   */
+  customFields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+  /**
+   * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
+   * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
+   * ```json
+   * [
+   *  {
+   * 		name: <String>,
+   * 		cellRenderer: <func>,
+   * 		...advancedColProps
+   * 	}
+   * ]
+   * ```
+   * `name` – key колонки к которой надо применить дополнительные пропсы
+   * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
+   * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
+   */
+  customColumnProps: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+
+  /**
+   * VIEW PROPS
+   * */
+
+  /** Вывод когда нет данных */
+  empty: PropTypes__default['default'].element,
+
+  /** Отображение загрузки данных */
+  overlay: PropTypes__default['default'].element,
+
+  /** Фиксированная ширина столбцов. Появится боковой скрол */
+  fixWidthColumn: PropTypes__default['default'].bool,
+
+  footerProps: PropTypes__default['default'].shape({
+
+    /** Высота подвала */
+    height: PropTypes__default['default'].number,
+
+    /** Массив элементов футтера, которые надо отобразить
+     * ['selected', 'loaded', 'total'] */
+    showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+
+    /** Заколовок для кол-ва выбранных объектов */
+    selectedTitle: PropTypes__default['default'].string,
+
+    /** Заколовок для кол-ва загруженны объектов */
+    loadedTitle: PropTypes__default['default'].string,
+
+    /** Заколовок для кол-ва всего объектов */
+    totalTitle: PropTypes__default['default'].string,
+
+    /** Левый кастомный элемент командной панели */
+    leftCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+
+    /** Центральный кастомный элемент командной панели */
+    centerCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+
+    /** Правый кастомный элемент командной панели */
+    rightCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)])
+  }),
+
+  /** Высота заголовка таблицы */
+  headerHeight: PropTypes__default['default'].number,
+
+  /** Высота строки таблицы */
+  rowHeight: PropTypes__default['default'].number,
+
+  /** Custom row renderer
+   * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
+  rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+
+  /** Строки будут в зебро-стиле */
+  zebraStyle: PropTypes__default['default'].bool,
+
+  /** Высота расширения */
+  estimatedRowHeight: PropTypes__default['default'].number,
+
+  /** Отображать ли разделители ячеек в строке */
+  cellBordered: PropTypes__default['default'].bool,
+
+  /** Отобрадать ли разделители строк */
+  rowBordered: PropTypes__default['default'].bool,
+
+  /**
+   * LOAD DATA PROPS
+   * */
+
+  /** Порог в пикселях для вызова _onLoad.
+   * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
+  loadThreshold: PropTypes__default['default'].number,
+
+  /** Размер страницы */
+  pageSize: PropTypes__default['default'].number,
+
+  /** Функция запроса для конфигурации */
+  requestLoadConfig: PropTypes__default['default'].func,
+
+  /** Функция запроса для загрузки строк (данных) */
+  requestLoadRows: PropTypes__default['default'].func,
+
+  /** Функция запроса для загрузки строк (данных) */
+  requestLoadCount: PropTypes__default['default'].func,
+
+  /** Имя параметра для поиска */
+  searchParamName: PropTypes__default['default'].string,
+
+  /**
+   * SELECTABLE PROPS
+   * */
+
+  /** Таблица с возможностью выбора строки */
+  selectable: PropTypes__default['default'].bool,
+
+  /**
+   * TREE PROPS
+   * */
+
+  /** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
+  nodeAssociated: PropTypes__default['default'].bool,
+
+  /** Ключ колонки по которой строить иерархию */
+  expandColumnKey: PropTypes__default['default'].string,
+
+  /** Открыть по умолчанию вложенность до уровня N или 'All' */
+  expandDefaultAll: PropTypes__default['default'].bool,
+
+  /** Загружать ноды иерархии по одной */
+  expandLazyLoad: PropTypes__default['default'].bool,
+
+  /** Поле в котором хранится ссылка на родителя */
+  expandParentKey: PropTypes__default['default'].string,
+
+  /**
+   * EVENTS
+   * */
+
+  /** Событие при клике на строку (только при `selectable` = `false`)
+   * `({selected, rowData, rowIndex}) => {}` */
+  onRowClick: PropTypes__default['default'].func,
+
+  /** Событие при двойном клике на строку.
+   * `({rowData, rowIndex, rowKey}) => {}` */
+  onRowDoubleClick: PropTypes__default['default'].func,
+
+  /** События при открытии / закрытии ноды
+   * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
+  onRowExpand: PropTypes__default['default'].func,
+
+  /** Событие при выборе строки.
+   * `([rowKeys], [rowDatas]) => {}` */
+  onSelectedRowsChange: PropTypes__default['default'].func,
+
+  /** События при открытии / закрытии ноды
+   * `(expandedRowKeys) => {}` - массив ключей открытых нод */
+  onExpandedRowsChange: PropTypes__default['default'].func,
+
+  /** SELECTED PANEL */
+
+  /** Отображать ли панель выбранных элементов */
+  showSelection: PropTypes__default['default'].bool,
+
+  /** Строка или функция для отображения элементов списка выбранных
+   * Строка - имя поля
+   * Функция - рендер строк.
+   * `({ rowData, rowIndex }) => { return <Component> }` */
+  rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+
+  /** Путь в сторе куда класть выбранную строку таблицы */
+  dispatchPath: PropTypes__default['default'].string,
+
+  /** Объект для подписки на изменения в STORE */
+  subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+};
+
+Table$2.defaultProps = {
+  size: "small",
+  bordered: true,
+  infinityMode: false,
+  editMode: false,
+  defaultRows: [],
+  defaultSelectedRowKeys: [],
+  defaultSearchValue: "",
+  defaultFilter: {},
+  defaultSortBy: {},
+
+  rows: [],
+  setRows: noop,
+  selectedRowKeys: [],
+  searchValue: "",
+  filter: {},
+  sortBy: {},
+
+  rowKey: "id",
+
+  empty: empty$1,
+  overlay: overlay$1,
+  fixWidthColumn: false,
+  footerProps: {
+    height: 30,
+    showElements: [],
+    selectedTitle: "Выделено:",
+    loadedTitle: "Загружено записей:",
+    totalTitle: "Всего записей:",
+    leftCustomSideElement: null,
+    centerCustomSideElement: null,
+    rightCustomSideElement: null
+  },
+  headerHeight: 30,
+  rowHeight: 30,
+  zebraStyle: false,
+  estimatedRowHeight: undefined,
+  cellBordered: false,
+  rowBordered: true,
+  className: "",
+  style: {},
+
+  loadThreshold: 300,
+  pageSize: 50,
+  requestLoadRows: undefined,
+  requestLoadCount: noop,
+  searchParamName: "searchLine",
+
+  selectable: false,
+
+  nodeAssociated: true,
+  expandColumnKey: undefined,
+  expandDefaultAll: true,
+  expandLazyLoad: false,
+  expandParentKey: "parentId",
+
+  onRowClick: noop,
+  onRowDoubleClick: noop,
+  onRowExpand: noop,
+  onSelectedRowsChange: noop,
+  onExpandedRowsChange: noop,
+
+  showSelection: false,
+
+  dispatchPath: undefined,
+  subscribe: []
+};
+
+var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
+  var subscribe = ownProps.subscribe;
+
+  var state = {};
+  if (subscribe && subscribe.length > 0) {
+    subscribe.forEach(function (item) {
+      var name = item.name,
+          path = item.path,
+          extraData = item.extraData;
+
+      if (name && path) state[name] = objectPath__default['default'].get(store, path);
+      if (name && extraData) state[name + "ExtraData"] = objectPath__default['default'].get(store, extraData);
+    });
+  }
+  return state;
+};
+var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
+  return redux.bindActionCreators({ setDateStore: setDateStore }, dispatch);
+};
+
+var Table$3 = reactRedux.connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$2);
+
+var _this$2 = undefined;
+
+var defaultProps$2 = {
+    defaultFilter: {},
+    rowKey: "id",
+    pageSize: 50,
+    requestLoadConfig: noop,
+    expandColumnKey: undefined,
+    expandLazyLoad: false,
+    expandParentKey: "parentId",
+    customColumnProps: []
+};
+
+var ConfigLoader = function ConfigLoader(props) {
+
+    /** Конфигурация таблицы */
+    var _useState = React.useState(undefined),
+        _useState2 = slicedToArray(_useState, 2),
+        tableConfig = _useState2[0],
+        setTableConfig = _useState2[1];
+
+    var _defaultProps$props = _extends({}, defaultProps$2, props),
+        defaultFilter = _defaultProps$props.defaultFilter,
+        defaultSortBy = _defaultProps$props.defaultSortBy,
+        rowKey = _defaultProps$props.rowKey,
+        pageSize = _defaultProps$props.pageSize,
+        requestLoadConfig = _defaultProps$props.requestLoadConfig,
+        expandColumnKey = _defaultProps$props.expandColumnKey,
+        expandParentKey = _defaultProps$props.expandParentKey,
+        customColumnProps = _defaultProps$props.customColumnProps,
+        fixWidthColumn = _defaultProps$props.fixWidthColumn,
+        selectable = _defaultProps$props.selectable;
+
+    React.useEffect(function () {
+        var cleanupFunction = false;
+        var loadData = function () {
+            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (requestLoadConfig) {
+                                    // console.log("requestLoadConfig => ", typeof requestLoadConfig);
+                                    // console.log("requestLoadRows => ", typeof props.requestLoadRows);
+                                    requestLoadConfig().then(function (response) {
+                                        // let result = response.data;
+                                        // console.log('requestLoadConfig -> ', response.data);
+                                        if (!cleanupFunction) {
+                                            // setTableConfig(response.data);
+                                            configParser(response.data);
+                                        }
+                                    }).catch(function (error) {
+                                        return notificationError(error, "Ошибка получения конфигурации");
+                                    });
+                                }
+
+                            case 1:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this$2);
+            }));
+
+            return function loadData() {
+                return _ref.apply(this, arguments);
+            };
+        }();
+        loadData().then(function (r) {
+            return r;
+        });
+        return function () {
+            return cleanupFunction = true;
+        };
+    }, [props]);
+
+    var configParser = function configParser(config) {
+        var _expandColumnKey = config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey;
+
+        var visibleIndex = 0;
+        var expandIconColumnIndex = -1;
+
+        var _columns = [];
+        if (config && config.fields) {
+            // for(let i = 0; i < config.fields.length; i++) {
+            //     const item = config.fields[i];
+            // _columns = config.fields.map((item) => {
+            config.fields.forEach(function (item, index) {
+                // console.log('configParser item => ', item);
+                // if(item.visible) {
+                var dataIndex = item.alias ? item.alias : item.name;
+
+                var defaultSortOrder = defaultSortBy && defaultSortBy.key === dataIndex ? defaultSortBy.order === 'asc' ? 'ascend' : 'descend' : undefined;
+
+                var colProps = customColumnProps && customColumnProps.find(function (render) {
+                    return render.name === item.name || render.name === item.alias;
+                });
+                var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
+                if (item.visible) {
+                    visibleIndex++;
+                    if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
+                    _columns.push(_extends({
+                        key: item.name,
+                        title: item.header ? item.header : item.name,
+                        dataIndex: item.alias ? item.alias : item.name,
+                        align: item.align,
+                        resizable: item.resizable,
+                        sorter: item.sortable ? item.sortable : undefined,
+                        ellipsis: true,
+                        defaultSortOrder: defaultSortOrder
+                    }, widthCol, colProps, {
+                        // className: [cellBordered ? 'bordered' : ''].join(' '),
+                        // headerClassName: [cellBordered ? 'bordered' : ''].join(' '),
+                        // cellRenderer: cellR && cellR.cellRender,
+                        render: function render(cellData, rowData, rowIndex) {
+                            if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, { cellData: cellData, rowData: rowData,
+                                rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
+                        }
+
+                        // render: (cellData, rowData, rowIndex) => {
+                        //     if (colProps && colProps.cellRenderer)
+                        //         return <colProps.cellRenderer cellData={cellData} rowData={rowData} rowIndex={rowIndex}/>
+                        //         // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                        //     else
+                        //         if (cellData)
+                        //             if (item.typeData === 'json')
+                        //                 return <BodyCell cellData={JSON.stringify(cellData)}/>;
+                        //             else
+                        //                 return <BodyCell cellData={cellData}/>;
+                        //         else
+                        //             return <BodyCell cellData={'---'}/>;
+                        //
+                        //         // return object.cellData ? object.cellData : '---';
+                        // },
+                    }));
+                }
+            });
+        }
+
+        var _defaultFilter = void 0;
+        if (config && config.hierarchical && config.hierarchyLazyLoad) {
+            var parentKey = config.hierarchyField ? config.hierarchyField.split("/")[1] : expandParentKey;
+            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
+        } else _defaultFilter = defaultFilter;
+
+        console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
+        setTableConfig({
+            columns: _columns,
+            defaultFilter: _defaultFilter,
+            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split("/")[0] : rowKey,
+            // expandParentKey:
+            //     config && config.hierarchical && config.hierarchyField
+            //         ? config.hierarchyField.split('/')[1]
+            //         : expandParentKey,
+            expandColumnKey: _expandColumnKey,
+            expandable: { expandIconColumnIndex: expandIconColumnIndex },
+            // expandLazyLoad:
+            //     config && config.hierarchical && config.hierarchyLazyLoad
+            //         ? config.hierarchyLazyLoad
+            //         : expandLazyLoad,
             pageSize: config && config.hierarchical ? 1 : pageSize
         });
     };
@@ -3752,19 +5076,19 @@ var renderFormItemComponent = function renderFormItemComponent(Component) {
 var ComponentClassic = function ComponentClassic(Component) {
     return function (props) {
         // console.log("ComponentClassic => ", Component)
-        var StoreComponent = withStore$1(Component, {});
+        var StoreComponent = withStore$1(Component, props.itemProps);
         return renderFormItemComponent(StoreComponent)(props);
     };
 };
 var ComponentClassicWithLabel = function ComponentClassicWithLabel(Component) {
     return function (props) {
-        var StoreComponent = withStore$1(Component, {});
+        var StoreComponent = withStore$1(Component, props.itemProps);
         return renderFormItemComponent(renderClassicWithLabel(StoreComponent))(props);
     };
 };
 var ComponentClassicWithPlaceholder = function ComponentClassicWithPlaceholder(Component, placeholder) {
     return function (props) {
-        var StoreComponent = withStore$1(Component, {});
+        var StoreComponent = withStore$1(Component, props.itemProps);
         var _placeholder = props && props.placeholder ? props.placeholder : placeholder;
         return renderFormItemComponent(StoreComponent)(_extends({}, props, { placeholder: _placeholder }));
     };
@@ -3774,6 +5098,13 @@ var ComponentClassicWithOutStore = function ComponentClassicWithOutStore(Compone
         // console.log("ComponentClassicWithOutStore => ", Component)
         return renderFormItemComponent(Component)(props);
     };
+};
+
+var TableWrapper = function TableWrapper(props) {
+    var type = props.type,
+        restProps = objectWithoutProperties(props, ["type"]);
+
+    if (type) return type === 'rt' ? React__default['default'].createElement(ConfigLoader$1, restProps) : React__default['default'].createElement(ConfigLoader, restProps);else return props.infinityMode ? React__default['default'].createElement(ConfigLoader$1, props) : React__default['default'].createElement(ConfigLoader, props);
 };
 
 var classicComponents = {
@@ -3807,7 +5138,9 @@ var withComponentType = {
     RadioGroup: ComponentClassic(_Radio__default['default'].Group),
     Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'),
     TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'),
-    Table: ComponentClassicWithOutStore(ConfigLoader),
+    Table: ComponentClassicWithOutStore(TableWrapper),
+    RtTable: ComponentClassicWithOutStore(ConfigLoader$1),
+    AntTable: ComponentClassicWithOutStore(ConfigLoader),
     Modal: ComponentClassicWithOutStore(RtModal),
     Custom: ComponentClassic(Custom),
     Switcher: ComponentClassic(Switcher),
@@ -7090,15 +8423,16 @@ var FormTable = React.forwardRef(function (props, ref) {
             if (customFields)
                 // Фильтрация по пользовательским параметрам
                 saveRows = saveRows.filter(function (sRow) {
-                    var isValid = true;
+                    var isValid = [];
                     customFields.forEach(function (field) {
                         // Валидация по пользовательской логике функции validate
-                        if (field.validate) isValid = field.validate(sRow, tableRows);
+                        if (field.validate) isValid.push(field.validate(sRow, tableRows));
 
                         // Создание или переобразование по пользовательской логике функции value
                         if (field.value) sRow[field.name] = field.value(sRow, tableRows);
                     });
-                    if (isValid) return sRow;
+                    // console.log('_addRows isValid', isValid);
+                    if (!isValid.includes(false)) return sRow;
                 });
             setVisibleModals(_extends({}, visibleModals, defineProperty({}, type, false)));
             _notification__default['default'].success({

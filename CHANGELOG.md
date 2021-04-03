@@ -1,3 +1,11 @@
+## 0.0.64
+
+- Fix isValid for Table props `customFields`
+- Add isValid in Table for `_addRow` func
+- Add `Ant Table` for no infinity Tables
+- Change default headerHeight and rowHeight to 36px (small size in Ant Table)
+- Remove check value before dispatch in HOC `withStore`
+
 ## 0.0.63
 
 - Add `_setLoadedRowsHandler` in `Table` for call `onChange` after load data

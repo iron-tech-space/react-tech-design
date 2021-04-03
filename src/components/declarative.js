@@ -28,7 +28,8 @@ import {
 import RtForm from "./Form/Form";
 import RtLayout from "./Layout/Layout";
 import RtSwitcher from './Switcher/Switcher';
-import RtTable from "./Table/ConfigLoader";
+import RtTable from "./Table/ReactBaseTable/ConfigLoader";
+import AntTable from "./Table/AntTable/ConfigLoader";
 import RtSelect from "./Select/Select";
 import RtTreeSelect from './TreeSelect/TreeSelect'
 import RtModal from "./Modal/Modal";
@@ -85,21 +86,29 @@ const renderFormItemComponent = (Component) => (props) => {
 /** */
 const ComponentClassic = (Component) => (props) => {
     // console.log("ComponentClassic => ", Component)
-    const StoreComponent = withStore(Component, {});
+    const StoreComponent = withStore(Component, props.itemProps);
     return renderFormItemComponent(StoreComponent)(props);
 }
 const ComponentClassicWithLabel = (Component) => (props) => {
-    const StoreComponent = withStore(Component, {});
+    const StoreComponent = withStore(Component, props.itemProps);
     return renderFormItemComponent(renderClassicWithLabel(StoreComponent))(props);
 }
 const ComponentClassicWithPlaceholder = (Component, placeholder) => (props) => {
-    const StoreComponent = withStore(Component, {});
+    const StoreComponent = withStore(Component, props.itemProps);
     const _placeholder = (props && props.placeholder) ? props.placeholder : placeholder;
     return renderFormItemComponent(StoreComponent)({...props, placeholder: _placeholder});
 }
 const ComponentClassicWithOutStore = (Component) => (props) => {
     // console.log("ComponentClassicWithOutStore => ", Component)
     return renderFormItemComponent(Component)(props);
+}
+
+const TableWrapper = (props) => {
+    const {type, ...restProps} = props
+    if(type)
+        return type === 'rt' ? <RtTable {...restProps} /> : <AntTable {...restProps} />
+    else
+        return props.infinityMode ? <RtTable {...props} /> : <AntTable {...props} />
 }
 
 const classicComponents = {
@@ -133,7 +142,9 @@ const withComponentType = {
     RadioGroup: ComponentClassic(AntRadio.Group),
     Select:     ComponentClassicWithPlaceholder(RtSelect, 'Выберите значение'),
     TreeSelect: ComponentClassicWithPlaceholder(RtTreeSelect, 'Выберите значение'),
-    Table:      ComponentClassicWithOutStore(RtTable),
+    Table:      ComponentClassicWithOutStore(TableWrapper),
+    RtTable:    ComponentClassicWithOutStore(RtTable),
+    AntTable:   ComponentClassicWithOutStore(AntTable),
     Modal:      ComponentClassicWithOutStore(RtModal),
     Custom:     ComponentClassic(Custom),
     Switcher:   ComponentClassic(RtSwitcher),

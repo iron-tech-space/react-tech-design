@@ -75,8 +75,8 @@ export const withStore = (Component, antFormItemProps) => {
         useEffect(() => {
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
             let _value = props[valuePropName];
-            if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
-                _value = undefined;
+            // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
+            //     _value = undefined;
 
             // console.log(`storeHOC [${dispatch.name}] => `, _value);
             // console.log(`storeHOC => `, props);
@@ -94,7 +94,7 @@ export const withStore = (Component, antFormItemProps) => {
         }, [subscribeProps.value]);
 
         const onChange = (...args) => {
-            // console.log('withStore [trigger] ', subscribeProps)
+            // console.log('withStore [trigger] ', args)
             // const newValue = getValue(...args);
             // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
             if(componentType === 'Button')

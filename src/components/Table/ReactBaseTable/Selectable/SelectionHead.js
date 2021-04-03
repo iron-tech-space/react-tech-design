@@ -1,6 +1,6 @@
 import React from 'react';
 import {Checkbox} from 'antd';
-import { flatten, getTableRowKeys, getTableRowObjects } from "../../utils/baseUtils";
+import { flatten, getTableRowKeys, getTableRowObjects } from "../../../utils/baseUtils";
 
 const SelectionHead = (props) => {
 	const {column, container} = props;

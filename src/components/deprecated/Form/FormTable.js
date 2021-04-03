@@ -269,17 +269,18 @@ const FormTable = forwardRef((props, ref) => {
             if (customFields)
                 // Фильтрация по пользовательским параметрам
                 saveRows = saveRows.filter((sRow) => {
-                    let isValid = true;
+                    let isValid = [];
                     customFields.forEach((field) => {
                         // Валидация по пользовательской логике функции validate
                         if(field.validate)
-                            isValid = field.validate(sRow, tableRows);
+                            isValid.push(field.validate(sRow, tableRows));
 
                         // Создание или переобразование по пользовательской логике функции value
                         if(field.value)
                             sRow[field.name] = field.value(sRow, tableRows);
                     });
-                    if(isValid)
+                    // console.log('_addRows isValid', isValid);
+                    if(!isValid.includes(false))
                         return sRow;
                 });
             setVisibleModals({ ...visibleModals, [type]: false });

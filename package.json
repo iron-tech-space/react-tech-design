@@ -1,6 +1,6 @@
 {
 	"name": "rt-design",
-	"version": "0.0.63",
+	"version": "0.0.64",
 	"description": "React technical design library",
 	"author": "Iron tech space",
 	"license": "MIT",
@@ -75,7 +75,7 @@
 		"less-loader": "^5.0.0",
 		"prettier": "^2.0.2",
 		"react-docgen": "^5.3.1",
-		"react-scripts": "^3.4.3",
+		"react-scripts": "^4.0.3",
 		"rollup": "^2.3.2",
 		"rollup-plugin-babel": "^3.0.7",
 		"rollup-plugin-commonjs": "^9.1.3",

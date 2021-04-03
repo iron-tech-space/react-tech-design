@@ -8,14 +8,60 @@
         outline: 1px solid @table-outline-color;
     }
 	//
-	&-cell {
-		padding: 0 11px;
+	//&-cell {
+	//	padding: 0 11px;
+	//}
+	&-expand-icon {
+		color: #8C99B2; //8C99B2
+		margin-right: 10px;
 	}
+
 
     .@{rt-prefix}-baseTable {
 		flex: 1 1 auto;
 		//border: 1px solid #eee;
 		//outline: 1px solid @table-outline-color;
+
+		.@{spin-prefix-cls}-nested-loading,
+		.@{spin-prefix-cls}-container{
+			height: 100%;
+		}
+		.@{table-prefix-cls} {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100%;
+
+			&-wrapper{
+				height: 100%;
+			}
+			&-container{
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+			}
+			&-body{
+				flex: 1;
+			}
+			&-footer {
+				background-color: #fff;
+				border-top: 1px solid #f0f0f0;
+				display: flex;
+
+				.@{rt-prefix}-footer-left-custom-side {
+					margin-right: 8px;
+				}
+
+				.@{rt-prefix}-footer-center-custom-side {
+					margin: auto;
+				}
+
+				.@{rt-prefix}-footer-right-custom-side,
+				.@{rt-prefix}-footer-right-system-side {
+					margin-left: 8px;
+				}
+			}
+		}
 
 		.BaseTable {
 			color: #000;
@@ -40,7 +86,7 @@
 				&.bordered {
 					border-left: 1px solid #eeeeee;
 				}
-				padding: 1px;
+				//padding: 1px;
 				.BaseTable__expand-icon {
 				    color: #8C99B2; //8C99B2
                     margin-right: 10px;

@@ -7,7 +7,7 @@ import {empty, overlay} from './defaultSettings';
 import SelectionHead from './Selectable/SelectionHead';
 import SelectionCell, {parentAnalysis, onChangeSelectionCell} from './Selectable/SelectionCell';
 import SelectionList from './SelectionList/SelectionList';
-import {rtPrefix} from '../utils/variables';
+import {rtPrefix} from '../../utils/variables';
 import {
 	flatten,
 	generateUUID,
@@ -15,10 +15,10 @@ import {
 	findNodeByRowKey,
 	noop,
 	getTableRowObjects, notificationError, useMounted
-} from "../utils/baseUtils";
+} from "../../utils/baseUtils";
 import objectPath from "object-path";
-import { setDateStore } from "../../redux/rtd.actions";
-import FormItems from "../Form/FormItems";
+import { setDateStore } from "../../../redux/rtd.actions";
+import FormItems from "../../Form/FormItems";
 import moment from "moment";
 
 /** Компонент таблицы */
@@ -108,7 +108,7 @@ const Table = forwardRef((props, ref) => {
 		loadThreshold,
 		pageSize,
 		requestLoadRows,
-        requestLoadCount,
+		requestLoadCount,
 		searchParamName,
 
 		/** Selectable Props */
@@ -800,7 +800,6 @@ const Table = forwardRef((props, ref) => {
 	 * @param data - table rows
 	 * @param key - key row for find
 	 * @param callback - function for return result
-	 * @returns {*}
 	 */
 	const loop = (data, key, callback) => {
 		for (let i = 0; i < data.length; i++) {
@@ -821,32 +820,44 @@ const Table = forwardRef((props, ref) => {
 		if (customFields)
 			// Фильтрация по пользовательским параметрам
 			saveRows = saveRows.filter((sRow) => {
-				let isValid = true;
+				let isValid = [];
 				customFields.forEach((field) => {
 					// Валидация по пользовательской логике функции validate
 					if(field.validate)
-						isValid = field.validate(sRow, _rows);
+						isValid.push(field.validate(sRow, _rows));
 
 					// Создание или переобразование по пользовательской логике функции value
 					if(field.value)
 						sRow[field.name] = field.value(sRow, _rows);
 				});
-				if(isValid)
+				// console.log('_addRows isValid', isValid);
+				if(!isValid.includes(false))
 					return sRow;
 			});
 		const _localRows = [..._rows, ...saveRows]
 		_setRowsHandler(_localRows);
 		onTableEventsDispatch('onAddRows', _localRows);
-
 	}
 
 	const _addRow = (row) => {
 		let _row = {...row}
-		if (customFields)
-			customFields.forEach((field) => _row[field.name] = field.value(_row, _rows));
-		const _localRows = [..._rows, _row]
-		_setRowsHandler(_localRows);
-		onTableEventsDispatch('onAddRow', _localRows);
+		let isValid = true;
+		if (customFields) {
+			let validations = [];
+			customFields.forEach((field) => {
+				if(field.validate)
+					validations.push(field.validate(_row, _rows));
+
+				if(field.value)
+					_row[field.name] = field.value(_row, _rows)
+			});
+			isValid = !validations.includes(false)
+		}
+		if(isValid) {
+			const _localRows = [..._rows, _row]
+			_setRowsHandler(_localRows);
+			onTableEventsDispatch('onAddRow', _localRows);
+		}
 
 	}
 
@@ -950,7 +961,6 @@ const Table = forwardRef((props, ref) => {
 	// };
 
 	/** SELECTED PANEL */
-
 	const _onClickDropSelectHandler = (dropObject) => {
 		const newSelectedKeys = _selectedRowKeys.filter(
 			(item) => item !== dropObject[rowKey]
@@ -1323,8 +1333,8 @@ Table.defaultProps = {
 		centerCustomSideElement: null,
 		rightCustomSideElement: null
 	},
-	headerHeight: 30,
-	rowHeight: 30,
+	headerHeight: 36,
+	rowHeight: 36,
 	zebraStyle: false,
 	estimatedRowHeight: undefined,
 	cellBordered: false,

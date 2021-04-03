@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { noop, notificationError } from "../utils/baseUtils";
+import { noop, notificationError } from "../../utils/baseUtils";
 import Table from "./Table";
 import { Typography } from "antd";
 
@@ -126,6 +126,6 @@ const ConfigLoader = props => {
         return ( <Table {...props} {...tableConfig} /> );
     else
         return null
-}
+};
 
 export default ConfigLoader;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {CloseCircleOutlined} from '@ant-design/icons';
-import {rtPrefix} from '../../utils/variables';
+import {rtPrefix} from '../../../utils/variables';
 
 const SelectionList = (props) => {
 	const {selectedRowObjects, rowRender, onClickDropSelect} = props;

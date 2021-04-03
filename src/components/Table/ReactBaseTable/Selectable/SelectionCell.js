@@ -4,7 +4,7 @@ import {
 	flatten,
 	getTableRowKeys,
 	findNodeByRowKey, getTableRowObjects
-} from "../../utils/baseUtils";
+} from "../../../utils/baseUtils";
 
 const getRowChildren = (data, rowKey) =>
 	data.map((item) => {
@@ -272,11 +272,11 @@ const SelectionCell = (props) => {
 	}
 
 	return (
-		<Checkbox
-			indeterminate={det}
-			// onChange={(e) => _onChangeHandler(e.target.checked)}
-			checked={checked}
-		/>
+			<Checkbox
+				indeterminate={det}
+				// onChange={(e) => _onChangeHandler(e.target.checked)}
+				checked={checked}
+			/>
 	);
 };
 
