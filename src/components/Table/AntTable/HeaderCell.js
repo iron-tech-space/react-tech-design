@@ -1,23 +1,55 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ColumnResizer from 'react-base-table/lib/ColumnResizer'
+import React from "react";
+import PropTypes from "prop-types";
+import ColumnResizer from "react-base-table/lib/ColumnResizer";
+import { rtPrefix } from "../../utils/variables";
 
 const HeaderCell = (props) => {
-    const { onResize, width, resizable, ...restProps } = props;
+    // console.log('HeaderCell => ', props);
+
+    const { column, onResize, ...restProps } = props;
+
+    if (!column)
+        return <th {...restProps} />;
+
+    const { width, resizable, headerRenderer } = column;
+
     if (!width)
         return <th {...restProps} />;
-    return (
-        <th {...restProps}>
-            {restProps.children}
-            {resizable &&
+
+    // if (headerRenderer) {
+    //     let childNode
+    //     if( typeof headerRenderer === 'function') {
+    //         childNode = headerRenderer()
+    //     }
+    //     else {
+    //         childNode = headerRenderer
+    //     }
+    //
+    //     return (
+    //         <th {...restProps}>
+    //             {childNode}
+    //             {resizable &&
+    //             <ColumnResizer
+    //                 className={`${rtPrefix}-column-resizer`}
+    //                 column={{ width: width, maxWidth: 1000 }}
+    //                 onResize={onResize}
+    //             />}
+    //         </th>
+    //     );
+    // } else {
+        return (
+            <th {...restProps}>
+                {restProps.children}
+                {resizable &&
                 <ColumnResizer
-                    className={'BaseTable__column-resizer'}
+                    className={`${rtPrefix}-column-resizer`}
                     column={{ width: width, maxWidth: 1000 }}
                     onResize={onResize}
-                /> }
-        </th>
-    );
-}
+                />}
+            </th>
+        );
+    // }
+};
 
 HeaderCell.propTypes = {
     onResize: PropTypes.func,

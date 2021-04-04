@@ -428,9 +428,7 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
             valuePropName = withStoreProps.valuePropName;
 
 
-        var excludeProps = ['componentType', 'setDateStore', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
-            return item.name;
-        })), ['dispatch', 'dispatchExtraData']);
+        var excludeProps = ['componentType', 'setDateStore', 'subscribe', 'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
 
         var isMounted = useMounted();
 
@@ -1737,7 +1735,7 @@ var Table$4 = forwardRef(function (props, ref) {
 				checked: checked
 			}));
 		}
-		onClick(_extends({ selected: checked }, newRowObject));
+		onClick && onClick(_extends({ selected: checked }, newRowObject));
 	};
 
 	var _rowEventHandlers = {
@@ -2711,22 +2709,54 @@ if (process.env.NODE_ENV !== 'production') ;
 if (process.env.NODE_ENV !== 'production') ;
 
 var HeaderCell = function HeaderCell(props) {
-    var onResize = props.onResize,
-        width = props.width,
-        resizable = props.resizable,
-        restProps = objectWithoutProperties(props, ['onResize', 'width', 'resizable']);
+    // console.log('HeaderCell => ', props);
 
-    if (!width) return React.createElement('th', restProps);
+    var column = props.column,
+        onResize = props.onResize,
+        restProps = objectWithoutProperties(props, ["column", "onResize"]);
+
+
+    if (!column) return React.createElement("th", restProps);
+
+    var width = column.width,
+        resizable = column.resizable;
+        column.headerRenderer;
+
+
+    if (!width) return React.createElement("th", restProps);
+
+    // if (headerRenderer) {
+    //     let childNode
+    //     if( typeof headerRenderer === 'function') {
+    //         childNode = headerRenderer()
+    //     }
+    //     else {
+    //         childNode = headerRenderer
+    //     }
+    //
+    //     return (
+    //         <th {...restProps}>
+    //             {childNode}
+    //             {resizable &&
+    //             <ColumnResizer
+    //                 className={`${rtPrefix}-column-resizer`}
+    //                 column={{ width: width, maxWidth: 1000 }}
+    //                 onResize={onResize}
+    //             />}
+    //         </th>
+    //     );
+    // } else {
     return React.createElement(
-        'th',
+        "th",
         restProps,
         restProps.children,
         resizable && React.createElement(ColumnResizer, {
-            className: 'BaseTable__column-resizer',
+            className: rtPrefix + "-column-resizer",
             column: { width: width, maxWidth: 1000 },
             onResize: onResize
         })
     );
+    // }
 };
 
 HeaderCell.propTypes = {
@@ -2756,6 +2786,32 @@ HeaderRow.propTypes = {
     headerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     setHeaderHeight: PropTypes.func
 };
+
+var BodyCell = function BodyCell(props) {
+  var column = props.column,
+      rowData = props.rowData,
+      rowIndex = props.rowIndex,
+      restProps = objectWithoutProperties(props, ["column", "rowData", "rowIndex"]);
+
+
+  if (column && column.cellComponent) {
+    // console.log('BodyCell => ', restProps);
+    return React.createElement(
+      "td",
+      _extends({}, restProps, { style: _extends({}, restProps.style, { padding: 0 }) }),
+      React.createElement(column.cellComponent, {
+        column: column,
+        cellData: restProps.title,
+        rowData: rowData,
+        rowIndex: rowIndex
+      })
+    );
+  } else {
+    return React.createElement("td", restProps);
+  }
+};
+
+BodyCell.propTypes = {};
 
 var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName", "onRowClick", "onRowDoubleClick"];
 
@@ -2850,9 +2906,9 @@ var Table$2 = function Table(props) {
   var isMounted = useMounted();
 
   var _props$subscribeProps = _extends({}, props, subscribeProps),
-      columns = _props$subscribeProps.columns;
-      _props$subscribeProps.infinityMode;
-      var defaultRows = _props$subscribeProps.defaultRows,
+      columns = _props$subscribeProps.columns,
+      editMode = _props$subscribeProps.editMode,
+      defaultRows = _props$subscribeProps.defaultRows,
       defaultSearchValue = _props$subscribeProps.defaultSearchValue,
       defaultFilter = _props$subscribeProps.defaultFilter,
       defaultSortBy = _props$subscribeProps.defaultSortBy,
@@ -2936,8 +2992,10 @@ var Table$2 = function Table(props) {
           addRowAsCopy: _addRowAsCopy,
           editRow: _editRow,
           removeRow: _removeRow,
-          moveUpRow: _moveUpRow,
-          moveDownRow: _moveDownRow,
+          moveUpRow: _moveUpSelectedRow,
+          moveUpRowByKey: _moveUpRowByKey,
+          moveDownRow: _moveDownSelectedRow,
+          moveDownRowByKey: _moveDownRowByKey,
           setSubscribeProps: _setSubscribeProps
         };
         item.onChange && item.onChange(onChangeObject);
@@ -2967,14 +3025,16 @@ var Table$2 = function Table(props) {
     var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
     // console.log('_setSelectedRowsHandler => ', selectedKeys)
-    setSelectedRowKeys(selectedKeys);
-    if (selectedKeys.length === 0) {
-      if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
-    } else if (selectedKeys.length > 0 && !selectedObjects) {
-      if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
-        return selectedKeys.includes(item[rowKey]);
-      }));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
-    } else selectedDispatch(selectedObjects);
+    if (!editMode) {
+      setSelectedRowKeys(selectedKeys);
+      if (selectedKeys.length === 0) {
+        if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
+      } else if (selectedKeys.length > 0 && !selectedObjects) {
+        if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
+          return selectedKeys.includes(item[rowKey]);
+        }));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
+      } else selectedDispatch(selectedObjects);
+    }
   };
 
   var rowsDispatch = function rowsDispatch(rows) {
@@ -3090,7 +3150,7 @@ var Table$2 = function Table(props) {
         rowIndex = _ref3.rowIndex,
         rowKey = _ref3.rowKey;
 
-    // console.log('onClick', rowData, rowIndex, rowKey)
+    // console.log('onClick', onRowClick, rowData, rowIndex, rowKey)
     // console.log('onClick', _selectedRowKeys)
     onTableEventsDispatch("onRowClick", rowData);
     _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
@@ -3100,7 +3160,7 @@ var Table$2 = function Table(props) {
         rowIndex = _ref4.rowIndex,
         rowKey = _ref4.rowKey;
 
-    // console.log('onDoubleClick', rowData, rowIndex, rowKey);
+    // console.log('onDoubleClick', onRowDoubleClick, rowData, rowIndex, rowKey);
     // console.log('actionDoubleClick')
     onTableEventsDispatch("onRowDoubleClick", rowData);
     _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
@@ -3130,10 +3190,11 @@ var Table$2 = function Table(props) {
         }), undefined, _rows);
       }
     } else {
-      _setSelectedRowsHandler([rowKey], rowData);
+      if (checked) _setSelectedRowsHandler([rowKey], rowData);
     }
     // onSelectedRowsChange([rowKey], [rowData]);
-    onClick(_extends({ selected: checked }, newRowObject));
+    console.log('onRowDoubleClick = ', onClick);
+    onClick && onClick(_extends({ selected: checked }, newRowObject));
   };
 
   var onHeaderRowProps = function onHeaderRowProps() {
@@ -3263,19 +3324,25 @@ var Table$2 = function Table(props) {
     onTableEventsDispatch("onRemoveRow", _localRows);
   };
 
-  var _moveUpRow = function _moveUpRow(event) {
+  var _moveUpSelectedRow = function _moveUpSelectedRow() {
+    _moveUpRowByKey(_selectedRowKeys[0]);
+  };
+
+  var _moveUpRowByKey = function _moveUpRowByKey(rowKey) {
     var data = [].concat(toConsumableArray(_rows));
-    var key = _selectedRowKeys[0];
-    loop(data, key, function (item, index, arr) {
+    loop(data, rowKey, function (item, index, arr) {
       var newRowIndex = _getNewIndexRow(index, index - 1);
       _changeIndexRow(index, newRowIndex, arr, data, "onMoveUpRow");
     });
   };
 
-  var _moveDownRow = function _moveDownRow(event) {
+  var _moveDownSelectedRow = function _moveDownSelectedRow() {
+    _moveDownRowByKey(_selectedRowKeys[0]);
+  };
+
+  var _moveDownRowByKey = function _moveDownRowByKey(rowKey) {
     var data = [].concat(toConsumableArray(_rows));
-    var key = _selectedRowKeys[0];
-    loop(data, key, function (item, index, arr) {
+    loop(data, rowKey, function (item, index, arr) {
       var newRowIndex = _getNewIndexRow(index, index + 1);
       _changeIndexRow(index, newRowIndex, arr, data, "onMoveDownRow");
     });
@@ -3416,8 +3483,9 @@ var Table$2 = function Table(props) {
       return _extends({}, col, {
         onHeaderCell: function onHeaderCell(column) {
           return {
-            resizable: column.resizable,
-            width: column.width,
+            column: column,
+            // resizable: column.resizable,
+            // width: column.width,
             onResize: onResizeHandler(index)
           };
         }
@@ -3481,9 +3549,13 @@ var Table$2 = function Table(props) {
               , rowClassName: _rowClassName,
               footer: _footerShow ? _footer : undefined,
               components: {
+
                 header: {
                   row: HeaderRow,
                   cell: HeaderCell
+                },
+                body: {
+                  cell: BodyCell
                 }
               }
 
@@ -3932,64 +4004,63 @@ var ConfigLoader = function ConfigLoader(props) {
     }, [props]);
 
     var configParser = function configParser(config) {
+
+        // Массив колонок
+        var _columns = [];
+        // Счетчик видимых полей
+        var visibleIndex = 0;
+        // Индекс колонки около которой ставить иконку дерева
+        var expandIconColumnIndex = -1;
+        // Ключ иерархии
         var _expandColumnKey = config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey;
 
-        var visibleIndex = 0;
-        var expandIconColumnIndex = -1;
-
-        var _columns = [];
         if (config && config.fields) {
-            // for(let i = 0; i < config.fields.length; i++) {
-            //     const item = config.fields[i];
-            // _columns = config.fields.map((item) => {
             config.fields.forEach(function (item, index) {
                 // console.log('configParser item => ', item);
-                // if(item.visible) {
+
+                // Индекс или имя поля в данных
                 var dataIndex = item.alias ? item.alias : item.name;
-
+                // Сортировка по умолчанию
                 var defaultSortOrder = defaultSortBy && defaultSortBy.key === dataIndex ? defaultSortBy.order === 'asc' ? 'ascend' : 'descend' : undefined;
-
+                // Ширина колонок
+                var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
+                // Дополнительные props колонок
                 var colProps = customColumnProps && customColumnProps.find(function (render) {
                     return render.name === item.name || render.name === item.alias;
                 });
-                var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
+
                 if (item.visible) {
+                    // Увеличить счетчик видимых полей
                     visibleIndex++;
+                    // Проверка у этого ли поля ставить иконку дерева
                     if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
-                    _columns.push(_extends({
+
+                    // Формирование title колонки
+                    var titleNode = colProps.headerRenderer ? typeof colProps.headerRenderer === 'function' ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
+
+                    var column = _extends({
                         key: item.name,
-                        title: item.header ? item.header : item.name,
+                        title: titleNode,
                         dataIndex: item.alias ? item.alias : item.name,
                         align: item.align,
                         resizable: item.resizable,
                         sorter: item.sortable ? item.sortable : undefined,
                         ellipsis: true,
                         defaultSortOrder: defaultSortOrder
-                    }, widthCol, colProps, {
-                        // className: [cellBordered ? 'bordered' : ''].join(' '),
-                        // headerClassName: [cellBordered ? 'bordered' : ''].join(' '),
-                        // cellRenderer: cellR && cellR.cellRender,
-                        render: function render(cellData, rowData, rowIndex) {
-                            if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, { cellData: cellData, rowData: rowData,
-                                rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
-                        }
-
-                        // render: (cellData, rowData, rowIndex) => {
-                        //     if (colProps && colProps.cellRenderer)
-                        //         return <colProps.cellRenderer cellData={cellData} rowData={rowData} rowIndex={rowIndex}/>
-                        //         // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                        //     else
-                        //         if (cellData)
-                        //             if (item.typeData === 'json')
-                        //                 return <BodyCell cellData={JSON.stringify(cellData)}/>;
-                        //             else
-                        //                 return <BodyCell cellData={cellData}/>;
-                        //         else
-                        //             return <BodyCell cellData={'---'}/>;
-                        //
-                        //         // return object.cellData ? object.cellData : '---';
-                        // },
-                    }));
+                    }, widthCol, colProps);
+                    // Дополнительные props для компонента ячейки
+                    column.onCell = function (rowData, rowIndex) {
+                        return { column: column, rowData: rowData, rowIndex: rowIndex };
+                    };
+                    // Рендер ячейки
+                    column.render = function (cellData, rowData, rowIndex) {
+                        if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, {
+                            column: column,
+                            cellData: cellData,
+                            rowData: rowData,
+                            rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
+                    };
+                    _columns.push(column);
                 }
             });
         }

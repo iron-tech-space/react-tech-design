@@ -16,7 +16,6 @@
 		margin-right: 10px;
 	}
 
-
     .@{rt-prefix}-baseTable {
 		flex: 1 1 auto;
 		//border: 1px solid #eee;
@@ -31,6 +30,17 @@
 			flex-direction: column;
 			justify-content: space-between;
 			height: 100%;
+
+			.@{rt-prefix}-column-resizer{
+				width: 3px;
+				visibility: hidden;
+				background-color: #cccccc;
+			}
+
+			&-cell:hover .@{rt-prefix}-column-resizer {
+				visibility: visible;
+				opacity: 0.5;
+			}
 
 			&-wrapper{
 				height: 100%;

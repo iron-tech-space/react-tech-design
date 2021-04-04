@@ -21,6 +21,7 @@ import FormItems from "../../Form/FormItems";
 import objectPath from "object-path";
 import { setDateStore } from "../../../redux/rtd.actions";
 import moment from "moment";
+import BodyCell from "./BodyCell";
 
 const excludeProps = [
   "defaultRows",
@@ -76,8 +77,8 @@ const Table = props => {
     /** Required */
     columns,
     // type,
-    infinityMode, // no use
-    // editMode, // need Props.types
+    // infinityMode, // no use
+    editMode, // need Props.types
 
     /** Def values */
     defaultRows,
@@ -216,8 +217,10 @@ const Table = props => {
           addRowAsCopy: _addRowAsCopy,
           editRow: _editRow,
           removeRow: _removeRow,
-          moveUpRow: _moveUpRow,
-          moveDownRow: _moveDownRow,
+          moveUpRow: _moveUpSelectedRow,
+          moveUpRowByKey: _moveUpRowByKey,
+          moveDownRow: _moveDownSelectedRow,
+          moveDownRowByKey: _moveDownRowByKey,
           setSubscribeProps: _setSubscribeProps
         };
         item.onChange && item.onChange(onChangeObject);
@@ -243,19 +246,21 @@ const Table = props => {
 
   const _setSelectedRowsHandler = (selectedKeys = [], selectedObjects = undefined, rows = []) => {
     // console.log('_setSelectedRowsHandler => ', selectedKeys)
-    setSelectedRowKeys(selectedKeys);
-    if (selectedKeys.length === 0)
-      if (selectable)
-        selectedDispatch([]);
+    if(!editMode) {
+      setSelectedRowKeys(selectedKeys);
+      if (selectedKeys.length === 0)
+        if (selectable)
+          selectedDispatch([]);
+        else
+          selectedDispatch(undefined);
+      else if (selectedKeys.length > 0 && !selectedObjects)
+        if (selectable)
+          selectedDispatch(flatten(getTableRowObjects(rows, rowKey)).filter((item) => selectedKeys.includes(item[rowKey])));
+        else
+          selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
       else
-        selectedDispatch(undefined);
-    else if (selectedKeys.length > 0 && !selectedObjects)
-      if (selectable)
-        selectedDispatch(flatten(getTableRowObjects(rows, rowKey)).filter((item) => selectedKeys.includes(item[rowKey])));
-      else
-        selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
-    else
-      selectedDispatch(selectedObjects);
+        selectedDispatch(selectedObjects);
+    }
   };
 
   const rowsDispatch = (rows) => {
@@ -378,13 +383,13 @@ const Table = props => {
   };
 
   const _onRowClick = ({ rowData, rowIndex, rowKey }) => {
-    // console.log('onClick', rowData, rowIndex, rowKey)
+    // console.log('onClick', onRowClick, rowData, rowIndex, rowKey)
     // console.log('onClick', _selectedRowKeys)
     onTableEventsDispatch("onRowClick", rowData);
     _rowSelectAfterClick({ rowData, rowIndex, rowKey, onClick: onRowClick });
   };
   const _onRowDoubleClick = ({ rowData, rowIndex, rowKey }) => {
-    // console.log('onDoubleClick', rowData, rowIndex, rowKey);
+    // console.log('onDoubleClick', onRowDoubleClick, rowData, rowIndex, rowKey);
     // console.log('actionDoubleClick')
     onTableEventsDispatch("onRowDoubleClick", rowData);
     _rowSelectAfterClick({ rowData, rowIndex, rowKey, onClick: onRowDoubleClick });
@@ -410,10 +415,12 @@ const Table = props => {
       }
 
     } else {
-      _setSelectedRowsHandler([rowKey], rowData);
+      if(checked)
+        _setSelectedRowsHandler([rowKey], rowData);
     }
     // onSelectedRowsChange([rowKey], [rowData]);
-    onClick({ selected: checked, ...newRowObject });
+    console.log('onRowDoubleClick = ', onClick);
+    onClick && onClick({ selected: checked, ...newRowObject });
   };
 
   const onHeaderRowProps = () => ({ headerHeight, setHeaderHeight })
@@ -542,19 +549,25 @@ const Table = props => {
     onTableEventsDispatch("onRemoveRow", _localRows);
   };
 
-  const _moveUpRow = (event) => {
+  const _moveUpSelectedRow = () => {
+    _moveUpRowByKey(_selectedRowKeys[0])
+  }
+
+  const _moveUpRowByKey = (rowKey) => {
     const data = [..._rows];
-    const key = _selectedRowKeys[0];
-    loop(data, key, (item, index, arr) => {
+    loop(data, rowKey, (item, index, arr) => {
       const newRowIndex = _getNewIndexRow(index, index - 1);
       _changeIndexRow(index, newRowIndex, arr, data, "onMoveUpRow");
     });
   };
 
-  const _moveDownRow = (event) => {
+  const _moveDownSelectedRow = () => {
+    _moveDownRowByKey(_selectedRowKeys[0])
+  }
+
+  const _moveDownRowByKey = (rowKey) => {
     const data = [..._rows];
-    const key = _selectedRowKeys[0];
-    loop(data, key, (item, index, arr) => {
+    loop(data, rowKey, (item, index, arr) => {
       const newRowIndex = _getNewIndexRow(index, index + 1);
       _changeIndexRow(index, newRowIndex, arr, data, "onMoveDownRow");
     });
@@ -671,8 +684,9 @@ const Table = props => {
       ...col,
       onHeaderCell: (column) =>
         ({
-          resizable: column.resizable,
-          width: column.width,
+          column,
+          // resizable: column.resizable,
+          // width: column.width,
           onResize: onResizeHandler(index)
         })
     }));
@@ -729,9 +743,13 @@ const Table = props => {
                 rowClassName={_rowClassName}
                 footer={_footerShow ? _footer : undefined}
                 components={{
+
                   header: {
                     row: HeaderRow,
                     cell: HeaderCell
+                  },
+                  body: {
+                    cell: BodyCell,
                   }
                 }}
 

@@ -529,7 +529,7 @@ const Table = forwardRef((props, ref) => {
 				checked: checked,
 			})
 		}
-		onClick({ selected: checked, ...newRowObject });
+		onClick && onClick({ selected: checked, ...newRowObject });
 	}
 
 	const _rowEventHandlers = {

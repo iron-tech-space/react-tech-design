@@ -50,7 +50,7 @@ export const withStore = (Component, antFormItemProps) => {
 
         const {trigger, valuePropName} = withStoreProps;
 
-        const excludeProps = ['componentType', 'setDateStore', 'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData'];
+        const excludeProps = ['componentType', 'setDateStore', 'subscribe',  'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
 
         const isMounted = useMounted()
 
