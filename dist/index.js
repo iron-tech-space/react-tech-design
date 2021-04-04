@@ -4057,50 +4057,50 @@ var ConfigLoader = function ConfigLoader(props) {
             config.fields.forEach(function (item, index) {
                 // console.log('configParser item => ', item);
 
+                // Дополнительные props колонок
+                var colProps = customColumnProps && customColumnProps.find(function (render) {
+                    return render.name === item.name || render.name === item.alias;
+                });
+
+                // Если поле не надо показывать, то след цикл
+                if (!item.visible || colProps && colProps.hidden) return;
+
                 // Индекс или имя поля в данных
                 var dataIndex = item.alias ? item.alias : item.name;
                 // Сортировка по умолчанию
                 var defaultSortOrder = defaultSortBy && defaultSortBy.key === dataIndex ? defaultSortBy.order === 'asc' ? 'ascend' : 'descend' : undefined;
                 // Ширина колонок
                 var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
-                // Дополнительные props колонок
-                var colProps = customColumnProps && customColumnProps.find(function (render) {
-                    return render.name === item.name || render.name === item.alias;
-                });
+                // Увеличить счетчик видимых полей
+                visibleIndex++;
+                // Проверка у этого ли поля ставить иконку дерева
+                if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
+                // Формирование title колонки
+                var titleNode = colProps && colProps.headerRenderer ? typeof colProps.headerRenderer === 'function' ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
 
-                if (item.visible) {
-                    // Увеличить счетчик видимых полей
-                    visibleIndex++;
-                    // Проверка у этого ли поля ставить иконку дерева
-                    if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
-
-                    // Формирование title колонки
-                    var titleNode = colProps.headerRenderer ? typeof colProps.headerRenderer === 'function' ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
-
-                    var column = _extends({
-                        key: item.name,
-                        title: titleNode,
-                        dataIndex: item.alias ? item.alias : item.name,
-                        align: item.align,
-                        resizable: item.resizable,
-                        sorter: item.sortable ? item.sortable : undefined,
-                        ellipsis: true,
-                        defaultSortOrder: defaultSortOrder
-                    }, widthCol, colProps);
-                    // Дополнительные props для компонента ячейки
-                    column.onCell = function (rowData, rowIndex) {
-                        return { column: column, rowData: rowData, rowIndex: rowIndex };
-                    };
-                    // Рендер ячейки
-                    column.render = function (cellData, rowData, rowIndex) {
-                        if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, {
-                            column: column,
-                            cellData: cellData,
-                            rowData: rowData,
-                            rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
-                    };
-                    _columns.push(column);
-                }
+                var column = _extends({
+                    key: item.name,
+                    title: titleNode,
+                    dataIndex: item.alias ? item.alias : item.name,
+                    align: item.align,
+                    resizable: item.resizable,
+                    sorter: item.sortable ? item.sortable : undefined,
+                    ellipsis: true,
+                    defaultSortOrder: defaultSortOrder
+                }, widthCol, colProps);
+                // Дополнительные props для компонента ячейки
+                column.onCell = function (rowData, rowIndex) {
+                    return { column: column, rowData: rowData, rowIndex: rowIndex };
+                };
+                // Рендер ячейки
+                column.render = function (cellData, rowData, rowIndex) {
+                    if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, {
+                        column: column,
+                        cellData: cellData,
+                        rowData: rowData,
+                        rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
+                };
+                _columns.push(column);
             });
         }
 
