@@ -248,6 +248,7 @@ const Select = props => {
     return (
 		<AntSelect
 			{...childProps}
+			showSearch={true}
 			searchValue={_searchValue}
 			style={{ width: widthControl }}
 			// listHeight={heightPopup}

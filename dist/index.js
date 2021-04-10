@@ -2,6 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+require('antd/es/transfer/style');
+var _Transfer = require('antd/es/transfer');
 require('antd/es/radio/style');
 var _Radio = require('antd/es/radio');
 require('antd/es/switch/style');
@@ -31,6 +33,8 @@ var _Form = require('antd/es/form');
 var React = require('react');
 require('antd/es/button/style');
 var _Button = require('antd/es/button');
+require('antd/es/time-picker/style');
+var _TimePicker = require('antd/es/time-picker');
 require('antd/es/date-picker/style');
 var _DatePicker = require('antd/es/date-picker');
 var moment = require('moment');
@@ -68,6 +72,7 @@ var locale = require('antd/es/date-picker/locale/ru_RU');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var _Transfer__default = /*#__PURE__*/_interopDefaultLegacy(_Transfer);
 var _Radio__default = /*#__PURE__*/_interopDefaultLegacy(_Radio);
 var _Switch__default = /*#__PURE__*/_interopDefaultLegacy(_Switch);
 var _InputNumber__default = /*#__PURE__*/_interopDefaultLegacy(_InputNumber);
@@ -83,6 +88,7 @@ var _Space__default = /*#__PURE__*/_interopDefaultLegacy(_Space);
 var _Form__default = /*#__PURE__*/_interopDefaultLegacy(_Form);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var _Button__default = /*#__PURE__*/_interopDefaultLegacy(_Button);
+var _TimePicker__default = /*#__PURE__*/_interopDefaultLegacy(_TimePicker);
 var _DatePicker__default = /*#__PURE__*/_interopDefaultLegacy(_DatePicker);
 var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var objectPath__default = /*#__PURE__*/_interopDefaultLegacy(objectPath);
@@ -557,21 +563,28 @@ var rtPrefix = 'rt';
 
 /** Компонент выбора даты */
 var DatePicker = function DatePicker(props) {
-    // console.log("DatePickerHOC => ", props);
-    if (props.value) {
-        if (typeof props.value === 'string') {
-            // console.log("DatePickerHOC => onChange => string");
-            props.onChange(moment__default['default'](props.value), props.value);
-        }
-        // else {
-        // 	console.log("DatePickerHOC => onChange => moment");
-        // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
-        // }
-    }
-    var value = props.value ? typeof props.value === 'string' ? moment__default['default'](props.value) : props.value : undefined;
-    var style = _extends({ width: '100%' }, props && props.style); // locale={locale}
+    return React__default['default'].createElement(DateTimePicker, _extends({ Component: _DatePicker__default['default'] }, props));
+};
+
+var TimePicker = function TimePicker(props) {
+    return React__default['default'].createElement(DateTimePicker, _extends({ Component: _TimePicker__default['default'] }, props));
+};
+var DateTimePicker = function DateTimePicker(props) {
+    var Component = props.Component,
+        value = props.value,
+        onChange = props.onChange,
+        restProps = objectWithoutProperties(props, ["Component", "value", "onChange"]);
+
+
+    React.useEffect(function () {
+        // console.log("DatePickerHOC => onChange => string");
+        value && typeof value === 'string' && onChange(moment__default['default'](value), value);
+    }, []);
+
+    var _value = value ? typeof value === 'string' ? moment__default['default'](value) : value : undefined;
+    var style = _extends({ width: '100%' }, props && props.style);
     // console.log("DatePickerHOC value => ", value);
-    return React__default['default'].createElement(_DatePicker__default['default'], _extends({}, props, { style: style, value: value }));
+    return React__default['default'].createElement(Component, _extends({}, restProps, { style: style, value: _value, onChange: onChange }));
 };
 
 /** Компонент вывода даты в текстовом виде */
@@ -748,7 +761,7 @@ FormItems$1.propTypes = {
     items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
 };
 
-var excludeProps$9 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$9 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 /** Компонент формы */
 var Form$1 = function Form(props) {
@@ -4409,6 +4422,7 @@ var Select$2 = function Select(props) {
 	return React__default['default'].createElement(
 		_Select__default['default'],
 		_extends({}, childProps, {
+			showSearch: true,
 			searchValue: _searchValue,
 			style: { width: widthControl }
 			// listHeight={heightPopup}
@@ -5238,6 +5252,7 @@ var withComponentType = {
     Divider: ComponentClassicWithLabel(_Divider__default['default']),
     Checkbox: ComponentClassicWithLabel(_Checkbox__default['default']),
     DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'),
+    TimePicker: ComponentClassicWithPlaceholder(TimePicker, 'Выберите время'),
     DateText: ComponentClassic(TypographyDate$1),
     Input: ComponentClassicWithPlaceholder(_Input__default['default'], 'Введите значение'),
     Search: ComponentClassicWithPlaceholder(_Input__default['default'].Search, 'Поиск'),
@@ -5254,7 +5269,8 @@ var withComponentType = {
     Modal: ComponentClassicWithOutStore(RtModal),
     Custom: ComponentClassic(Custom),
     Switcher: ComponentClassic(Switcher),
-    UploadFile: ComponentClassic(UploadFile)
+    UploadFile: ComponentClassic(UploadFile),
+    Transfer: ComponentClassic(_Transfer__default['default'])
 };
 
 var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {

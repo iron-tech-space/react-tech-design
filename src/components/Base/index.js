@@ -1,6 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import moment from "moment";
-import { Button as AntButton, DatePicker as AntDatePicker, Typography as AntTypography, Tabs as AntTabs,  } from "antd";
+import {
+    Button as AntButton,
+    DatePicker as AntDatePicker,
+    TimePicker as AntTimePicker,
+    Typography as AntTypography,
+    Tabs as AntTabs,
+} from "antd";
 import { getISO, toFormat } from "../utils/datesUtils";
 import {withStore} from "./withStore";
 import { rtPrefix } from "../utils/variables";
@@ -8,22 +14,25 @@ import { renderClassic, renderClassicWithLabel } from "../declarative";
 
 /** Компонент выбора даты */
 const DatePicker = (props) => {
-    // console.log("DatePickerHOC => ", props);
-    if(props.value){
-        if(typeof props.value === 'string'){
-            // console.log("DatePickerHOC => onChange => string");
-            props.onChange(moment(props.value), props.value);
-        }
-        // else {
-        // 	console.log("DatePickerHOC => onChange => moment");
-        // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
-        // }
-    }
-    const value = props.value ? (typeof props.value === 'string' ? moment(props.value) : props.value) : undefined;
-    const style = {width: '100%', ...(props && props.style)}; // locale={locale}
-    // console.log("DatePickerHOC value => ", value);
-    return <AntDatePicker {...props} style={style} value={value} />
+    return <DateTimePicker Component={AntDatePicker} {...props}/>
 };
+
+const TimePicker = (props) => {
+    return <DateTimePicker Component={AntTimePicker} {...props}/>
+};
+const DateTimePicker = (props) => {
+    const {Component, value, onChange, ...restProps} = props;
+
+    useEffect(() => {
+        // console.log("DatePickerHOC => onChange => string");
+        value && typeof value === 'string' && onChange(moment(value), value);
+    }, [])
+
+    const _value = value ? (typeof value === 'string' ? moment(value) : value) : undefined;
+    const style = {width: '100%', ...(props && props.style)};
+    // console.log("DatePickerHOC value => ", value);
+    return <Component {...restProps} style={style} value={_value} onChange={onChange}/>
+}
 
 /** Компонент вывода даты в текстовом виде */
 const TypographyDate = (props) => {
@@ -93,6 +102,7 @@ const TabPane = (props) => {
 
 export {
     DatePicker,
+    TimePicker,
     TypographyDate,
     Button,
     Custom,

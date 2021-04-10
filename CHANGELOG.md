@@ -1,3 +1,11 @@
+## 0.0.67
+
+- Add TimePicker
+- Fix bugs
+  - Date/Time Picker render error
+  - Form not support props error
+  - Select need set showSearch error
+
 ## 0.0.66
 
 - Add withMount in subscribe

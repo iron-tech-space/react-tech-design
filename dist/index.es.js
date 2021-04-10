@@ -1,3 +1,5 @@
+import 'antd/es/transfer/style';
+import _Transfer from 'antd/es/transfer';
 import 'antd/es/radio/style';
 import _Radio from 'antd/es/radio';
 import 'antd/es/switch/style';
@@ -27,6 +29,8 @@ import _Form from 'antd/es/form';
 import React, { useState, useEffect, forwardRef, useRef } from 'react';
 import 'antd/es/button/style';
 import _Button from 'antd/es/button';
+import 'antd/es/time-picker/style';
+import _TimePicker from 'antd/es/time-picker';
 import 'antd/es/date-picker/style';
 import _DatePicker from 'antd/es/date-picker';
 import moment from 'moment';
@@ -518,21 +522,28 @@ var rtPrefix = 'rt';
 
 /** Компонент выбора даты */
 var DatePicker = function DatePicker(props) {
-    // console.log("DatePickerHOC => ", props);
-    if (props.value) {
-        if (typeof props.value === 'string') {
-            // console.log("DatePickerHOC => onChange => string");
-            props.onChange(moment(props.value), props.value);
-        }
-        // else {
-        // 	console.log("DatePickerHOC => onChange => moment");
-        // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
-        // }
-    }
-    var value = props.value ? typeof props.value === 'string' ? moment(props.value) : props.value : undefined;
-    var style = _extends({ width: '100%' }, props && props.style); // locale={locale}
+    return React.createElement(DateTimePicker, _extends({ Component: _DatePicker }, props));
+};
+
+var TimePicker = function TimePicker(props) {
+    return React.createElement(DateTimePicker, _extends({ Component: _TimePicker }, props));
+};
+var DateTimePicker = function DateTimePicker(props) {
+    var Component = props.Component,
+        value = props.value,
+        onChange = props.onChange,
+        restProps = objectWithoutProperties(props, ["Component", "value", "onChange"]);
+
+
+    useEffect(function () {
+        // console.log("DatePickerHOC => onChange => string");
+        value && typeof value === 'string' && onChange(moment(value), value);
+    }, []);
+
+    var _value = value ? typeof value === 'string' ? moment(value) : value : undefined;
+    var style = _extends({ width: '100%' }, props && props.style);
     // console.log("DatePickerHOC value => ", value);
-    return React.createElement(_DatePicker, _extends({}, props, { style: style, value: value }));
+    return React.createElement(Component, _extends({}, restProps, { style: style, value: _value, onChange: onChange }));
 };
 
 /** Компонент вывода даты в текстовом виде */
@@ -709,7 +720,7 @@ FormItems$1.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-var excludeProps$9 = ["componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$9 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 /** Компонент формы */
 var Form$1 = function Form(props) {
@@ -4370,6 +4381,7 @@ var Select$2 = function Select(props) {
 	return React.createElement(
 		_Select,
 		_extends({}, childProps, {
+			showSearch: true,
 			searchValue: _searchValue,
 			style: { width: widthControl }
 			// listHeight={heightPopup}
@@ -5199,6 +5211,7 @@ var withComponentType = {
     Divider: ComponentClassicWithLabel(_Divider),
     Checkbox: ComponentClassicWithLabel(_Checkbox),
     DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'),
+    TimePicker: ComponentClassicWithPlaceholder(TimePicker, 'Выберите время'),
     DateText: ComponentClassic(TypographyDate$1),
     Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'),
     Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'),
@@ -5215,7 +5228,8 @@ var withComponentType = {
     Modal: ComponentClassicWithOutStore(RtModal),
     Custom: ComponentClassic(Custom),
     Switcher: ComponentClassic(Switcher),
-    UploadFile: ComponentClassic(UploadFile)
+    UploadFile: ComponentClassic(UploadFile),
+    Transfer: ComponentClassic(_Transfer)
 };
 
 var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {

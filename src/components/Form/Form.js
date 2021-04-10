@@ -9,6 +9,8 @@ import { rtPrefix } from "../utils/variables";
 import { setDateStore } from "../../redux/rtd.actions";
 
 const excludeProps = [
+    "dispatch",
+    "setDateStore",
     "componentType",
     "noPadding",
     "scrollable",

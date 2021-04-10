@@ -1,6 +1,7 @@
 import React from "react";
 import {
     DatePicker as RtDatePicker,
+    TimePicker as RtTimePicker,
     TypographyDate,
     Button as RtButton,
     Custom,
@@ -23,7 +24,8 @@ import {
     Row as AntRow,
     Col as AntCol,
     Tabs as AntTabs,
-    List as AntList
+    List as AntList,
+    Transfer as AntTransfer,
 } from "antd";
 import RtForm from "./Form/Form";
 import RtLayout from "./Layout/Layout";
@@ -132,6 +134,7 @@ const withComponentType = {
     Divider:    ComponentClassicWithLabel(AntDivider),
     Checkbox:   ComponentClassicWithLabel(AntCheckbox),
     DatePicker: ComponentClassicWithPlaceholder(RtDatePicker, 'Выберите дату'),
+    TimePicker: ComponentClassicWithPlaceholder(RtTimePicker, 'Выберите время'),
     DateText:   ComponentClassic(TypographyDate),
     Input:      ComponentClassicWithPlaceholder(AntInput, 'Введите значение'),
     Search:     ComponentClassicWithPlaceholder(AntInput.Search, 'Поиск'),
@@ -148,7 +151,8 @@ const withComponentType = {
     Modal:      ComponentClassicWithOutStore(RtModal),
     Custom:     ComponentClassic(Custom),
     Switcher:   ComponentClassic(RtSwitcher),
-    UploadFile: ComponentClassic(RtUploadFile)
+    UploadFile: ComponentClassic(RtUploadFile),
+    Transfer:   ComponentClassic(AntTransfer),
 }
 
 export const classic = {
