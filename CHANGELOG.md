@@ -1,11 +1,15 @@
+## 0.0.66
+
+- Add withMount in subscribe
+- Refactor config loader for Ant Table
+- Refactor and add BodyCell for Ant Table
+
 ## 0.0.65
 
 - Fix bug withClear fields
 - Add support new struct extraData for `Table`
   Example: `extraData: { filter: <path>, searchValue: <path> }`
 - Change reducer. If set undefined value then remove field
-
-
 
 ## 0.0.64
 
