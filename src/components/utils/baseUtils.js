@@ -105,7 +105,7 @@ export const notificationError = (error, message) => {
 
 export const dispatchToStore = ({dispatch, setDateStore, value, extraData}) => {
 	if(dispatch.path) {
-		// console.log("storeHOC => dispatchToStore");
+		// console.log("storeHOC => dispatchToStore", dispatch, setDateStore);
 		if(dispatch.type === 'event')
 			setDateStore && setDateStore(dispatch.path,  {
 				timestamp: moment(),

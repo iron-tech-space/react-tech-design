@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import FormItems from "./FormItems";
 import { Form as AntForm, notification } from "antd";
-import { getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
+import { dispatchToStore, getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
 import { rtPrefix } from "../utils/variables";
+import { setDateStore } from "../../redux/rtd.actions";
 
 const excludeProps = [
     "componentType",
@@ -22,6 +25,8 @@ const excludeProps = [
 /** Компонент формы */
 const Form = (props) => {
     const {
+        dispatch,
+        setDateStore,
         loadInitData,
         header,
         body,
@@ -102,8 +107,7 @@ const Form = (props) => {
                     notification.success({
                         message: "Сохранение прошло успешно"
                     });
-                    if (props.onFinish)
-                        props.onFinish(values);
+                    props.onFinish && props.onFinish(values);
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении') );
         } else if (props.onFinish)
@@ -129,6 +133,11 @@ const Form = (props) => {
                     initialValues={{ ...antFormProps.initialValues, ...initFormData }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
+                    onFieldsChange={(changedFields, allFields) => {
+                        const values = antForm.getFieldsValue();
+                        // console.log('dispatchToStore => ', dispatch, values);
+                        dispatch && dispatchToStore({ dispatch, setDateStore, value: values })}
+                    }
                 >
                     <React.Fragment>
                         {header ? Header(header) : null}
@@ -183,4 +192,7 @@ Form.defaultProps = {
     autoSaveForm: true
 };
 
-export default Form;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ setDateStore: setDateStore}, dispatch);
+
+export default connect(null, mapDispatchToProps)(Form);

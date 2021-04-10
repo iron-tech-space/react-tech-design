@@ -95,8 +95,10 @@ const Modal = props => {
     /** Подписка на изменение props[subscribe.name] в сторе */
     subscribe.map(item => {
         return useEffect( () => {
-            if(isMounted && item.name) {
-                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+            // if(!isMounted && !item.name)
+            //     return;
+            if((item.withMount || isMounted) && item.name) {
+            // console.log("storeHOC => subscribe: ", props[subscribe.name]);
                 item.onChange && item.onChange({
                     value: props[item.name],
                     extraData: props[`${item.name}ExtraData`],

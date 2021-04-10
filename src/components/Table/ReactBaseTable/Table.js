@@ -247,7 +247,7 @@ const Table = forwardRef((props, ref) => {
 	/** Подписка на изменение props[subscribe.name] в сторе */
 	subscribe.map(item => {
 		return useEffect( () => {
-			if(isMounted && item.name) {
+			if((item.withMount || isMounted) && item.name) {
 				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
 				let extraData = {};
 				if (item.extraData) {

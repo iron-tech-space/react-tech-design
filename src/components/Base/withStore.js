@@ -50,14 +50,15 @@ export const withStore = (Component, antFormItemProps) => {
 
         const {trigger, valuePropName} = withStoreProps;
 
-        const excludeProps = ['componentType', 'setDateStore', 'subscribe',  'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
+        const excludeProps = ['componentType', 'setDateStore', 'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
 
         const isMounted = useMounted()
 
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(item => {
             return useEffect( () => {
-                if(isMounted && item.name) {
+                // console.log("withStore subscribe: ", item.name, item.withMount);
+                if((item.withMount || isMounted) && item.name) {
                     // console.log("storeHOC => subscribe: ", props[subscribe.name]);
                     item.onChange && item.onChange({
                         value: props[item.name],

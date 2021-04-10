@@ -350,7 +350,7 @@ var dispatchToStore = function dispatchToStore(_ref) {
 	    extraData = _ref.extraData;
 
 	if (dispatch.path) {
-		// console.log("storeHOC => dispatchToStore");
+		// console.log("storeHOC => dispatchToStore", dispatch, setDateStore);
 		if (dispatch.type === 'event') setDateStore && setDateStore(dispatch.path, {
 			timestamp: moment(),
 			// type: dispatch.type,
@@ -428,14 +428,17 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
             valuePropName = withStoreProps.valuePropName;
 
 
-        var excludeProps = ['componentType', 'setDateStore', 'subscribe', 'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
+        var excludeProps = ['componentType', 'setDateStore', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
+            return item.name;
+        })), ['dispatch', 'dispatchExtraData']); // ...subscribe.map(item => item.name),
 
         var isMounted = useMounted();
 
         /** Подписка на изменение props[subscribe.name] в сторе */
         subscribe.map(function (item) {
             return useEffect(function () {
-                if (isMounted && item.name) {
+                // console.log("withStore subscribe: ", item.name, item.withMount);
+                if ((item.withMount || isMounted) && item.name) {
                     // console.log("storeHOC => subscribe: ", props[subscribe.name]);
                     item.onChange && item.onChange({
                         value: props[item.name],
@@ -710,7 +713,9 @@ var excludeProps$9 = ["componentType", "noPadding", "scrollable", "header", "bod
 
 /** Компонент формы */
 var Form$1 = function Form(props) {
-    var loadInitData = props.loadInitData,
+    var dispatch = props.dispatch,
+        setDateStore = props.setDateStore,
+        loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
         footer = props.footer,
@@ -794,7 +799,7 @@ var Form$1 = function Form(props) {
                 _notification.success({
                     message: "Сохранение прошло успешно"
                 });
-                if (props.onFinish) props.onFinish(values);
+                props.onFinish && props.onFinish(values);
             }).catch(function (error) {
                 return notificationError(error, 'Ошибка при сохранении');
             });
@@ -833,7 +838,12 @@ var Form$1 = function Form(props) {
                 style: _extends({}, antFormProps.style, { width: '100%', height: '100%' }),
                 initialValues: _extends({}, antFormProps.initialValues, initFormData),
                 onFinish: onFinish,
-                onFinishFailed: onFinishFailed
+                onFinishFailed: onFinishFailed,
+                onFieldsChange: function onFieldsChange(changedFields, allFields) {
+                    var values = antForm.getFieldsValue();
+                    // console.log('dispatchToStore => ', dispatch, values);
+                    dispatch && dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: values });
+                }
             }),
             React.createElement(
                 React.Fragment,
@@ -891,6 +901,12 @@ Form$1.defaultProps = {
     loadInitData: noop,
     autoSaveForm: true
 };
+
+var mapDispatchToProps$6 = function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setDateStore: setDateStore }, dispatch);
+};
+
+var RtForm = connect(null, mapDispatchToProps$6)(Form$1);
 
 /** Компонент обертка со всеми пропрами div */
 var Layout$1 = function Layout(props) {
@@ -1489,7 +1505,7 @@ var Table$4 = forwardRef(function (props, ref) {
 	/** Подписка на изменение props[subscribe.name] в сторе */
 	subscribe.map(function (item) {
 		return useEffect(function () {
-			if (isMounted && item.name) {
+			if ((item.withMount || isMounted) && item.name) {
 				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
 				var extraData = {};
 				if (item.extraData) {
@@ -2975,7 +2991,7 @@ var Table$2 = function Table(props) {
   /** Подписка на изменение props[subscribe.name] в сторе */
   subscribe.map(function (item) {
     return useEffect(function () {
-      if (isMounted && item.name) {
+      if ((item.withMount || isMounted) && item.name) {
         // console.log("Table => useEffect => ", props); //item.name, props[item.name]
         var extraData = {};
         if (item.extraData) {
@@ -4742,7 +4758,9 @@ var Modal$3 = function Modal(props) {
     /** Подписка на изменение props[subscribe.name] в сторе */
     subscribe.map(function (item) {
         return useEffect(function () {
-            if (isMounted && item.name) {
+            // if(!isMounted && !item.name)
+            //     return;
+            if ((item.withMount || isMounted) && item.name) {
                 // console.log("storeHOC => subscribe: ", props[subscribe.name]);
                 item.onChange && item.onChange({
                     value: props[item.name],
@@ -4865,7 +4883,7 @@ var Modal$3 = function Modal(props) {
                 footer: null
             }),
             React.createElement(
-                Form$1,
+                RtForm,
                 _extends({}, formConfig, {
                     onFinish: onFinishHandler,
                     onFinishFailed: onFinishFailedHandler,
@@ -5161,7 +5179,7 @@ var TableWrapper = function TableWrapper(props) {
 };
 
 var classicComponents = {
-    Form: Form$1,
+    Form: RtForm,
     FormHeader: FormHeader,
     FormBody: FormBody,
     FormFooter: FormFooter,
