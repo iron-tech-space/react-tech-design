@@ -4446,8 +4446,15 @@ var Select$2 = function Select(props) {
 	var childProps = getObjectExcludedProps(props, excludeProps$7);
 	return React__default['default'].createElement(
 		_Select__default['default'],
-		_extends({}, childProps, {
+		_extends({
+			showArrow: true,
 			showSearch: true,
+			allowClear: true,
+			filterOption: false,
+			autoClearSearchValue: true
+
+		}, childProps, {
+
 			searchValue: _searchValue,
 			style: { width: widthControl }
 			// listHeight={heightPopup}
@@ -4570,7 +4577,7 @@ Select$2.defaultProps = {
 	options: [],
 	widthControl: '100%',
 	pageSize: 50,
-	searchParamName: 'searchValue'
+	searchParamName: 'name'
 };
 
 var excludeProps$6 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
@@ -4600,10 +4607,18 @@ var TreeSelect = function TreeSelect(props) {
         _useState4 = slicedToArray(_useState3, 2),
         _treeData = _useState4[0],
         _setTreeData = _useState4[1];
+    /** Строка поиска */
+
+
+    var _useState5 = React.useState(undefined),
+        _useState6 = slicedToArray(_useState5, 2),
+        _searchValue = _useState6[0],
+        _setSearchValue = _useState6[1];
 
     var isMounted = useMounted();
 
     React.useEffect(function () {
+        _setSearchValue(defaultSearchValue);
         _loadOptions({
             sortBy: defaultSortBy,
             filter: defaultFilter,
@@ -4615,6 +4630,7 @@ var TreeSelect = function TreeSelect(props) {
     React.useEffect(function () {
         // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
         if (isMounted) {
+            _setSearchValue(searchValue);
             _loadOptions({
                 sortBy: sortBy,
                 filter: filter,
@@ -4623,6 +4639,17 @@ var TreeSelect = function TreeSelect(props) {
             });
         }
     }, [sortBy, filter, searchValue]);
+
+    var onSearch = function onSearch(value) {
+        // console.log('TreeSelect onSearch => ', value);
+        _setSearchValue(value);
+        _loadOptions({
+            sortBy: defaultSortBy,
+            filter: defaultFilter,
+            searchValue: value,
+            reload: true
+        });
+    };
 
     var getSort = function getSort(sortBy) {
         return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
@@ -4658,6 +4685,7 @@ var TreeSelect = function TreeSelect(props) {
                 // console.log("infinity then response", response);
                 var result = response.data;
                 _setTreeData(_optionConverter(result));
+                _setLoading(false);
             }).catch(function (error) {
                 notificationError(error, 'Ошибка загрузки данных');
                 // _setRowsHandler(_options); // _setRows
@@ -4668,13 +4696,23 @@ var TreeSelect = function TreeSelect(props) {
     };
 
     var childProps = getObjectExcludedProps(props, excludeProps$6);
-    return React__default['default'].createElement(_TreeSelect__default['default'], _extends({}, childProps, {
+    return React__default['default'].createElement(_TreeSelect__default['default'], _extends({
+        showArrow: true,
+        showSearch: true,
+        allowClear: true,
+        filterTreeNode: false,
+        autoClearSearchValue: true,
+        treeDefaultExpandAll: true
+
+    }, childProps, {
+
+        searchValue: _searchValue,
+        onSearch: onSearch,
         maxTagCount: 0,
         maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
             return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
         },
-        treeData: _treeData,
-        showArrow: true
+        treeData: _treeData
         // loadData={onLoadData}
     }));
 };
@@ -4734,7 +4772,8 @@ TreeSelect.defaultProps = {
     defaultSortBy: undefined,
     defaultFilter: {},
     defaultSearchValue: undefined,
-    requestLoadRows: undefined
+    requestLoadRows: undefined,
+    searchParamName: 'name'
 };
 
 var excludeProps$5 = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];

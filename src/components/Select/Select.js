@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {Select as AntSelect} from "antd";
+import { Select as AntSelect } from "antd";
 import {
 	getObjectExcludedProps,
 	notificationError, useMounted
@@ -247,8 +247,14 @@ const Select = props => {
 	const childProps = getObjectExcludedProps(props, excludeProps);
     return (
 		<AntSelect
-			{...childProps}
+			showArrow={true}
 			showSearch={true}
+			allowClear={true}
+			filterOption={false}
+			autoClearSearchValue={true}
+
+			{...childProps}
+
 			searchValue={_searchValue}
 			style={{ width: widthControl }}
 			// listHeight={heightPopup}
@@ -351,7 +357,7 @@ Select.defaultProps = {
 	options: [],
 	widthControl: '100%',
 	pageSize: 50,
-	searchParamName: 'searchValue',
+	searchParamName: 'name',
 }
 
 export default Select;

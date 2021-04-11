@@ -1,3 +1,7 @@
+## 0.0.69
+
+- Add search in Select and TreeSelect
+
 ## 0.0.68
 
 - Add `response.data` as second param in onFinish func after requestSaveForm in `Form`

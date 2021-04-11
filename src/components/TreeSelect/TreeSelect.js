@@ -37,10 +37,13 @@ const TreeSelect = props => {
     const [_loading, _setLoading] = useState(false);
     /** Опции селекта */
     const [_treeData, _setTreeData] = useState(treeData);
+    /** Строка поиска */
+    const [_searchValue, _setSearchValue] = useState(undefined);
 
     const isMounted = useMounted()
 
     useEffect(() => {
+        _setSearchValue(defaultSearchValue);
         _loadOptions({
             sortBy: defaultSortBy,
             filter: defaultFilter,
@@ -52,6 +55,7 @@ const TreeSelect = props => {
     useEffect(() => {
         // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
         if(isMounted) {
+            _setSearchValue(searchValue);
             _loadOptions({
                 sortBy: sortBy,
                 filter: filter,
@@ -60,6 +64,17 @@ const TreeSelect = props => {
             });
         }
     }, [sortBy, filter, searchValue]);
+
+    const onSearch = (value) => {
+        // console.log('TreeSelect onSearch => ', value);
+        _setSearchValue(value);
+        _loadOptions({
+            sortBy: defaultSortBy,
+            filter: defaultFilter,
+            searchValue: value,
+            reload: true,
+        });
+    }
 
     const getSort = (sortBy) =>
         sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
@@ -96,6 +111,7 @@ const TreeSelect = props => {
                     // console.log("infinity then response", response);
                     const result = response.data;
                     _setTreeData(_optionConverter(result))
+                    _setLoading(false);
                 })
                 .catch((error) => {
                     notificationError(error, 'Ошибка загрузки данных')
@@ -109,11 +125,20 @@ const TreeSelect = props => {
     const childProps = getObjectExcludedProps(props, excludeProps);
     return (
         <AntTreeSelect
+            showArrow={true}
+            showSearch={true}
+            allowClear={true}
+            filterTreeNode={false}
+            autoClearSearchValue={true}
+            treeDefaultExpandAll={true}
+
             {...childProps}
+
+            searchValue={_searchValue}
+            onSearch={onSearch}
             maxTagCount={0}
             maxTagPlaceholder={(omittedValues) => `Выбрано: ${omittedValues.length}`}
             treeData={_treeData}
-            showArrow={true}
             // loadData={onLoadData}
         />
     );
@@ -175,6 +200,7 @@ TreeSelect.defaultProps = {
     defaultFilter: {},
     defaultSearchValue: undefined,
     requestLoadRows: undefined,
+    searchParamName: 'name'
 };
 
 export default TreeSelect;
