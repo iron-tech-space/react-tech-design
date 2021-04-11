@@ -1,3 +1,11 @@
+## 0.0.68
+
+- Add `response.data` as second param in onFinish func after requestSaveForm in `Form`
+- Add `response.data` as second param in onFinish func after requestSaveRow in `Modal`
+- Add default sort for `Table` from config
+- Add support `dispatch.path` for `Table`
+- Add reset sort for Rt table
+
 ## 0.0.67
 
 - Add TimePicker

@@ -109,7 +109,7 @@ const Form = (props) => {
                     notification.success({
                         message: "Сохранение прошло успешно"
                     });
-                    props.onFinish && props.onFinish(values);
+                    props.onFinish && props.onFinish(values, response.data);
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении') );
         } else if (props.onFinish)

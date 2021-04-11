@@ -376,6 +376,14 @@ function useMounted() {
 	return isMounted;
 }
 
+var getSortBy = function getSortBy(clientSortBy, serverSortBy, dataIndex) {
+	if (clientSortBy && clientSortBy.key === dataIndex) {
+		return [clientSortBy, clientSortBy.order === "asc" ? "ascend" : "descend"];
+	} else if (serverSortBy) {
+		return [{ key: dataIndex, order: serverSortBy }, serverSortBy === "asc" ? "ascend" : "descend"];
+	} else return [undefined, undefined];
+};
+
 var withStore$1 = function withStore(Component, antFormItemProps) {
 
     var mapStateToProps = function mapStateToProps(store, ownProps) {
@@ -810,7 +818,7 @@ var Form$1 = function Form(props) {
                 _notification.success({
                     message: "Сохранение прошло успешно"
                 });
-                props.onFinish && props.onFinish(values);
+                props.onFinish && props.onFinish(values, response.data);
             }).catch(function (error) {
                 return notificationError(error, 'Ошибка при сохранении');
             });
@@ -1417,14 +1425,15 @@ var Table$4 = forwardRef(function (props, ref) {
 	    showSelection = _props$subscribeProps.showSelection,
 	    rowRenderShowSelection = _props$subscribeProps.rowRenderShowSelection,
 	    dispatchPath = _props$subscribeProps.dispatchPath,
+	    dispatch = _props$subscribeProps.dispatch,
 	    subscribe = _props$subscribeProps.subscribe,
 	    value = _props$subscribeProps.value,
 	    onChange = _props$subscribeProps.onChange;
 
 	var footerProps = _extends({}, Table$4.defaultProps.footerProps, props.footerProps);
 
-	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
-	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
+	var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + '.selected' : dispatchPath && dispatchPath + '.selected';
+	var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + '.rows' : dispatchPath && dispatchPath + '.rows';
 
 	useEffect(function () {
 		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -1587,7 +1596,8 @@ var Table$4 = forwardRef(function (props, ref) {
 	};
 
 	var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
-		var dp = dispatchPath && dispatchPath + '.events.' + nameEvent;
+		var dp = dispatch && dispatch.path ? dispatch.path + '.events.' + nameEvent : dispatchPath && dispatchPath + '.events.' + nameEvent;
+
 		dp && props.setDateStore && props.setDateStore(dp, {
 			timestamp: moment(),
 			value: value
@@ -1782,7 +1792,8 @@ var Table$4 = forwardRef(function (props, ref) {
 	var _onColumnSort = function _onColumnSort(sortBy) {
 		// console.log("sortBy", sortBy);
 		tableRef.current.scrollToRow(0, 'auto');
-		setSortBy(sortBy);
+		var localSortBy = _sortBy.order === 'desc' ? {} : sortBy;
+		setSortBy(localSortBy);
 
 		// Для серверной сортировки - сбросить выделение
 		// if (type !== 'localSide') {
@@ -1790,7 +1801,7 @@ var Table$4 = forwardRef(function (props, ref) {
 		_setSelectedRowsHandler();
 		// }
 		var loadParams = {
-			sortBy: sortBy,
+			sortBy: localSortBy,
 			filter: _filter,
 			searchLine: _searchValue,
 			reload: true
@@ -2621,6 +2632,7 @@ var ConfigLoader$1 = function ConfigLoader(props) {
         setTableConfig = _useState2[1];
 
     var _defaultProps$props = _extends({}, defaultProps$3, props),
+        defaultSortBy = _defaultProps$props.defaultSortBy,
         defaultFilter = _defaultProps$props.defaultFilter,
         rowKey = _defaultProps$props.rowKey,
         pageSize = _defaultProps$props.pageSize,
@@ -2675,41 +2687,49 @@ var ConfigLoader$1 = function ConfigLoader(props) {
     }, []);
 
     var configParser = function configParser(config) {
+        // Массив колонок
         var _columns = [];
-        if (config && config.fields) {
-            _columns = config.fields.map(function (item) {
-                var colProps = customColumnProps && customColumnProps.find(function (render) {
-                    return render.name === item.name || render.name === item.alias;
-                });
-                return _extends({
-                    key: item.name,
-                    title: item.header ? item.header : item.name,
-                    dataKey: item.alias ? item.alias : item.name,
-                    align: item.align,
-                    width: item.width,
-                    resizable: item.resizable,
-                    sortable: item.sortable,
-                    hidden: !item.visible,
-                    className: [cellBordered ? 'bordered' : ''].join(' '),
-                    headerClassName: [cellBordered ? 'bordered' : ''].join(' ')
-                }, colProps, {
-                    cellRenderer: function cellRenderer(object) {
-                        if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, object);
-                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                        else return object.cellData ? React.createElement(
-                                _Typography.Text,
-                                { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
-                                object.cellData
-                            ) : React.createElement(
-                                _Typography.Text,
-                                { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
-                                "---"
-                            );
-                        // return object.cellData ? object.cellData : '---';
-                    }
-                });
+        // Сортировка по умолчанию
+        var _defaultSorter = [];
+
+        config && config.fields && config.fields.forEach(function (item) {
+            var colProps = customColumnProps && customColumnProps.find(function (render) {
+                return render.name === item.name || render.name === item.alias;
             });
-        }
+
+            // Индекс или имя поля в данных
+            var dataIndex = item.alias ? item.alias : item.name;
+
+            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
+
+            _columns.push(_extends({
+                key: dataIndex,
+                title: item.header ? item.header : item.name,
+                dataKey: dataIndex,
+                align: item.align,
+                width: item.width,
+                resizable: item.resizable,
+                sortable: item.sortable,
+                hidden: !item.visible,
+                className: [cellBordered ? 'bordered' : ''].join(' '),
+                headerClassName: [cellBordered ? 'bordered' : ''].join(' ')
+            }, colProps, {
+                cellRenderer: function cellRenderer(object) {
+                    if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, object);
+                    // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                    else return object.cellData ? React.createElement(
+                            _Typography.Text,
+                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
+                            object.cellData
+                        ) : React.createElement(
+                            _Typography.Text,
+                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
+                            "---"
+                        );
+                    // return object.cellData ? object.cellData : '---';
+                }
+            }));
+        });
 
         var _defaultFilter = void 0;
         if (config && config.hierarchical && config.hierarchyLazyLoad) {
@@ -2719,6 +2739,7 @@ var ConfigLoader$1 = function ConfigLoader(props) {
 
         setTableConfig({
             columns: _columns,
+            defaultSortBy: _defaultSorter[0],
             defaultFilter: _defaultFilter,
             rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[0] : rowKey,
             expandParentKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey,
@@ -2959,14 +2980,15 @@ var Table$2 = function Table(props) {
       onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
       onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
       dispatchPath = _props$subscribeProps.dispatchPath,
+      dispatch = _props$subscribeProps.dispatch,
       subscribe = _props$subscribeProps.subscribe,
       value = _props$subscribeProps.value,
       onChange = _props$subscribeProps.onChange;
 
   var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
 
-  var selectedDispatchPath = dispatchPath && dispatchPath + ".selected";
-  var rowsDispatchPath = dispatchPath && dispatchPath + ".rows";
+  var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + ".selected" : dispatchPath && dispatchPath + ".selected";
+  var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + ".rows" : dispatchPath && dispatchPath + ".rows";
 
   useEffect(function () {
     // console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -3073,7 +3095,8 @@ var Table$2 = function Table(props) {
   };
 
   var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
-    var dp = dispatchPath && dispatchPath + ".events." + nameEvent;
+    var dp = dispatch && dispatch.path ? dispatch.path + ".events." + nameEvent : dispatchPath && dispatchPath + ".events." + nameEvent;
+
     dp && props.setDateStore && props.setDateStore(dp, {
       timestamp: moment(),
       value: value
@@ -4034,6 +4057,8 @@ var ConfigLoader = function ConfigLoader(props) {
 
         // Массив колонок
         var _columns = [];
+        // Сортировка по умолчанию
+        var _defaultSorter = [];
         // Счетчик видимых полей
         var visibleIndex = 0;
         // Индекс колонки около которой ставить иконку дерева
@@ -4041,56 +4066,55 @@ var ConfigLoader = function ConfigLoader(props) {
         // Ключ иерархии
         var _expandColumnKey = config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey;
 
-        if (config && config.fields) {
-            config.fields.forEach(function (item, index) {
-                // console.log('configParser item => ', item);
+        config && config.fields && config.fields.forEach(function (item, index) {
+            // console.log('configParser item => ', item);
 
-                // Дополнительные props колонок
-                var colProps = customColumnProps && customColumnProps.find(function (render) {
-                    return render.name === item.name || render.name === item.alias;
-                });
-
-                // Если поле не надо показывать, то след цикл
-                if (!item.visible || colProps && colProps.hidden) return;
-
-                // Индекс или имя поля в данных
-                var dataIndex = item.alias ? item.alias : item.name;
-                // Сортировка по умолчанию
-                var defaultSortOrder = defaultSortBy && defaultSortBy.key === dataIndex ? defaultSortBy.order === 'asc' ? 'ascend' : 'descend' : undefined;
-                // Ширина колонок
-                var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
-                // Увеличить счетчик видимых полей
-                visibleIndex++;
-                // Проверка у этого ли поля ставить иконку дерева
-                if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
-                // Формирование title колонки
-                var titleNode = colProps && colProps.headerRenderer ? typeof colProps.headerRenderer === 'function' ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
-
-                var column = _extends({
-                    key: item.name,
-                    title: titleNode,
-                    dataIndex: item.alias ? item.alias : item.name,
-                    align: item.align,
-                    resizable: item.resizable,
-                    sorter: item.sortable ? item.sortable : undefined,
-                    ellipsis: true,
-                    defaultSortOrder: defaultSortOrder
-                }, widthCol, colProps);
-                // Дополнительные props для компонента ячейки
-                column.onCell = function (rowData, rowIndex) {
-                    return { column: column, rowData: rowData, rowIndex: rowIndex };
-                };
-                // Рендер ячейки
-                column.render = function (cellData, rowData, rowIndex) {
-                    if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, {
-                        column: column,
-                        cellData: cellData,
-                        rowData: rowData,
-                        rowIndex: rowIndex });else return item.typeData === 'json' ? JSON.stringify(cellData) : cellData ? cellData : '---';
-                };
-                _columns.push(column);
+            // Дополнительные props колонок
+            var colProps = customColumnProps && customColumnProps.find(function (render) {
+                return render.name === item.name || render.name === item.alias;
             });
-        }
+
+            // Если поле не надо показывать, то след цикл
+            if (!item.visible || colProps && colProps.hidden) return;
+
+            // Индекс или имя поля в данных
+            var dataIndex = item.alias ? item.alias : item.name;
+            // Сортировка по умолчанию
+            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
+
+            // Ширина колонок
+            var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
+            // Увеличить счетчик видимых полей
+            visibleIndex++;
+            // Проверка у этого ли поля ставить иконку дерева
+            if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
+            // Формирование title колонки
+            var titleNode = colProps && colProps.headerRenderer ? typeof colProps.headerRenderer === "function" ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
+
+            var column = _extends({
+                key: dataIndex,
+                title: titleNode,
+                dataIndex: dataIndex,
+                align: item.align,
+                resizable: item.resizable,
+                sorter: item.sortable ? item.sortable : undefined,
+                ellipsis: true,
+                defaultSortOrder: _defaultSorter[1]
+            }, widthCol, colProps);
+            // Дополнительные props для компонента ячейки
+            column.onCell = function (rowData, rowIndex) {
+                return { column: column, rowData: rowData, rowIndex: rowIndex };
+            };
+            // Рендер ячейки
+            column.render = function (cellData, rowData, rowIndex) {
+                if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, {
+                    column: column,
+                    cellData: cellData,
+                    rowData: rowData,
+                    rowIndex: rowIndex });else return item.typeData === "json" ? JSON.stringify(cellData) : cellData ? cellData : "---";
+            };
+            _columns.push(column);
+        });
 
         var _defaultFilter = void 0;
         if (config && config.hierarchical && config.hierarchyLazyLoad) {
@@ -4101,6 +4125,7 @@ var ConfigLoader = function ConfigLoader(props) {
         // console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
         setTableConfig({
             columns: _columns,
+            defaultSortBy: _defaultSorter[0],
             defaultFilter: _defaultFilter,
             rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split("/")[0] : rowKey,
             // expandParentKey:
@@ -4816,14 +4841,13 @@ var Modal$3 = function Modal(props) {
                 _notification.success({
                     message: 'Сохранение прошло успешно'
                 });
+                modalProps.onOk && modalProps.onOk(values, response.data);
+                modalProps.onFinish && modalProps.onFinish(values, response.data);
                 _onCloseModal();
             }).catch(function (error) {
                 return notificationError(error, 'Ошибка при сохранении');
             });
         } else _onCloseModal();
-
-        if (modalProps.onOk) modalProps.onOk(values);
-        if (modalProps.onFinish) modalProps.onFinish(values);
     };
 
     var onFinishFailedHandler = function onFinishFailedHandler(errorInfo) {

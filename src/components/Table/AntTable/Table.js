@@ -145,6 +145,7 @@ const Table = props => {
 
     /** REDUX PROPS */
     dispatchPath,
+    dispatch,
     subscribe,
 
     value,
@@ -156,8 +157,12 @@ const Table = props => {
     ...props.footerProps
   };
 
-  const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
-  const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
+  const selectedDispatchPath = dispatch && dispatch.path
+      ? `${dispatch.path}.selected`
+      : dispatchPath && `${dispatchPath}.selected`;
+  const rowsDispatchPath = dispatch && dispatch.path
+      ? `${dispatch.path}.rows`
+      : dispatchPath && `${dispatchPath}.rows`;
 
   useEffect(() => {
     // console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -272,7 +277,10 @@ const Table = props => {
   };
 
   const onTableEventsDispatch = (nameEvent, value) => {
-    const dp = dispatchPath && `${dispatchPath}.events.${nameEvent}`;
+    const dp = dispatch && dispatch.path
+        ? `${dispatch.path}.events.${nameEvent}`
+        : dispatchPath && `${dispatchPath}.events.${nameEvent}`;
+
     dp && props.setDateStore && props.setDateStore(dp, {
       timestamp: moment(),
       value: value

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { noop, notificationError } from "../../utils/baseUtils";
+import { getSortBy, noop, notificationError } from "../../utils/baseUtils";
 import Table from "./Table";
 import { Typography } from "antd";
 
@@ -20,6 +20,7 @@ const ConfigLoader = props => {
     const [tableConfig, setTableConfig] = useState(undefined);
 
     const {
+        defaultSortBy,
         defaultFilter,
         rowKey,
         pageSize,
@@ -54,41 +55,47 @@ const ConfigLoader = props => {
     }, []);
 
     const configParser = (config) => {
+        // Массив колонок
         let _columns = [];
-        if(config && config.fields) {
-            _columns = config.fields.map((item) => {
-                const colProps =
-                    customColumnProps &&
-                    customColumnProps.find(
-                        (render) =>
-                            render.name === item.name || render.name === item.alias
-                    );
-                return {
-                    key: item.name,
-                    title: item.header ? item.header : item.name,
-                    dataKey: item.alias ? item.alias : item.name,
-                    align: item.align,
-                    width: item.width,
-                    resizable: item.resizable,
-                    sortable: item.sortable,
-                    hidden: !item.visible,
-                    className: [cellBordered ? 'bordered' : ''].join(' '),
-                    headerClassName: [cellBordered ? 'bordered' : ''].join(' '),
-                    // cellRenderer: cellR && cellR.cellRender,
-                    ...colProps,
-                    cellRenderer: (object) => {
-                        if (colProps && colProps.cellRenderer)
-                            return <colProps.cellRenderer {...object}/>
-                            // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                        else
-                            return object.cellData
-                                ? <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{object.cellData}</Typography.Text>
-                                : <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>---</Typography.Text> ;
-                            // return object.cellData ? object.cellData : '---';
-                    },
-                };
+        // Сортировка по умолчанию
+        let _defaultSorter = [];
+
+        config && config.fields && config.fields.forEach((item) => {
+            const colProps = customColumnProps &&
+                customColumnProps.find((render) =>
+                    render.name === item.name || render.name === item.alias);
+
+            // Индекс или имя поля в данных
+            const dataIndex = (item.alias ? item.alias : item.name);
+
+            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined)
+                _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
+
+            _columns.push({
+                key: dataIndex,
+                title: item.header ? item.header : item.name,
+                dataKey: dataIndex,
+                align: item.align,
+                width: item.width,
+                resizable: item.resizable,
+                sortable: item.sortable,
+                hidden: !item.visible,
+                className: [cellBordered ? 'bordered' : ''].join(' '),
+                headerClassName: [cellBordered ? 'bordered' : ''].join(' '),
+                // cellRenderer: cellR && cellR.cellRender,
+                ...colProps,
+                cellRenderer: (object) => {
+                    if (colProps && colProps.cellRenderer)
+                        return <colProps.cellRenderer {...object}/>
+                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                    else
+                        return object.cellData
+                            ? <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{object.cellData}</Typography.Text>
+                            : <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>---</Typography.Text> ;
+                        // return object.cellData ? object.cellData : '---';
+                },
             });
-        }
+        });
 
         let _defaultFilter;
         if (config && config.hierarchical && config.hierarchyLazyLoad) {
@@ -101,6 +108,7 @@ const ConfigLoader = props => {
 
         setTableConfig({
             columns: _columns,
+            defaultSortBy: _defaultSorter[0],
             defaultFilter: _defaultFilter,
             rowKey:
                 config && config.hierarchical && config.hierarchyField

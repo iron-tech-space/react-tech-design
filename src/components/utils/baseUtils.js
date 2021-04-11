@@ -126,3 +126,18 @@ export function useMounted() {
 	}, [])
 	return isMounted
 }
+
+export const getSortBy = (clientSortBy, serverSortBy, dataIndex) => {
+	if (clientSortBy && clientSortBy.key === dataIndex) {
+		return [
+			clientSortBy,
+			clientSortBy.order === "asc" ? "ascend" : "descend"
+		];
+	} else if (serverSortBy) {
+		return [
+			{ key: dataIndex, order: serverSortBy },
+			serverSortBy === "asc" ? "ascend" : "descend"
+		];
+	} else
+		return [undefined, undefined];
+};

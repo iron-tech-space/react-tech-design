@@ -138,13 +138,14 @@ const Modal = props => {
                     notification.success({
                         message: 'Сохранение прошло успешно'
                     });
+                    modalProps.onOk && modalProps.onOk(values, response.data);
+                    modalProps.onFinish && modalProps.onFinish(values, response.data);
                     _onCloseModal();
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении'));
         } else _onCloseModal();
 
-        if (modalProps.onOk) modalProps.onOk(values);
-        if (modalProps.onFinish) modalProps.onFinish(values);
+
     };
 
     const onFinishFailedHandler = (errorInfo) => {

@@ -134,6 +134,7 @@ const Table = forwardRef((props, ref) => {
 
 		/** REDUX PROPS */
 		dispatchPath,
+		dispatch,
 		subscribe,
 
 		value,
@@ -145,8 +146,12 @@ const Table = forwardRef((props, ref) => {
 		...props.footerProps,
 	};
 
-	const selectedDispatchPath = dispatchPath && `${dispatchPath}.selected`;
-	const rowsDispatchPath = dispatchPath && `${dispatchPath}.rows`;
+	const selectedDispatchPath = dispatch && dispatch.path
+		? `${dispatch.path}.selected`
+		: dispatchPath && `${dispatchPath}.selected`;
+	const rowsDispatchPath = dispatch && dispatch.path
+		? `${dispatch.path}.rows`
+		: dispatchPath && `${dispatchPath}.rows`;
 
 	useEffect(() => {
         // console.log("Инициализация дефолтных значений ", selectColumn, columns);
@@ -320,7 +325,10 @@ const Table = forwardRef((props, ref) => {
 	}
 
 	const onTableEventsDispatch = (nameEvent, value) => {
-		const dp = dispatchPath && `${dispatchPath}.events.${nameEvent}`;
+		const dp = dispatch && dispatch.path
+			? `${dispatch.path}.events.${nameEvent}`
+			: dispatchPath && `${dispatchPath}.events.${nameEvent}`;
+
 		dp && props.setDateStore && props.setDateStore(dp, {
 			timestamp: moment(),
 			value: value
@@ -550,7 +558,8 @@ const Table = forwardRef((props, ref) => {
 	const _onColumnSort = (sortBy) => {
 		// console.log("sortBy", sortBy);
 		tableRef.current.scrollToRow(0, 'auto');
-		setSortBy(sortBy);
+		let localSortBy = _sortBy.order === 'desc' ? {} : sortBy;
+		setSortBy(localSortBy);
 
 		// Для серверной сортировки - сбросить выделение
 		// if (type !== 'localSide') {
@@ -558,7 +567,7 @@ const Table = forwardRef((props, ref) => {
 		_setSelectedRowsHandler();
 		// }
 		const loadParams = {
-			sortBy: sortBy,
+			sortBy: localSortBy,
 			filter: _filter,
 			searchLine: _searchValue,
 			reload: true,
