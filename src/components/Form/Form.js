@@ -18,7 +18,6 @@ const excludeProps = [
     "body",
     "footer",
     "loadInitData",
-    "autoSaveForm",
     "requestSaveForm",
     "methodSaveForm",
     "processBeforeSaveForm"
@@ -33,7 +32,6 @@ const Form = (props) => {
         header,
         body,
         footer,
-        autoSaveForm,
         requestSaveForm,
         methodSaveForm,
         processBeforeSaveForm
@@ -87,20 +85,9 @@ const Form = (props) => {
         const saveObject = {
             ...initFormData,
             ...values,
-            // dateStart: getISO(values['dateStart'])
         };
-
-        // console.group(`Success form [${props.name ? props.name : 'no name form'}]:`);
-        // console.log("values: ", values);
-        // console.log("saveObject: ", saveObject);
-        // console.groupEnd();
         console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, saveObject);
-        if (autoSaveForm && requestSaveForm) {
-            // const saveObject = {
-            //     ...initFormData,
-            //     ...values,
-            //     // dateStart: getISO(values['dateStart'])
-            // };
+        if (requestSaveForm && methodSaveForm) {
             requestSaveForm({
                 method: methodSaveForm,
                 data: saveObject
@@ -109,11 +96,11 @@ const Form = (props) => {
                     notification.success({
                         message: "Сохранение прошло успешно"
                     });
-                    props.onFinish && props.onFinish(values, response.data);
+                    props.onFinish && props.onFinish(saveObject, response.data);
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении') );
         } else if (props.onFinish)
-            props.onFinish(values);
+            props.onFinish(saveObject);
     };
 
     const onFinishFailed = errorInfo => {
@@ -174,9 +161,6 @@ Form.propTypes = {
      * `(callBack) => callBack(initObject)` */
     loadInitData: PropTypes.func,
 
-    /** Производить ли автоматическое сохранение по параметрам `requestSaveForm` и `methodSaveForm` */
-    autoSaveForm: PropTypes.bool,
-
     /** Запрос для автоматического сохранения формы */
     requestSaveForm: PropTypes.func,
 
@@ -191,7 +175,7 @@ Form.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
-    autoSaveForm: true
+    methodSaveForm: 'POST'
 };
 
 const mapDispatchToProps = (dispatch) =>

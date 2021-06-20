@@ -1,3 +1,20 @@
+## 0.0.70
+
+- **ReStruct main `index.js`**
+- Add new components Slider, Collapse, Popover, Tooltip
+- Form
+  - Change `onFinish` in `Form`. Send full save object
+  - Remove props `autoSaveForm`
+- Modal
+  - Add `onOk` and `onFinish` for local modal
+  - Send full save object to `onOk` and `onFinish`
+  - Change modal types to `['save', 'select', 'view']`
+  - Add props `methodSaveForm`
+  - Rename props `requestSaveRow` to `requestSaveForm`
+- Select
+  - Fix bug with no load option by id
+  - Add props `lostParamName` name filter param for load option. Default `'id'`
+
 ## 0.0.69
 
 - Add search in Select and TreeSelect
@@ -154,7 +171,7 @@
 
 ## 0.0.45
 
-- Fix `declarative.js` (add `FileManager`)
+- Fix `index.js` (add `FileManager`)
 
 ## 0.0.44
 
