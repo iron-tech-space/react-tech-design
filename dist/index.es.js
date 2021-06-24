@@ -95,20 +95,8 @@ var toFormat = function toFormat(dateString, format) {
 	return mom.isValid() ? mom.format(format) : dateString;
 };
 
-var toDDMMYYYYdot = function toDDMMYYYYdot(dateString) {
-	return toFormat(dateString, 'DD.MM.YYYY');
-};
-
-var toDDMMYYYYdotAltDashDash = function toDDMMYYYYdotAltDashDash(dateString) {
-	return toDDMMYYYYdot(dateString) || '--';
-};
-
 var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
 	return toFormat(dateString, 'DD.MM.YYYY HH:mm:ss') || '--';
-};
-
-var toDDMMYYYYdash = function toDDMMYYYYdash(dateString) {
-	return toFormat(dateString, 'DD-MM-YYYY');
 };
 
 var getISO = function getISO(date) {
@@ -529,11 +517,11 @@ var withStore$1 = function withStore(Component, antFormItemProps) {
 var rtPrefix = 'rt';
 
 /** Компонент выбора даты */
-var DatePicker = function DatePicker(props) {
+var DatePicker$1 = function DatePicker(props) {
     return React.createElement(DateTimePicker, _extends({ Component: _DatePicker }, props));
 };
 
-var TimePicker = function TimePicker(props) {
+var TimePicker$1 = function TimePicker(props) {
     return React.createElement(DateTimePicker, _extends({ Component: _TimePicker }, props));
 };
 var DateTimePicker = function DateTimePicker(props) {
@@ -571,7 +559,7 @@ var TypographyDate$1 = function TypographyDate(props) {
 };
 
 /** Компонент кнопки со всеми пропрами AntButton */
-var Button = function Button(props) {
+var Button$1 = function Button(props) {
     var Component = withStore$1(_Button, { trigger: 'onClick' });
     // console.log('Props classic field renderClassic => ', props.field);
     // const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
@@ -582,7 +570,7 @@ var Button = function Button(props) {
 };
 
 /** Custom компонент */
-var Custom = function Custom(props) {
+var Custom$1 = function Custom(props) {
     var children = props.children;
 
     var childNode = null;
@@ -607,7 +595,7 @@ var Custom = function Custom(props) {
 };
 
 /** Компонент заголовка формы */
-var FormHeader = function FormHeader(props) {
+var FormHeader$1 = function FormHeader(props) {
     return React.createElement(
         "div",
         { className: rtPrefix + "-form-header" },
@@ -616,7 +604,7 @@ var FormHeader = function FormHeader(props) {
 };
 
 /** Компонент тела формы */
-var FormBody = function FormBody(props) {
+var FormBody$1 = function FormBody(props) {
     var cls = [rtPrefix + "-form-body"];
     props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
     props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
@@ -628,7 +616,7 @@ var FormBody = function FormBody(props) {
 };
 
 /** Компонент подвала формы */
-var FormFooter = function FormFooter(props) {
+var FormFooter$1 = function FormFooter(props) {
     return React.createElement(
         "div",
         { className: rtPrefix + "-form-footer" },
@@ -636,7 +624,7 @@ var FormFooter = function FormFooter(props) {
     );
 };
 
-var TabPane = function TabPane(props) {
+var TabPane$1 = function TabPane(props) {
     var cls = [];
     props.className && cls.push(props.className);
     props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
@@ -728,17 +716,16 @@ FormItems$1.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-var excludeProps$9 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$9 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 /** Компонент формы */
-var Form$1 = function Form(props) {
+var Form$2 = function Form(props) {
     var dispatch = props.dispatch,
         setDateStore = props.setDateStore,
         loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
         footer = props.footer,
-        autoSaveForm = props.autoSaveForm,
         requestSaveForm = props.requestSaveForm,
         methodSaveForm = props.methodSaveForm,
         processBeforeSaveForm = props.processBeforeSaveForm;
@@ -799,18 +786,8 @@ var Form$1 = function Form(props) {
         var values = processBeforeSaveForm ? processBeforeSaveForm(rawValues) : rawValues;
         // console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, values);
         var saveObject = _extends({}, initFormData, values);
-
-        // console.group(`Success form [${props.name ? props.name : 'no name form'}]:`);
-        // console.log("values: ", values);
-        // console.log("saveObject: ", saveObject);
-        // console.groupEnd();
         console.log("Success form [" + (props.name ? props.name : 'no name form') + "]: ", saveObject);
-        if (autoSaveForm && requestSaveForm) {
-            // const saveObject = {
-            //     ...initFormData,
-            //     ...values,
-            //     // dateStart: getISO(values['dateStart'])
-            // };
+        if (requestSaveForm && methodSaveForm) {
             requestSaveForm({
                 method: methodSaveForm,
                 data: saveObject
@@ -818,11 +795,11 @@ var Form$1 = function Form(props) {
                 _notification.success({
                     message: "Сохранение прошло успешно"
                 });
-                props.onFinish && props.onFinish(values, response.data);
+                props.onFinish && props.onFinish(saveObject, response.data);
             }).catch(function (error) {
                 return notificationError(error, 'Ошибка при сохранении');
             });
-        } else if (props.onFinish) props.onFinish(values);
+        } else if (props.onFinish) props.onFinish(saveObject);
     };
 
     var onFinishFailed = function onFinishFailed(errorInfo) {
@@ -880,7 +857,7 @@ var Form$1 = function Form(props) {
     );
 };
 
-Form$1.propTypes = {
+Form$2.propTypes = {
 
     /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding: PropTypes.bool,
@@ -901,9 +878,6 @@ Form$1.propTypes = {
      * `(callBack) => callBack(initObject)` */
     loadInitData: PropTypes.func,
 
-    /** Производить ли автоматическое сохранение по параметрам `requestSaveForm` и `methodSaveForm` */
-    autoSaveForm: PropTypes.bool,
-
     /** Запрос для автоматического сохранения формы */
     requestSaveForm: PropTypes.func,
 
@@ -914,21 +888,21 @@ Form$1.propTypes = {
     processBeforeSaveForm: PropTypes.func
 };
 
-Form$1.defaultProps = {
+Form$2.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
-    autoSaveForm: true
+    methodSaveForm: 'POST'
 };
 
 var mapDispatchToProps$6 = function mapDispatchToProps(dispatch) {
     return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var RtForm = connect(null, mapDispatchToProps$6)(Form$1);
+var RtForm = connect(null, mapDispatchToProps$6)(Form$2);
 
 /** Компонент обертка со всеми пропрами div */
-var Layout$1 = function Layout(props) {
+var Layout$2 = function Layout(props) {
 
     var getCls = function getCls() {
         var cls = [rtPrefix + '-layout'];
@@ -943,7 +917,7 @@ var Layout$1 = function Layout(props) {
     );
 };
 
-var Switcher = function Switcher(props) {
+var Switcher$1 = function Switcher(props) {
     var value = props.value;
 
     var _useState = useState(0),
@@ -1278,7 +1252,7 @@ SelectionList$1.propTypes = {
 SelectionList$1.defaultProps = {};
 
 /** Компонент таблицы */
-var Table$4 = forwardRef(function (props, ref) {
+var Table$5 = forwardRef(function (props, ref) {
 
 	/** LOADING AND INFINITY MODE STATES */
 	var _useState = useState(true),
@@ -1430,7 +1404,7 @@ var Table$4 = forwardRef(function (props, ref) {
 	    value = _props$subscribeProps.value,
 	    onChange = _props$subscribeProps.onChange;
 
-	var footerProps = _extends({}, Table$4.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$5.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + '.selected' : dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + '.rows' : dispatchPath && dispatchPath + '.rows';
@@ -2259,7 +2233,7 @@ var Table$4 = forwardRef(function (props, ref) {
 	);
 });
 
-Table$4.propTypes = {
+Table$5.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -2521,7 +2495,7 @@ Table$4.propTypes = {
 	subscribe: PropTypes.arrayOf(PropTypes.object)
 };
 
-Table$4.defaultProps = {
+Table$5.defaultProps = {
 	infinityMode: false,
 	editMode: false,
 	defaultRows: [],
@@ -2607,7 +2581,7 @@ var mapDispatchToProps$5 = function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Table$5 = connect(mapStateToProps$4, mapDispatchToProps$5, null, { forwardRef: true })(Table$4);
+var Table$6 = connect(mapStateToProps$4, mapDispatchToProps$5, null, { forwardRef: true })(Table$5);
 
 var _this$3 = undefined;
 
@@ -2749,7 +2723,7 @@ var ConfigLoader$1 = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React.createElement(Table$5, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React.createElement(Table$6, _extends({}, props, tableConfig));else return null;
 };
 
 if (process.env.NODE_ENV !== 'production') ;
@@ -2863,7 +2837,7 @@ BodyCell.propTypes = {};
 
 var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName", "onRowClick", "onRowDoubleClick"];
 
-var Table$2 = function Table(props) {
+var Table$3 = function Table(props) {
   /** Индикатор загрузки данных */
   var _useState = useState(false),
       _useState2 = slicedToArray(_useState, 2),
@@ -3621,7 +3595,7 @@ var Table$2 = function Table(props) {
   );
 };
 
-Table$2.propTypes = {
+Table$3.propTypes = {
   /**
    * REQUIRED
    * */
@@ -3883,7 +3857,7 @@ Table$2.propTypes = {
   subscribe: PropTypes.arrayOf(PropTypes.object)
 };
 
-Table$2.defaultProps = {
+Table$3.defaultProps = {
   size: "small",
   bordered: true,
   infinityMode: false,
@@ -3975,7 +3949,7 @@ var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
   return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Table$3 = connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$2);
+var Table$4 = connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$3);
 
 var _this$2 = undefined;
 
@@ -4142,13 +4116,13 @@ var ConfigLoader = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React.createElement(Table$3, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React.createElement(Table$4, _extends({}, props, tableConfig));else return null;
 };
 
 var excludeProps$7 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
 
 /** Компонент выбора элемента(ов) из списка */
-var Select$2 = function Select(props) {
+var Select$3 = function Select(props) {
 	var defaultSortBy = props.defaultSortBy,
 	    defaultFilter = props.defaultFilter,
 	    defaultSearchValue = props.defaultSearchValue,
@@ -4156,6 +4130,7 @@ var Select$2 = function Select(props) {
 	    filter = props.filter,
 	    searchValue = props.searchValue,
 	    searchParamName = props.searchParamName,
+	    lostParamName = props.lostParamName,
 	    infinityMode = props.infinityMode,
 	    requestLoadRows = props.requestLoadRows,
 	    optionConverter = props.optionConverter,
@@ -4186,43 +4161,49 @@ var Select$2 = function Select(props) {
 	    _useState6 = slicedToArray(_useState5, 2),
 	    _options = _useState6[0],
 	    _setOptions = _useState6[1];
+
+	var _useState7 = useState({}),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    tmpOption = _useState8[0],
+	    setTmpOption = _useState8[1];
+
 	/** Индикатор достижения низа окна */
 
 
-	var _useState7 = useState(false),
-	    _useState8 = slicedToArray(_useState7, 2),
-	    isEndReached = _useState8[0],
-	    setIsEndReached = _useState8[1];
+	var _useState9 = useState(false),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    isEndReached = _useState10[0],
+	    setIsEndReached = _useState10[1];
 
 	/** Объект сортировки */
 
 
-	var _useState9 = useState(undefined),
-	    _useState10 = slicedToArray(_useState9, 2),
-	    _sortBy = _useState10[0],
-	    _setSortBy = _useState10[1];
+	var _useState11 = useState(undefined),
+	    _useState12 = slicedToArray(_useState11, 2),
+	    _sortBy = _useState12[0],
+	    _setSortBy = _useState12[1];
 	/** Объект фильтрации */
 
 
-	var _useState11 = useState({}),
-	    _useState12 = slicedToArray(_useState11, 2),
-	    _filter = _useState12[0],
-	    _setFilter = _useState12[1];
+	var _useState13 = useState({}),
+	    _useState14 = slicedToArray(_useState13, 2),
+	    _filter = _useState14[0],
+	    _setFilter = _useState14[1];
 	/** Строка поиска */
 
 
-	var _useState13 = useState(undefined),
-	    _useState14 = slicedToArray(_useState13, 2),
-	    _searchValue = _useState14[0],
-	    _setSearchValue = _useState14[1];
+	var _useState15 = useState(undefined),
+	    _useState16 = slicedToArray(_useState15, 2),
+	    _searchValue = _useState16[0],
+	    _setSearchValue = _useState16[1];
 
 	/** Состояние параметра выбрать все */
 
 
-	var _useState15 = useState(false),
-	    _useState16 = slicedToArray(_useState15, 2),
-	    _isSelectAll = _useState16[0],
-	    _setIsSelectAll = _useState16[1];
+	var _useState17 = useState(false),
+	    _useState18 = slicedToArray(_useState17, 2),
+	    _isSelectAll = _useState18[0],
+	    _setIsSelectAll = _useState18[1];
 
 	var isMounted = useMounted();
 
@@ -4237,7 +4218,9 @@ var Select$2 = function Select(props) {
 	}, []);
 
 	useEffect(function () {
-		_setRowsHandler(options);
+		if (isMounted) {
+			_setRowsHandler(options);
+		}
 	}, [options]);
 
 	useEffect(function () {
@@ -4266,6 +4249,16 @@ var Select$2 = function Select(props) {
 				return value.includes(item.value) ? preValue + 1 : preValue;
 			}, 0) === options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
 			onChange(value);
+		} else {
+			if (options && options.findIndex(function (option) {
+				return option.value === value;
+			}) === -1) {
+				// console.log('Load tmpOption');
+				_loadTmpOption();
+			} else {
+				// console.log('Clear tmpOption');
+				setTmpOption(undefined);
+			}
 		}
 		// setRows(rows);
 		// rowsDispatch(rows);
@@ -4327,6 +4320,23 @@ var Select$2 = function Select(props) {
 				_setRowsHandler(_options); // _setRows
 				// setHasMore(false);
 				_setLoading(false);
+			});
+		}
+	};
+
+	var _loadTmpOption = function _loadTmpOption() {
+		if (requestLoadRows) {
+			requestLoadRows({ params: {}, data: defineProperty({}, lostParamName, value) }).then(function (response) {
+				if (response.data) {
+					if (response.data.length === 1) {
+						setTmpOption(optionConverter(response.data[0]));
+					} else {
+						_notification.error({ message: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u043D\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430" });
+					}
+				}
+			}).catch(function (error) {
+				notificationError(error, 'Ошибка загрузки данных');
+				setTmpOption(undefined);
 			});
 		}
 	};
@@ -4463,11 +4473,16 @@ var Select$2 = function Select(props) {
 				{ key: i.toString(36) + i, value: value, className: className, disabled: disabled },
 				label
 			);
-		})
+		}),
+		tmpOption && React.createElement(
+			_Select.Option,
+			{ key: generateUUID(), value: tmpOption.value, className: tmpOption.className, disabled: tmpOption.disabled },
+			tmpOption.label
+		)
 	);
 };
 
-Select$2.propTypes = {
+Select$3.propTypes = {
 	/** Сортировка по умолчанию */
 	defaultSortBy: PropTypes.shape({
 		/** Ключ поля для сортировки */
@@ -4494,6 +4509,8 @@ Select$2.propTypes = {
 	/** Имя параметра для поиска */
 	searchParamName: PropTypes.string,
 
+	lostParamName: PropTypes.string,
+
 	/** Режим загружки по скроллу */
 	infinityMode: PropTypes.bool,
 
@@ -4514,7 +4531,7 @@ Select$2.propTypes = {
   * })
   * ```
   */
-	optionConverter: PropTypes.func.isRequired,
+	optionConverter: PropTypes.func,
 
 	/** Select options `[{ label, value, className, disabled }]` */
 	options: PropTypes.arrayOf(PropTypes.object),
@@ -4526,7 +4543,7 @@ Select$2.propTypes = {
 	pageSize: PropTypes.number
 };
 
-Select$2.defaultProps = {
+Select$3.defaultProps = {
 	// Rt Props
 	defaultSortBy: undefined,
 	defaultFilter: {},
@@ -4536,13 +4553,14 @@ Select$2.defaultProps = {
 	options: [],
 	widthControl: '100%',
 	pageSize: 50,
-	searchParamName: 'name'
+	searchParamName: 'name',
+	lostParamName: 'id'
 };
 
 var excludeProps$6 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
 
 /** Компонент выбора элемента(ов) из древовидного списка */
-var TreeSelect = function TreeSelect(props) {
+var TreeSelect$1 = function TreeSelect(props) {
     var defaultSortBy = props.defaultSortBy,
         defaultFilter = props.defaultFilter,
         defaultSearchValue = props.defaultSearchValue,
@@ -4676,7 +4694,7 @@ var TreeSelect = function TreeSelect(props) {
     }));
 };
 
-TreeSelect.propTypes = {
+TreeSelect$1.propTypes = {
     /** Сортировка по умолчанию */
     defaultSortBy: PropTypes.shape({
         /** Ключ поля для сортировки */
@@ -4726,7 +4744,7 @@ TreeSelect.propTypes = {
     options: PropTypes.arrayOf(PropTypes.object)
 };
 
-TreeSelect.defaultProps = {
+TreeSelect$1.defaultProps = {
     // Rt Props
     defaultSortBy: undefined,
     defaultFilter: {},
@@ -4736,13 +4754,12 @@ TreeSelect.defaultProps = {
 };
 
 var excludeProps$5 = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
-var serverModalTypes = ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'];
-var localModalTypes = ['addOnLocal', 'addGroupOnLocal', 'editOnLocal', 'editGroupOnLocal'];
-var allModalTypes = [].concat(serverModalTypes, localModalTypes, ['select', 'viewGroup', 'viewObject']);
+var modalTypes = ['save', 'select', 'view'];
 
 var defaultProps$1 = {
     subscribe: [],
-    dispatch: {}
+    dispatch: {},
+    methodSaveForm: 'POST'
 };
 
 var getDefaultFooterProps = function getDefaultFooterProps(modal) {
@@ -4752,39 +4769,16 @@ var getDefaultFooterProps = function getDefaultFooterProps(modal) {
     var modalTitle = '';
 
     switch (modal.type) {
-        case 'addOnServer':
-        case 'addGroupOnServer':
+        case 'save':
             okText = 'Сохранить';
             cancelText = 'Отмена';
-            modalTitle = 'Сохранить на сервере';
-            break;
-        case 'addOnLocal':
-        case 'addGroupOnLocal':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Сохранить локально';
-            break;
-        case 'editOnServer':
-        case 'editGroupOnServer':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Измененить на сервере';
-            break;
-        case 'editOnLocal':
-        case 'editGroupOnLocal':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Изменение локально';
             break;
         case 'select':
             okText = 'Добавить';
             cancelText = 'Отмена';
-            modalTitle = 'Выбор';
             break;
-        case 'viewGroup':
-        case 'viewObject':
+        case 'view':
             okText = 'Закрыть';
-            modalTitle = 'Просмотр';
             break;
     }
 
@@ -4800,7 +4794,7 @@ var getDefaultFooterProps = function getDefaultFooterProps(modal) {
 /**
  * Компонент модального окна
  */
-var Modal$3 = function Modal(props) {
+var Modal$4 = function Modal(props) {
     var buttonProps = props.buttonProps,
         toolTipProps = props.toolTipProps,
         modalConfig = props.modalConfig,
@@ -4864,29 +4858,30 @@ var Modal$3 = function Modal(props) {
     var onFinishHandler = function onFinishHandler(values) {
         //} {type, row, requestSaveRow}) => {
         // console.log("Modal Events => before dispatchToStore: ", dispatch);
-
-        var saveObj = void 0;
-        if (modalProps.type.startsWith('add')) saveObj = _extends({}, values);else saveObj = _extends({}, _modalData, values);
+        var saveObj = _extends({}, _modalData, values);
 
         dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
 
-        if (modalProps.requestSaveRow && serverModalTypes.includes(modalProps.type)) {
-            var method = modalProps.type === 'addOnServer' || modalProps.type === 'addGroupOnServer' ? 'POST' : 'PUT';
+        if (modalProps.requestSaveRow && modalProps.methodSaveForm) {
             // console.log("Modal Events => type: ", type, method, row, _modalData);
             modalProps.requestSaveRow({
-                method: method,
+                method: modalProps.methodSaveForm,
                 data: saveObj
             }).then(function (response) {
                 _notification.success({
                     message: 'Сохранение прошло успешно'
                 });
-                modalProps.onOk && modalProps.onOk(values, response.data);
-                modalProps.onFinish && modalProps.onFinish(values, response.data);
+                modalProps.onOk && modalProps.onOk(saveObj, response.data);
+                modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
                 _onCloseModal();
             }).catch(function (error) {
                 return notificationError(error, 'Ошибка при сохранении');
             });
-        } else _onCloseModal();
+        } else {
+            modalProps.onOk && modalProps.onOk(saveObj);
+            modalProps.onFinish && modalProps.onFinish(saveObj);
+            _onCloseModal();
+        }
     };
 
     var onFinishFailedHandler = function onFinishFailedHandler(errorInfo) {
@@ -4970,7 +4965,7 @@ var Modal$3 = function Modal(props) {
     );
 };
 
-Modal$3.propTypes = {
+Modal$4.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
@@ -4979,10 +4974,13 @@ Modal$3.propTypes = {
     /** Объект модального окна. Стандартная конфигурация. */
     modalConfig: PropTypes.shape({
         /** Тип модального окна */
-        type: PropTypes.oneOf(allModalTypes),
+        type: PropTypes.oneOf(modalTypes),
 
-        /** Ссылка на функцию сохранения данных */
-        requestSaveRow: PropTypes.func,
+        /** Запрос для автоматического сохранения формы */
+        requestSaveForm: PropTypes.func,
+
+        /** HTTP Метод, передаваемый в запрос сохранения */
+        methodSaveForm: PropTypes.string,
 
         /** Пропсы формы.
          * Если верстка через конфиги, то пропс body обязателен */
@@ -5006,7 +5004,7 @@ Modal$3.propTypes = {
     subscribe: PropTypes.arrayOf(PropTypes.object)
 };
 
-Modal$3.defaultProps = defaultProps$1;
+Modal$4.defaultProps = defaultProps$1;
 
 var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
     var subscribe = ownProps.subscribe;
@@ -5028,7 +5026,7 @@ var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
     return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var RtModal = connect(mapStateToProps$2, mapDispatchToProps$3)(Modal$3);
+var RtModal = connect(mapStateToProps$2, mapDispatchToProps$3)(Modal$4);
 
 var defaultProps = {
     requestUploadFile: noop,
@@ -5040,7 +5038,7 @@ var defaultProps = {
     buttonProps: {}
 
     /** Компонент загрузки файлов */
-};var UploadFile = function UploadFile(props) {
+};var UploadFile$1 = function UploadFile(props) {
     var requestUploadFile = props.requestUploadFile,
         dataObject = props.dataObject,
         onCompletedUpload = props.onCompletedUpload,
@@ -5119,7 +5117,7 @@ var defaultProps = {
     );
 };
 
-UploadFile.propTypes = {
+UploadFile$1.propTypes = {
     /** Функция запроса для отправки файла с данным на сервер */
     requestUploadFile: PropTypes.func.isRequired,
 
@@ -5142,7 +5140,7 @@ UploadFile.propTypes = {
     buttonProps: PropTypes.object
 };
 
-UploadFile.defaultProps = defaultProps;
+UploadFile$1.defaultProps = defaultProps;
 
 /**
  * Renders
@@ -5255,26 +5253,26 @@ var TableWrapper = function TableWrapper(props) {
 
 var classicComponents = {
     Form: RtForm,
-    FormHeader: FormHeader,
-    FormBody: FormBody,
-    FormFooter: FormFooter,
+    FormHeader: FormHeader$1,
+    FormBody: FormBody$1,
+    FormFooter: FormFooter$1,
     FormList: _Form.List,
     Space: renderFormItemComponent(_Space),
     Row: renderFormItemComponent(_Row),
     Col: renderFormItemComponent(_Col),
-    Layout: renderFormItemComponent(Layout$1),
+    Layout: renderFormItemComponent(Layout$2),
     Tabs: _Tabs,
-    TabPane: TabPane,
+    TabPane: TabPane$1,
     List: renderFormItemComponent(_List)
 };
 var withComponentType = {
-    Button: ComponentClassicWithOutStore(Button),
+    Button: ComponentClassicWithOutStore(Button$1),
     Title: ComponentClassicWithLabel(_Typography.Title),
     Text: ComponentClassicWithLabel(_Typography.Text),
     Divider: ComponentClassicWithLabel(_Divider),
     Checkbox: ComponentClassicWithLabel(_Checkbox),
-    DatePicker: ComponentClassicWithPlaceholder(DatePicker, 'Выберите дату'),
-    TimePicker: ComponentClassicWithPlaceholder(TimePicker, 'Выберите время'),
+    DatePicker: ComponentClassicWithPlaceholder(DatePicker$1, 'Выберите дату'),
+    TimePicker: ComponentClassicWithPlaceholder(TimePicker$1, 'Выберите время'),
     DateText: ComponentClassic(TypographyDate$1),
     Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'),
     Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'),
@@ -5283,15 +5281,15 @@ var withComponentType = {
     InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'),
     Switch: ComponentClassic(_Switch),
     RadioGroup: ComponentClassic(_Radio.Group),
-    Select: ComponentClassicWithPlaceholder(Select$2, 'Выберите значение'),
-    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect, 'Выберите значение'),
+    Select: ComponentClassicWithPlaceholder(Select$3, 'Выберите значение'),
+    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect$1, 'Выберите значение'),
     Table: ComponentClassicWithOutStore(TableWrapper),
     RtTable: ComponentClassicWithOutStore(ConfigLoader$1),
     AntTable: ComponentClassicWithOutStore(ConfigLoader),
     Modal: ComponentClassicWithOutStore(RtModal),
-    Custom: ComponentClassic(Custom),
-    Switcher: ComponentClassic(Switcher),
-    UploadFile: ComponentClassic(UploadFile),
+    Custom: ComponentClassic(Custom$1),
+    Switcher: ComponentClassic(Switcher$1),
+    UploadFile: ComponentClassic(UploadFile$1),
     Transfer: ComponentClassic(_Transfer)
 };
 
@@ -5299,7 +5297,7 @@ var classic = _extends({}, classicComponents, Object.keys(withComponentType).red
     return _extends({}, obj, defineProperty({}, key, renderClassicWithComponentType(withComponentType[key], key)));
 }, {}));
 
-var declarative = Object.keys(classic).reduce(function (obj, key) {
+Object.keys(classic).reduce(function (obj, key) {
     return _extends({}, obj, defineProperty({}, key, renderDeclarative(classic[key])));
 }, {});
 
@@ -5955,7 +5953,7 @@ var FilterPanel = function FilterPanel(props) {
             }));
           case "MultiSelect":
           case "SingleSelect":
-            return React.createElement(Select$1, _extends({
+            return React.createElement(Select$2, _extends({
               key: index
             }, item, {
               type: item.componentType,
@@ -6117,7 +6115,7 @@ SelectionList.propTypes = {
 
 SelectionList.defaultProps = {};
 
-var Table = forwardRef(function (props, ref) {
+var Table$1 = forwardRef(function (props, ref) {
 	/** Состояние первоначалной настройки компонента*/
 	var _useState = useState(false),
 	    _useState2 = slicedToArray(_useState, 2);
@@ -6250,7 +6248,7 @@ var Table = forwardRef(function (props, ref) {
 	var commandPanelProps = _extends({}, CommandPanel.defaultProps, props.commandPanelProps);
 	var filterPanelProps = _extends({}, FilterPanel.defaultProps, props.filterPanelProps);
 
-	var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$1.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -7029,7 +7027,7 @@ var Table = forwardRef(function (props, ref) {
 	);
 });
 
-Table.propTypes = {
+Table$1.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -7268,7 +7266,7 @@ Table.propTypes = {
 	subscribe: PropTypes.object
 };
 
-Table.defaultProps = {
+Table$1.defaultProps = {
 	defaultRows: [],
 	defaultSelectedRowKeys: [],
 	defaultSearchValue: '',
@@ -7376,12 +7374,12 @@ var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
 /**
  * @deprecated [#1] since version 0.0.54 [#2].
  * */
-var Table$1 = connect(mapStateToProps$1, mapDispatchToProps$2, null, { forwardRef: true })(Table);
+var Table$2 = connect(mapStateToProps$1, mapDispatchToProps$2, null, { forwardRef: true })(Table$1);
 
 var Paragraph = _Typography.Paragraph;
 
 
-var Select = function Select(props) {
+var Select$1 = function Select(props) {
 	var _useState = useState([]),
 	    _useState2 = slicedToArray(_useState, 2),
 	    _selectedRowKeys = _useState2[0],
@@ -7675,7 +7673,7 @@ var Select = function Select(props) {
 		isSelectOpened ? React.createElement(
 			'div',
 			{ className: _getPopupCls(), style: _getPopupStyle() },
-			React.createElement(Table$1, _extends({}, props, {
+			React.createElement(Table$2, _extends({}, props, {
 				commandPanelProps: _extends({}, props.commandPanelProps, {
 					showElements: getEvents() // getShowElements(),
 				}),
@@ -7710,7 +7708,7 @@ var Select = function Select(props) {
 	);
 };
 
-Select.propTypes = {
+Select$1.propTypes = {
 	/** Имя параметра селекта (вернется в onChangeKeys и onChangeObjects) */
 	name: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))]).isRequired,
 
@@ -7793,7 +7791,7 @@ Select.propTypes = {
 	expandParentKey: PropTypes.string
 };
 
-Select.defaultProps = {
+Select$1.defaultProps = {
 	onChangeKeys: noop,
 	// onChangeObjects: noop,
 	placeholder: 'Выбрать',
@@ -7822,7 +7820,7 @@ var mapDispatchToProps$1 = function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Select$1 = connect(null, mapDispatchToProps$1)(Select);
+var Select$2 = connect(null, mapDispatchToProps$1)(Select$1);
 
 var _this$1 = undefined;
 
@@ -7926,7 +7924,7 @@ var AdvancedTable = forwardRef(function (props, ref) {
 
 	if (config && config.fields) {
 		// console.log('AdvancedTable render table -> ', config);
-		return React.createElement(Table$1, _extends({}, props, {
+		return React.createElement(Table$2, _extends({}, props, {
 			ref: ref,
 			columns: columnsByConfig(),
 			defaultFilter: getDefaultFilter(),
@@ -7969,7 +7967,7 @@ AdvancedTable.defaultProps = {};
 
 var excludeProps$4 = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
-var Form = function Form(props) {
+var Form$1 = function Form(props) {
     var loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
@@ -8088,7 +8086,7 @@ var Form = function Form(props) {
     );
 };
 
-Form.propTypes = {
+Form$1.propTypes = {
 
     /** Не делать отступы у формы от краев блока */
     noPadding: PropTypes.bool,
@@ -8123,7 +8121,7 @@ Form.propTypes = {
     processBeforeSaveForm: PropTypes.func
 };
 
-Form.defaultProps = {
+Form$1.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
@@ -8254,7 +8252,7 @@ var FormModal = function FormModal(props) {
             bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
             footer: null
         }),
-        React.createElement(Form, _extends({}, formConfig, {
+        React.createElement(Form$1, _extends({}, formConfig, {
             onFinish: onFinish,
             onFinishFailed: onFinishFailed,
             loadInitData: _onLoadInitData
@@ -9167,7 +9165,7 @@ var getTitle = function getTitle(type, element) {
     } else return 'Изменение файла';
 };
 
-var Modal$2 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
+var Modal$3 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
     // console.log("FolderModal", type, requestSaveRow, processBeforeSaveForm, parentLoadHandler, requestLoadRows);
     var selectedRow = void 0;
     return {
@@ -9225,21 +9223,21 @@ var AddFolderModal = function AddFolderModal() {
         args[_key] = arguments[_key];
     }
 
-    return Modal$2.apply(undefined, ['add', 'Group'].concat(args));
+    return Modal$3.apply(undefined, ['add', 'Group'].concat(args));
 };
 var EditFolderModal = function EditFolderModal() {
     for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
     }
 
-    return Modal$2.apply(undefined, ['edit', 'Group'].concat(args));
+    return Modal$3.apply(undefined, ['edit', 'Group'].concat(args));
 };
 var EditFileModal = function EditFileModal() {
     for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
     }
 
-    return Modal$2.apply(undefined, ['edit', ''].concat(args));
+    return Modal$3.apply(undefined, ['edit', ''].concat(args));
 };
 
 var copyTextToClipboard = function copyTextToClipboard(text) {
@@ -9668,7 +9666,7 @@ FileManager.defaultProps = {
     expandParentKey: 'parentId'
 };
 
-var Modal = function Modal(props) {
+var Modal$1 = function Modal(props) {
     var buttonProps = props.buttonProps,
         modalConfig = props.modalConfig,
         modalData = props.modalData,
@@ -9764,7 +9762,7 @@ var Modal = function Modal(props) {
     );
 };
 
-Modal.propTypes = {
+Modal$1.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
@@ -9798,7 +9796,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return bindActionCreators({ setDateStore: setDateStore }, dispatch);
 };
 
-var Modal$1 = connect(mapStateToProps, mapDispatchToProps)(Modal);
+var Modal$2 = connect(mapStateToProps, mapDispatchToProps)(Modal$1);
 
 var excludeProps$1 = ['child', 'componentType', 'field'];
 
@@ -9904,7 +9902,7 @@ var FormItem = function FormItem(props) {
 					return React.createElement(Component, childProps);
 				case 'SingleSelect':
 				case 'MultiSelect':
-					return React.createElement(Select$1, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
+					return React.createElement(Select$2, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
 				//'infinity', 'serverSide', 'localSide'
 				case 'InfinityTable':
 					childProps.type = 'infinity';
@@ -9921,7 +9919,7 @@ var FormItem = function FormItem(props) {
 				case 'FileManager':
 					return React.createElement(FileManager, _extends({}, childProps, { name: props.name }));
 				case 'Modal':
-					return React.createElement(Modal$1, _extends({}, childProps, { name: props.name }));
+					return React.createElement(Modal$2, _extends({}, childProps, { name: props.name }));
 				case 'Custom':
 					Component = withStore(child.render, antFormItemProps);
 					return React.createElement(Component, childProps);
@@ -9946,7 +9944,7 @@ FormItem.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
-var Layout = function Layout(props) {
+var Layout$1 = function Layout(props) {
 
     var itemProps = {};
     Object.keys(props).forEach(function (key) {
@@ -9966,7 +9964,7 @@ var Layout = function Layout(props) {
     );
 };
 
-Layout.propTypes = {
+Layout$1.propTypes = {
     /** Строка класса */
     className: PropTypes.string,
 
@@ -10002,7 +10000,7 @@ var FormItems = function FormItems(props) {
                     );
                 case "Layout":
                     return React.createElement(
-                        Layout,
+                        Layout$1,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
@@ -10375,7 +10373,7 @@ CommandPanel.defaultProps = {
 /**
  * ### Список / Дерево.
  */
-var List = function List(props) {
+var List$1 = function List(props) {
 	var rowKey = props.rowKey,
 	    rowRender = props.rowRender,
 	    title = props.title;
@@ -10395,10 +10393,10 @@ var List = function List(props) {
 			);
 		}
 	}];
-	return React.createElement(Table$1, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
+	return React.createElement(Table$2, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
 };
 
-List.propTypes = {
+List$1.propTypes = {
 	/** Поле для уникальной идентификации строки */
 	rowKey: PropTypes.string,
 
@@ -10412,10 +10410,41 @@ List.propTypes = {
 	title: PropTypes.string
 };
 
-List.defaultProps = {
+List$1.defaultProps = {
 	rowKey: 'id',
 	rowRender: 'id',
 	title: undefined
+};
+
+/** deprecated */
+
+// export {default as CommandPanel} from './CommandPanel/CommandPanel';
+// export {default as FilterPanel} from './FilterPanel/FilterPanel';
+// export {default as Table} from './Table/Table';
+// export {default as AdvancedTable} from './AdvancedTable/AdvancedTable';
+// export {default as List} from './List/List';
+// export {default as Select} from './Select/Select';
+// export {default as SingleDate} from './SingleDate/SingleDate';
+// export {default as DateRange} from './DateRange/DateRange';
+//
+// // Компоненты формы
+// export {default as Form} from './Form/Form';
+// export {default as FileManager} from './FileManager/FileManager';
+// export {default as Modal} from './Modal/Modal';
+
+
+var deprecated = {
+    CommandPanel: CommandPanel,
+    FilterPanel: FilterPanel,
+    Table: Table$2,
+    AdvancedTable: AdvancedTable,
+    List: List$1,
+    Select: Select$2,
+    SingleDate: SingleDate,
+    DateRange: DateRange,
+    Form: Form$1,
+    FileManager: FileManager,
+    Modal: Modal$2
 };
 
 var rtdReducer = function rtdReducer() {
@@ -10468,7 +10497,50 @@ var executeRequest = function executeRequest(request) {
     };
 };
 
-var components = { Form: classic.Form };
+// export * from './components/utils/datesUtils';
 
-export { APP_TIME_OFFSET, AdvancedTable, CommandPanel, DateRange, FileManager, FilterPanel, Form, List, Modal$1 as Modal, Select$1 as Select, SingleDate, Table$1 as Table, classic, components, declarative, executeRequest, getISO, getMomentFromStringByFormat, getMomentWithOffset, getMomentWithOffsetTruncateDay, notificationError, rtdReducer, setDateStore, toDDMMYYYYHHMMSS, toDDMMYYYYdash, toDDMMYYYYdot, toDDMMYYYYdotAltDashDash, toFormat };
+// General
+var Button = classic.Button;
+var Title = classic.Title;
+var Text = classic.Text;
+var DateText = classic.DateText;
+var Divider = classic.Divider;
+var Layout = classic.Layout;
+var Row = classic.Row;
+var Col = classic.Col;
+var Space = classic.Space;
+var Checkbox = classic.Checkbox;
+var DatePicker = classic.DatePicker;
+var Form = classic.Form;
+var FormHeader = classic.FormHeader;
+var FormBody = classic.FormBody;
+var FormFooter = classic.FormFooter;
+var FormList = classic.FormList;
+var InputNumber = classic.InputNumber;
+var Input = classic.Input;
+var Search = classic.Search;
+var TextArea = classic.TextArea;
+var Password = classic.Password;
+var RadioGroup = classic.RadioGroup;
+var Switch = classic.Switch;
+var Slider = classic.Slider;
+var Select = classic.Select;
+var TreeSelect = classic.TreeSelect;
+var Transfer = classic.Transfer;
+var TimePicker = classic.TimePicker;
+var UploadFile = classic.UploadFile;
+var Collapse = classic.Collapse;
+var List = classic.List;
+var Popover = classic.Popover;
+var Tooltip = classic.Tooltip;
+var Tabs = classic.Tabs;
+var TabPane = classic.TabPane;
+var Modal = classic.Modal;
+var Table = classic.Table;
+var RtTable = classic.RtTable;
+var AntTable = classic.AntTable;
+var Custom = classic.Custom;
+var Switcher = classic.Switcher;
+
+export { AntTable, Button, Checkbox, Col, Collapse, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, Transfer, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDateStore };
 //# sourceMappingURL=index.es.js.map

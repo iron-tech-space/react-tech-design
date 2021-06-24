@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import { Select as AntSelect } from "antd";
+import { notification, Select as AntSelect } from "antd";
 import {
+	generateUUID,
 	getObjectExcludedProps,
 	notificationError, useMounted
 } from "../utils/baseUtils";
@@ -37,6 +38,7 @@ const Select = props => {
 		filter,
 		searchValue,
 		searchParamName,
+		lostParamName,
 		infinityMode,
 		requestLoadRows,
 		optionConverter,
@@ -56,6 +58,8 @@ const Select = props => {
 	const [_loading, _setLoading] = useState(false);
 	/** Опции селекта */
 	const [_options, _setOptions] = useState(options);
+	const [tmpOption, setTmpOption] = useState({});
+
 	/** Индикатор достижения низа окна */
 	const [isEndReached, setIsEndReached] = useState(false);
 
@@ -82,7 +86,9 @@ const Select = props => {
 	}, []);
 
 	useEffect(() => {
-		_setRowsHandler(options);
+		if(isMounted) {
+			_setRowsHandler(options);
+		}
 	}, [options]);
 
 	useEffect(() => {
@@ -104,16 +110,24 @@ const Select = props => {
 	}, [sortBy, filter, searchValue]);
 
 	const _setRowsHandler = (options) => {
-			_setOptions(options);
-			// console.log('Select _setRowsHandler value => ', options)
-			if(mode === 'multiple') {
-				if(Array.isArray(value))
-					if(options.reduce((preValue, item) => value.includes(item.value) ? preValue + 1 : preValue, 0) === options.length)
-						_setIsSelectAll(true);
-					else
-						_setIsSelectAll(false);
-				onChange(value);
+		_setOptions(options);
+		// console.log('Select _setRowsHandler value => ', options)
+		if(mode === 'multiple') {
+			if(Array.isArray(value))
+				if(options.reduce((preValue, item) => value.includes(item.value) ? preValue + 1 : preValue, 0) === options.length)
+					_setIsSelectAll(true);
+				else
+					_setIsSelectAll(false);
+			onChange(value);
+		} else {
+			if(options && options.findIndex(option => option.value === value) === -1){
+				// console.log('Load tmpOption');
+				_loadTmpOption();
+			} else {
+				// console.log('Clear tmpOption');
+				setTmpOption(undefined)
 			}
+		}
 		// setRows(rows);
 		// rowsDispatch(rows);
 	};
@@ -173,6 +187,25 @@ const Select = props => {
 				});
 		}
 	};
+
+	const _loadTmpOption = () => {
+		if(requestLoadRows){
+			requestLoadRows({params: {}, data: {[lostParamName]: value}})
+				.then((response) => {
+					if(response.data){
+						if(response.data.length === 1){
+							setTmpOption(optionConverter(response.data[0]))
+						} else {
+							notification.error({ message: `Ошибка загрузки потерянного элемента` });
+						}
+					}
+				})
+				.catch((error) => {
+					notificationError(error, 'Ошибка загрузки данных')
+					setTmpOption(undefined)
+				});
+		}
+	}
 
 	const onScroll = (event) => {
 		let scrollTopMax = event.nativeEvent.target.scrollTopMax
@@ -284,6 +317,8 @@ const Select = props => {
 		>
     		{_options && _options.map(({ label, value, className, disabled }, i) =>
 				<AntSelect.Option key={i.toString(36) + i} value={value} className={className} disabled={disabled}>{label}</AntSelect.Option>)}
+			{tmpOption &&
+				<AntSelect.Option key={generateUUID()} value={tmpOption.value} className={tmpOption.className} disabled={tmpOption.disabled}>{tmpOption.label}</AntSelect.Option>}
     	</AntSelect>
     );
 };
@@ -315,6 +350,8 @@ Select.propTypes = {
 	/** Имя параметра для поиска */
 	searchParamName: PropTypes.string,
 
+	lostParamName: PropTypes.string,
+
 	/** Режим загружки по скроллу */
 	infinityMode: PropTypes.bool,
 
@@ -335,7 +372,7 @@ Select.propTypes = {
 	 * })
 	 * ```
 	 */
-	optionConverter: PropTypes.func.isRequired,
+	optionConverter: PropTypes.func,
 
 	/** Select options `[{ label, value, className, disabled }]` */
 	options: PropTypes.arrayOf(PropTypes.object),
@@ -358,6 +395,7 @@ Select.defaultProps = {
 	widthControl: '100%',
 	pageSize: 50,
 	searchParamName: 'name',
+	lostParamName: 'id',
 }
 
 export default Select;

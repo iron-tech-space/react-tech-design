@@ -9,13 +9,12 @@ import { setDateStore } from "../../redux/rtd.actions";
 import Form from "../Form/Form";
 
 const excludeProps = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
-const serverModalTypes = ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer']
-const localModalTypes = ['addOnLocal', 'addGroupOnLocal', 'editOnLocal', 'editGroupOnLocal']
-const allModalTypes = [...serverModalTypes, ...localModalTypes, 'select', 'viewGroup', 'viewObject']
+const modalTypes = ['save', 'select', 'view']
 
 const defaultProps = {
     subscribe: [],
-    dispatch: {}
+    dispatch: {},
+    methodSaveForm: 'POST'
 }
 
 const getDefaultFooterProps = (modal) => {
@@ -25,39 +24,16 @@ const getDefaultFooterProps = (modal) => {
     let modalTitle = '';
 
     switch (modal.type) {
-        case 'addOnServer':
-        case 'addGroupOnServer':
+        case 'save':
             okText = 'Сохранить';
             cancelText = 'Отмена';
-            modalTitle = 'Сохранить на сервере';
-            break;
-        case 'addOnLocal':
-        case 'addGroupOnLocal':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Сохранить локально';
-            break;
-        case 'editOnServer':
-        case 'editGroupOnServer':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Измененить на сервере';
-            break;
-        case 'editOnLocal':
-        case 'editGroupOnLocal':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            modalTitle = 'Изменение локально';
             break;
         case 'select':
             okText = 'Добавить';
             cancelText = 'Отмена';
-            modalTitle = 'Выбор';
             break;
-        case 'viewGroup':
-        case 'viewObject':
+        case 'view':
             okText = 'Закрыть';
-            modalTitle = 'Просмотр';
             break;
         default: break;
     }
@@ -118,32 +94,30 @@ const Modal = props => {
 
     const onFinishHandler = (values) => { //} {type, row, requestSaveRow}) => {
         // console.log("Modal Events => before dispatchToStore: ", dispatch);
-
-        let saveObj;
-        if(modalProps.type.startsWith('add'))
-            saveObj = {...values};
-        else
-            saveObj = {..._modalData, ...values};
+        const saveObj = {..._modalData, ...values};
 
         dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
 
-        if (modalProps.requestSaveRow && serverModalTypes.includes(modalProps.type)) {
-            const method = (modalProps.type === 'addOnServer' || modalProps.type === 'addGroupOnServer') ? 'POST' : 'PUT';
+        if (modalProps.requestSaveRow && modalProps.methodSaveForm) {
             // console.log("Modal Events => type: ", type, method, row, _modalData);
             modalProps.requestSaveRow({
-                method,
+                method: modalProps.methodSaveForm,
                 data: saveObj,
             })
                 .then(response => {
                     notification.success({
                         message: 'Сохранение прошло успешно'
                     });
-                    modalProps.onOk && modalProps.onOk(values, response.data);
-                    modalProps.onFinish && modalProps.onFinish(values, response.data);
+                    modalProps.onOk && modalProps.onOk(saveObj, response.data);
+                    modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
                     _onCloseModal();
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении'));
-        } else _onCloseModal();
+        } else {
+            modalProps.onOk && modalProps.onOk(saveObj);
+            modalProps.onFinish && modalProps.onFinish(saveObj);
+            _onCloseModal();
+        }
 
 
     };
@@ -204,13 +178,6 @@ const Modal = props => {
                     onClick={_onOpenModal}
                 >{buttonProps && buttonProps.label}</Button>
             </Tooltip>
-            {/*<FormModal*/}
-            {/*    modal={ modalConfig }*/}
-            {/*    selectedRow={_modalData}*/}
-            {/*    visible={visible}*/}
-            {/*    setVisible={_onCloseModal}*/}
-            {/*    saveRow={_onSaveRow}*/}
-            {/*>{props.children}</FormModal>*/}
             <AntModal
                 {...modalProps}
                 centered
@@ -240,10 +207,13 @@ Modal.propTypes = {
     /** Объект модального окна. Стандартная конфигурация. */
     modalConfig: PropTypes.shape({
         /** Тип модального окна */
-        type: PropTypes.oneOf(allModalTypes),
+        type: PropTypes.oneOf(modalTypes),
 
-        /** Ссылка на функцию сохранения данных */
-        requestSaveRow: PropTypes.func,
+        /** Запрос для автоматического сохранения формы */
+        requestSaveForm: PropTypes.func,
+
+        /** HTTP Метод, передаваемый в запрос сохранения */
+        methodSaveForm: PropTypes.string,
 
         /** Пропсы формы.
          * Если верстка через конфиги, то пропс body обязателен */
