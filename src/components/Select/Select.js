@@ -18,6 +18,7 @@ const excludeProps = [
 	'filter',
 	'searchValue',
 	'searchParamName',
+    'lostParamName',
 	'infinityMode',
 	'requestLoadRows',
 	'optionConverter',
