@@ -98,9 +98,9 @@ const Modal = props => {
 
         dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
 
-        if (modalProps.requestSaveRow && modalProps.methodSaveForm) {
+        if (modalProps.requestSaveForm && modalProps.methodSaveForm) {
             // console.log("Modal Events => type: ", type, method, row, _modalData);
-            modalProps.requestSaveRow({
+            modalProps.requestSaveForm({
                 method: modalProps.methodSaveForm,
                 data: saveObj,
             })
