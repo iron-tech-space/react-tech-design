@@ -1,3 +1,8 @@
+## 0.0.71
+
+- Fix select lose param 
+- Fix modal requestSaveForm
+
 ## 0.0.70
 
 - **ReStruct main `index.js`**

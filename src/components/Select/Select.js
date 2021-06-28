@@ -121,7 +121,7 @@ const Select = props => {
 					_setIsSelectAll(false);
 			onChange(value);
 		} else {
-			if(options && options.findIndex(option => option.value === value) === -1){
+			if(value && options && options.findIndex(option => option.value === value) === -1){
 				// console.log('Load tmpOption');
 				_loadTmpOption();
 			} else {
