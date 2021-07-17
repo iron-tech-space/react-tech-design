@@ -103,6 +103,8 @@ const Table = forwardRef((props, ref) => {
 		estimatedRowHeight,
 		// cellBordered, // need Props.types
 		rowBordered,  // need Props.types
+		className,
+		style,
 
 		/** Load Data Props */
 		loadThreshold,
@@ -988,7 +990,7 @@ const Table = forwardRef((props, ref) => {
 	};
 
 	return (
-		<div className={`${rtPrefix}-table`}>
+		<div className={`${rtPrefix}-table ${className}`} style={style}>
 			<div className={`${rtPrefix}-baseTable`}>
 				<AutoResizer>
 					{({width, height}) => (
@@ -1224,6 +1226,10 @@ Table.propTypes = {
 	/** Отобрадать ли разделители строк */
 	rowBordered: PropTypes.bool,
 
+	className: PropTypes.string,
+
+	style: PropTypes.object,
+
 	/**
 	 * LOAD DATA PROPS
 	 * */
@@ -1355,6 +1361,8 @@ Table.defaultProps = {
 	estimatedRowHeight: undefined,
 	cellBordered: false,
 	rowBordered: true,
+	className: "",
+	style: {},
 
 	loadThreshold: 300,
 	pageSize: 50,

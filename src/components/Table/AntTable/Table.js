@@ -950,6 +950,10 @@ Table.propTypes = {
   /** Отобрадать ли разделители строк */
   rowBordered: PropTypes.bool,
 
+  className: PropTypes.string,
+
+  style: PropTypes.object,
+
   /**
    * LOAD DATA PROPS
    * */

@@ -96,8 +96,6 @@ const Modal = props => {
         // console.log("Modal Events => before dispatchToStore: ", dispatch);
         const saveObj = {..._modalData, ...values};
 
-        dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
-
         if (modalProps.requestSaveForm && modalProps.methodSaveForm) {
             // console.log("Modal Events => type: ", type, method, row, _modalData);
             modalProps.requestSaveForm({
@@ -110,16 +108,16 @@ const Modal = props => {
                     });
                     modalProps.onOk && modalProps.onOk(saveObj, response.data);
                     modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
+                    dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
                     _onCloseModal();
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении'));
         } else {
             modalProps.onOk && modalProps.onOk(saveObj);
             modalProps.onFinish && modalProps.onFinish(saveObj);
+            dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
             _onCloseModal();
         }
-
-
     };
 
     const onFinishFailedHandler = (errorInfo) => {

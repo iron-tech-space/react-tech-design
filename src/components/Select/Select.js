@@ -59,7 +59,7 @@ const Select = props => {
 	const [_loading, _setLoading] = useState(false);
 	/** Опции селекта */
 	const [_options, _setOptions] = useState(options);
-	const [tmpOption, setTmpOption] = useState({});
+	const [tmpOption, setTmpOption] = useState(undefined);
 
 	/** Индикатор достижения низа окна */
 	const [isEndReached, setIsEndReached] = useState(false);
