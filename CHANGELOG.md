@@ -1,6 +1,13 @@
+## 0.0.72
+
+- Add initFormData in Form dispatch
+- Add className and style in Rt Table
+- Move Modal dispatch in request
+- Fix radical id in Select
+
 ## 0.0.71
 
-- Fix select lose param 
+- Fix select lose param
 - Fix modal requestSaveForm
 
 ## 0.0.70

@@ -123,7 +123,10 @@ const Form = (props) => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     onFieldsChange={(changedFields, allFields) => {
-                        const values = antForm.getFieldsValue();
+                        const values = {
+                            ...initFormData,
+                            ...antForm.getFieldsValue(),
+                        };
                         // console.log('dispatchToStore => ', dispatch, values);
                         dispatch && dispatchToStore({ dispatch, setDateStore, value: values })}
                     }

@@ -4160,7 +4160,7 @@ var ConfigLoader = function ConfigLoader(props) {
     if (tableConfig) return React__default['default'].createElement(Table$4, _extends({}, props, tableConfig));else return null;
 };
 
-var excludeProps$7 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
+var excludeProps$7 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'lostParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
 
 /** Компонент выбора элемента(ов) из списка */
 var Select$3 = function Select(props) {
@@ -4203,7 +4203,7 @@ var Select$3 = function Select(props) {
 	    _options = _useState6[0],
 	    _setOptions = _useState6[1];
 
-	var _useState7 = React.useState({}),
+	var _useState7 = React.useState(undefined),
 	    _useState8 = slicedToArray(_useState7, 2),
 	    tmpOption = _useState8[0],
 	    setTmpOption = _useState8[1];
@@ -4291,13 +4291,13 @@ var Select$3 = function Select(props) {
 			}, 0) === options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
 			onChange(value);
 		} else {
-			if (options && options.findIndex(function (option) {
+			if (value && options && options.findIndex(function (option) {
 				return option.value === value;
 			}) === -1) {
-				// console.log('Load tmpOption');
+				console.log('Load tmpOption');
 				_loadTmpOption();
 			} else {
-				// console.log('Clear tmpOption');
+				console.log('Clear tmpOption');
 				setTmpOption(undefined);
 			}
 		}
@@ -4903,9 +4903,9 @@ var Modal$4 = function Modal(props) {
 
         dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
 
-        if (modalProps.requestSaveRow && modalProps.methodSaveForm) {
+        if (modalProps.requestSaveForm && modalProps.methodSaveForm) {
             // console.log("Modal Events => type: ", type, method, row, _modalData);
-            modalProps.requestSaveRow({
+            modalProps.requestSaveForm({
                 method: modalProps.methodSaveForm,
                 data: saveObj
             }).then(function (response) {
