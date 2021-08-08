@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import FormItem from "./FormItem";
 import { Form as AntForm } from "antd";
 import { getObjectExcludedProps } from "../utils/baseUtils";
-import { renderDeclarativeByName } from "../declarative";
+import { renderDeclarativeByName } from "../core/renders";
 
 const excludeProps = ["children", "componentType"];
 

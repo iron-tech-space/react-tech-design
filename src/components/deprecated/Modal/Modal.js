@@ -6,7 +6,7 @@ import FormModal from "../Form/FormModal";
 import { notification, Button} from "antd";
 import { notificationError } from "../../utils/baseUtils";
 import objectPath from "object-path";
-import { setDateStore } from "../../../redux/rtd.actions";
+import { setDataStore } from "../../../redux/rtd.actions";
 
 const Modal = props => {
 
@@ -46,7 +46,7 @@ const Modal = props => {
     }
 
     const _onSaveRow = ({type, row, requestSaveRow}) => {
-        dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, row);
+        dispatchPath && props.setDataStore && props.setDataStore(dispatchPath, row);
 
         if (requestSaveRow
             && ['addOnServer', 'editOnServer', 'addGroupOnServer', 'editGroupOnServer'].includes(type)
@@ -115,6 +115,6 @@ const mapStateToProps = (store, ownProps) => {
     return {};
 };
 const mapDispatchToProps = (dispatch) =>
-    bindActionCreators( { setDateStore: setDateStore, }, dispatch);
+    bindActionCreators( { setDataStore: setDataStore, }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Modal);

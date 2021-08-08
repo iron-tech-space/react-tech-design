@@ -1,0 +1,24 @@
+export namespace deprecated {
+    export { CommandPanel };
+    export { FilterPanel };
+    export { Table };
+    export { AdvancedTable };
+    export { List };
+    export { Select };
+    export { SingleDate };
+    export { DateRange };
+    export { Form };
+    export { FileManager };
+    export { Modal };
+}
+import CommandPanel from "./CommandPanel/CommandPanel";
+import FilterPanel from "./FilterPanel/FilterPanel";
+import Table from "./Table/Table";
+import AdvancedTable from "./AdvancedTable/AdvancedTable";
+import List from "./List/List";
+import Select from "./Select/Select";
+import SingleDate from "./SingleDate/SingleDate";
+import DateRange from "./DateRange/DateRange";
+import Form from "./Form/Form";
+import FileManager from "./FileManager/FileManager";
+import Modal from "./Modal/Modal";

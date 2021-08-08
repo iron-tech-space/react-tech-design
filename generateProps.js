@@ -11,7 +11,7 @@ const filesForGenerate = [
     // '../src/components/Form/Form.js',
     // '../src/components/Form/FormTable.js',
     // '../src/components/Form/FormModal.js',
-    // '../src/components/Layout/Layout.js',
+    // '../src/components/Layout/Layout.tsx',
     // '../src/components/Table/Table.js',
     // '../src/components/AdvancedTable/AdvancedTable.js',
     // '../src/components/List/List.js',

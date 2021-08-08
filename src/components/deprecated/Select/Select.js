@@ -7,7 +7,7 @@ import {rtPrefix} from '../../utils/variables';
 import {Button, Typography} from 'antd';
 import { DownOutlined, UpOutlined, CloseCircleFilled } from '@ant-design/icons'
 import Table from '../Table/Table';
-import { setDateStore } from "../../../redux/rtd.actions";
+import { setDataStore } from "../../../redux/rtd.actions";
 const {Paragraph} = Typography;
 
 const Select = (props) => {
@@ -51,7 +51,7 @@ const Select = (props) => {
 	const node = useRef(null);
 
 	const setSelectedRowData = (rowData) => {
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, rowData);
+		selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, rowData);
 		_setSelectedRowData(rowData);
 	}
 
@@ -449,6 +449,6 @@ Select.defaultProps = {
 	expandParentKey: 'parentId',
 };
 const mapDispatchToProps = (dispatch) =>
-	bindActionCreators({ setDateStore: setDateStore}, dispatch);
+	bindActionCreators({ setDataStore: setDataStore}, dispatch);
 
 export default connect(null, mapDispatchToProps)(Select);
