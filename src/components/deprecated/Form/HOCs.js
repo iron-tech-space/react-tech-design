@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import objectPath from "object-path";
-import { setDateStore } from "../../../redux/rtd.actions";
+import { setDataStore } from "../../../redux/rtd.actions";
 import {getObjectExcludedProps} from '../../utils/baseUtils';
 import moment from "moment";
 import { Typography as AntTypography } from "antd";
@@ -21,7 +21,7 @@ export const withStore = (Component, antFormItemProps) => {
         return {};
     };
     const mapDispatchToProps = (dispatch) =>
-        bindActionCreators({ setDateStore: setDateStore}, dispatch);
+        bindActionCreators({ setDataStore: setDataStore}, dispatch);
 
     const defaultGetValueFromEvent = (valuePropName, event) => {
         if (event && event.target && valuePropName in event.target) {
@@ -47,7 +47,7 @@ export const withStore = (Component, antFormItemProps) => {
 
         const {trigger, getValueFromEvent, valuePropName} = withStoreProps;
 
-        const excludeProps = ['componentType', 'setDateStore', 'subscribe', subscribe.name, 'dispatchPath'];
+        const excludeProps = ['componentType', 'setDataStore', 'subscribe', subscribe.name, 'dispatchPath'];
 
         const getValue = (...args) => {
             let newValue;
@@ -71,11 +71,11 @@ export const withStore = (Component, antFormItemProps) => {
         }, [props[subscribe.name]]);
 
         useEffect(() => {
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, props.value);
+            // dispatchPath && props.setDataStore && props.setDataStore(dispatchPath, props.value);
             if(dispatchPath) {
                 const newValue = props[valuePropName];
                 // console.log("storeHOC => dispatch: ", newValue);
-                dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+                dispatchPath && props.setDataStore && props.setDataStore(dispatchPath, newValue);
             }
         }, [props]);
 
@@ -88,7 +88,7 @@ export const withStore = (Component, antFormItemProps) => {
 
         const onChange = (...args) => {
             // const newValue = getValue(...args);
-            // dispatchPath && props.setDateStore && props.setDateStore(dispatchPath, newValue);
+            // dispatchPath && props.setDataStore && props.setDataStore(dispatchPath, newValue);
             props[trigger] && props[trigger](...args);
         };
 

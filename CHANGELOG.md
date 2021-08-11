@@ -1,3 +1,11 @@
+## 0.0.73
+
+- Add TypeScript to project
+- Restrict declarative to many files
+- Add extraData as object for Modal and Simple components
+- Rename `setDateStore` to `setDataStore`
+- Fix infinity for `Select`
+
 ## 0.0.72
 
 - Add initFormData in Form dispatch

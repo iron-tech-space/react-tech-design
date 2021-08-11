@@ -1,6 +1,7 @@
 import React from 'react';
 import {notification} from 'antd';
 import moment from "moment";
+import {setDataStore} from '../../redux/rtd.actions';
 
 export const noop = () => {};
 
@@ -103,20 +104,32 @@ export const notificationError = (error, message) => {
 	}
 };
 
-export const dispatchToStore = ({dispatch, setDateStore, value, extraData}) => {
+export const dispatchToStore = ({dispatch, setDataStore, value, extraData}) => {
 	if(dispatch.path) {
-		// console.log("storeHOC => dispatchToStore", dispatch, setDateStore);
+		// console.log("storeHOC => dispatchToStore", dispatch, setDataStore);
 		if(dispatch.type === 'event')
-			setDateStore && setDateStore(dispatch.path,  {
+			setDataStore && setDataStore(dispatch.path,  {
 				timestamp: moment(),
 				// type: dispatch.type,
 				value: value,
 				extraData: extraData
 			});
 		else
-			setDateStore && setDateStore(dispatch.path, value);
+			setDataStore && setDataStore(dispatch.path, value);
 	}
 }
+export const dispatchToStoreEx = ({dispatch, path, type, value}) => {
+	if(type === 'event'){
+		dispatch(
+			setDataStore(path, {
+				timestamp: moment(),
+				value
+			})
+		);
+	}
+	dispatch( setDataStore(path, value) );
+}
+
 
 export function useMounted() {
 	const [isMounted, setIsMounted] = React.useState(false)

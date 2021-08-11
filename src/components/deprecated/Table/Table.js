@@ -21,7 +21,7 @@ import {
 	getTableRowObjects, notificationError
 } from "../../utils/baseUtils";
 import objectPath from "object-path";
-import { setDateStore } from "../../../redux/rtd.actions";
+import { setDataStore } from "../../../redux/rtd.actions";
 import FormItems from "../Form/FormItems";
 
 const Table = forwardRef((props, ref) => {
@@ -243,7 +243,7 @@ const Table = forwardRef((props, ref) => {
 		rowsDispatch(rows);
 	};
 	const rowsDispatch = (rows) => {
-		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+		rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
 	};
 
 	const reloadData = ({sortBy, filter, searchValue}) => {
@@ -410,7 +410,7 @@ const Table = forwardRef((props, ref) => {
 				setSelectedRowKeys([rowKey]);
 				// setSelectedRow(newRowObject);
 				// setSelectedRowObjects([newRowObject]);
-				selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, rowData);
+				selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, rowData);
 				onRowClick({
 					selected: true,
 					...newRowObject,
@@ -580,7 +580,7 @@ const Table = forwardRef((props, ref) => {
 		// }
 		// console.log("_handleSelectChange", props);
 		// dispatchPath && props.setTableSelectedRow && props.setTableSelectedRow(dispatchPath, _selectedRow.rowData);
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, _selectedRowObjects);
+		selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, _selectedRowObjects);
 		onRowClick({
 			selected,
 			rowData: _selectedRow.rowData,
@@ -596,7 +596,7 @@ const Table = forwardRef((props, ref) => {
 		setSelectedRowKeys(selectedKeys);
 		setIndeterminateRowKeys([]);
 		setSelectAll(selected);
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, selected ? rowObjects : []);
+		selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, selected ? rowObjects : []);
 		// setSelectedRowObjects(rows);
 		// console.log("_handleSelectAll", selectedKeys);
 		onSelectedRowsChange(selectedKeys, rowObjects);
@@ -1248,7 +1248,7 @@ const mapStateToProps = (store, ownProps) => {
 	return {};
 };
 const mapDispatchToProps = (dispatch) =>
-	bindActionCreators({ setDateStore: setDateStore}, dispatch);
+	bindActionCreators({ setDataStore: setDataStore}, dispatch);
 
 // const mapStateToProps = (store, ownProps) => {
 //     // console.log("mapStateToProps -> store", store);

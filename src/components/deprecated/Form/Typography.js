@@ -6,7 +6,7 @@ import {
 import {getObjectExcludedProps} from '../../utils/baseUtils';
 import { getISO, toFormat } from "../../utils/datesUtils";
 
-const excludeProps = ['componentType', 'setDateStore'];
+const excludeProps = ['componentType', 'setDataStore'];
 
 
 const Typography = props => {

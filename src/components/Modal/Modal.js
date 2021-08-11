@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { notification, Button, Tooltip, Modal as AntModal} from "antd";
 import { notificationError, dispatchToStore, useMounted, getObjectExcludedProps } from "../utils/baseUtils";
-import objectPath from "object-path";
-import { setDateStore } from "../../redux/rtd.actions";
 import Form from "../Form/Form";
+import { getExtraData, mapDispatchToProps, mapStateToProps } from "../utils/storeUtils";
 
 const excludeProps = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
 const modalTypes = ['save', 'select', 'view']
@@ -77,7 +75,7 @@ const Modal = props => {
             // console.log("storeHOC => subscribe: ", props[subscribe.name]);
                 item.onChange && item.onChange({
                     value: props[item.name],
-                    extraData: props[`${item.name}ExtraData`],
+                    extraData: getExtraData(item, props), //extraData,
                     setModalData,
                     setButtonProps,
                     openModal: _onOpenModal,
@@ -108,14 +106,14 @@ const Modal = props => {
                     });
                     modalProps.onOk && modalProps.onOk(saveObj, response.data);
                     modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
-                    dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
+                    dispatchToStore({dispatch, setDataStore: props.setDataStore, value: saveObj});
                     _onCloseModal();
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении'));
         } else {
             modalProps.onOk && modalProps.onOk(saveObj);
             modalProps.onFinish && modalProps.onFinish(saveObj);
-            dispatchToStore({dispatch, setDateStore: props.setDateStore, value: saveObj});
+            dispatchToStore({dispatch, setDataStore: props.setDataStore, value: saveObj});
             _onCloseModal();
         }
     };
@@ -236,22 +234,5 @@ Modal.propTypes = {
 };
 
 Modal.defaultProps = defaultProps;
-
-const mapStateToProps = (store, ownProps) => {
-    const {subscribe} = ownProps;
-    let state = {};
-    if(subscribe && subscribe.length > 0){
-        subscribe.forEach(item => {
-            const {name, path, extraData} = item;
-            if(name && path)
-                state[name] = objectPath.get(store, path);
-            if(name && extraData)
-                state[`${name}ExtraData`] = objectPath.get(store, extraData);
-        })
-    }
-    return state;
-};
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators( { setDateStore: setDateStore, }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Modal);

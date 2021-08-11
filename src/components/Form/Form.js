@@ -6,11 +6,11 @@ import FormItems from "./FormItems";
 import { Form as AntForm, notification } from "antd";
 import { dispatchToStore, getObjectExcludedProps, noop, notificationError } from "../utils/baseUtils";
 import { rtPrefix } from "../utils/variables";
-import { setDateStore } from "../../redux/rtd.actions";
+import { setDataStore } from "../../redux/rtd.actions";
 
 const excludeProps = [
     "dispatch",
-    "setDateStore",
+    "setDataStore",
     "componentType",
     "noPadding",
     "scrollable",
@@ -23,11 +23,28 @@ const excludeProps = [
     "processBeforeSaveForm"
 ];
 
+/** Компонент заголовка формы */
+export const FormHeader = (props) =>
+    <div {...props} className={`${rtPrefix}-form-header ${props.className || ''}`}>{props.children}</div>
+
+/** Компонент тела формы */
+export const FormBody = (props) => {
+    let cls = [`${rtPrefix}-form-body`];
+    props.noPadding && cls.push(`${rtPrefix}-form-body-no-padding`);
+    props.scrollable && cls.push(`${rtPrefix}-form-body-scrollable`);
+    return <div {...props} className={cls.join(" ")}>{props.children}</div>
+}
+
+/** Компонент подвала формы */
+export const FormFooter = (props) =>
+    <div className={`${rtPrefix}-form-footer`}>{props.children}</div>
+
+
 /** Компонент формы */
 const Form = (props) => {
     const {
         dispatch,
-        setDateStore,
+        setDataStore,
         loadInitData,
         header,
         body,
@@ -128,7 +145,7 @@ const Form = (props) => {
                             ...antForm.getFieldsValue(),
                         };
                         // console.log('dispatchToStore => ', dispatch, values);
-                        dispatch && dispatchToStore({ dispatch, setDateStore, value: values })}
+                        dispatch && dispatchToStore({ dispatch, setDataStore, value: values })}
                     }
                 >
                     <React.Fragment>
@@ -182,6 +199,6 @@ Form.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ setDateStore: setDateStore}, dispatch);
+  bindActionCreators({ setDataStore: setDataStore}, dispatch);
 
 export default connect(null, mapDispatchToProps)(Form);

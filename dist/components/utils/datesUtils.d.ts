@@ -1,0 +1,11 @@
+export const APP_TIME_OFFSET: 3;
+export function getMomentFromStringByFormat(date: any, format: any): moment.Moment | null;
+export function getMomentWithOffset(date: any): string;
+export function getMomentWithOffsetTruncateDay(date: any): string;
+export function toFormat(dateString: any, format: any): any;
+export function toDDMMYYYYdot(dateString: any): any;
+export function toDDMMYYYYdotAltDashDash(dateString: any): any;
+export function toDDMMYYYYHHMMSS(dateString: any): any;
+export function toDDMMYYYYdash(dateString: any): any;
+export function getISO(date: any): string;
+import moment from "moment";

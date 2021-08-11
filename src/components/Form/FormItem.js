@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getObjectExcludedProps } from "../utils/baseUtils";
-import {renderClassicByName} from "../declarative";
+import {renderClassicByName} from "../core/renders";
 const excludeProps = ['child', 'componentType', 'field'];
 const FormItem = (props) => {
 

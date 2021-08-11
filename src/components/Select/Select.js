@@ -209,8 +209,9 @@ const Select = props => {
 	}
 
 	const onScroll = (event) => {
-		let scrollTopMax = event.nativeEvent.target.scrollTopMax
-		let scrollTop = event.nativeEvent.target.scrollTop//.body.scrollTop
+		// let scrollTopMax = event.nativeEvent.target.scrollTopMax
+		let scrollTopMax = event.nativeEvent.target.scrollHeight;
+		let scrollTop = event.nativeEvent.target.scrollTop;//.body.scrollTop
 
 		const onEndReached = scrollTopMax - scrollTop;
 

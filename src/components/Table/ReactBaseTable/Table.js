@@ -1,6 +1,5 @@
 import React, {useRef, forwardRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseTable, {AutoResizer} from 'react-base-table';
 import {empty, overlay} from './defaultSettings';
@@ -16,10 +15,9 @@ import {
 	noop,
 	getTableRowObjects, notificationError, useMounted
 } from "../../utils/baseUtils";
-import objectPath from "object-path";
-import { setDateStore } from "../../../redux/rtd.actions";
 import FormItems from "../../Form/FormItems";
 import moment from "moment";
+import { getExtraData, mapDispatchToProps, mapStateToProps } from "../../utils/storeUtils";
 
 /** Компонент таблицы */
 const Table = forwardRef((props, ref) => {
@@ -256,16 +254,9 @@ const Table = forwardRef((props, ref) => {
 		return useEffect( () => {
 			if((item.withMount || isMounted) && item.name) {
 				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
-				let extraData = {};
-				if (item.extraData) {
-					if (typeof item.extraData === 'object')
-						Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
-					else
-						extraData = props[`${item.name}ExtraData`];
-				}
 				const onChangeObject = {
 					value: props[item.name],
-					extraData: extraData, //props[`${item.name}ExtraData`],
+					extraData: getExtraData(item, props), //extraData, //props[`${item.name}ExtraData`],
 					reloadTable: reloadData,
 					addRows: _addRows,
 					addRow: _addRow,
@@ -319,11 +310,11 @@ const Table = forwardRef((props, ref) => {
 	}
 
 	const rowsDispatch = (rows) => {
-		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+		rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
 	};
 
 	const selectedDispatch = (data) => {
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+		selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, data);
 	}
 
 	const onTableEventsDispatch = (nameEvent, value) => {
@@ -331,7 +322,7 @@ const Table = forwardRef((props, ref) => {
 			? `${dispatch.path}.events.${nameEvent}`
 			: dispatchPath && `${dispatchPath}.events.${nameEvent}`;
 
-		dp && props.setDateStore && props.setDateStore(dp, {
+		dp && props.setDataStore && props.setDataStore(dp, {
 			timestamp: moment(),
 			value: value
 		});
@@ -1389,25 +1380,5 @@ Table.defaultProps = {
 	dispatchPath: undefined,
 	subscribe: [],
 };
-
-const mapStateToProps = (store, ownProps) => {
-	const {subscribe} = ownProps;
-	let state = {};
-	if(subscribe && subscribe.length > 0){
-		subscribe.forEach(item => {
-			const {name, path, extraData} = item;
-			if(name && path)
-				state[name] = objectPath.get(store, path);
-			if(name && extraData)
-				if(typeof extraData === 'object')
-					Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
-				else
-					state[`${name}ExtraData`] = objectPath.get(store, extraData);
-		})
-	}
-	return state;
-};
-const mapDispatchToProps = (dispatch) =>
-	bindActionCreators({ setDateStore: setDateStore}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Table);

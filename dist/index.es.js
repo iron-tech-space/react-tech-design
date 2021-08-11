@@ -1,119 +1,135 @@
-import 'antd/es/transfer/style';
-import _Transfer from 'antd/es/transfer';
-import 'antd/es/radio/style';
-import _Radio from 'antd/es/radio';
-import 'antd/es/switch/style';
-import _Switch from 'antd/es/switch';
-import 'antd/es/input-number/style';
-import _InputNumber from 'antd/es/input-number';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
-import 'antd/es/checkbox/style';
-import _Checkbox from 'antd/es/checkbox';
-import 'antd/es/divider/style';
-import _Divider from 'antd/es/divider';
-import 'antd/es/typography/style';
-import _Typography from 'antd/es/typography';
-import 'antd/es/list/style';
-import _List from 'antd/es/list';
+import 'antd/es/tooltip/style';
+import _Tooltip from 'antd/es/tooltip';
+import 'antd/es/button/style';
+import _Button from 'antd/es/button';
+import 'antd/es/popconfirm/style';
+import _Popconfirm from 'antd/es/popconfirm';
+import 'antd/es/modal/style';
+import _Modal from 'antd/es/modal';
+import React, { useState, useEffect, forwardRef, useRef } from 'react';
+import PropTypes from 'prop-types';
+import 'antd/es/notification/style';
+import _notification from 'antd/es/notification';
+import moment from 'moment';
+import { LoadingOutlined, CloseCircleOutlined, UpOutlined, DownOutlined, CloseCircleFilled, HomeOutlined, RollbackOutlined, CopyOutlined, PlusOutlined, FileOutlined, FileZipOutlined, FileTextOutlined, FilePptOutlined, FilePdfOutlined, FileMarkdownOutlined, FileImageOutlined, FileExcelOutlined, FileWordOutlined, FolderFilled, FolderAddOutlined, EditOutlined, DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, SettingOutlined, FilterOutlined, ExclamationCircleOutlined, CheckOutlined, CloudUploadOutlined, CaretUpOutlined, CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons';
+import 'antd/es/form/style';
+import _Form from 'antd/es/form';
+import 'antd/es/radio/style';
+import _Radio from 'antd/es/radio';
 import 'antd/es/tabs/style';
 import _Tabs from 'antd/es/tabs';
 import 'antd/es/col/style';
 import _Col from 'antd/es/col';
 import 'antd/es/row/style';
 import _Row from 'antd/es/row';
-import 'antd/es/space/style';
-import _Space from 'antd/es/space';
-import 'antd/es/form/style';
-import _Form from 'antd/es/form';
-import React, { useState, useEffect, forwardRef, useRef } from 'react';
-import 'antd/es/button/style';
-import _Button from 'antd/es/button';
-import 'antd/es/time-picker/style';
-import _TimePicker from 'antd/es/time-picker';
+import 'antd/es/switch/style';
+import _Switch from 'antd/es/switch';
+import 'antd/es/input-number/style';
+import _InputNumber from 'antd/es/input-number';
 import 'antd/es/date-picker/style';
 import _DatePicker from 'antd/es/date-picker';
-import moment from 'moment';
+import 'antd/es/checkbox/style';
+import _Checkbox from 'antd/es/checkbox';
+import 'antd/es/divider/style';
+import _Divider from 'antd/es/divider';
+import 'antd/es/typography/style';
+import _Typography from 'antd/es/typography';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import objectPath from 'object-path';
-import 'antd/es/notification/style';
-import _notification from 'antd/es/notification';
-import PropTypes from 'prop-types';
+import SortOrder from 'react-base-table/lib/SortOrder';
 import BaseTable, { AutoResizer } from 'react-base-table';
 import 'antd/es/spin/style';
 import _Spin from 'antd/es/spin';
-import { LoadingOutlined, CloseCircleOutlined, CaretUpOutlined, CaretDownOutlined, CaretRightOutlined, CheckOutlined, CloudUploadOutlined, UpOutlined, DownOutlined, CloseCircleFilled, HomeOutlined, RollbackOutlined, CopyOutlined, PlusOutlined, FileOutlined, FileZipOutlined, FileTextOutlined, FilePptOutlined, FilePdfOutlined, FileMarkdownOutlined, FileImageOutlined, FileExcelOutlined, FileWordOutlined, FolderFilled, FolderAddOutlined, EditOutlined, DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, SettingOutlined, FilterOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import 'antd/es/table/style';
-import _Table from 'antd/es/table';
-import '@babel/runtime/helpers/esm/extends';
-import '@babel/runtime/helpers/esm/inheritsLoose';
-import '@babel/runtime/helpers/esm/assertThisInitialized';
-import '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose';
-import ColumnResizer from 'react-base-table/lib/ColumnResizer';
+import locale from 'antd/es/date-picker/locale/ru_RU';
+import objectPath from 'object-path';
+import 'antd/es/upload/style';
+import _Upload from 'antd/es/upload';
+import { jsx, jsxs } from 'react/jsx-runtime';
+import AntTitle from 'antd/lib/typography/Title';
+import AntText from 'antd/lib/typography/Text';
+import 'antd/es/time-picker/style';
+import _TimePicker from 'antd/es/time-picker';
+import AntDivider from 'antd/lib/divider';
+import AntRow from 'antd/lib/row';
+import AntCol from 'antd/lib/col';
+import AntSpace from 'antd/lib/space';
+import AntCheckbox from 'antd/lib/checkbox';
+import AntForm from 'antd/lib/form';
+import AntInputNumber from 'antd/lib/input-number';
+import AntInput from 'antd/lib/input/Input';
+import AntSearch from 'antd/lib/input/Search';
+import AntTextArea from 'antd/lib/input/TextArea';
+import AntPassword from 'antd/lib/input/Password';
+import AntRadio from 'antd/lib/radio';
+import AntSwitch from 'antd/lib/switch';
+import AntSlider from 'antd/lib/slider';
 import 'antd/es/select/style';
 import _Select from 'antd/es/select';
 import 'antd/es/tree-select/style';
 import _TreeSelect from 'antd/es/tree-select';
-import 'antd/es/modal/style';
-import _Modal from 'antd/es/modal';
-import 'antd/es/tooltip/style';
-import _Tooltip from 'antd/es/tooltip';
-import 'antd/es/upload/style';
-import _Upload from 'antd/es/upload';
-import 'antd/es/popconfirm/style';
-import _Popconfirm from 'antd/es/popconfirm';
-import SortOrder from 'react-base-table/lib/SortOrder';
-import locale from 'antd/es/date-picker/locale/ru_RU';
+import AntCollapse from 'antd/lib/collapse';
+import AntList from 'antd/lib/list';
+import AntPopover from 'antd/lib/popover';
+import AntTooltip from 'antd/lib/tooltip';
+import AntTabs from 'antd/lib/tabs';
+import 'antd/es/table/style';
+import _Table from 'antd/es/table';
+import 'antd/es/space/style';
+import _Space from 'antd/es/space';
+import _extends$1 from '@babel/runtime/helpers/extends';
+import inheritsLoose from '@babel/runtime/helpers/inheritsLoose';
+import assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
+import objectWithoutPropertiesLoose from '@babel/runtime/helpers/objectWithoutPropertiesLoose';
+import ColumnResizer from 'react-base-table/lib/ColumnResizer';
 
-var APP_TIME_OFFSET = 3;
-
-var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
-	return date ? moment(date, format).utcOffset(APP_TIME_OFFSET) : null;
-};
-
-// export const getMomentWithOffset = (date) =>
-// 	moment(date).utcOffset(APP_TIME_OFFSET);
-var getMomentWithOffset = function getMomentWithOffset(date) {
-	return moment(date).format();
-};
-
-var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
-	return moment(date).startOf('day')
-	// .hours(0)
-	// .minutes(0)
-	// .seconds(0)
-	// .milliseconds(0)
-	.format();
-};
-
-var toFormat = function toFormat(dateString, format) {
-	if (!dateString) {
-		return '';
-	}
-	var mom = moment(dateString);
-	return mom.isValid() ? mom.format(format) : dateString;
-};
-
-var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
-	return toFormat(dateString, 'DD.MM.YYYY HH:mm:ss') || '--';
-};
-
-var getISO = function getISO(date) {
-	return moment(date).utcOffset(APP_TIME_OFFSET).toISOString();
-};
-
-var types = {
-    INIT_STORE: 'INIT_STORE',
-    SET_DATA_STORE: 'SET_DATA_STORE'
-};
-
-var setDateStore = function setDateStore(path, row) {
-    return {
-        type: types.SET_DATA_STORE,
-        payload: { path: path, row: row }
-    };
-};
+var classic = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  get Button () { return Button; },
+  get Title () { return Title; },
+  get Text () { return Text; },
+  get DateText () { return DateText; },
+  get Divider () { return Divider; },
+  get Row () { return Row; },
+  get Col () { return Col; },
+  get Layout () { return Layout; },
+  get Space () { return Space; },
+  get Checkbox () { return Checkbox; },
+  get DatePicker () { return DatePicker; },
+  get Form () { return Form; },
+  get FormHeader () { return FormHeader; },
+  get FormBody () { return FormBody; },
+  get FormFooter () { return FormFooter; },
+  get FormList () { return FormList; },
+  get InputNumber () { return InputNumber; },
+  get Input () { return Input; },
+  get Search () { return Search; },
+  get TextArea () { return TextArea; },
+  get Password () { return Password; },
+  get Radio () { return Radio; },
+  get RadioButton () { return RadioButton; },
+  get RadioGroup () { return RadioGroup; },
+  get Switch () { return Switch; },
+  get Slider () { return Slider; },
+  get Select () { return Select; },
+  get TreeSelect () { return TreeSelect; },
+  get TimePicker () { return TimePicker; },
+  get UploadFile () { return UploadFile; },
+  get Collapse () { return Collapse; },
+  get CollapsePanel () { return CollapsePanel; },
+  get List () { return List; },
+  get Popover () { return Popover; },
+  get Tooltip () { return Tooltip; },
+  get Tabs () { return Tabs; },
+  get TabPane () { return TabPane; },
+  get Table () { return Table; },
+  get RtTable () { return RtTable; },
+  get AntTable () { return AntTable; },
+  get Modal () { return Modal; },
+  get Custom () { return Custom; },
+  get Switcher () { return Switcher; }
+});
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -372,567 +388,7 @@ var getSortBy = function getSortBy(clientSortBy, serverSortBy, dataIndex) {
 	} else return [undefined, undefined];
 };
 
-var withStore$1 = function withStore(Component, antFormItemProps) {
-
-    var mapStateToProps = function mapStateToProps(store, ownProps) {
-        var subscribe = ownProps.subscribe,
-            dispatch = ownProps.dispatch;
-
-        var state = {};
-        if (subscribe && subscribe.length > 0) {
-            subscribe.forEach(function (item) {
-                var name = item.name,
-                    path = item.path,
-                    extraData = item.extraData;
-
-                if (name && path) state[name] = objectPath.get(store, path);
-                if (name && extraData) state[name + 'ExtraData'] = objectPath.get(store, extraData);
-            });
-        }
-        if (dispatch && dispatch.extraData) {
-            // console.log('subscribe to ', dispatch.extraData)
-            state.dispatchExtraData = objectPath.get(store, dispatch.extraData);
-        }
-
-        return state;
-    };
-    var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-        return bindActionCreators({ setDateStore: setDateStore }, dispatch);
-    };
-
-    var defaultProps = {
-        trigger: 'onChange',
-        valuePropName: 'value'
-    };
-
-    var withStoreProps = _extends({}, defaultProps, antFormItemProps);
-
-    return connect(mapStateToProps, mapDispatchToProps)(function (props) {
-        var componentType = props.componentType,
-            setDateStore = props.setDateStore,
-            dispatchExtraData = props.dispatchExtraData;
-
-        // Объект подписки на стор
-
-        var subscribe = props.subscribe ? props.subscribe : [];
-
-        // Объект публикации в стор
-        var dispatch = props.dispatch ? props.dispatch : {};
-
-        var _useState = useState({}),
-            _useState2 = slicedToArray(_useState, 2),
-            subscribeProps = _useState2[0],
-            setSubscribeProps = _useState2[1];
-
-        var trigger = withStoreProps.trigger,
-            valuePropName = withStoreProps.valuePropName;
-
-
-        var excludeProps = ['componentType', 'setDateStore', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
-            return item.name;
-        })), ['dispatch', 'dispatchExtraData']); // ...subscribe.map(item => item.name),
-
-        var isMounted = useMounted();
-
-        /** Подписка на изменение props[subscribe.name] в сторе */
-        subscribe.map(function (item) {
-            return useEffect(function () {
-                // console.log("withStore subscribe: ", item.name, item.withMount);
-                if ((item.withMount || isMounted) && item.name) {
-                    // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                    item.onChange && item.onChange({
-                        value: props[item.name],
-                        extraData: props[item.name + 'ExtraData'],
-                        setSubscribeProps: setSubscribePropsHandler });
-                }
-                // console.log("Change Props[2]: ", props.subscribeЗф);
-            }, [props[item.name]]);
-        });
-
-        /** Подписка на изменение props и отправка данных в стор */
-        useEffect(function () {
-            var _value = props[valuePropName];
-            // console.log(`storeHOC => `, _value);
-            // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
-            //     _value = undefined;
-            if (componentType !== 'Button' && componentType !== 'Search') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: _value });
-        }, [props[valuePropName]]);
-
-        /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
-        // useEffect(() => {
-        //     if(isMounted) {
-        //         console.log('onChange subscribeProps.value => ', subscribeProps.value);
-        //         props[trigger] && props[trigger](subscribeProps.value);
-        //     }
-        // }, [subscribeProps.value]);
-
-        var setSubscribePropsHandler = function setSubscribePropsHandler(_subscribeProps) {
-            // console.log('onChange setSubscribePropsHandler => ', value);
-            setSubscribeProps(function (prevState) {
-                return _extends({}, prevState, _subscribeProps);
-            });
-            if (_subscribeProps && objectPath.has(_subscribeProps, valuePropName)) {
-                var value = _subscribeProps[valuePropName];
-                // console.log('setSubscribePropsHandler => ', componentType, value);
-                if (componentType === 'Search') _searchDispatchToStore(value);
-
-                props[trigger] && props[trigger](value);
-            }
-        };
-
-        var onChange = function onChange() {
-            // console.log('withStore [trigger] ',  props[trigger], args)
-            if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
-
-            if (subscribeProps && objectPath.has(subscribeProps, valuePropName)) {
-                var _subscribeProps = _extends({}, subscribeProps);
-                objectPath.del(_subscribeProps, valuePropName);
-                // console.log('onClear subscribeProps[valuePropName] => ', _subscribeProps);
-                setSubscribeProps(_subscribeProps);
-            }
-
-            props[trigger] && props[trigger].apply(props, arguments);
-        };
-
-        var _onSearch = function _onSearch(searchLine, e) {
-            e.preventDefault();
-            // console.log("_onSearch", searchLine);
-            _searchDispatchToStore(searchLine);
-        };
-        var _searchDispatchToStore = function _searchDispatchToStore(searchLine) {
-            return dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: searchLine, extraData: dispatchExtraData });
-        };
-
-        var childProps = getObjectExcludedProps(props, excludeProps);
-        var onSearchProps = componentType === 'Search' ? { onSearch: _onSearch } : {};
-        // console.log(`storeHOC Component => `, componentType, Component);
-        return React.createElement(
-            Component,
-            _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange), onSearchProps),
-            props.children
-        );
-    });
-};
-
 var rtPrefix = 'rt';
-
-/** Компонент выбора даты */
-var DatePicker$1 = function DatePicker(props) {
-    return React.createElement(DateTimePicker, _extends({ Component: _DatePicker }, props));
-};
-
-var TimePicker$1 = function TimePicker(props) {
-    return React.createElement(DateTimePicker, _extends({ Component: _TimePicker }, props));
-};
-var DateTimePicker = function DateTimePicker(props) {
-    var Component = props.Component,
-        value = props.value,
-        onChange = props.onChange,
-        restProps = objectWithoutProperties(props, ["Component", "value", "onChange"]);
-
-
-    useEffect(function () {
-        // console.log("DatePickerHOC => onChange => string");
-        value && typeof value === 'string' && onChange(moment(value), value);
-    }, []);
-
-    var _value = value ? typeof value === 'string' ? moment(value) : value : undefined;
-    var style = _extends({ width: '100%' }, props && props.style);
-    // console.log("DatePickerHOC value => ", value);
-    return React.createElement(Component, _extends({}, restProps, { style: style, value: _value, onChange: onChange }));
-};
-
-/** Компонент вывода даты в текстовом виде */
-var TypographyDate$1 = function TypographyDate(props) {
-    var label = props.label,
-        value = props.value,
-        format = props.format;
-
-    var _value = value ? format ? toFormat(value, format) : getISO(value) : undefined;
-    return React.createElement(
-        _Typography.Text,
-        props,
-        " ",
-        label || _value,
-        " "
-    );
-};
-
-/** Компонент кнопки со всеми пропрами AntButton */
-var Button$1 = function Button(props) {
-    var Component = withStore$1(_Button, { trigger: 'onClick' });
-    // console.log('Props classic field renderClassic => ', props.field);
-    // const onClick = (e) => childProps.onClick && childProps.onClick(e, field);
-    var onClick = function onClick(e) {
-        return props.onClick && props.onClick(e, props.field);
-    };
-    return renderClassicWithLabel(Component)(_extends({}, props, { onClick: onClick }));
-};
-
-/** Custom компонент */
-var Custom$1 = function Custom(props) {
-    var children = props.children;
-
-    var childNode = null;
-    var childProps = null;
-
-    if (Array.isArray(children)) {
-        console.warn('Custom component: `children` is array. Don\'t render component');
-        return null;
-    } else if (props.render) {
-        // console.log('childNode = props.render')
-        childNode = props.render;
-        childProps = _extends({}, props, { componentType: 'Custom' });
-        return renderClassic(childNode)(childProps);
-    } else if (React.isValidElement(children)) {
-        // console.log('childNode = children')
-        childProps = _extends({}, children.props, props, { componentType: 'Custom' });
-        return React.cloneElement(children, childProps);
-    } else {
-        console.warn('Custom component: not exist valid render');
-        return null;
-    }
-};
-
-/** Компонент заголовка формы */
-var FormHeader$1 = function FormHeader(props) {
-    return React.createElement(
-        "div",
-        { className: rtPrefix + "-form-header" },
-        props.children
-    );
-};
-
-/** Компонент тела формы */
-var FormBody$1 = function FormBody(props) {
-    var cls = [rtPrefix + "-form-body"];
-    props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
-    props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
-    return React.createElement(
-        "div",
-        { className: cls.join(" ") },
-        props.children
-    );
-};
-
-/** Компонент подвала формы */
-var FormFooter$1 = function FormFooter(props) {
-    return React.createElement(
-        "div",
-        { className: rtPrefix + "-form-footer" },
-        props.children
-    );
-};
-
-var TabPane$1 = function TabPane(props) {
-    var cls = [];
-    props.className && cls.push(props.className);
-    props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
-    return React.createElement(
-        _Tabs.TabPane,
-        _extends({}, props, { className: cls.join(" ") }),
-        props.children
-    );
-};
-
-var excludeProps$b = ['child', 'componentType', 'field'];
-var FormItem$1 = function FormItem(props) {
-	var child = props.child,
-	    field = props.field;
-
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$b);
-	if (child) return renderClassicByName(child.componentType)(_extends({ itemProps: _extends({}, antFormItemProps) }, child, { field: field }));else return null;
-};
-
-FormItem$1.propTypes = {
-	child: PropTypes.object.isRequired
-};
-
-var excludeProps$a = ["children", "componentType"];
-
-var FormItems$1 = function FormItems(props) {
-    var items = props.items;
-
-    // console.log('FormItems props => ', props);
-
-    var getItems = function getItems(data, antFormListParams) {
-
-        return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$a);
-            // console.log('FormItems index => ', index);
-
-            switch (item.componentType) {
-                case "Item":
-                    var _item = _extends({}, item);
-                    var _key = index;
-                    if (antFormListParams && antFormListParams.field) {
-                        if (_item.name) {
-                            if (Array.isArray(_item.name)) {
-                                _item.name = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
-                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
-                            } else {
-                                _item.name = [antFormListParams.field.name, _item.name];
-                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
-                            }
-                        }
-                    }
-                    // console.log('_item ', _item.name);
-                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
-                case "ListItems":
-                    return React.createElement(
-                        _Form.List,
-                        _extends({ key: index }, itemProps),
-                        function (fields, operation) {
-                            var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
-                            return getItems(item.children, param);
-                        }
-                    );
-                case "ListItem":
-                    // console.log('antFormListParams => ', antFormListParams);
-                    return React.createElement(
-                        "div",
-                        { key: index },
-                        antFormListParams && antFormListParams.fields && antFormListParams.fields.map(function (field, fIndex) {
-                            // console.log('index field.key', index, field);
-                            var param = _extends({ field: _extends({}, field) }, antFormListParams);
-                            return React.createElement(
-                                "div",
-                                { key: field.key },
-                                getItems(item.children, param),
-                                " "
-                            );
-                        })
-                    );
-                default:
-                    return renderDeclarativeByName(item.componentType)(_extends({ key: index }, itemProps))(getItems(item.children, antFormListParams));
-            }
-        }) || null;
-    };
-
-    return getItems(items);
-};
-
-FormItems$1.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object).isRequired
-};
-
-var excludeProps$9 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
-
-/** Компонент формы */
-var Form$2 = function Form(props) {
-    var dispatch = props.dispatch,
-        setDateStore = props.setDateStore,
-        loadInitData = props.loadInitData,
-        header = props.header,
-        body = props.body,
-        footer = props.footer,
-        requestSaveForm = props.requestSaveForm,
-        methodSaveForm = props.methodSaveForm,
-        processBeforeSaveForm = props.processBeforeSaveForm;
-
-    /** Состояние первоначалной настройки компонента*/
-
-    var _useState = useState(false),
-        _useState2 = slicedToArray(_useState, 2),
-        loaded = _useState2[0],
-        setLoaded = _useState2[1];
-
-    var _useState3 = useState({}),
-        _useState4 = slicedToArray(_useState3, 2),
-        antFormProps = _useState4[0],
-        setAntFormProps = _useState4[1];
-
-    var _useState5 = useState({}),
-        _useState6 = slicedToArray(_useState5, 2),
-        initFormData = _useState6[0],
-        setInitFormData = _useState6[1];
-
-    useEffect(function () {
-        if (!loaded) {
-            if (loadInitData !== noop) loadInitData(_setInitFormData);else setLoaded(true);
-        }
-    }, [loaded]);
-
-    useEffect(function () {
-        setAntFormProps(getObjectExcludedProps(props, excludeProps$9));
-        // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
-    }, [props]);
-
-    var _setInitFormData = function _setInitFormData(data) {
-        // console.log("Form loaded init data => ", data);
-        setInitFormData(data);
-        setLoaded(true);
-    };
-
-    var antForm = void 0;
-    if (props && props.form) {
-        antForm = props.form;
-    } else {
-        var _AntForm$useForm = _Form.useForm(),
-            _AntForm$useForm2 = slicedToArray(_AntForm$useForm, 1),
-            form = _AntForm$useForm2[0];
-
-        antForm = form;
-    }
-
-    var getBodyCls = function getBodyCls() {
-        var cls = [rtPrefix + "-form-body"];
-        props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
-        props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
-        return cls.join(" ");
-    };
-
-    var onFinish = function onFinish(rawValues) {
-        var values = processBeforeSaveForm ? processBeforeSaveForm(rawValues) : rawValues;
-        // console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, values);
-        var saveObject = _extends({}, initFormData, values);
-        console.log("Success form [" + (props.name ? props.name : 'no name form') + "]: ", saveObject);
-        if (requestSaveForm && methodSaveForm) {
-            requestSaveForm({
-                method: methodSaveForm,
-                data: saveObject
-            }).then(function (response) {
-                _notification.success({
-                    message: "Сохранение прошло успешно"
-                });
-                props.onFinish && props.onFinish(saveObject, response.data);
-            }).catch(function (error) {
-                return notificationError(error, 'Ошибка при сохранении');
-            });
-        } else if (props.onFinish) props.onFinish(saveObject);
-    };
-
-    var onFinishFailed = function onFinishFailed(errorInfo) {
-        console.error("Failed:", errorInfo);
-        props.onFinishFailed && props.onFinishFailed(errorInfo);
-    };
-
-    var Header = function Header(header) {
-        return React.createElement(
-            "div",
-            { className: rtPrefix + "-form-header" },
-            React.createElement(FormItems$1, { items: header })
-        );
-    };
-    var Footer = function Footer(footer) {
-        return React.createElement(
-            "div",
-            { className: rtPrefix + "-form-footer" },
-            React.createElement(FormItems$1, { items: footer })
-        );
-    };
-
-    return React.createElement(
-        React.Fragment,
-        null,
-        loaded ? React.createElement(
-            _Form,
-            _extends({
-                form: antForm
-            }, antFormProps, {
-                className: antFormProps.className + " " + rtPrefix + "-form",
-                style: _extends({}, antFormProps.style, { width: '100%', height: '100%' }),
-                initialValues: _extends({}, antFormProps.initialValues, initFormData),
-                onFinish: onFinish,
-                onFinishFailed: onFinishFailed,
-                onFieldsChange: function onFieldsChange(changedFields, allFields) {
-                    var values = antForm.getFieldsValue();
-                    // console.log('dispatchToStore => ', dispatch, values);
-                    dispatch && dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: values });
-                }
-            }),
-            React.createElement(
-                React.Fragment,
-                null,
-                header ? Header(header) : null,
-                body ? React.createElement(
-                    "div",
-                    { className: getBodyCls() },
-                    React.createElement(FormItems$1, { items: body })
-                ) : null,
-                props.children,
-                footer ? Footer(footer) : null
-            )
-        ) : null
-    );
-};
-
-Form$2.propTypes = {
-
-    /** Не делать отступы у формы от краев блока. **Only config Form** */
-    noPadding: PropTypes.bool,
-
-    /** Разрешит скролл внтри формы. **Only config Form** */
-    scrollable: PropTypes.bool,
-
-    /** Массив объектов для шапки формы. Как правило только заголовок. */
-    header: PropTypes.arrayOf(PropTypes.object),
-
-    /** Массив объектов для тела формы */
-    body: PropTypes.arrayOf(PropTypes.object),
-
-    /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
-    footer: PropTypes.arrayOf(PropTypes.object),
-
-    /** Ссылка на функцию загрузки значений по умолчанию
-     * `(callBack) => callBack(initObject)` */
-    loadInitData: PropTypes.func,
-
-    /** Запрос для автоматического сохранения формы */
-    requestSaveForm: PropTypes.func,
-
-    /** HTTP Метод, передаваемый в запрос сохранения */
-    methodSaveForm: PropTypes.string,
-
-    /** Функция обработки перед сохранением формы */
-    processBeforeSaveForm: PropTypes.func
-};
-
-Form$2.defaultProps = {
-    noPadding: false,
-    scrollable: false,
-    loadInitData: noop,
-    methodSaveForm: 'POST'
-};
-
-var mapDispatchToProps$6 = function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ setDateStore: setDateStore }, dispatch);
-};
-
-var RtForm = connect(null, mapDispatchToProps$6)(Form$2);
-
-/** Компонент обертка со всеми пропрами div */
-var Layout$2 = function Layout(props) {
-
-    var getCls = function getCls() {
-        var cls = [rtPrefix + '-layout'];
-        props.className && cls.push(props.className);
-        return cls.join(' ');
-    };
-
-    return React.createElement(
-        'div',
-        _extends({}, props, { className: getCls() }),
-        props.children
-    );
-};
-
-var Switcher$1 = function Switcher(props) {
-    var value = props.value;
-
-    var _useState = useState(0),
-        _useState2 = slicedToArray(_useState, 2),
-        _value = _useState2[0],
-        _setValue = _useState2[1];
-
-    useEffect(function () {
-        if (value !== undefined && value < props.children.length) {
-            _setValue(value);
-        }
-    }, [value]);
-
-    return props.children[_value];
-};
 
 var empty$1 = React.createElement(
 	'div',
@@ -1089,4374 +545,7 @@ var parentAnalysis$1 = function parentAnalysis(_ref) {
 	return [_selectedRowKeys, _indeterminateRowKeys];
 };
 
-var onChangeSelectionCell = function onChangeSelectionCell(props) {
-	var rowData = props.rowData,
-	    rowIndex = props.rowIndex,
-	    column = props.column,
-	    rows = props.rows,
-	    checked = props.checked;
-	var rowKey = column.rowKey,
-	    parentKey = column.parentKey,
-	    nodeAssociated = column.nodeAssociated,
-	    selectedRowKeys = column.selectedRowKeys,
-	    indeterminateRowKeys = column.indeterminateRowKeys,
-	    onChange = column.onChange;
-
-	// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
-	// const totalLength = container.props.data.length;
-	// const checked = e.target.checked;
-	// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
-	// console.log("_handleChange: ", container);
-
-	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
-	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
-
-	/** Обработка себя, поиск детей, выделение / снятие их */
-	var rowChildren = [];
-	if (checked) {
-		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
-
-		_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
-		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
-			return element !== rowData[rowKey] && !rowChildren.includes(element);
-		});
-	} else {
-		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
-
-		_selectedRowKeys = _selectedRowKeys.filter(function (element) {
-			return element !== rowData[rowKey] && !rowChildren.includes(element);
-		});
-		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
-			return element !== rowData[rowKey] && !rowChildren.includes(element);
-		});
-	}
-
-	var _parentAnalysis = parentAnalysis$1({
-		rowData: rowData,
-		rowKey: rowKey,
-		parentKey: parentKey,
-		checked: checked,
-		nodeAssociated: nodeAssociated,
-		treeData: rows,
-		selectedRowKeys: _selectedRowKeys,
-		indeterminateRowKeys: _indeterminateRowKeys
-	});
-
-	var _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
-
-	_selectedRowKeys = _parentAnalysis2[0];
-	_indeterminateRowKeys = _parentAnalysis2[1];
-
-
-	var keys = [].concat(toConsumableArray(new Set(_selectedRowKeys)));
-	var _selectedRowObjects = flatten(getTableRowObjects(rows)).filter(function (item) {
-		return keys.includes(item[rowKey]);
-	});
-	//return [...new Set(_disabledElements)]
-	// onChange({ selected: checked, totalLength, rowData, rowIndex });
-
-	/** Выясняем новое состояние галочки "Выделить все" */
-	var selectAll = void 0;
-	var selectLength = keys.length;
-	var totalLength = flatten(getTableRowKeys(rows, column.rowKey)).length;
-
-	if (selectLength === 0) selectAll = false;else if (totalLength === selectLength) selectAll = true;else if (totalLength !== selectLength) selectAll = null;
-
-	onChange({
-		selected: checked,
-		_selectedRow: {
-			rowData: _extends({}, rowData),
-			rowIndex: rowIndex,
-			rowKey: rowKey
-		},
-		_selectAll: selectAll,
-		_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
-		_selectedRowObjects: _selectedRowObjects,
-		_indeterminateRowKeys: [].concat(toConsumableArray(new Set(_indeterminateRowKeys)))
-	});
-
-	// let uniqIds = {};
-	// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
-};
-
 var SelectionCell$1 = function SelectionCell(props) {
-	var rowData = props.rowData,
-	    column = props.column;
-	var selectedRowKeys = column.selectedRowKeys,
-	    indeterminateRowKeys = column.indeterminateRowKeys,
-	    rowKey = column.rowKey;
-
-	var det = indeterminateRowKeys.includes(rowData[rowKey]);
-	var checked = selectedRowKeys.includes(rowData[rowKey]);
-
-	return React.createElement(_Checkbox, {
-		indeterminate: det
-		// onChange={(e) => _onChangeHandler(e.target.checked)}
-		, checked: checked
-	});
-};
-
-var SelectionList$1 = function SelectionList(props) {
-	var selectedRowObjects = props.selectedRowObjects,
-	    rowRender = props.rowRender,
-	    onClickDropSelect = props.onClickDropSelect;
-
-	// console.log("SelectionList typeof -> ", typeof(rowRender));
-
-	return React.createElement(
-		'div',
-		{ className: rtPrefix + '-table-selected-rows' },
-		selectedRowObjects && selectedRowObjects.length > 0 ? React.createElement(
-			'ul',
-			null,
-			selectedRowObjects.map(function (item, index) {
-				return React.createElement(
-					'li',
-					{ key: index },
-					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React.createElement(
-						'div',
-						null,
-						item[rowRender]
-					),
-					React.createElement(
-						'div',
-						{ onClick: function onClick() {
-								return onClickDropSelect(item);
-							} },
-						React.createElement(CloseCircleOutlined, null)
-					)
-				);
-			})
-		) : React.createElement(
-			'div',
-			null,
-			'\u041D\u0435\u0442 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439'
-		)
-	);
-};
-
-SelectionList$1.propTypes = {
-	/** Строка или функция для отображения элементов списка
-  * Строка - имя поля
-  * Функция - рендер строк. Параметры v
-  * { rowData, rowIndex }) */
-	rowRender: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-
-	/** Список выделенных объектов */
-	selectedRowObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-	/** Событие удаления элемента */
-	onClickDropSelect: PropTypes.func.isRequired
-};
-
-SelectionList$1.defaultProps = {};
-
-/** Компонент таблицы */
-var Table$5 = forwardRef(function (props, ref) {
-
-	/** LOADING AND INFINITY MODE STATES */
-	var _useState = useState(true),
-	    _useState2 = slicedToArray(_useState, 2),
-	    hasMore = _useState2[0],
-	    setHasMore = _useState2[1];
-	/** Индикатор загрузки данных */
-
-
-	var _useState3 = useState(false),
-	    _useState4 = slicedToArray(_useState3, 2),
-	    loading = _useState4[0],
-	    setLoading = _useState4[1];
-
-	/** TABLE STATES */
-	/** Колонки таблицы */
-	// const [_columns, _setColumns] = useState([]);
-	/** Строки таблицы */
-
-
-	var _useState5 = useState([]),
-	    _useState6 = slicedToArray(_useState5, 2),
-	    _rows = _useState6[0],
-	    _setRows = _useState6[1];
-	/** Ключи выделенных строк */
-
-
-	var _useState7 = useState([]),
-	    _useState8 = slicedToArray(_useState7, 2),
-	    _selectedRowKeys = _useState8[0],
-	    setSelectedRowKeys = _useState8[1];
-	/** Значение строки поиска */
-
-
-	var _useState9 = useState(''),
-	    _useState10 = slicedToArray(_useState9, 2),
-	    _searchValue = _useState10[0],
-	    setSearchValue = _useState10[1];
-	/** Объект фильтра */
-
-
-	var _useState11 = useState({}),
-	    _useState12 = slicedToArray(_useState11, 2),
-	    _filter = _useState12[0],
-	    setFilter = _useState12[1];
-	/** Объект соритировки */
-
-
-	var _useState13 = useState({}),
-	    _useState14 = slicedToArray(_useState13, 2),
-	    _sortBy = _useState14[0],
-	    setSortBy = _useState14[1];
-	/** Состояние selectAll галочки */
-
-
-	var _useState15 = useState(false),
-	    _useState16 = slicedToArray(_useState15, 2),
-	    selectAll = _useState16[0],
-	    setSelectAll = _useState16[1];
-
-	/** TREE STATES */
-	/** Ключи строк с кубиками при selectable = true */
-
-
-	var _useState17 = useState([]),
-	    _useState18 = slicedToArray(_useState17, 2),
-	    _indeterminateRowKeys = _useState18[0],
-	    setIndeterminateRowKeys = _useState18[1];
-	/** Ключи раскрытых строк при selectable = true */
-
-
-	var _useState19 = useState([]),
-	    _useState20 = slicedToArray(_useState19, 2),
-	    _expandedRowKeys = _useState20[0],
-	    setExpandedRowKeys = _useState20[1];
-
-	/** FOOTER STATES */
-	/** Отображать ли footer */
-
-
-	var _useState21 = useState(false),
-	    _useState22 = slicedToArray(_useState21, 2),
-	    _footerShow = _useState22[0],
-	    _setFooterShow = _useState22[1];
-	/** Всего строк по фильтру в таблице */
-
-
-	var _useState23 = useState(0),
-	    _useState24 = slicedToArray(_useState23, 2),
-	    _totalCountRows = _useState24[0],
-	    setTotalCountRows = _useState24[1];
-
-	var _useState25 = useState({}),
-	    _useState26 = slicedToArray(_useState25, 2),
-	    subscribeProps = _useState26[0],
-	    setSubscribeProps = _useState26[1];
-
-	var tableRef = useRef();
-
-	var isMounted = useMounted();
-
-	var _props$subscribeProps = _extends({}, props, subscribeProps),
-	    columns = _props$subscribeProps.columns,
-	    infinityMode = _props$subscribeProps.infinityMode,
-	    editMode = _props$subscribeProps.editMode,
-	    defaultRows = _props$subscribeProps.defaultRows,
-	    defaultSelectedRowKeys = _props$subscribeProps.defaultSelectedRowKeys,
-	    defaultSearchValue = _props$subscribeProps.defaultSearchValue,
-	    defaultFilter = _props$subscribeProps.defaultFilter,
-	    defaultSortBy = _props$subscribeProps.defaultSortBy,
-	    rows = _props$subscribeProps.rows,
-	    setRows = _props$subscribeProps.setRows,
-	    selectedRowKeys = _props$subscribeProps.selectedRowKeys,
-	    searchValue = _props$subscribeProps.searchValue,
-	    filter = _props$subscribeProps.filter,
-	    sortBy = _props$subscribeProps.sortBy,
-	    rowKey = _props$subscribeProps.rowKey,
-	    customFields = _props$subscribeProps.customFields,
-	    empty = _props$subscribeProps.empty,
-	    overlay = _props$subscribeProps.overlay,
-	    fixWidthColumn = _props$subscribeProps.fixWidthColumn,
-	    headerHeight = _props$subscribeProps.headerHeight,
-	    rowHeight = _props$subscribeProps.rowHeight,
-	    rowRenderer = _props$subscribeProps.rowRenderer,
-	    zebraStyle = _props$subscribeProps.zebraStyle,
-	    estimatedRowHeight = _props$subscribeProps.estimatedRowHeight,
-	    rowBordered = _props$subscribeProps.rowBordered,
-	    loadThreshold = _props$subscribeProps.loadThreshold,
-	    pageSize = _props$subscribeProps.pageSize,
-	    requestLoadRows = _props$subscribeProps.requestLoadRows,
-	    requestLoadCount = _props$subscribeProps.requestLoadCount,
-	    searchParamName = _props$subscribeProps.searchParamName,
-	    selectable = _props$subscribeProps.selectable,
-	    nodeAssociated = _props$subscribeProps.nodeAssociated,
-	    expandColumnKey = _props$subscribeProps.expandColumnKey,
-	    expandDefaultAll = _props$subscribeProps.expandDefaultAll,
-	    expandLazyLoad = _props$subscribeProps.expandLazyLoad,
-	    expandParentKey = _props$subscribeProps.expandParentKey,
-	    onRowClick = _props$subscribeProps.onRowClick,
-	    onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
-	    onRowExpand = _props$subscribeProps.onRowExpand,
-	    onSelectedRowsChange = _props$subscribeProps.onSelectedRowsChange,
-	    onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
-	    showSelection = _props$subscribeProps.showSelection,
-	    rowRenderShowSelection = _props$subscribeProps.rowRenderShowSelection,
-	    dispatchPath = _props$subscribeProps.dispatchPath,
-	    dispatch = _props$subscribeProps.dispatch,
-	    subscribe = _props$subscribeProps.subscribe,
-	    value = _props$subscribeProps.value,
-	    onChange = _props$subscribeProps.onChange;
-
-	var footerProps = _extends({}, Table$5.defaultProps.footerProps, props.footerProps);
-
-	var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + '.selected' : dispatchPath && dispatchPath + '.selected';
-	var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + '.rows' : dispatchPath && dispatchPath + '.rows';
-
-	useEffect(function () {
-		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
-		// console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
-
-		// Инициализация дефолтных значений
-		// _setRows(defaultRows);
-		if (defaultRows.length > 0) _setRowsHandler(defaultRows);else if (rows.length > 0) _setRowsHandler(rows);
-		// setSelectedRowKeys(defaultSelectedRowKeys);
-		_setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows);
-		setSearchValue(defaultSearchValue);
-		setFilterHandler(defaultFilter);
-		setSortBy(defaultSortBy);
-		setSelectAll(defaultRows.length > 0 && defaultRows.length === defaultSelectedRowKeys.length);
-		// Определение нужно ли отображать подвал
-		_setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
-
-		// Only tree table
-		if (!!expandColumnKey && !expandLazyLoad) {
-			// Открытие всех нод
-			if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(defaultRows, rowKey)));
-			// Установка квадратиков на нужных нодах
-			if (defaultSelectedRowKeys && defaultSelectedRowKeys.length > 0) {
-				var flatRows = flatten(getTableRowKeys(defaultRows, rowKey));
-				var selectedRow = flatRows.filter(function (item) {
-					return defaultSelectedRowKeys.includes(item[rowKey]);
-				});
-				var _indeterminateRowKeys2 = [];
-				selectedRow.forEach(function (item) {
-					var _parentAnalysis = parentAnalysis$1({
-						rowData: item,
-						rowKey: rowKey,
-						parentKey: expandParentKey,
-						checked: true,
-						nodeAssociated: nodeAssociated,
-						treeData: defaultRows,
-						selectedRowKeys: defaultSelectedRowKeys,
-						indeterminateRowKeys: _indeterminateRowKeys2
-					}),
-					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
-					    _parentAnalysis2[0];
-					    var ii = _parentAnalysis2[1];
-
-					_indeterminateRowKeys2.push.apply(_indeterminateRowKeys2, toConsumableArray(ii));
-				});
-				setIndeterminateRowKeys([].concat(toConsumableArray(new Set(_indeterminateRowKeys2))));
-			}
-		}
-
-		// if (type !== 'localSide') {
-		_dataProcessing({
-			sortBy: defaultSortBy,
-			filter: defaultFilter,
-			searchLine: defaultSearchValue,
-			reload: true
-		});
-		// }
-		// console.log("Table => useEffect start ");
-		// setMounted(true);
-		if (ref && typeof ref === 'function') ref({ reloadData: reloadData });else if (ref && (typeof ref === 'undefined' ? 'undefined' : _typeof(ref)) === 'object') ref.current = { reloadData: reloadData };
-	}, []);
-
-	useEffect(function () {
-		if (isMounted) {
-			// console.log('useEffect rows');
-			_setRowsHandler(rows);
-			// setSelectedRowKeys(selectedRowKeys);
-			_setSelectedRowsHandler(selectedRowKeys, undefined, rows);
-			setSearchValue(searchValue);
-			setFilterHandler(filter);
-			setSortBy(sortBy);
-			if (!!expandColumnKey && !expandLazyLoad) {
-				// Открытие всех нод
-				if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(rows, rowKey)));
-			}
-		}
-	}, [rows, selectedRowKeys, searchValue, filter, sortBy]);
-
-	useEffect(function () {
-		// console.log('useEffect editMode');
-		_setSelectedRowsHandler([], []);
-	}, [editMode]);
-
-	useEffect(function () {
-		// console.log('useEffect value');
-		_setRowsHandler(value);
-	}, [value]);
-
-	/** Подписка на изменение props[subscribe.name] в сторе */
-	subscribe.map(function (item) {
-		return useEffect(function () {
-			if ((item.withMount || isMounted) && item.name) {
-				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
-				var extraData = {};
-				if (item.extraData) {
-					if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
-						return extraData[key] = props[item.name + '.extraData.' + key];
-					});else extraData = props[item.name + 'ExtraData'];
-				}
-				var onChangeObject = {
-					value: props[item.name],
-					extraData: extraData, //props[`${item.name}ExtraData`],
-					reloadTable: reloadData,
-					addRows: _addRows,
-					addRow: _addRow,
-					addRowAsCopy: _addRowAsCopy,
-					editRow: _editRow,
-					removeRow: _removeRow,
-					moveUpRow: _moveUpRow,
-					moveDownRow: _moveDownRow,
-					setSubscribeProps: _setSubscribeProps
-				};
-				item.onChange && item.onChange(onChangeObject);
-			}
-		}, [props[item.name]]);
-	});
-
-	/** BASE FUNCTIONS */
-
-	var _setSubscribeProps = function _setSubscribeProps(props) {
-		// setTimeout(() => {
-		// 	console.log('_setSubscribeProps');
-		setSubscribeProps(_extends({}, subscribeProps, props));
-		// }, 2000)
-	};
-
-	var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
-		_setRowsHandler(rows);
-		onChange && onChange(rows);
-	};
-	var _setRowsHandler = function _setRowsHandler(rows) {
-		// console.log('_setRowsHandler onChange');
-		_setRows(rows);
-		setRows(rows);
-		rowsDispatch(rows);
-	};
-
-	var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
-		var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-		var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-		var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-		// console.log('_setSelectedRowsHandler => ', selectedKeys)
-		setSelectedRowKeys(selectedKeys);
-		if (selectedKeys.length === 0) {
-			if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
-		} else if (selectedKeys.length > 0 && !selectedObjects) {
-			if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
-				return selectedKeys.includes(item[rowKey]);
-			}));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
-		} else selectedDispatch(selectedObjects);
-	};
-
-	var rowsDispatch = function rowsDispatch(rows) {
-		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
-	};
-
-	var selectedDispatch = function selectedDispatch(data) {
-		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
-	};
-
-	var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
-		var dp = dispatch && dispatch.path ? dispatch.path + '.events.' + nameEvent : dispatchPath && dispatchPath + '.events.' + nameEvent;
-
-		dp && props.setDateStore && props.setDateStore(dp, {
-			timestamp: moment(),
-			value: value
-		});
-		// console.log('onTableEventsDispatch onChange');
-		Array.isArray(value) && onChange && onChange(value);
-	};
-
-	var setFilterHandler = function setFilterHandler(filter) {
-		// console.log('setFilterHandler => ', filter);
-		setFilter(filter);
-	};
-
-	var reloadData = function reloadData(_ref, appendParams) {
-		var sortBy = _ref.sortBy,
-		    filter = _ref.filter,
-		    searchValue = _ref.searchValue;
-
-		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
-		tableRef.current && tableRef.current.scrollToRow(0, 'auto');
-		if (props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
-			return item[rowKey];
-		}), props.value);else _setSelectedRowsHandler();
-
-		var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
-		var __filter = appendParams ? _extends({}, _filter, filter) : filter;
-		var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
-		setSortBy(__sortBy);
-		setFilterHandler(__filter);
-		setSearchValue(__searchValue);
-		_dataProcessing({
-			sortBy: __sortBy,
-			filter: __filter,
-			searchLine: __searchValue,
-			reload: true
-		});
-		// console.log("reloadData loading ", loading);
-	};
-
-	var _dataProcessing = function _dataProcessing(params) {
-		// console.log('_dataProcessing', params);
-		var sortBy = params.sortBy,
-		    filter = params.filter,
-		    searchLine = params.searchLine,
-		    expandRow = params.expandRow,
-		    reload = params.reload;
-
-		if ((hasMore || reload) && !loading) {
-			setLoading(true);
-			var pageNum = reload ? 0 : Math.floor(_rows.length / pageSize);
-			var _params = {
-				page: pageNum,
-				size: pageSize,
-				sort: sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null
-			};
-			var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
-			// console.log('dataQuery', dataQuery);
-
-			if (infinityMode && reload && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad) {
-				requestLoadCount({
-					params: _params,
-					data: dataQuery
-				}).then(function (response) {
-					// console.log("infinity then response", response);
-					// const result = response.data;
-					setTotalCountRows(response.data);
-				}).catch(function (error) {
-					return notificationError(error, 'Ошибка получения количества записей по фильтру');
-				});
-			}
-
-			// console.log('requestLoadRows => ', typeof requestLoadRows);
-			// if(typeof requestLoadRows !== 'function'){
-			//     setLoading(false);
-			// }
-			if (requestLoadRows) {
-				requestLoadRows({
-					params: _params,
-					data: dataQuery
-				}).then(function (response) {
-					// console.log("infinity then response", response);
-					var result = response.data;
-					// Если иерархия и ленивая, то ищим кому добавть полученные записи
-					if (!!expandColumnKey && expandLazyLoad) {
-						// lastExpandRow//, setLastExpandRow
-						// console.log('!!expandColumnKey && expandLazyLoad', result);
-						if (pageNum === 0) {
-							result.forEach(function (child) {
-								child.children = [defineProperty({}, rowKey, generateUUID())];
-							});
-							// _setRows(result);
-							_setLoadedRowsHandler(result);
-						} else {
-							var newRows = [].concat(toConsumableArray(_rows));
-							// (data, rowKey, rowValue)
-							result.forEach(function (child) {
-								child.children = [defineProperty({}, rowKey, generateUUID())];
-							});
-							var node = findNodeByRowKey(newRows, rowKey, expandRow[rowKey]);
-							node.children = result;
-							// console.log('newRows -> ', newRows);
-							// _setRows(newRows);
-							_setLoadedRowsHandler(newRows);
-						}
-					} else {
-						if (result && result.length < pageSize) {
-							setHasMore(false);
-						} else {
-							setHasMore(true);
-						}
-						pageNum === 0 ? _setLoadedRowsHandler(result) // _setRows
-						: _setLoadedRowsHandler(_rows.concat(result)); // _setRows
-
-						// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
-						if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
-					}
-
-					setLoading(false);
-				}).catch(function (error) {
-					notificationError(error, 'Ошибка загрузки данных');
-					_setLoadedRowsHandler(_rows); // _setRows
-					// setHasMore(false);
-					setLoading(false);
-				});
-			} else setLoading(false);
-		}
-	};
-
-	var _onRowClick = function _onRowClick(_ref5) {
-		var rowData = _ref5.rowData,
-		    rowIndex = _ref5.rowIndex,
-		    rowKey = _ref5.rowKey;
-
-		// console.log('actionSimpleClick')
-		onTableEventsDispatch('onRowClick', rowData);
-		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
-	};
-	var _onRowDoubleClick = function _onRowDoubleClick(_ref6) {
-		var rowData = _ref6.rowData,
-		    rowIndex = _ref6.rowIndex,
-		    rowKey = _ref6.rowKey;
-
-		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
-		// console.log('actionDoubleClick')
-		// rowDoubleClickDispatch(rowData);
-		onTableEventsDispatch('onRowDoubleClick', rowData);
-		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
-	};
-
-	var _rowSelectAfterClick = function _rowSelectAfterClick(_ref7) {
-		var rowData = _ref7.rowData,
-		    rowIndex = _ref7.rowIndex,
-		    rowKey = _ref7.rowKey,
-		    onClick = _ref7.onClick;
-
-		var checked = !_selectedRowKeys.includes(rowKey);
-		var newRowObject = {
-			rowData: _extends({}, rowData),
-			rowIndex: rowIndex,
-			rowKey: rowKey
-		};
-		if (!selectable) {
-			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
-			// console.log('q onRowClick => ', rowData)
-			// if(_selectedRowKeys)
-			if (checked && !editMode) _setSelectedRowsHandler([rowKey], rowData);
-			onSelectedRowsChange([rowKey], [rowData]);
-		} else {
-			onChangeSelectionCell(_extends({}, newRowObject, {
-				column: _getSelectionColumnProps(),
-				rows: _rows,
-				checked: checked
-			}));
-		}
-		onClick && onClick(_extends({ selected: checked }, newRowObject));
-	};
-
-	var _rowEventHandlers = {
-		onClick: _onRowClick,
-		onDoubleClick: _onRowDoubleClick
-
-		// onClick: useSimpleAndDoubleClick(_onRowClick, _onRowDoubleClick),
-		// onClick: simpleAndDoubleClick(_onRowClick, _onRowDoubleClick),
-
-		// onDoubleClick: console.log('onDoubleClick'),
-		// onContextMenu: console.log('context menu'),
-		// onMouseEnter: console.log('mouse enter'),
-		// onMouseLeave: console.log('mouse leave'),
-	};
-
-	/** Событие при сортировке */
-	var _onColumnSort = function _onColumnSort(sortBy) {
-		// console.log("sortBy", sortBy);
-		tableRef.current.scrollToRow(0, 'auto');
-		var localSortBy = _sortBy.order === 'desc' ? {} : sortBy;
-		setSortBy(localSortBy);
-
-		// Для серверной сортировки - сбросить выделение
-		// if (type !== 'localSide') {
-		// setSelectedRowKeys([]);
-		_setSelectedRowsHandler();
-		// }
-		var loadParams = {
-			sortBy: localSortBy,
-			filter: _filter,
-			searchLine: _searchValue,
-			reload: true
-		};
-		_dataProcessing(loadParams);
-	};
-
-	/** VIEW FUNCTIONS */
-
-	var _footer = React.createElement(
-		React.Fragment,
-		null,
-		_footerShow ? React.createElement(
-			React.Fragment,
-			null,
-			React.createElement(
-				'div',
-				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
-			),
-			React.createElement(
-				'div',
-				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
-			),
-			React.createElement(
-				'div',
-				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
-			),
-			selectable ? React.createElement(
-				React.Fragment,
-				null,
-				footerProps.showElements.includes('selected') ? React.createElement(
-					'span',
-					null,
-					footerProps.selectedTitle,
-					' ',
-					_selectedRowKeys.length
-				) : null,
-				footerProps.showElements.includes('loaded') ? React.createElement(
-					'span',
-					null,
-					footerProps.loadedTitle,
-					' ',
-					flatten(getTableRowKeys(_rows, rowKey)).length
-				) : null
-			) : null,
-			footerProps.showElements.includes('total') ? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React.createElement(
-				'span',
-				null,
-				footerProps.totalTitle,
-				' ',
-				_totalCountRows
-			) : React.createElement(
-				'span',
-				null,
-				footerProps.totalTitle,
-				' ',
-				flatten(getTableRowKeys(_rows, rowKey)).length
-			) : null
-		) : null
-	);
-
-	/** Событие при рендере для стилизации */
-	var _rowClassName = function _rowClassName(_ref8) {
-		var rowData = _ref8.rowData,
-		    rowIndex = _ref8.rowIndex;
-		var rowClassName = props.rowClassName;
-
-		return [rowClassName, _selectedRowKeys.includes(rowData[rowKey]) && 'row-selected', zebraStyle ? rowIndex % 2 === 0 ? 'even' : 'odd' : '', rowBordered ? 'bordered' : ''].join(' ');
-	};
-
-	/** LOAD DATA FUNCTIONS */
-	var onEndReached = function onEndReached() {
-		var selectAll = void 0;
-		var selectLength = _selectedRowKeys.length;
-		if (selectLength === 0) selectAll = false;else if (selectLength > 0) selectAll = null;
-
-		setSelectAll(selectAll);
-		// console.log('_filter', _filter);
-
-		if (infinityMode) {
-			var loadParams = {
-				sortBy: _sortBy,
-				filter: _filter,
-				searchLine: _searchValue,
-				reload: false
-			};
-			_dataProcessing(loadParams);
-		}
-	};
-
-	/** SELECTABLE FUNCTIONS */
-
-	/** Событие при изменении галочки одной строки */
-	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref10) {
-		_ref10.selected;
-		    _ref10._selectedRow;
-		    var _selectAll = _ref10._selectAll,
-		    _selectedRowKeys = _ref10._selectedRowKeys,
-		    _selectedRowObjects = _ref10._selectedRowObjects,
-		    _indeterminateRowKeys = _ref10._indeterminateRowKeys;
-
-		// console.group("_onChangeSelectHandler", _selectedRowKeys);
-		// console.log("_selectedRowKeys", _selectedRowKeys);
-		// console.log("_indeterminateRowKeys", _indeterminateRowKeys);
-		// console.log("_selectAll", _selectAll);
-		// console.groupEnd();
-
-		// setSelectedRowKeys(_selectedRowKeys);
-		// selectedDispatch(_selectedRowObjects);
-		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects);
-		setIndeterminateRowKeys(_indeterminateRowKeys);
-		setSelectAll(_selectAll);
-		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
-	};
-
-	/** Событие при изменении галочки "Выделить все" */
-	var _onSelectAllHandler = function _onSelectAllHandler(_ref11) {
-		var selected = _ref11.selected,
-		    rowKeys = _ref11.rowKeys,
-		    rowObjects = _ref11.rowObjects;
-
-		var selectedKeys = selected ? rowKeys : [];
-		// setSelectedRowKeys(selectedKeys);
-		// selectedDispatch(selected ? rowObjects : []);
-		_setSelectedRowsHandler(selectedKeys, selected ? rowObjects : []);
-		setIndeterminateRowKeys([]);
-		setSelectAll(selected);
-		// setSelectedRowObjects(rows);
-		// console.log("_handleSelectAll", selectedKeys);
-		onSelectedRowsChange(selectedKeys, rowObjects);
-	};
-	//
-	// const SelectionCell = (props) => {
-	// 	const {rowData, column} = props;
-	// 	const {selectedRowKeys, indeterminateRowKeys, rowKey} = column;
-	// 	const det = indeterminateRowKeys.includes(rowData[rowKey]);
-	// 	const checked = selectedRowKeys.includes(rowData[rowKey]);
-	// 	React.useEffect(() => {
-	// 		console.log("selectionCell", props);
-	// 	}, []);
-	//
-	// 	const _handleChange = (checked) => {
-	// 		console.log("_handleChange", checked);
-	// 	}
-	//
-	// 	return (
-	// 		<Checkbox
-	// 			indeterminate={det}
-	// 			onChange={(e) => _handleChange(e.target.checked)}
-	// 			checked={checked}
-	// 		/>
-	// 	);
-	// };
-
-	var _getSelectionColumnProps = function _getSelectionColumnProps() {
-		return {
-			rowKey: rowKey,
-			parentKey: expandParentKey,
-			nodeAssociated: nodeAssociated,
-			selectedRowKeys: _selectedRowKeys,
-			indeterminateRowKeys: _indeterminateRowKeys,
-			onChange: _onChangeSelectHandler
-		};
-	};
-
-	var _getColumns = function _getColumns() {
-		var selectColumn = _extends({
-			key: '__selection__',
-			headerRenderer: SelectionHead$1,
-			cellRenderer: React.createElement(SelectionCell$1, null),
-			width: 40,
-			flexShrink: 0,
-			resizable: false,
-			frozen: 'left',
-			selectAll: selectAll,
-			onSelectAll: _onSelectAllHandler
-		}, _getSelectionColumnProps());
-		return selectable ? [selectColumn].concat(toConsumableArray(columns)) : [].concat(toConsumableArray(columns));
-	};
-
-	/** TREE FUNCTIONS */
-
-	var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
-		// console.log("_onExpandedRowsChange", expandedRowKeys);
-		onExpandedRowsChange(expandedRowKeys);
-	};
-	var _onRowExpand = function _onRowExpand(_ref12) {
-		var expanded = _ref12.expanded,
-		    rowData = _ref12.rowData,
-		    rowIndex = _ref12.rowIndex,
-		    rowKey = _ref12.rowKey;
-
-		// console.log("_onRowExpand", rowData, expanded, rowIndex, rowKey);
-		if (expanded) {
-			setExpandedRowKeys([].concat(toConsumableArray(_expandedRowKeys), [rowKey]));
-
-			if (expandLazyLoad) {
-				var loadParams = {
-					sortBy: _sortBy,
-					filter: _extends({}, _filter, defineProperty({}, expandParentKey, rowKey)),
-					searchLine: _searchValue,
-					reload: false,
-					expandRow: rowData
-				};
-				// _callPropsOnLoad(loadParams);
-				_dataProcessing(loadParams);
-			}
-		} else {
-			var expandedRowKeys = [].concat(toConsumableArray(_expandedRowKeys));
-			var allChildKeys = flatten(getTableRowKeys(rowData.children, props.rowKey));
-			allChildKeys.push(rowKey);
-			// console.log('allChildKeys', allChildKeys);
-			setExpandedRowKeys(expandedRowKeys.filter(function (item) {
-				return !allChildKeys.includes(item);
-			}));
-		}
-		onRowExpand({ expanded: expanded, rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
-	};
-
-	/** ROW CHANGE FUNCTIONS */
-
-	/**
-  * Find row by key
-  * @param data - table rows
-  * @param key - key row for find
-  * @param callback - function for return result
-  */
-	var loop = function loop(data, key, callback) {
-		for (var i = 0; i < data.length; i++) {
-			if (data[i][rowKey] === key) {
-				// console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
-				return callback(data[i], i, data);
-			}
-			if (data[i].children) {
-				loop(data[i].children, key, callback);
-			}
-		}
-	};
-
-	var _addRows = function _addRows(rows) {
-		var saveRows = [].concat(toConsumableArray(rows));
-		if (customFields)
-			// Фильтрация по пользовательским параметрам
-			saveRows = saveRows.filter(function (sRow) {
-				var isValid = [];
-				customFields.forEach(function (field) {
-					// Валидация по пользовательской логике функции validate
-					if (field.validate) isValid.push(field.validate(sRow, _rows));
-
-					// Создание или переобразование по пользовательской логике функции value
-					if (field.value) sRow[field.name] = field.value(sRow, _rows);
-				});
-				// console.log('_addRows isValid', isValid);
-				if (!isValid.includes(false)) return sRow;
-			});
-		var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
-		_setRowsHandler(_localRows);
-		onTableEventsDispatch('onAddRows', _localRows);
-	};
-
-	var _addRow = function _addRow(row) {
-		var _row = _extends({}, row);
-		var isValid = true;
-		if (customFields) {
-			var validations = [];
-			customFields.forEach(function (field) {
-				if (field.validate) validations.push(field.validate(_row, _rows));
-
-				if (field.value) _row[field.name] = field.value(_row, _rows);
-			});
-			isValid = !validations.includes(false);
-		}
-		if (isValid) {
-			var _localRows = [].concat(toConsumableArray(_rows), [_row]);
-			_setRowsHandler(_localRows);
-			onTableEventsDispatch('onAddRow', _localRows);
-		}
-	};
-
-	var _addRowAsCopy = function _addRowAsCopy() {
-		// console.log("_onClickAddAsCopy", selectedRow);
-		var _localRows = [].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
-		_setRowsHandler(_localRows);
-		onTableEventsDispatch('onAddRowAsCopy', _localRows);
-	};
-
-	var _editRow = function _editRow(row) {
-		// console.log("_onClickEdit", selectedRow);
-		var data = [].concat(toConsumableArray(_rows));
-		var key = row[rowKey];
-		loop(data, key, function (item, index, arr) {
-			data[index] = row;
-			_setRowsHandler(data);
-			// selectedDispatch(row)
-			_setSelectedRowsHandler(_selectedRowKeys, undefined, data);
-			onTableEventsDispatch('onEditRow', data);
-
-			// setSelectedRowKeys([]);
-		});
-		// props.onClickEdit(event, selectedRow);
-	};
-
-	var _removeRow = function _removeRow(event) {
-		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
-		var _localRows = _rows.filter(function (item) {
-			return !_selectedRowKeys.includes(item[rowKey]);
-		});
-		_setRowsHandler(_localRows);
-		_setSelectedRowsHandler();
-		onTableEventsDispatch('onRemoveRow', _localRows);
-
-		// setSelectedRowKeys([]);
-		// if (selectable)
-		// 	selectedDispatch([]);
-		// else
-		// 	selectedDispatch(undefined);
-		// commandPanelProps.onClickDelete(event, _selectedRowKeys);
-	};
-
-	// const _moveUpRow
-
-	var _moveUpRow = function _moveUpRow(event) {
-		var data = [].concat(toConsumableArray(_rows));
-		var key = _selectedRowKeys[0];
-		loop(data, key, function (item, index, arr) {
-			var newRowIndex = _getNewIndexRow(index, index - 1);
-			_changeIndexRow(index, newRowIndex, arr, data, 'onMoveUpRow');
-			// commandPanelProps.onClickUp(event, {
-			// 	rowIndex: newRowIndex,
-			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-			// }, data);
-		});
-	};
-
-	var _moveDownRow = function _moveDownRow(event) {
-		var data = [].concat(toConsumableArray(_rows));
-		var key = _selectedRowKeys[0];
-		loop(data, key, function (item, index, arr) {
-			var newRowIndex = _getNewIndexRow(index, index + 1);
-			_changeIndexRow(index, newRowIndex, arr, data, 'onMoveDownRow');
-			// commandPanelProps.onClickDown(event, {
-			// 	rowIndex: newRowIndex,
-			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
-			// }, data);
-		});
-	};
-
-	var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
-		return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
-	};
-
-	var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data, nameEvent) {
-		if (newIndex >= 0 && newIndex < arr.length) {
-			// let arr = [..._rows]; // Копируем массив
-			var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
-			// console.log('_changeIndexRow => ',item);
-			arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
-			// console.log("_changeIndexRow", item[0]);
-			_setRowsHandler(data);
-			onTableEventsDispatch(nameEvent, data);
-		}
-	};
-
-	// const _onSearch = (searchLine, e) => {
-	// 	e.preventDefault();
-	// 	// console.log("_onSearch", searchLine);
-	// 	tableRef.current.scrollToRow(0, 'auto');
-	// 	setSearchValue(searchLine);
-	// 	const loadParams = {
-	// 		sortBy: _sortBy,
-	// 		filter: _filter,
-	// 		searchLine: searchLine,
-	// 		reload: true,
-	// 	};
-	// 	_dataProcessing(loadParams);
-	// 	commandPanelProps.onSearch(searchLine);
-	// };
-
-	/** SELECTED PANEL */
-	var _onClickDropSelectHandler = function _onClickDropSelectHandler(dropObject) {
-		var newSelectedKeys = _selectedRowKeys.filter(function (item) {
-			return item !== dropObject[rowKey];
-		});
-		// setSelectedRowKeys(newSelectedKeys);
-		_setSelectedRowsHandler(newSelectedKeys, undefined, _rows);
-		setSelectAll(newSelectedKeys.length === 0 ? false : null);
-		onSelectedRowsChange(newSelectedKeys);
-	};
-
-	return React.createElement(
-		'div',
-		{ className: rtPrefix + '-table' },
-		React.createElement(
-			'div',
-			{ className: rtPrefix + '-baseTable' },
-			React.createElement(
-				AutoResizer,
-				null,
-				function (_ref13) {
-					var width = _ref13.width,
-					    height = _ref13.height;
-					return React.createElement(BaseTable, {
-						ref: tableRef
-						/** Required */
-						, columns: _getColumns(),
-						data: _rows
-						/** Control Props */
-						, sortBy: _sortBy
-						/** Base Props */
-						, width: width,
-						height: height,
-						rowKey: rowKey
-						// rowProps={rowProps}
-
-						/** View Props */
-						, rowClassName: _rowClassName,
-						emptyRenderer: empty,
-						fixed: fixWidthColumn,
-						footerHeight: _footerShow ? footerProps.height : 0,
-						headerHeight: headerHeight,
-						rowHeight: rowHeight,
-						overlayRenderer: loading ? overlay : null,
-						footerRenderer: _footer,
-						rowRenderer: rowRenderer
-						// rowProps={_rowProps}
-						// cellProps={_cellProps}
-						, estimatedRowHeight: estimatedRowHeight
-						/** Load Data Props */
-						, onEndReachedThreshold: loadThreshold,
-						onEndReached: infinityMode ? onEndReached : undefined,
-						disabled: loading
-						/** Tree Props */
-						, expandColumnKey: expandColumnKey,
-						expandedRowKeys: _expandedRowKeys
-						/** Events */
-						, onColumnSort: _onColumnSort,
-						rowEventHandlers: _rowEventHandlers,
-						onExpandedRowsChange: _onExpandedRowsChange,
-						onRowExpand: _onRowExpand,
-						editMode: editMode
-					});
-				}
-			)
-		),
-		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList$1, {
-			onClickDropSelect: _onClickDropSelectHandler,
-			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
-				return _selectedRowKeys.includes(item[rowKey]);
-			}),
-			rowRender: rowRenderShowSelection
-		}) : null
-	);
-});
-
-Table$5.propTypes = {
-	/**
-  * REQUIRED
-  * */
-
-	/** Столбцы таблицы */
-	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-	/** Режим загрузки данных по скроллу */
-	infinityMode: PropTypes.bool,
-
-	/**
-  * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
-  * */
-
-	/** Строки по умолчанию */
-	defaultRows: PropTypes.arrayOf(PropTypes.object),
-
-	/** Ключи выделенных по умолчанию строк */
-	defaultSelectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
-
-	/** Значение строки поиска по умолчанию строк */
-	defaultSearchValue: PropTypes.string,
-
-	/** Объект фильтрации по умолчанию */
-	defaultFilter: PropTypes.object,
-
-	/** Сортировка по умолчанию */
-	defaultSortBy: PropTypes.shape({
-		/** Ключ поля для сортировки */
-		key: PropTypes.string,
-		/** Направление сортировки */
-		order: PropTypes.oneOf(['asc', 'desc'])
-	}),
-
-	/**
-  * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
-  * */
-
-	/** Строки таблицы. Используется для контроля таблицы из вне. */
-	rows: PropTypes.arrayOf(PropTypes.object),
-
-	/** Функция задания строк таблицы. */
-	setRows: PropTypes.func,
-
-	/** Выделенные строки таблицы. */
-	selectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
-
-	/** Значение строки поиска */
-	searchValue: PropTypes.string,
-
-	/** Объект фильтрации */
-	filter: PropTypes.object,
-
-	/** Объект сортировки */
-	sortBy: PropTypes.shape({
-		/** Ключ поля для сортировки */
-		key: PropTypes.string,
-		/** Направление сортировки */
-		order: PropTypes.oneOf(['asc', 'desc'])
-	}),
-
-	/**
-  * BASE PROPS
-  * */
-
-	/** Поле для уникальной идентификации строки */
-	rowKey: PropTypes.string,
-
-	/** Дополнительные поля и валидация в объекты таблицы
-  * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
-  * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
-  * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
-  * ```json
-  * [
-  * 	{
-  * 		name: <String>,
-  * 		value: <func>,
-  * 		validate: <func>
-  * 	}
-  * ]
-  * ```
-  * `name` – Имя параметра в объекте
-  * `value` – Функция формирования значения - `(row, rows) => { return {} }`
-  * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
-  * Параметра **validate** работает **только** для модельного окна тип `select`.
-  * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
-  */
-	customFields: PropTypes.arrayOf(PropTypes.object),
-
-	/**
-  * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
-  * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
-  * ```json
-  * [
-  * 	{
-  * 		name: <String>,
-  * 		cellRenderer: <func>,
-  * 		...advancedColProps
-  * 	}
-  * ]
-  * ```
-  * `name` – key колонки к которой надо применить дополнительные пропсы
-  * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
-  * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
-  */
-	customColumnProps: PropTypes.arrayOf(PropTypes.object),
-
-	/**
-  * VIEW PROPS
-  * */
-
-	/** Вывод когда нет данных */
-	empty: PropTypes.element,
-
-	/** Отображение загрузки данных */
-	overlay: PropTypes.element,
-
-	/** Фиксированная ширина столбцов. Появится боковой скрол */
-	fixWidthColumn: PropTypes.bool,
-
-	footerProps: PropTypes.shape({
-
-		/** Высота подвала */
-		height: PropTypes.number,
-
-		/** Массив элементов футтера, которые надо отобразить
-   * ['selected', 'loaded', 'total'] */
-		showElements: PropTypes.arrayOf(PropTypes.string),
-
-		/** Заколовок для кол-ва выбранных объектов */
-		selectedTitle: PropTypes.string,
-
-		/** Заколовок для кол-ва загруженны объектов */
-		loadedTitle: PropTypes.string,
-
-		/** Заколовок для кол-ва всего объектов */
-		totalTitle: PropTypes.string,
-
-		/** Левый кастомный элемент командной панели */
-		leftCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
-
-		/** Центральный кастомный элемент командной панели */
-		centerCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
-
-		/** Правый кастомный элемент командной панели */
-		rightCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)])
-	}),
-
-	/** Высота заголовка таблицы */
-	headerHeight: PropTypes.number,
-
-	/** Высота строки таблицы */
-	rowHeight: PropTypes.number,
-
-	/** Custom row renderer
-  * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
-	rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-
-	/** Строки будут в зебро-стиле */
-	zebraStyle: PropTypes.bool,
-
-	/** Высота расширения */
-	estimatedRowHeight: PropTypes.number,
-
-	/** Отображать ли разделители ячеек в строке */
-	cellBordered: PropTypes.bool,
-
-	/** Отобрадать ли разделители строк */
-	rowBordered: PropTypes.bool,
-
-	/**
-  * LOAD DATA PROPS
-  * */
-
-	/** Порог в пикселях для вызова _onLoad.
-  * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-	loadThreshold: PropTypes.number,
-
-	/** Размер страницы */
-	pageSize: PropTypes.number,
-
-	/** Функция запроса для конфигурации */
-	requestLoadConfig: PropTypes.func,
-
-	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes.func,
-
-	/** Функция запроса для загрузки строк (данных) */
-	requestLoadCount: PropTypes.func,
-
-	/** Имя параметра для поиска */
-	searchParamName: PropTypes.string,
-
-	/**
-  * SELECTABLE PROPS
-  * */
-
-	/** Таблица с возможностью выбора строки */
-	selectable: PropTypes.bool,
-
-	/**
-  * TREE PROPS
-  * */
-
-	/** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
-	nodeAssociated: PropTypes.bool,
-
-	/** Ключ колонки по которой строить иерархию */
-	expandColumnKey: PropTypes.string,
-
-	/** Открыть по умолчанию вложенность до уровня N или 'All' */
-	expandDefaultAll: PropTypes.bool,
-
-	/** Загружать ноды иерархии по одной */
-	expandLazyLoad: PropTypes.bool,
-
-	/** Поле в котором хранится ссылка на родителя */
-	expandParentKey: PropTypes.string,
-
-	/**
-  * EVENTS
-  * */
-
-	/** Событие при клике на строку (только при `selectable` = `false`)
-  * `({selected, rowData, rowIndex}) => {}` */
-	onRowClick: PropTypes.func,
-
-	/** Событие при двойном клике на строку.
-  * `({rowData, rowIndex, rowKey}) => {}` */
-	onRowDoubleClick: PropTypes.func,
-
-	/** События при открытии / закрытии ноды
-  * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
-	onRowExpand: PropTypes.func,
-
-	/** Событие при выборе строки.
-  * `([rowKeys], [rowDatas]) => {}` */
-	onSelectedRowsChange: PropTypes.func,
-
-	/** События при открытии / закрытии ноды
-  * `(expandedRowKeys) => {}` - массив ключей открытых нод */
-	onExpandedRowsChange: PropTypes.func,
-
-	/** SELECTED PANEL */
-
-	/** Отображать ли панель выбранных элементов */
-	showSelection: PropTypes.bool,
-
-	/** Строка или функция для отображения элементов списка выбранных
-  * Строка - имя поля
-  * Функция - рендер строк.
-  * `({ rowData, rowIndex }) => { return <Component> }` */
-	rowRenderShowSelection: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-
-	/** Путь в сторе куда класть выбранную строку таблицы */
-	dispatchPath: PropTypes.string,
-
-	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes.arrayOf(PropTypes.object)
-};
-
-Table$5.defaultProps = {
-	infinityMode: false,
-	editMode: false,
-	defaultRows: [],
-	defaultSelectedRowKeys: [],
-	defaultSearchValue: '',
-	defaultFilter: {},
-	defaultSortBy: {},
-
-	rows: [],
-	setRows: noop,
-	selectedRowKeys: [],
-	searchValue: '',
-	filter: {},
-	sortBy: {},
-
-	rowKey: 'id',
-
-	empty: empty$1,
-	overlay: overlay$1,
-	fixWidthColumn: false,
-	footerProps: {
-		height: 30,
-		showElements: [],
-		selectedTitle: 'Выделено:',
-		loadedTitle: 'Загружено записей:',
-		totalTitle: 'Всего записей:',
-		leftCustomSideElement: null,
-		centerCustomSideElement: null,
-		rightCustomSideElement: null
-	},
-	headerHeight: 36,
-	rowHeight: 36,
-	zebraStyle: false,
-	estimatedRowHeight: undefined,
-	cellBordered: false,
-	rowBordered: true,
-
-	loadThreshold: 300,
-	pageSize: 50,
-	requestLoadRows: undefined,
-	requestLoadCount: noop,
-	searchParamName: 'searchLine',
-
-	selectable: false,
-
-	nodeAssociated: true,
-	expandColumnKey: undefined,
-	expandDefaultAll: true,
-	expandLazyLoad: false,
-	expandParentKey: 'parentId',
-
-	onRowClick: noop,
-	onRowDoubleClick: noop,
-	onRowExpand: noop,
-	onSelectedRowsChange: noop,
-	onExpandedRowsChange: noop,
-
-	showSelection: false,
-
-	dispatchPath: undefined,
-	subscribe: []
-};
-
-var mapStateToProps$4 = function mapStateToProps(store, ownProps) {
-	var subscribe = ownProps.subscribe;
-
-	var state = {};
-	if (subscribe && subscribe.length > 0) {
-		subscribe.forEach(function (item) {
-			var name = item.name,
-			    path = item.path,
-			    extraData = item.extraData;
-
-			if (name && path) state[name] = objectPath.get(store, path);
-			if (name && extraData) if ((typeof extraData === 'undefined' ? 'undefined' : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
-				return state[name + '.extraData.' + key] = objectPath.get(store, extraData[key]);
-			});else state[name + 'ExtraData'] = objectPath.get(store, extraData);
-		});
-	}
-	return state;
-};
-var mapDispatchToProps$5 = function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
-};
-
-var Table$6 = connect(mapStateToProps$4, mapDispatchToProps$5, null, { forwardRef: true })(Table$5);
-
-var _this$3 = undefined;
-
-
-var defaultProps$3 = {
-    defaultFilter: {},
-    rowKey: 'id',
-    pageSize: 50,
-    requestLoadConfig: noop,
-    expandColumnKey: undefined,
-    expandLazyLoad: false,
-    expandParentKey: 'parentId',
-    customColumnProps: []
-};
-
-var ConfigLoader$1 = function ConfigLoader(props) {
-
-    /** Конфигурация таблицы */
-    var _useState = useState(undefined),
-        _useState2 = slicedToArray(_useState, 2),
-        tableConfig = _useState2[0],
-        setTableConfig = _useState2[1];
-
-    var _defaultProps$props = _extends({}, defaultProps$3, props),
-        defaultSortBy = _defaultProps$props.defaultSortBy,
-        defaultFilter = _defaultProps$props.defaultFilter,
-        rowKey = _defaultProps$props.rowKey,
-        pageSize = _defaultProps$props.pageSize,
-        requestLoadConfig = _defaultProps$props.requestLoadConfig,
-        expandColumnKey = _defaultProps$props.expandColumnKey,
-        expandLazyLoad = _defaultProps$props.expandLazyLoad,
-        expandParentKey = _defaultProps$props.expandParentKey,
-        customColumnProps = _defaultProps$props.customColumnProps,
-        cellBordered = _defaultProps$props.cellBordered;
-
-    useEffect(function () {
-        var cleanupFunction = false;
-        var loadData = function () {
-            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                if (requestLoadConfig) {
-                                    // console.log('requestLoadConfig => ', typeof requestLoadConfig);
-                                    // console.log('requestLoadRows => ', typeof props.requestLoadRows);
-                                    requestLoadConfig().then(function (response) {
-                                        // let result = response.data;
-                                        // console.log('requestLoadConfig -> ', response.data);
-                                        if (!cleanupFunction) {
-                                            // setTableConfig(response.data);
-                                            configParser(response.data);
-                                        }
-                                    }).catch(function (error) {
-                                        return notificationError(error, 'Ошибка получения конфигурации');
-                                    });
-                                }
-
-                            case 1:
-                            case "end":
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, _this$3);
-            }));
-
-            return function loadData() {
-                return _ref.apply(this, arguments);
-            };
-        }();
-        loadData().then(function (r) {
-            return r;
-        });
-        return function () {
-            return cleanupFunction = true;
-        };
-    }, []);
-
-    var configParser = function configParser(config) {
-        // Массив колонок
-        var _columns = [];
-        // Сортировка по умолчанию
-        var _defaultSorter = [];
-
-        config && config.fields && config.fields.forEach(function (item) {
-            var colProps = customColumnProps && customColumnProps.find(function (render) {
-                return render.name === item.name || render.name === item.alias;
-            });
-
-            // Индекс или имя поля в данных
-            var dataIndex = item.alias ? item.alias : item.name;
-
-            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
-
-            _columns.push(_extends({
-                key: dataIndex,
-                title: item.header ? item.header : item.name,
-                dataKey: dataIndex,
-                align: item.align,
-                width: item.width,
-                resizable: item.resizable,
-                sortable: item.sortable,
-                hidden: !item.visible,
-                className: [cellBordered ? 'bordered' : ''].join(' '),
-                headerClassName: [cellBordered ? 'bordered' : ''].join(' ')
-            }, colProps, {
-                cellRenderer: function cellRenderer(object) {
-                    if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, object);
-                    // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                    else return object.cellData ? React.createElement(
-                            _Typography.Text,
-                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
-                            object.cellData
-                        ) : React.createElement(
-                            _Typography.Text,
-                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
-                            "---"
-                        );
-                    // return object.cellData ? object.cellData : '---';
-                }
-            }));
-        });
-
-        var _defaultFilter = void 0;
-        if (config && config.hierarchical && config.hierarchyLazyLoad) {
-            var parentKey = config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey;
-            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
-        } else _defaultFilter = defaultFilter;
-
-        setTableConfig({
-            columns: _columns,
-            defaultSortBy: _defaultSorter[0],
-            defaultFilter: _defaultFilter,
-            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[0] : rowKey,
-            expandParentKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey,
-            expandColumnKey: config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey,
-            expandLazyLoad: config && config.hierarchical && config.hierarchyLazyLoad ? config.hierarchyLazyLoad : expandLazyLoad,
-            pageSize: config && config.hierarchical ? 1 : pageSize
-        });
-    };
-
-    if (tableConfig) return React.createElement(Table$6, _extends({}, props, tableConfig));else return null;
-};
-
-if (process.env.NODE_ENV !== 'production') ;
-
-if (process.env.NODE_ENV !== 'production') ;
-
-var HeaderCell = function HeaderCell(props) {
-    // console.log('HeaderCell => ', props);
-
-    var column = props.column,
-        onResize = props.onResize,
-        restProps = objectWithoutProperties(props, ["column", "onResize"]);
-
-
-    if (!column) return React.createElement("th", restProps);
-
-    var width = column.width,
-        resizable = column.resizable;
-        column.headerRenderer;
-
-
-    if (!width) return React.createElement("th", restProps);
-
-    // if (headerRenderer) {
-    //     let childNode
-    //     if( typeof headerRenderer === 'function') {
-    //         childNode = headerRenderer()
-    //     }
-    //     else {
-    //         childNode = headerRenderer
-    //     }
-    //
-    //     return (
-    //         <th {...restProps}>
-    //             {childNode}
-    //             {resizable &&
-    //             <ColumnResizer
-    //                 className={`${rtPrefix}-column-resizer`}
-    //                 column={{ width: width, maxWidth: 1000 }}
-    //                 onResize={onResize}
-    //             />}
-    //         </th>
-    //     );
-    // } else {
-    return React.createElement(
-        "th",
-        restProps,
-        restProps.children,
-        resizable && React.createElement(ColumnResizer, {
-            className: rtPrefix + "-column-resizer",
-            column: { width: width, maxWidth: 1000 },
-            onResize: onResize
-        })
-    );
-    // }
-};
-
-HeaderCell.propTypes = {
-    onResize: PropTypes.func,
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    resizable: PropTypes.bool
-};
-
-var HeaderRow = function HeaderRow(props) {
-    var headerRowRef = useRef();
-    var headerHeight = props.headerHeight,
-        setHeaderHeight = props.setHeaderHeight,
-        restProps = objectWithoutProperties(props, ['headerHeight', 'setHeaderHeight']);
-
-    useEffect(function () {
-
-        var newHeight = headerRowRef && headerRowRef.current && headerRowRef.current.clientHeight;
-        if (headerHeight !== newHeight) {
-            // console.log('Row height', newHeight) //clientHeight
-            setHeaderHeight(newHeight);
-        }
-    });
-    return React.createElement('tr', _extends({}, restProps, { ref: headerRowRef }));
-};
-
-HeaderRow.propTypes = {
-    headerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    setHeaderHeight: PropTypes.func
-};
-
-var BodyCell = function BodyCell(props) {
-  var column = props.column,
-      rowData = props.rowData,
-      rowIndex = props.rowIndex,
-      restProps = objectWithoutProperties(props, ["column", "rowData", "rowIndex"]);
-
-
-  if (column && column.cellComponent) {
-    // console.log('BodyCell => ', restProps);
-    return React.createElement(
-      "td",
-      _extends({}, restProps, { style: _extends({}, restProps.style, { padding: 0 }) }),
-      React.createElement(column.cellComponent, {
-        column: column,
-        cellData: restProps.title,
-        rowData: rowData,
-        rowIndex: rowIndex
-      })
-    );
-  } else {
-    return React.createElement("td", restProps);
-  }
-};
-
-BodyCell.propTypes = {};
-
-var excludeProps$8 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName", "onRowClick", "onRowDoubleClick"];
-
-var Table$3 = function Table(props) {
-  /** Индикатор загрузки данных */
-  var _useState = useState(false),
-      _useState2 = slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
-
-  /** TABLE STATES */
-  /** Столбцы таблицы */
-
-
-  var _useState3 = useState([]),
-      _useState4 = slicedToArray(_useState3, 2),
-      _columns = _useState4[0],
-      _setColumns = _useState4[1];
-  /** Строки таблицы */
-
-
-  var _useState5 = useState([]),
-      _useState6 = slicedToArray(_useState5, 2),
-      _rows = _useState6[0],
-      _setRows = _useState6[1];
-  /** Ключи выделенных строк */
-
-
-  var _useState7 = useState([]),
-      _useState8 = slicedToArray(_useState7, 2),
-      _selectedRowKeys = _useState8[0],
-      setSelectedRowKeys = _useState8[1];
-  /** Значение строки поиска */
-
-
-  var _useState9 = useState(""),
-      _useState10 = slicedToArray(_useState9, 2),
-      _searchValue = _useState10[0],
-      setSearchValue = _useState10[1];
-  /** Объект фильтра */
-
-
-  var _useState11 = useState({}),
-      _useState12 = slicedToArray(_useState11, 2),
-      _filter = _useState12[0],
-      setFilter = _useState12[1];
-  /** Объект соритировки */
-
-
-  var _useState13 = useState({}),
-      _useState14 = slicedToArray(_useState13, 2),
-      _sortBy = _useState14[0],
-      setSortBy = _useState14[1];
-
-  /** TREE STATES */
-  /** Ключи строк с кубиками при selectable = true */
-  // const [_indeterminateRowKeys, setIndeterminateRowKeys] = useState([]);
-  /** Ключи раскрытых строк при selectable = true */
-
-
-  var _useState15 = useState([]),
-      _useState16 = slicedToArray(_useState15, 2),
-      _expandedRowKeys = _useState16[0],
-      setExpandedRowKeys = _useState16[1];
-
-  /** FOOTER STATES */
-  /** Отображать ли footer */
-
-
-  var _useState17 = useState(false),
-      _useState18 = slicedToArray(_useState17, 2),
-      _footerShow = _useState18[0],
-      _setFooterShow = _useState18[1];
-  /** Всего строк по фильтру в таблице */
-
-
-  var _useState19 = useState(0),
-      _useState20 = slicedToArray(_useState19, 2),
-      _totalCountRows = _useState20[0],
-      setTotalCountRows = _useState20[1];
-
-  var _useState21 = useState({}),
-      _useState22 = slicedToArray(_useState21, 2),
-      subscribeProps = _useState22[0],
-      setSubscribeProps = _useState22[1];
-
-  var _useState23 = useState(0),
-      _useState24 = slicedToArray(_useState23, 2),
-      headerHeight = _useState24[0],
-      setHeaderHeight = _useState24[1];
-
-  var isMounted = useMounted();
-
-  var _props$subscribeProps = _extends({}, props, subscribeProps),
-      columns = _props$subscribeProps.columns,
-      editMode = _props$subscribeProps.editMode,
-      defaultRows = _props$subscribeProps.defaultRows,
-      defaultSearchValue = _props$subscribeProps.defaultSearchValue,
-      defaultFilter = _props$subscribeProps.defaultFilter,
-      defaultSortBy = _props$subscribeProps.defaultSortBy,
-      rows = _props$subscribeProps.rows,
-      rowKey = _props$subscribeProps.rowKey,
-      customFields = _props$subscribeProps.customFields,
-      zebraStyle = _props$subscribeProps.zebraStyle,
-      className = _props$subscribeProps.className,
-      style = _props$subscribeProps.style,
-      pageSize = _props$subscribeProps.pageSize,
-      requestLoadRows = _props$subscribeProps.requestLoadRows,
-      requestLoadCount = _props$subscribeProps.requestLoadCount,
-      searchParamName = _props$subscribeProps.searchParamName,
-      rowSelection = _props$subscribeProps.rowSelection,
-      selectable = _props$subscribeProps.selectable,
-      expandable = _props$subscribeProps.expandable,
-      nodeAssociated = _props$subscribeProps.nodeAssociated,
-      expandColumnKey = _props$subscribeProps.expandColumnKey,
-      expandDefaultAll = _props$subscribeProps.expandDefaultAll,
-      onRowClick = _props$subscribeProps.onRowClick,
-      onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
-      onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
-      dispatchPath = _props$subscribeProps.dispatchPath,
-      dispatch = _props$subscribeProps.dispatch,
-      subscribe = _props$subscribeProps.subscribe,
-      value = _props$subscribeProps.value,
-      onChange = _props$subscribeProps.onChange;
-
-  var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
-
-  var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + ".selected" : dispatchPath && dispatchPath + ".selected";
-  var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + ".rows" : dispatchPath && dispatchPath + ".rows";
-
-  useEffect(function () {
-    // console.log("Инициализация дефолтных значений ", selectColumn, columns);
-    // console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
-
-    // Инициализация дефолтных значений
-    // _setRows(defaultRows);
-    if (defaultRows.length > 0) _setRowsHandler(defaultRows);else if (rows.length > 0) _setRowsHandler(rows);
-    setSearchValue(defaultSearchValue);
-    setFilter(defaultFilter);
-    setSortBy(defaultSortBy);
-
-    // Определение нужно ли отображать подвал
-    _setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
-
-    _loadRows({
-      sortBy: defaultSortBy,
-      filter: defaultFilter,
-      searchLine: defaultSearchValue,
-      reload: true
-    });
-    // console.log("tableRef", tableRef);
-  }, []);
-
-  useEffect(function () {
-    _setColumns(columns);
-  }, [columns]);
-
-  useEffect(function () {
-    if (value && Array.isArray(value)) _setRowsHandler(value);
-  }, [value]);
-
-  /** Подписка на изменение props[subscribe.name] в сторе */
-  subscribe.map(function (item) {
-    return useEffect(function () {
-      if ((item.withMount || isMounted) && item.name) {
-        // console.log("Table => useEffect => ", props); //item.name, props[item.name]
-        var extraData = {};
-        if (item.extraData) {
-          if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
-            return extraData[key] = props[item.name + ".extraData." + key];
-          });else extraData = props[item.name + "ExtraData"];
-        }
-        var onChangeObject = {
-          value: props[item.name],
-          extraData: extraData, //props[`${item.name}ExtraData`],
-          reloadTable: reloadData,
-          addRows: _addRows,
-          addRow: _addRow,
-          addRowAsCopy: _addRowAsCopy,
-          editRow: _editRow,
-          removeRow: _removeRow,
-          moveUpRow: _moveUpSelectedRow,
-          moveUpRowByKey: _moveUpRowByKey,
-          moveDownRow: _moveDownSelectedRow,
-          moveDownRowByKey: _moveDownRowByKey,
-          setSubscribeProps: _setSubscribeProps
-        };
-        item.onChange && item.onChange(onChangeObject);
-      }
-    }, [props[item.name]]);
-  });
-
-  /** BASE FUNCTIONS */
-  var _setSubscribeProps = function _setSubscribeProps(props) {
-    setSubscribeProps(_extends({}, subscribeProps, props));
-  };
-
-  var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
-    _setRowsHandler(rows);
-    onChange && onChange(rows);
-  };
-  var _setRowsHandler = function _setRowsHandler(rows) {
-    // console.log('_setRowsHandler onChange');
-    _setRows(rows);
-    // setRows(rows);
-    rowsDispatch(rows);
-  };
-
-  var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
-    var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-    var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-    // console.log('_setSelectedRowsHandler => ', selectedKeys)
-    if (!editMode) {
-      setSelectedRowKeys(selectedKeys);
-      if (selectedKeys.length === 0) {
-        if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
-      } else if (selectedKeys.length > 0 && !selectedObjects) {
-        if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
-          return selectedKeys.includes(item[rowKey]);
-        }));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
-      } else selectedDispatch(selectedObjects);
-    }
-  };
-
-  var rowsDispatch = function rowsDispatch(rows) {
-    rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
-  };
-
-  var selectedDispatch = function selectedDispatch(data) {
-    selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
-  };
-
-  var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
-    var dp = dispatch && dispatch.path ? dispatch.path + ".events." + nameEvent : dispatchPath && dispatchPath + ".events." + nameEvent;
-
-    dp && props.setDateStore && props.setDateStore(dp, {
-      timestamp: moment(),
-      value: value
-    });
-    // console.log('onTableEventsDispatch onChange');
-    Array.isArray(value) && onChange && onChange(value);
-  };
-
-  var reloadData = function reloadData(_ref, appendParams) {
-    var sortBy = _ref.sortBy,
-        filter = _ref.filter,
-        searchValue = _ref.searchValue;
-
-    // console.log("reloadData params ", sortBy, filter, searchValue, loading);
-    if (selectable && props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
-      return item[rowKey];
-    }), props.value);else _setSelectedRowsHandler();
-
-    var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
-    var __filter = appendParams ? _extends({}, _filter, filter) : filter;
-    var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
-    setSortBy(__sortBy);
-    setFilter(__filter);
-    setSearchValue(__searchValue);
-    // console.log("reloadData params ", sortBy, filter, searchValue, loading);
-    _loadRows({
-      sortBy: __sortBy,
-      filter: __filter,
-      searchLine: __searchValue,
-      reload: true
-    });
-  };
-
-  var _loadRows = function _loadRows(params) {
-    var sortBy = params.sortBy,
-        filter = params.filter,
-        searchLine = params.searchLine;
-        params.expandRow;
-        var reload = params.reload;
-
-    if (!loading && requestLoadRows) {
-      setLoading(true);
-      var _params = {
-        page: 0,
-        size: pageSize,
-        sort: sortBy && sortBy.key ? sortBy.key + "," + sortBy.order : null
-      };
-      var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
-      if (reload && requestLoadCount !== noop && !expandColumnKey) {
-        requestLoadCount({ params: _params, data: dataQuery }).then(function (response) {
-          // console.log("infinity then response", response);
-          setTotalCountRows(response.data);
-        }).catch(function (error) {
-          return notificationError(error, 'Ошибка получения количества записей по фильтру');
-        });
-      }
-      requestLoadRows({ params: _params, data: dataQuery }).then(function (response) {
-        // console.log("infinity then response", response);
-        var result = response.data;
-        _setLoadedRowsHandler(result); // _setRows
-
-        if (expandColumnKey) {
-          expandDefaultAll && setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
-        }
-
-        setLoading(false);
-      }).catch(function (error) {
-        notificationError(error, "Ошибка загрузки данных");
-        _setLoadedRowsHandler(_rows); // _setRows
-        // setHasMore(false);
-        setLoading(false);
-      });
-    }
-  };
-
-  var onChangeTable = function onChangeTable(pagination, filters, sorter, extra) {
-    // console.log('Table onChange', pagination, filters, sorter, extra)
-    switch (extra.action) {
-      case "paginate":
-        break;
-      case "sort":
-        onSort(sorter);
-        break;
-    }
-  };
-
-  var onSort = function onSort(sorter) {
-    // console.log("Table onSort from RT", sorter);
-    var sortBy = sorter.order ? { key: sorter.field, order: sorter.order === "ascend" ? "asc" : "desc" } : {};
-    setSortBy(sortBy);
-    _loadRows({
-      sortBy: sortBy,
-      filter: _filter,
-      searchLine: _searchValue,
-      reload: true
-    });
-  };
-
-  var _onRowClick = function _onRowClick(_ref3) {
-    var rowData = _ref3.rowData,
-        rowIndex = _ref3.rowIndex,
-        rowKey = _ref3.rowKey;
-
-    // console.log('onClick', onRowClick, rowData, rowIndex, rowKey)
-    // console.log('onClick', _selectedRowKeys)
-    onTableEventsDispatch("onRowClick", rowData);
-    _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
-  };
-  var _onRowDoubleClick = function _onRowDoubleClick(_ref4) {
-    var rowData = _ref4.rowData,
-        rowIndex = _ref4.rowIndex,
-        rowKey = _ref4.rowKey;
-
-    // console.log('onDoubleClick', onRowDoubleClick, rowData, rowIndex, rowKey);
-    // console.log('actionDoubleClick')
-    onTableEventsDispatch("onRowDoubleClick", rowData);
-    _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
-  };
-
-  var _rowSelectAfterClick = function _rowSelectAfterClick(_ref5) {
-    var rowData = _ref5.rowData,
-        rowIndex = _ref5.rowIndex,
-        rowKey = _ref5.rowKey,
-        onClick = _ref5.onClick;
-
-    var checked = !_selectedRowKeys.includes(rowKey);
-    var newRowObject = {
-      rowData: _extends({}, rowData),
-      rowIndex: rowIndex,
-      rowKey: rowKey
-    };
-    // _setSelectedRowsHandler([rowKey], rowData);
-    // if (!expandColumnKey) {
-    // setSelectedRowKeys([rowKey]);
-    if (selectable) {
-      // console.log('_rowSelectAfterClick ', checked);
-      if (checked && !expandColumnKey) _setSelectedRowsHandler([].concat(toConsumableArray(_selectedRowKeys), [rowKey]), undefined, _rows);else {
-        // console.log('_rowSelectAfterClick', _selectedRowKeys.filter(row => row !== rowKey), rowKey);
-        _setSelectedRowsHandler(_selectedRowKeys.filter(function (row) {
-          return row !== rowKey;
-        }), undefined, _rows);
-      }
-    } else {
-      if (checked) _setSelectedRowsHandler([rowKey], rowData);
-    }
-    // onSelectedRowsChange([rowKey], [rowData]);
-    console.log('onRowDoubleClick = ', onClick);
-    onClick && onClick(_extends({ selected: checked }, newRowObject));
-  };
-
-  var onHeaderRowProps = function onHeaderRowProps() {
-    return { headerHeight: headerHeight, setHeaderHeight: setHeaderHeight };
-  };
-
-  var onRowEvents = function onRowEvents(rowData, rowIndex) {
-    return {
-      onClick: function onClick(event) {
-        return _onRowClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
-      }, // click row
-      onDoubleClick: function onDoubleClick(event) {
-        return _onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
-      } // double click row
-      // onScroll: console.log
-      // onContextMenu: event => {}, // right button click row
-      // onMouseEnter: event => {}, // mouse enter row
-      // onMouseLeave: event => {}, // mouse leave row
-    };
-  };
-
-  var onResizeHandler = function onResizeHandler(index) {
-    return function (_ref6, width) {
-      _ref6.key;
-
-      // console.log('handleResize index ', index, width)
-      _setColumns(function (columns) {
-        var nextColumns = [].concat(toConsumableArray(columns));
-        nextColumns[index] = _extends({}, nextColumns[index], {
-          width: width
-        });
-        return nextColumns;
-      });
-    };
-  };
-
-  /** Utile function
-   * Find row by key
-   * @param data - table rows
-   * @param key - key row for find
-   * @param callback - function for return result
-   */
-  var loop = function loop(data, key, callback) {
-    for (var i = 0; i < data.length; i++) {
-      if (data[i][rowKey] === key) {
-        // console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
-        return callback(data[i], i, data);
-      }
-      if (data[i].children) {
-        loop(data[i].children, key, callback);
-      }
-    }
-  };
-
-  /** ROW CHANGE FUNCTIONS */
-  var _addRows = function _addRows(rows) {
-    var saveRows = [].concat(toConsumableArray(rows));
-    if (!expandColumnKey) saveRows = saveRows.map(function (row) {
-      row.children = undefined;return row;
-    });
-    if (customFields) {
-      // Фильтрация по пользовательским параметрам
-      saveRows = saveRows.filter(function (sRow) {
-        var isValid = [];
-        customFields.forEach(function (field) {
-          // Валидация по пользовательской логике функции validate
-          if (field.validate) isValid.push(field.validate(sRow, _rows));
-
-          // Создание или переобразование по пользовательской логике функции value
-          if (field.value) sRow[field.name] = field.value(sRow, _rows);
-        });
-        // console.log("_addRows isValid", isValid);
-        if (!isValid.includes(false)) return sRow;
-      });
-    }
-    var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
-    _setRowsHandler(_localRows);
-    onTableEventsDispatch("onAddRows", _localRows);
-  };
-
-  var _addRow = function _addRow(row) {
-    var _row = _extends({}, row);
-    if (!expandColumnKey) _row.children = undefined;
-    var isValid = true;
-    if (customFields) {
-      var validations = [];
-      customFields.forEach(function (field) {
-        if (field.validate) validations.push(field.validate(_row, _rows));
-
-        if (field.value) _row[field.name] = field.value(_row, _rows);
-      });
-      isValid = !validations.includes(false);
-    }
-    if (isValid) {
-      var _localRows = [].concat(toConsumableArray(_rows), [_row]);
-      _setRowsHandler(_localRows);
-      onTableEventsDispatch("onAddRow", _localRows);
-    }
-  };
-
-  var _addRowAsCopy = function _addRowAsCopy() {
-    // console.log("_onClickAddAsCopy", selectedRow);
-    var _localRows = [].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
-    _setRowsHandler(_localRows);
-    onTableEventsDispatch("onAddRowAsCopy", _localRows);
-  };
-
-  var _editRow = function _editRow(row) {
-    // console.log("_onClickEdit", selectedRow);
-    var data = [].concat(toConsumableArray(_rows));
-    var key = row[rowKey];
-    loop(data, key, function (item, index, arr) {
-      data[index] = row;
-      _setRowsHandler(data);
-      _setSelectedRowsHandler(_selectedRowKeys, undefined, data);
-      onTableEventsDispatch("onEditRow", data);
-    });
-  };
-
-  var _removeRow = function _removeRow(event) {
-    // console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
-    var _localRows = _rows.filter(function (item) {
-      return !_selectedRowKeys.includes(item[rowKey]);
-    });
-    _setRowsHandler(_localRows);
-    _setSelectedRowsHandler();
-    onTableEventsDispatch("onRemoveRow", _localRows);
-  };
-
-  var _moveUpSelectedRow = function _moveUpSelectedRow() {
-    _moveUpRowByKey(_selectedRowKeys[0]);
-  };
-
-  var _moveUpRowByKey = function _moveUpRowByKey(rowKey) {
-    var data = [].concat(toConsumableArray(_rows));
-    loop(data, rowKey, function (item, index, arr) {
-      var newRowIndex = _getNewIndexRow(index, index - 1);
-      _changeIndexRow(index, newRowIndex, arr, data, "onMoveUpRow");
-    });
-  };
-
-  var _moveDownSelectedRow = function _moveDownSelectedRow() {
-    _moveDownRowByKey(_selectedRowKeys[0]);
-  };
-
-  var _moveDownRowByKey = function _moveDownRowByKey(rowKey) {
-    var data = [].concat(toConsumableArray(_rows));
-    loop(data, rowKey, function (item, index, arr) {
-      var newRowIndex = _getNewIndexRow(index, index + 1);
-      _changeIndexRow(index, newRowIndex, arr, data, "onMoveDownRow");
-    });
-  };
-
-  var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
-    return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
-  };
-
-  var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data, nameEvent) {
-    if (newIndex >= 0 && newIndex < arr.length) {
-      // let arr = [..._rows]; // Копируем массив
-      var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
-      // console.log('_changeIndexRow => ',item);
-      arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
-      // console.log("_changeIndexRow", item[0]);
-      _setRowsHandler(data);
-      onTableEventsDispatch(nameEvent, data);
-    }
-  };
-
-  /** TREE FUNCTIONS */
-  var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
-    setExpandedRowKeys(expandedRowKeys);
-    onExpandedRowsChange(expandedRowKeys);
-  };
-
-  /** SELECTABLE FUNCTIONS */
-  var onChangeSelectedHandler = function onChangeSelectedHandler(selectedRowKeys, selectedRows) {
-    // console.log("onChangeSelectedHandler");
-    _setSelectedRowsHandler(selectedRowKeys, selectedRows);
-  };
-
-  var onSelectAllHandler = function onSelectAllHandler(selected, selectedRows, changeRows) {
-    // console.log("onSelectAllHandler");
-    var selectedKeys = selected ? selectedRows.map(function (row) {
-      return row[rowKey];
-    }) : [];
-    _setSelectedRowsHandler(selectedKeys, selectedRows);
-  };
-
-  /** VIEW FUNCTIONS */
-  var _rowClassName = function _rowClassName(rowData, rowIndex) {
-    // const {rowClassName} = props;
-    return [
-    // rowClassName,
-    _selectedRowKeys.includes(rowData[rowKey]) && "ant-table-row-selected", //
-    zebraStyle ? rowIndex % 2 === 0 ? "even" : "odd" : ""
-    // rowBordered ? 'bordered' : ''
-    ].join(" ");
-  };
-
-  var ExpandIcon = function ExpandIcon(_ref7) {
-    var Icon = _ref7.Icon,
-        restProps = objectWithoutProperties(_ref7, ["Icon"]);
-    return React.createElement(
-      "span",
-      _extends({}, restProps, { className: rtPrefix + "-table-expand-icon" }),
-      React.createElement(Icon, null)
-    );
-  };
-
-  var expandIconRender = function expandIconRender(_ref8) {
-    var expanded = _ref8.expanded,
-        onExpand = _ref8.onExpand,
-        record = _ref8.record;
-    return record.children && record.children.length === 0 ? React.createElement(ExpandIcon, { Icon: CaretUpOutlined, style: { visibility: "hidden" } }) : expanded ? React.createElement(ExpandIcon, { Icon: CaretDownOutlined, onClick: function onClick(e) {
-        return onExpand(record, e);
-      } }) : React.createElement(ExpandIcon, { Icon: CaretRightOutlined, onClick: function onClick(e) {
-        return onExpand(record, e);
-      } });
-  };
-
-  var _footer = function _footer(currentPageData) {
-    // console.log('_footer => ', currentPageData);
-    return _footerShow ? React.createElement(
-      React.Fragment,
-      null,
-      React.createElement(
-        "div",
-        { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
-        footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
-      ),
-      React.createElement(
-        "div",
-        { key: "footer-center-custom-side", className: rtPrefix + "-footer-center-custom-side" },
-        footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
-      ),
-      React.createElement(
-        "div",
-        { key: "footer-right-custom-side", className: rtPrefix + "-footer-right-custom-side" },
-        footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
-      ),
-      React.createElement(
-        "div",
-        { className: rtPrefix + "-footer-right-system-side" },
-        React.createElement(
-          _Space,
-          null,
-          selectable ? React.createElement(
-            React.Fragment,
-            null,
-            footerProps.showElements.includes("selected") ? React.createElement(
-              "span",
-              null,
-              footerProps.selectedTitle,
-              " ",
-              _selectedRowKeys.length
-            ) : null,
-            footerProps.showElements.includes("loaded") ? React.createElement(
-              "span",
-              null,
-              footerProps.loadedTitle,
-              " ",
-              flatten(getTableRowKeys(_rows, rowKey)).length
-            ) : null
-          ) : null,
-          footerProps.showElements.includes("total") ? requestLoadCount !== noop && !expandColumnKey ? React.createElement(
-            "span",
-            null,
-            footerProps.totalTitle,
-            " ",
-            _totalCountRows
-          ) : React.createElement(
-            "span",
-            null,
-            footerProps.totalTitle,
-            " ",
-            flatten(getTableRowKeys(_rows, rowKey)).length
-          ) : null
-        )
-      )
-    ) : undefined;
-  };
-
-  var getColumns = function getColumns() {
-    return _columns.map(function (col, index) {
-      return _extends({}, col, {
-        onHeaderCell: function onHeaderCell(column) {
-          return {
-            column: column,
-            // resizable: column.resizable,
-            // width: column.width,
-            onResize: onResizeHandler(index)
-          };
-        }
-      });
-    });
-  };
-
-  var restProps = getObjectExcludedProps(props, excludeProps$8);
-  var expandableProps = expandColumnKey ? _extends({
-    defaultExpandAllRows: expandDefaultAll,
-    expandIcon: expandIconRender
-  }, expandable, {
-    expandedRowKeys: _expandedRowKeys,
-    onExpandedRowsChange: _onExpandedRowsChange
-  }) : {};
-
-  var rowSelectionProps = selectable ? _extends({
-    type: "checkbox",
-    fixed: true,
-    checkStrictly: !nodeAssociated,
-    selectedRowKeys: _selectedRowKeys,
-    onChange: onChangeSelectedHandler,
-    onSelectAll: onSelectAllHandler
-  }, rowSelection) : undefined;
-
-  return React.createElement(
-    "div",
-    { className: rtPrefix + "-table " + className, style: style },
-    React.createElement(
-      "div",
-      { className: rtPrefix + "-baseTable" },
-      React.createElement(
-        AutoResizer
-        // onResize={({ height, width }) => {setHeight(height); setWidth(width)} }
-        ,
-        null,
-        function (_ref9) {
-          var height = _ref9.height,
-              width = _ref9.width;
-          return React.createElement(
-            "div",
-            { style: { width: width, height: height } },
-            React.createElement(_Table, _extends({}, restProps, {
-
-              /** Required */
-              columns: getColumns(),
-              dataSource: _rows
-              // scroll={{ x: width, y: height - headerHeight }}
-              , scroll: { y: height - headerHeight },
-              pagination: _extends({ position: ["none", "none"] }, restProps.pagination, { pageSize: _rows.length })
-
-              /** Base Props */
-              , loading: loading
-
-              /** Tree Props */
-              , expandable: _extends({}, expandableProps)
-              /** Selection Props */
-              , rowSelection: rowSelectionProps
-
-              /** View Props */
-              , rowClassName: _rowClassName,
-              footer: _footerShow ? _footer : undefined,
-              components: {
-
-                header: {
-                  row: HeaderRow,
-                  cell: HeaderCell
-                },
-                body: {
-                  cell: BodyCell
-                }
-              }
-
-              /** Events */
-              , onChange: onChangeTable,
-              onHeaderRow: onHeaderRowProps,
-              onRow: onRowEvents
-            }))
-          );
-        }
-      )
-    )
-  );
-};
-
-Table$3.propTypes = {
-  /**
-   * REQUIRED
-   * */
-
-  /** Столбцы таблицы */
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-  /** Режим загрузки данных по скроллу */
-  infinityMode: PropTypes.bool,
-
-  /**
-   * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
-   * */
-
-  /** Строки по умолчанию */
-  defaultRows: PropTypes.arrayOf(PropTypes.object),
-
-  /** Ключи выделенных по умолчанию строк */
-  defaultSelectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
-
-  /** Значение строки поиска по умолчанию строк */
-  defaultSearchValue: PropTypes.string,
-
-  /** Объект фильтрации по умолчанию */
-  defaultFilter: PropTypes.object,
-
-  /** Сортировка по умолчанию */
-  defaultSortBy: PropTypes.shape({
-    /** Ключ поля для сортировки */
-    key: PropTypes.string,
-    /** Направление сортировки */
-    order: PropTypes.oneOf(["asc", "desc"])
-  }),
-
-  /**
-   * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
-   * */
-
-  /** Строки таблицы. Используется для контроля таблицы из вне. */
-  rows: PropTypes.arrayOf(PropTypes.object),
-
-  /** Функция задания строк таблицы. */
-  setRows: PropTypes.func,
-
-  /** Выделенные строки таблицы. */
-  selectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
-
-  /** Значение строки поиска */
-  searchValue: PropTypes.string,
-
-  /** Объект фильтрации */
-  filter: PropTypes.object,
-
-  /** Объект сортировки */
-  sortBy: PropTypes.shape({
-    /** Ключ поля для сортировки */
-    key: PropTypes.string,
-    /** Направление сортировки */
-    order: PropTypes.oneOf(["asc", "desc"])
-  }),
-
-  /**
-   * BASE PROPS
-   * */
-
-  /** Поле для уникальной идентификации строки */
-  rowKey: PropTypes.string,
-
-  /** Дополнительные поля и валидация в объекты таблицы
-   * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
-   * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
-   * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
-   * ```json
-   * [
-   *  {
-   * 		name: <String>,
-   * 		value: <func>,
-   * 		validate: <func>
-   * 	}
-   * ]
-   * ```
-   * `name` – Имя параметра в объекте
-   * `value` – Функция формирования значения - `(row, rows) => { return {} }`
-   * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
-   * Параметра **validate** работает **только** для модельного окна тип `select`.
-   * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
-   */
-  customFields: PropTypes.arrayOf(PropTypes.object),
-
-  /**
-   * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
-   * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
-   * ```json
-   * [
-   *  {
-   * 		name: <String>,
-   * 		cellRenderer: <func>,
-   * 		...advancedColProps
-   * 	}
-   * ]
-   * ```
-   * `name` – key колонки к которой надо применить дополнительные пропсы
-   * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
-   * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
-   */
-  customColumnProps: PropTypes.arrayOf(PropTypes.object),
-
-  /**
-   * VIEW PROPS
-   * */
-
-  /** Вывод когда нет данных */
-  empty: PropTypes.element,
-
-  /** Отображение загрузки данных */
-  overlay: PropTypes.element,
-
-  /** Фиксированная ширина столбцов. Появится боковой скрол */
-  fixWidthColumn: PropTypes.bool,
-
-  footerProps: PropTypes.shape({
-
-    /** Высота подвала */
-    height: PropTypes.number,
-
-    /** Массив элементов футтера, которые надо отобразить
-     * ['selected', 'loaded', 'total'] */
-    showElements: PropTypes.arrayOf(PropTypes.string),
-
-    /** Заколовок для кол-ва выбранных объектов */
-    selectedTitle: PropTypes.string,
-
-    /** Заколовок для кол-ва загруженны объектов */
-    loadedTitle: PropTypes.string,
-
-    /** Заколовок для кол-ва всего объектов */
-    totalTitle: PropTypes.string,
-
-    /** Левый кастомный элемент командной панели */
-    leftCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
-
-    /** Центральный кастомный элемент командной панели */
-    centerCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
-
-    /** Правый кастомный элемент командной панели */
-    rightCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)])
-  }),
-
-  /** Высота заголовка таблицы */
-  headerHeight: PropTypes.number,
-
-  /** Высота строки таблицы */
-  rowHeight: PropTypes.number,
-
-  /** Custom row renderer
-   * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
-  rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-
-  /** Строки будут в зебро-стиле */
-  zebraStyle: PropTypes.bool,
-
-  /** Высота расширения */
-  estimatedRowHeight: PropTypes.number,
-
-  /** Отображать ли разделители ячеек в строке */
-  cellBordered: PropTypes.bool,
-
-  /** Отобрадать ли разделители строк */
-  rowBordered: PropTypes.bool,
-
-  /**
-   * LOAD DATA PROPS
-   * */
-
-  /** Порог в пикселях для вызова _onLoad.
-   * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-  loadThreshold: PropTypes.number,
-
-  /** Размер страницы */
-  pageSize: PropTypes.number,
-
-  /** Функция запроса для конфигурации */
-  requestLoadConfig: PropTypes.func,
-
-  /** Функция запроса для загрузки строк (данных) */
-  requestLoadRows: PropTypes.func,
-
-  /** Функция запроса для загрузки строк (данных) */
-  requestLoadCount: PropTypes.func,
-
-  /** Имя параметра для поиска */
-  searchParamName: PropTypes.string,
-
-  /**
-   * SELECTABLE PROPS
-   * */
-
-  /** Таблица с возможностью выбора строки */
-  selectable: PropTypes.bool,
-
-  /**
-   * TREE PROPS
-   * */
-
-  /** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
-  nodeAssociated: PropTypes.bool,
-
-  /** Ключ колонки по которой строить иерархию */
-  expandColumnKey: PropTypes.string,
-
-  /** Открыть по умолчанию вложенность до уровня N или 'All' */
-  expandDefaultAll: PropTypes.bool,
-
-  /** Загружать ноды иерархии по одной */
-  expandLazyLoad: PropTypes.bool,
-
-  /** Поле в котором хранится ссылка на родителя */
-  expandParentKey: PropTypes.string,
-
-  /**
-   * EVENTS
-   * */
-
-  /** Событие при клике на строку (только при `selectable` = `false`)
-   * `({selected, rowData, rowIndex}) => {}` */
-  onRowClick: PropTypes.func,
-
-  /** Событие при двойном клике на строку.
-   * `({rowData, rowIndex, rowKey}) => {}` */
-  onRowDoubleClick: PropTypes.func,
-
-  /** События при открытии / закрытии ноды
-   * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
-  onRowExpand: PropTypes.func,
-
-  /** Событие при выборе строки.
-   * `([rowKeys], [rowDatas]) => {}` */
-  onSelectedRowsChange: PropTypes.func,
-
-  /** События при открытии / закрытии ноды
-   * `(expandedRowKeys) => {}` - массив ключей открытых нод */
-  onExpandedRowsChange: PropTypes.func,
-
-  /** SELECTED PANEL */
-
-  /** Отображать ли панель выбранных элементов */
-  showSelection: PropTypes.bool,
-
-  /** Строка или функция для отображения элементов списка выбранных
-   * Строка - имя поля
-   * Функция - рендер строк.
-   * `({ rowData, rowIndex }) => { return <Component> }` */
-  rowRenderShowSelection: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-
-  /** Путь в сторе куда класть выбранную строку таблицы */
-  dispatchPath: PropTypes.string,
-
-  /** Объект для подписки на изменения в STORE */
-  subscribe: PropTypes.arrayOf(PropTypes.object)
-};
-
-Table$3.defaultProps = {
-  size: "small",
-  bordered: true,
-  infinityMode: false,
-  editMode: false,
-  defaultRows: [],
-  defaultSelectedRowKeys: [],
-  defaultSearchValue: "",
-  defaultFilter: {},
-  defaultSortBy: {},
-
-  rows: [],
-  setRows: noop,
-  selectedRowKeys: [],
-  searchValue: "",
-  filter: {},
-  sortBy: {},
-
-  rowKey: "id",
-
-  empty: empty$1,
-  overlay: overlay$1,
-  fixWidthColumn: false,
-  footerProps: {
-    height: 30,
-    showElements: [],
-    selectedTitle: "Выделено:",
-    loadedTitle: "Загружено записей:",
-    totalTitle: "Всего записей:",
-    leftCustomSideElement: null,
-    centerCustomSideElement: null,
-    rightCustomSideElement: null
-  },
-  headerHeight: 30,
-  rowHeight: 30,
-  zebraStyle: false,
-  estimatedRowHeight: undefined,
-  cellBordered: false,
-  rowBordered: true,
-  className: "",
-  style: {},
-
-  loadThreshold: 300,
-  pageSize: 50,
-  requestLoadRows: undefined,
-  requestLoadCount: noop,
-  searchParamName: "searchLine",
-
-  selectable: false,
-
-  nodeAssociated: true,
-  expandColumnKey: undefined,
-  expandDefaultAll: true,
-  expandLazyLoad: false,
-  expandParentKey: "parentId",
-
-  onRowClick: noop,
-  onRowDoubleClick: noop,
-  onRowExpand: noop,
-  onSelectedRowsChange: noop,
-  onExpandedRowsChange: noop,
-
-  showSelection: false,
-
-  dispatchPath: undefined,
-  subscribe: []
-};
-
-var mapStateToProps$3 = function mapStateToProps(store, ownProps) {
-  var subscribe = ownProps.subscribe;
-
-  var state = {};
-  if (subscribe && subscribe.length > 0) {
-    subscribe.forEach(function (item) {
-      var name = item.name,
-          path = item.path,
-          extraData = item.extraData;
-
-      if (name && path) state[name] = objectPath.get(store, path);
-      if (name && extraData) {
-        if ((typeof extraData === "undefined" ? "undefined" : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
-          return state[name + ".extraData." + key] = objectPath.get(store, extraData[key]);
-        });else state[name + "ExtraData"] = objectPath.get(store, extraData);
-      }
-    });
-  }
-  return state;
-};
-var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setDateStore: setDateStore }, dispatch);
-};
-
-var Table$4 = connect(mapStateToProps$3, mapDispatchToProps$4, null, { forwardRef: true })(Table$3);
-
-var _this$2 = undefined;
-
-var defaultProps$2 = {
-    defaultFilter: {},
-    rowKey: "id",
-    pageSize: 50,
-    requestLoadConfig: noop,
-    expandColumnKey: undefined,
-    expandLazyLoad: false,
-    expandParentKey: "parentId",
-    customColumnProps: []
-};
-
-var ConfigLoader = function ConfigLoader(props) {
-
-    /** Конфигурация таблицы */
-    var _useState = useState(undefined),
-        _useState2 = slicedToArray(_useState, 2),
-        tableConfig = _useState2[0],
-        setTableConfig = _useState2[1];
-
-    var _defaultProps$props = _extends({}, defaultProps$2, props),
-        defaultFilter = _defaultProps$props.defaultFilter,
-        defaultSortBy = _defaultProps$props.defaultSortBy,
-        rowKey = _defaultProps$props.rowKey,
-        pageSize = _defaultProps$props.pageSize,
-        requestLoadConfig = _defaultProps$props.requestLoadConfig,
-        expandColumnKey = _defaultProps$props.expandColumnKey,
-        expandParentKey = _defaultProps$props.expandParentKey,
-        customColumnProps = _defaultProps$props.customColumnProps,
-        fixWidthColumn = _defaultProps$props.fixWidthColumn,
-        selectable = _defaultProps$props.selectable;
-
-    useEffect(function () {
-        var cleanupFunction = false;
-        var loadData = function () {
-            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                if (requestLoadConfig) {
-                                    // console.log("requestLoadConfig => ", typeof requestLoadConfig);
-                                    // console.log("requestLoadRows => ", typeof props.requestLoadRows);
-                                    requestLoadConfig().then(function (response) {
-                                        // let result = response.data;
-                                        // console.log('requestLoadConfig -> ', response.data);
-                                        if (!cleanupFunction) {
-                                            // setTableConfig(response.data);
-                                            configParser(response.data);
-                                        }
-                                    }).catch(function (error) {
-                                        return notificationError(error, "Ошибка получения конфигурации");
-                                    });
-                                }
-
-                            case 1:
-                            case "end":
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, _this$2);
-            }));
-
-            return function loadData() {
-                return _ref.apply(this, arguments);
-            };
-        }();
-        loadData().then(function (r) {
-            return r;
-        });
-        return function () {
-            return cleanupFunction = true;
-        };
-    }, [props]);
-
-    var configParser = function configParser(config) {
-
-        // Массив колонок
-        var _columns = [];
-        // Сортировка по умолчанию
-        var _defaultSorter = [];
-        // Счетчик видимых полей
-        var visibleIndex = 0;
-        // Индекс колонки около которой ставить иконку дерева
-        var expandIconColumnIndex = -1;
-        // Ключ иерархии
-        var _expandColumnKey = config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey;
-
-        config && config.fields && config.fields.forEach(function (item, index) {
-            // console.log('configParser item => ', item);
-
-            // Дополнительные props колонок
-            var colProps = customColumnProps && customColumnProps.find(function (render) {
-                return render.name === item.name || render.name === item.alias;
-            });
-
-            // Если поле не надо показывать, то след цикл
-            if (!item.visible || colProps && colProps.hidden) return;
-
-            // Индекс или имя поля в данных
-            var dataIndex = item.alias ? item.alias : item.name;
-            // Сортировка по умолчанию
-            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
-
-            // Ширина колонок
-            var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
-            // Увеличить счетчик видимых полей
-            visibleIndex++;
-            // Проверка у этого ли поля ставить иконку дерева
-            if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
-            // Формирование title колонки
-            var titleNode = colProps && colProps.headerRenderer ? typeof colProps.headerRenderer === "function" ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
-
-            var column = _extends({
-                key: dataIndex,
-                title: titleNode,
-                dataIndex: dataIndex,
-                align: item.align,
-                resizable: item.resizable,
-                sorter: item.sortable ? item.sortable : undefined,
-                ellipsis: true,
-                defaultSortOrder: _defaultSorter[1]
-            }, widthCol, colProps);
-            // Дополнительные props для компонента ячейки
-            column.onCell = function (rowData, rowIndex) {
-                return { column: column, rowData: rowData, rowIndex: rowIndex };
-            };
-            // Рендер ячейки
-            column.render = function (cellData, rowData, rowIndex) {
-                if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, {
-                    column: column,
-                    cellData: cellData,
-                    rowData: rowData,
-                    rowIndex: rowIndex });else return item.typeData === "json" ? JSON.stringify(cellData) : cellData ? cellData : "---";
-            };
-            _columns.push(column);
-        });
-
-        var _defaultFilter = void 0;
-        if (config && config.hierarchical && config.hierarchyLazyLoad) {
-            var parentKey = config.hierarchyField ? config.hierarchyField.split("/")[1] : expandParentKey;
-            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
-        } else _defaultFilter = defaultFilter;
-
-        // console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
-        setTableConfig({
-            columns: _columns,
-            defaultSortBy: _defaultSorter[0],
-            defaultFilter: _defaultFilter,
-            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split("/")[0] : rowKey,
-            // expandParentKey:
-            //     config && config.hierarchical && config.hierarchyField
-            //         ? config.hierarchyField.split('/')[1]
-            //         : expandParentKey,
-            expandColumnKey: _expandColumnKey,
-            expandable: { expandIconColumnIndex: expandIconColumnIndex },
-            // expandLazyLoad:
-            //     config && config.hierarchical && config.hierarchyLazyLoad
-            //         ? config.hierarchyLazyLoad
-            //         : expandLazyLoad,
-            pageSize: config && config.hierarchical ? 1 : pageSize
-        });
-    };
-
-    if (tableConfig) return React.createElement(Table$4, _extends({}, props, tableConfig));else return null;
-};
-
-var excludeProps$7 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'lostParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
-
-/** Компонент выбора элемента(ов) из списка */
-var Select$3 = function Select(props) {
-	var defaultSortBy = props.defaultSortBy,
-	    defaultFilter = props.defaultFilter,
-	    defaultSearchValue = props.defaultSearchValue,
-	    sortBy = props.sortBy,
-	    filter = props.filter,
-	    searchValue = props.searchValue,
-	    searchParamName = props.searchParamName,
-	    lostParamName = props.lostParamName,
-	    infinityMode = props.infinityMode,
-	    requestLoadRows = props.requestLoadRows,
-	    optionConverter = props.optionConverter,
-	    options = props.options,
-	    widthControl = props.widthControl,
-	    pageSize = props.pageSize,
-	    mode = props.mode,
-	    onChange = props.onChange,
-	    value = props.value;
-
-	/** Наличие на сервере еще данных */
-
-	var _useState = useState(true),
-	    _useState2 = slicedToArray(_useState, 2),
-	    _hasMore = _useState2[0],
-	    _setHasMore = _useState2[1];
-	/** Индикатор загрузки данных */
-
-
-	var _useState3 = useState(false),
-	    _useState4 = slicedToArray(_useState3, 2),
-	    _loading = _useState4[0],
-	    _setLoading = _useState4[1];
-	/** Опции селекта */
-
-
-	var _useState5 = useState(options),
-	    _useState6 = slicedToArray(_useState5, 2),
-	    _options = _useState6[0],
-	    _setOptions = _useState6[1];
-
-	var _useState7 = useState(undefined),
-	    _useState8 = slicedToArray(_useState7, 2),
-	    tmpOption = _useState8[0],
-	    setTmpOption = _useState8[1];
-
-	/** Индикатор достижения низа окна */
-
-
-	var _useState9 = useState(false),
-	    _useState10 = slicedToArray(_useState9, 2),
-	    isEndReached = _useState10[0],
-	    setIsEndReached = _useState10[1];
-
-	/** Объект сортировки */
-
-
-	var _useState11 = useState(undefined),
-	    _useState12 = slicedToArray(_useState11, 2),
-	    _sortBy = _useState12[0],
-	    _setSortBy = _useState12[1];
-	/** Объект фильтрации */
-
-
-	var _useState13 = useState({}),
-	    _useState14 = slicedToArray(_useState13, 2),
-	    _filter = _useState14[0],
-	    _setFilter = _useState14[1];
-	/** Строка поиска */
-
-
-	var _useState15 = useState(undefined),
-	    _useState16 = slicedToArray(_useState15, 2),
-	    _searchValue = _useState16[0],
-	    _setSearchValue = _useState16[1];
-
-	/** Состояние параметра выбрать все */
-
-
-	var _useState17 = useState(false),
-	    _useState18 = slicedToArray(_useState17, 2),
-	    _isSelectAll = _useState18[0],
-	    _setIsSelectAll = _useState18[1];
-
-	var isMounted = useMounted();
-
-	useEffect(function () {
-		_setSearchValue(defaultSearchValue);
-		_loadOptions({
-			sortBy: defaultSortBy,
-			filter: defaultFilter,
-			searchValue: defaultSearchValue,
-			reload: true
-		});
-	}, []);
-
-	useEffect(function () {
-		if (isMounted) {
-			_setRowsHandler(options);
-		}
-	}, [options]);
-
-	useEffect(function () {
-		// console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
-		if (isMounted) {
-			var __sortBy = sortBy ? sortBy : _sortBy;
-			var __filter = filter ? filter : _filter;
-			var __searchValue = searchValue ? searchValue : _searchValue;
-			_setSortBy(__sortBy);
-			_setFilter(__filter);
-			_setSearchValue(__searchValue);
-			_loadOptions({
-				sortBy: __sortBy,
-				filter: __filter,
-				searchLine: __searchValue,
-				reload: true
-			});
-		}
-	}, [sortBy, filter, searchValue]);
-
-	var _setRowsHandler = function _setRowsHandler(options) {
-		_setOptions(options);
-		// console.log('Select _setRowsHandler value => ', options)
-		if (mode === 'multiple') {
-			if (Array.isArray(value)) if (options.reduce(function (preValue, item) {
-				return value.includes(item.value) ? preValue + 1 : preValue;
-			}, 0) === options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
-			onChange(value);
-		} else {
-			if (value && options && options.findIndex(function (option) {
-				return option.value === value;
-			}) === -1) {
-				console.log('Load tmpOption');
-				_loadTmpOption();
-			} else {
-				console.log('Clear tmpOption');
-				setTmpOption(undefined);
-			}
-		}
-		// setRows(rows);
-		// rowsDispatch(rows);
-	};
-
-	var getPageNum = function getPageNum(reload) {
-		return reload ? 0 : Math.floor(_options.length / pageSize);
-	};
-
-	var getSort = function getSort(sortBy) {
-		return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
-	};
-
-	var getSearchValue = function getSearchValue(searchValue) {
-		return searchValue ? defineProperty({}, searchParamName, searchValue) : null;
-	};
-
-	var _loadOptions = function _loadOptions(params) {
-		// console.log('_dataProcessing', params);
-		var sortBy = params.sortBy,
-		    filter = params.filter,
-		    searchValue = params.searchValue,
-		    reload = params.reload;
-
-		if ((_hasMore || reload) && !_loading && requestLoadRows) {
-			_setLoading(true);
-
-			var requestOptions = {
-				params: {
-					page: getPageNum(reload),
-					size: pageSize,
-					sort: getSort(sortBy)
-				},
-				data: _extends({}, filter, getSearchValue(searchValue))
-				// console.log('dataQuery', dataQuery);
-
-			};requestLoadRows(requestOptions).then(function (response) {
-				// console.log("infinity then response", response);
-				var result = response.data;
-
-				if (result && result.length < pageSize) {
-					_setHasMore(false);
-				} else {
-					_setHasMore(true);
-					setIsEndReached(false);
-				}
-				reload ? _setRowsHandler(result.map(function (option) {
-					return optionConverter(option);
-				})) // _setRows
-				: _setRowsHandler(_options.concat(result.map(function (option) {
-					return optionConverter(option);
-				}))); // _setRows
-
-				// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
-
-				_setLoading(false);
-			}).catch(function (error) {
-				notificationError(error, 'Ошибка загрузки данных');
-				_setRowsHandler(_options); // _setRows
-				// setHasMore(false);
-				_setLoading(false);
-			});
-		}
-	};
-
-	var _loadTmpOption = function _loadTmpOption() {
-		if (requestLoadRows) {
-			requestLoadRows({ params: {}, data: defineProperty({}, lostParamName, value) }).then(function (response) {
-				if (response.data) {
-					if (response.data.length === 1) {
-						setTmpOption(optionConverter(response.data[0]));
-					} else {
-						_notification.error({ message: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u043D\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430" });
-					}
-				}
-			}).catch(function (error) {
-				notificationError(error, 'Ошибка загрузки данных');
-				setTmpOption(undefined);
-			});
-		}
-	};
-
-	var onScroll = function onScroll(event) {
-		var scrollTopMax = event.nativeEvent.target.scrollTopMax;
-		var scrollTop = event.nativeEvent.target.scrollTop; //.body.scrollTop
-
-		var onEndReached = scrollTopMax - scrollTop;
-
-		if (onEndReached < 300 && !isEndReached) {
-			// console.log('Load Data');
-			setIsEndReached(true);
-			_setSearchValue(defaultSearchValue);
-			if (infinityMode) {
-				_loadOptions({
-					sortBy: defaultSortBy,
-					filter: defaultFilter,
-					searchValue: defaultSearchValue,
-					reload: false
-				});
-			}
-		}
-
-		// console.log("scrollTopMax / scrollTop", scrollTopMax, scrollTop, onEndReached);
-		// const lastScrollTop = this._scroll.scrxollTop;
-		// if (args.scrollTop > lastScrollTop) this._maybeCallOnEndReached();
-	};
-
-	var onSearch = function onSearch(value) {
-		_setSearchValue(value);
-		_loadOptions({
-			sortBy: defaultSortBy,
-			filter: defaultFilter,
-			searchValue: value,
-			reload: true
-		});
-	};
-
-	var _onChangeSelectAll = function _onChangeSelectAll() {
-		// console.log(`_onChangeSelectAll`, _isSelectAll);
-		if (mode === 'multiple') {
-			if (_isSelectAll) {
-				var optionsValues = _options.map(function (item) {
-					return item.value;
-				});
-				onChange(value.filter(function (item) {
-					return !optionsValues.includes(item);
-				}));
-				_setIsSelectAll(false);
-			} else {
-				if (Array.isArray(value) && value.length > 0) onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(value), toConsumableArray(_options.map(function (item) {
-					return item.value;
-				})))))));else onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(_options.map(function (item) {
-					return item.value;
-				})))))));
-				_setIsSelectAll(true);
-			}
-		} else onChange(undefined);
-	};
-	var _onChange = function _onChange(value) {
-		// console.log(`_onChange selected`, value);
-		if (Array.isArray(value)) if (_options.reduce(function (preValue, item) {
-			return value.includes(item.value) ? preValue + 1 : preValue;
-		}, 0) === _options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
-
-		onChange(value);
-	};
-
-	var getSelectAllCls = function getSelectAllCls() {
-		var cls = ['ant-select-item', 'ant-select-item-option', 'ant-select-item-option-select-all'];
-		if (_isSelectAll) cls.push('ant-select-item-option-selected');
-		return cls.join(' ');
-	};
-
-	var childProps = getObjectExcludedProps(props, excludeProps$7);
-	return React.createElement(
-		_Select,
-		_extends({
-			showArrow: true,
-			showSearch: true,
-			allowClear: true,
-			filterOption: false,
-			autoClearSearchValue: true
-
-		}, childProps, {
-
-			searchValue: _searchValue,
-			style: { width: widthControl }
-			// listHeight={heightPopup}
-			// defaultValue={['a10', 'c12']}
-			, onChange: _onChange,
-			maxTagCount: 0,
-			maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
-				return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
-			}
-			// dropdownMatchSelectWidth={200}
-			// listItemHeight={10} listHeight={250}
-			, onPopupScroll: onScroll,
-			onSearch: onSearch,
-			dropdownRender: function dropdownRender(menu) {
-				return React.createElement(
-					React.Fragment,
-					null,
-					mode === 'multiple' ? React.createElement(
-						"div",
-						{ className: getSelectAllCls(), onClick: _onChangeSelectAll },
-						React.createElement(
-							"div",
-							{ className: "ant-select-item-option-content" },
-							React.createElement(
-								"span",
-								null,
-								"\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u0432\u0441\u0435"
-							)
-						),
-						_isSelectAll ? React.createElement(
-							"span",
-							{ className: "ant-select-item-option-state" },
-							React.createElement(CheckOutlined, null)
-						) : null
-					) : null,
-					menu
-				);
-			}
-		}),
-		_options && _options.map(function (_ref2, i) {
-			var label = _ref2.label,
-			    value = _ref2.value,
-			    className = _ref2.className,
-			    disabled = _ref2.disabled;
-			return React.createElement(
-				_Select.Option,
-				{ key: i.toString(36) + i, value: value, className: className, disabled: disabled },
-				label
-			);
-		}),
-		tmpOption && React.createElement(
-			_Select.Option,
-			{ key: generateUUID(), value: tmpOption.value, className: tmpOption.className, disabled: tmpOption.disabled },
-			tmpOption.label
-		)
-	);
-};
-
-Select$3.propTypes = {
-	/** Сортировка по умолчанию */
-	defaultSortBy: PropTypes.shape({
-		/** Ключ поля для сортировки */
-		key: PropTypes.string,
-		/** Направление сортировки */
-		order: PropTypes.oneOf(['asc', 'desc'])
-	}),
-
-	/** Объект фильтрации по умолчанию */
-	defaultFilter: PropTypes.object,
-
-	/** Значение строки поиска по умолчанию строк */
-	defaultSearchValue: PropTypes.string,
-
-	/** Сортировка */
-	sortBy: PropTypes.object,
-
-	/** Фильтр */
-	filter: PropTypes.object,
-
-	/** Значение строки поиска */
-	searchValue: PropTypes.string,
-
-	/** Имя параметра для поиска */
-	searchParamName: PropTypes.string,
-
-	lostParamName: PropTypes.string,
-
-	/** Режим загружки по скроллу */
-	infinityMode: PropTypes.bool,
-
-	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes.func,
-
-	/** Функция преобразования загруженных объектов в объекты для селекта.
-  * Сигнатура `(option) => ({})`
-  * Требоваеть вернуть объект с параметрам
-  * `{ label: ReactNode, value: any, className: string, disabled: bool }`
-  * ##### Example:
-  * ``` JS
-  * (option) => ({
-  * 	label: (<span><MehOutlined />{option.name}</span>),
-  * 	value: option.id,
-  * 	className: 'some-class',
-  * 	disabled: false,
-  * })
-  * ```
-  */
-	optionConverter: PropTypes.func,
-
-	/** Select options `[{ label, value, className, disabled }]` */
-	options: PropTypes.arrayOf(PropTypes.object),
-
-	/** Ширина поля выбора в пикселях */
-	widthControl: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-
-	/** Размер страницы */
-	pageSize: PropTypes.number
-};
-
-Select$3.defaultProps = {
-	// Rt Props
-	defaultSortBy: undefined,
-	defaultFilter: {},
-	defaultSearchValue: undefined,
-	infinityMode: false,
-	requestLoadRows: undefined,
-	options: [],
-	widthControl: '100%',
-	pageSize: 50,
-	searchParamName: 'name',
-	lostParamName: 'id'
-};
-
-var excludeProps$6 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
-
-/** Компонент выбора элемента(ов) из древовидного списка */
-var TreeSelect$1 = function TreeSelect(props) {
-    var defaultSortBy = props.defaultSortBy,
-        defaultFilter = props.defaultFilter,
-        defaultSearchValue = props.defaultSearchValue,
-        sortBy = props.sortBy,
-        filter = props.filter,
-        searchValue = props.searchValue,
-        searchParamName = props.searchParamName,
-        requestLoadRows = props.requestLoadRows,
-        optionConverter = props.optionConverter,
-        treeData = props.treeData;
-    /** Индикатор загрузки данных */
-
-    var _useState = useState(false),
-        _useState2 = slicedToArray(_useState, 2),
-        _loading = _useState2[0],
-        _setLoading = _useState2[1];
-    /** Опции селекта */
-
-
-    var _useState3 = useState(treeData),
-        _useState4 = slicedToArray(_useState3, 2),
-        _treeData = _useState4[0],
-        _setTreeData = _useState4[1];
-    /** Строка поиска */
-
-
-    var _useState5 = useState(undefined),
-        _useState6 = slicedToArray(_useState5, 2),
-        _searchValue = _useState6[0],
-        _setSearchValue = _useState6[1];
-
-    var isMounted = useMounted();
-
-    useEffect(function () {
-        _setSearchValue(defaultSearchValue);
-        _loadOptions({
-            sortBy: defaultSortBy,
-            filter: defaultFilter,
-            searchValue: defaultSearchValue,
-            reload: true
-        });
-    }, []);
-
-    useEffect(function () {
-        // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
-        if (isMounted) {
-            _setSearchValue(searchValue);
-            _loadOptions({
-                sortBy: sortBy,
-                filter: filter,
-                searchLine: searchValue,
-                reload: true
-            });
-        }
-    }, [sortBy, filter, searchValue]);
-
-    var onSearch = function onSearch(value) {
-        // console.log('TreeSelect onSearch => ', value);
-        _setSearchValue(value);
-        _loadOptions({
-            sortBy: defaultSortBy,
-            filter: defaultFilter,
-            searchValue: value,
-            reload: true
-        });
-    };
-
-    var getSort = function getSort(sortBy) {
-        return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
-    };
-
-    var getSearchValue = function getSearchValue(searchValue) {
-        return searchValue ? defineProperty({}, searchParamName, searchValue) : null;
-    };
-
-    var _optionConverter = function _optionConverter(options) {
-        if (Array.isArray(options)) return options.map(function (option) {
-            if (option.children && Array.isArray(option.children)) option.children = _optionConverter(option.children);
-            return optionConverter(option);
-        });
-    };
-
-    var _loadOptions = function _loadOptions(params) {
-        var sortBy = params.sortBy,
-            filter = params.filter,
-            searchValue = params.searchValue;
-
-        if (!_loading && requestLoadRows) {
-            _setLoading(true);
-            var requestOptions = {
-                params: {
-                    page: 0,
-                    size: 1,
-                    sort: getSort(sortBy)
-                },
-                data: _extends({}, filter, getSearchValue(searchValue))
-            };
-            requestLoadRows(requestOptions).then(function (response) {
-                // console.log("infinity then response", response);
-                var result = response.data;
-                _setTreeData(_optionConverter(result));
-                _setLoading(false);
-            }).catch(function (error) {
-                notificationError(error, 'Ошибка загрузки данных');
-                // _setRowsHandler(_options); // _setRows
-                // setHasMore(false);
-                _setLoading(false);
-            });
-        }
-    };
-
-    var childProps = getObjectExcludedProps(props, excludeProps$6);
-    return React.createElement(_TreeSelect, _extends({
-        showArrow: true,
-        showSearch: true,
-        allowClear: true,
-        filterTreeNode: false,
-        autoClearSearchValue: true,
-        treeDefaultExpandAll: true
-
-    }, childProps, {
-
-        searchValue: _searchValue,
-        onSearch: onSearch,
-        maxTagCount: 0,
-        maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
-            return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
-        },
-        treeData: _treeData
-        // loadData={onLoadData}
-    }));
-};
-
-TreeSelect$1.propTypes = {
-    /** Сортировка по умолчанию */
-    defaultSortBy: PropTypes.shape({
-        /** Ключ поля для сортировки */
-        key: PropTypes.string,
-        /** Направление сортировки */
-        order: PropTypes.oneOf(['asc', 'desc'])
-    }),
-
-    /** Объект фильтрации по умолчанию */
-    defaultFilter: PropTypes.object,
-
-    /** Значение строки поиска по умолчанию строк */
-    defaultSearchValue: PropTypes.string,
-
-    /** Сортировка */
-    sortBy: PropTypes.object,
-
-    /** Фильтр */
-    filter: PropTypes.object,
-
-    /** Значение строки поиска */
-    searchValue: PropTypes.string,
-
-    /** Имя параметра для поиска */
-    searchParamName: PropTypes.string,
-
-    /** Функция запроса для загрузки строк (данных) */
-    requestLoadRows: PropTypes.func,
-
-    /** Функция преобразования загруженных объектов в объекты для селекта.
-     * Сигнатура `(option) => ({})`
-     * Требоваеть вернуть объект с параметрам
-     * `{ label: ReactNode, value: any, children: any, checkable: bool, selectable: bool }`
-     * ##### Example:
-     * ``` JS
-     * (option) => ({
-     * 	label: (<span><MehOutlined />{option.name}</span>),
-     * 	value: option.id,
-     * 	children: option.children,
-     * 	checkable: !option.isGroup,
-     * 	selectable: !option.isGroup,
-     * })
-     * ```*/
-    optionConverter: PropTypes.func.isRequired,
-
-    /** Select options `[{ label, value, children, checkable, selectable }]` */
-    options: PropTypes.arrayOf(PropTypes.object)
-};
-
-TreeSelect$1.defaultProps = {
-    // Rt Props
-    defaultSortBy: undefined,
-    defaultFilter: {},
-    defaultSearchValue: undefined,
-    requestLoadRows: undefined,
-    searchParamName: 'name'
-};
-
-var excludeProps$5 = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
-var modalTypes = ['save', 'select', 'view'];
-
-var defaultProps$1 = {
-    subscribe: [],
-    dispatch: {},
-    methodSaveForm: 'POST'
-};
-
-var getDefaultFooterProps = function getDefaultFooterProps(modal) {
-
-    var okText = '';
-    var cancelText = '';
-    var modalTitle = '';
-
-    switch (modal.type) {
-        case 'save':
-            okText = 'Сохранить';
-            cancelText = 'Отмена';
-            break;
-        case 'select':
-            okText = 'Добавить';
-            cancelText = 'Отмена';
-            break;
-        case 'view':
-            okText = 'Закрыть';
-            break;
-    }
-
-    if (modal.okText) okText = modal.okText;
-
-    if (modal.cancelText) cancelText = modal.cancelText;
-
-    if (modal.title) modalTitle = modal.title;
-
-    return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
-};
-
-/**
- * Компонент модального окна
- */
-var Modal$4 = function Modal(props) {
-    var buttonProps = props.buttonProps,
-        toolTipProps = props.toolTipProps,
-        modalConfig = props.modalConfig,
-        modalData = props.modalData,
-        subscribe = props.subscribe,
-        dispatch = props.dispatch;
-
-    var modalProps = _extends({}, getDefaultFooterProps(modalConfig), getObjectExcludedProps(modalConfig, excludeProps$5));
-
-    var _useState = useState(false),
-        _useState2 = slicedToArray(_useState, 2),
-        visible = _useState2[0],
-        setVisible = _useState2[1];
-
-    var _useState3 = useState({}),
-        _useState4 = slicedToArray(_useState3, 2),
-        _modalData = _useState4[0],
-        _setModalData = _useState4[1];
-
-    var _useState5 = useState({}),
-        _useState6 = slicedToArray(_useState5, 2),
-        _buttonProps = _useState6[0],
-        setButtonProps = _useState6[1];
-
-    var isMounted = useMounted();
-
-    useEffect(function () {
-        _setModalData(modalData);
-    }, []);
-
-    /** Подписка на изменение props[subscribe.name] в сторе */
-    subscribe.map(function (item) {
-        return useEffect(function () {
-            // if(!isMounted && !item.name)
-            //     return;
-            if ((item.withMount || isMounted) && item.name) {
-                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
-                item.onChange && item.onChange({
-                    value: props[item.name],
-                    extraData: props[item.name + "ExtraData"],
-                    setModalData: setModalData,
-                    setButtonProps: setButtonProps,
-                    openModal: _onOpenModal,
-                    closeModal: _onCloseModal
-                });
-            }
-            // console.log("Change Props[2]: ", props.subscribeЗф);
-        }, [props[item.name]]);
-    });
-
-    var setModalData = function setModalData(value) {
-        return _setModalData && _setModalData(value);
-    };
-    var _onOpenModal = function _onOpenModal() {
-        return setVisible(true);
-    };
-    var _onCloseModal = function _onCloseModal() {
-        return setVisible(false);
-    };
-
-    var onFinishHandler = function onFinishHandler(values) {
-        //} {type, row, requestSaveRow}) => {
-        // console.log("Modal Events => before dispatchToStore: ", dispatch);
-        var saveObj = _extends({}, _modalData, values);
-
-        dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
-
-        if (modalProps.requestSaveForm && modalProps.methodSaveForm) {
-            // console.log("Modal Events => type: ", type, method, row, _modalData);
-            modalProps.requestSaveForm({
-                method: modalProps.methodSaveForm,
-                data: saveObj
-            }).then(function (response) {
-                _notification.success({
-                    message: 'Сохранение прошло успешно'
-                });
-                modalProps.onOk && modalProps.onOk(saveObj, response.data);
-                modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
-                _onCloseModal();
-            }).catch(function (error) {
-                return notificationError(error, 'Ошибка при сохранении');
-            });
-        } else {
-            modalProps.onOk && modalProps.onOk(saveObj);
-            modalProps.onFinish && modalProps.onFinish(saveObj);
-            _onCloseModal();
-        }
-    };
-
-    var onFinishFailedHandler = function onFinishFailedHandler(errorInfo) {
-        // console.log('FormModal Failed:', errorInfo);
-        console.error("FormModal fields failed: ", errorInfo);
-        props.onFinishFailed && props.onFinishFailed(errorInfo);
-    };
-
-    var loadInitDataHandler = function loadInitDataHandler(callBack) {
-        return formConfig.loadInitData(callBack, _modalData);
-    };
-
-    var _onCancelHandler = function _onCancelHandler(e) {
-        // setVisibleModals({ ...visibleModals, [modal.type]: false });
-        // form.resetFields();
-        _onCloseModal();
-        if (modalProps.onCancel) modalProps.onCancel(e);
-    };
-
-    var defaultFooter = [{
-        componentType: 'Item',
-        child: _extends({
-            componentType: 'Button',
-            label: modalProps.cancelText,
-            className: 'mr-8',
-            onClick: _onCancelHandler
-        }, modalProps.cancelButtonProps)
-    }, {
-        componentType: 'Item',
-        child: _extends({
-            componentType: 'Button',
-            label: modalProps.okText,
-            type: modalProps.okType,
-            htmlType: 'submit'
-        }, modalProps.okButtonProps)
-    }];
-
-    var formConfig = _extends({
-        footer: defaultFooter,
-        loadInitData: function loadInitData(callBack, row) {
-            return callBack(row);
-        }
-    }, modalProps.form);
-
-    return React.createElement(
-        React.Fragment,
-        null,
-        React.createElement(
-            _Tooltip,
-            toolTipProps,
-            React.createElement(
-                _Button,
-                _extends({
-                    type: "primary"
-                }, buttonProps, _buttonProps, {
-                    onClick: _onOpenModal
-                }),
-                buttonProps && buttonProps.label
-            )
-        ),
-        React.createElement(
-            _Modal,
-            _extends({}, modalProps, {
-                centered: true,
-                destroyOnClose: true,
-                visible: visible,
-                onCancel: _onCancelHandler,
-                bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
-                footer: null
-            }),
-            React.createElement(
-                RtForm,
-                _extends({}, formConfig, {
-                    onFinish: onFinishHandler,
-                    onFinishFailed: onFinishFailedHandler,
-                    loadInitData: loadInitDataHandler
-                }),
-                props.children
-            )
-        )
-    );
-};
-
-Modal$4.propTypes = {
-
-    /** Свойства [Button](https://ant.design/components/button/) из Ant Design
-     * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
-    buttonProps: PropTypes.object,
-
-    /** Объект модального окна. Стандартная конфигурация. */
-    modalConfig: PropTypes.shape({
-        /** Тип модального окна */
-        type: PropTypes.oneOf(modalTypes),
-
-        /** Запрос для автоматического сохранения формы */
-        requestSaveForm: PropTypes.func,
-
-        /** HTTP Метод, передаваемый в запрос сохранения */
-        methodSaveForm: PropTypes.string,
-
-        /** Пропсы формы.
-         * Если верстка через конфиги, то пропс body обязателен */
-        form: PropTypes.object
-    }),
-
-    /** Данные для модального окна */
-    modalData: PropTypes.object,
-
-    /** Путь в сторе куда класть данных окна после закрытия */
-    dispatch: PropTypes.object,
-
-    /** Объект для подписки на изменения в STORE.
-     * Параметры в `onChange`:
-     * * `value`: значение за которым ведется наблюдение,
-     * * `extraData`: дополнительные данные, передаваемые при срабатывании события
-     * * `setModalData`: функция задания объекта формы
-     * * `setButtonProps`: функция задания пропсов кнопке
-     * * `openModal`: функция открытия модального окна
-     * * `closeModal`: функция закрытия модального окна */
-    subscribe: PropTypes.arrayOf(PropTypes.object)
-};
-
-Modal$4.defaultProps = defaultProps$1;
-
-var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
-    var subscribe = ownProps.subscribe;
-
-    var state = {};
-    if (subscribe && subscribe.length > 0) {
-        subscribe.forEach(function (item) {
-            var name = item.name,
-                path = item.path,
-                extraData = item.extraData;
-
-            if (name && path) state[name] = objectPath.get(store, path);
-            if (name && extraData) state[name + "ExtraData"] = objectPath.get(store, extraData);
-        });
-    }
-    return state;
-};
-var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ setDateStore: setDateStore }, dispatch);
-};
-
-var RtModal = connect(mapStateToProps$2, mapDispatchToProps$3)(Modal$4);
-
-var defaultProps = {
-    requestUploadFile: noop,
-    dataObject: {},
-    onCompletedUpload: noop,
-    onFailedUpload: noop,
-    uploadProps: {},
-    toolTipProps: {},
-    buttonProps: {}
-
-    /** Компонент загрузки файлов */
-};var UploadFile$1 = function UploadFile(props) {
-    var requestUploadFile = props.requestUploadFile,
-        dataObject = props.dataObject,
-        onCompletedUpload = props.onCompletedUpload,
-        onFailedUpload = props.onFailedUpload,
-        uploadProps = props.uploadProps,
-        toolTipProps = props.toolTipProps,
-        buttonProps = props.buttonProps;
-
-
-    var _uploadFile = function _uploadFile(file) {
-        // console.log('beforeUpload dataObject => ', dataObject);
-        notification(file, 'loading');
-        if (requestUploadFile) {
-            requestUploadFile({ file: file, dataObject: dataObject }).then(function (response) {
-                notification(file, 'success');
-            }).catch(function () {
-                notification(file, 'error');
-            });
-        }
-        return false;
-    };
-    var notification = function notification(file, type) {
-        var notifProps = {
-            key: file.uid,
-            duration: type === 'loading' ? 0 : 5,
-            icon: type === 'loading' ? React.createElement(_Spin, { indicator: React.createElement(LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
-            message: React.createElement(
-                "span",
-                null,
-                "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430: ",
-                React.createElement(
-                    _Typography.Text,
-                    { code: true },
-                    file.name
-                )
-            )
-        };
-        switch (type) {
-            case 'loading':
-                _notification.info(notifProps);
-                break;
-            case 'success':
-                _notification.success(notifProps);
-                onCompletedUpload(file);
-                props.onChange(file);
-                break;
-            case 'error':
-                _notification.error(notifProps);
-                onFailedUpload(file);
-                break;
-            case 'close':
-                _notification.close(file.uid);
-                break;
-        }
-    };
-    var defaultUploadProps = {
-        multiple: true,
-        showUploadList: false,
-        beforeUpload: _uploadFile
-    };
-
-    return React.createElement(
-        _Upload,
-        _extends({}, defaultUploadProps, uploadProps),
-        React.createElement(
-            _Tooltip,
-            toolTipProps,
-            React.createElement(
-                _Button,
-                _extends({
-                    icon: React.createElement(CloudUploadOutlined, null)
-                }, buttonProps),
-                buttonProps && buttonProps.label
-            )
-        )
-    );
-};
-
-UploadFile$1.propTypes = {
-    /** Функция запроса для отправки файла с данным на сервер */
-    requestUploadFile: PropTypes.func.isRequired,
-
-    /** Данные, прикрепляемые к файлу */
-    dataObject: PropTypes.object,
-
-    /** Функция, вызываемая при удачной загрузке файла */
-    onCompletedUpload: PropTypes.func,
-
-    /** Функция, вызываемая при НЕ удачной загрузке файла */
-    onFailedUpload: PropTypes.func,
-
-    /** Ant Props для [Upload](https://ant.design/components/upload/) компонента */
-    uploadProps: PropTypes.object,
-
-    /** Ant Props для [Tooltip](https://ant.design/components/tooltip/) компонента */
-    toolTipProps: PropTypes.object,
-
-    /** Ant Props для [Button](https://ant.design/components/button/) компонента */
-    buttonProps: PropTypes.object
-};
-
-UploadFile$1.defaultProps = defaultProps;
-
-/**
- * Renders
- */
-var renderClassic = function renderClassic(Component) {
-    return function (props) {
-        return React.createElement(
-            Component,
-            props,
-            props.children
-        );
-    };
-};
-
-var renderClassicWithLabel = function renderClassicWithLabel(Component) {
-    return function (props) {
-        return React.createElement(
-            Component,
-            props,
-            props.label || props.value || props.children
-        );
-    };
-};
-
-var renderClassicWithComponentType = function renderClassicWithComponentType(Component, componentType) {
-    return function (props) {
-        return renderClassic(Component)(_extends({}, props, { componentType: componentType }));
-    };
-};
-
-var renderClassicByName = function renderClassicByName(componentName) {
-    return function (props) {
-        if (classic[componentName]) {
-            // console.log("renderClassicByName => ", props);
-            return renderClassic(classic[componentName])(props);
-        } else {
-            console.log("NO renderClassicByName => ", componentName);
-            return null;
-        }
-    };
-};
-var renderDeclarativeByName = function renderDeclarativeByName(componentName) {
-    return function (props) {
-        return function (children) {
-            if (classic[componentName]) {
-                // console.log("renderDeclarativeByName => ", props);
-                return renderDeclarative(classic[componentName])(props)(children);
-            } else {
-                console.log("NO renderDeclarativeByName => ", componentName);
-                return null;
-            }
-        };
-    };
-};
-
-var renderDeclarative = function renderDeclarative(Component) {
-    return function (props) {
-        return function (children) {
-            // console.log("renderDeclarative => ", props);
-            return React.createElement(
-                Component,
-                props,
-                children
-            );
-        };
-    };
-};
-
-var renderFormItemComponent = function renderFormItemComponent(Component) {
-    return function (props) {
-        var componentProps = getObjectExcludedProps(props, ['itemProps']);
-        return renderDeclarative(_Form.Item)(_extends({}, props.itemProps, { noStyle: !(props.itemProps && props.itemProps.label) }))(renderClassic(Component)(componentProps));
-    };
-};
-
-/** */
-var ComponentClassic = function ComponentClassic(Component) {
-    return function (props) {
-        // console.log("ComponentClassic => ", Component)
-        var StoreComponent = withStore$1(Component, props.itemProps);
-        return renderFormItemComponent(StoreComponent)(props);
-    };
-};
-var ComponentClassicWithLabel = function ComponentClassicWithLabel(Component) {
-    return function (props) {
-        var StoreComponent = withStore$1(Component, props.itemProps);
-        return renderFormItemComponent(renderClassicWithLabel(StoreComponent))(props);
-    };
-};
-var ComponentClassicWithPlaceholder = function ComponentClassicWithPlaceholder(Component, placeholder) {
-    return function (props) {
-        var StoreComponent = withStore$1(Component, props.itemProps);
-        var _placeholder = props && props.placeholder ? props.placeholder : placeholder;
-        return renderFormItemComponent(StoreComponent)(_extends({}, props, { placeholder: _placeholder }));
-    };
-};
-var ComponentClassicWithOutStore = function ComponentClassicWithOutStore(Component) {
-    return function (props) {
-        // console.log("ComponentClassicWithOutStore => ", Component)
-        return renderFormItemComponent(Component)(props);
-    };
-};
-
-var TableWrapper = function TableWrapper(props) {
-    var type = props.type,
-        restProps = objectWithoutProperties(props, ["type"]);
-
-    if (type) return type === 'rt' ? React.createElement(ConfigLoader$1, restProps) : React.createElement(ConfigLoader, restProps);else return props.infinityMode ? React.createElement(ConfigLoader$1, props) : React.createElement(ConfigLoader, props);
-};
-
-var classicComponents = {
-    Form: RtForm,
-    FormHeader: FormHeader$1,
-    FormBody: FormBody$1,
-    FormFooter: FormFooter$1,
-    FormList: _Form.List,
-    Space: renderFormItemComponent(_Space),
-    Row: renderFormItemComponent(_Row),
-    Col: renderFormItemComponent(_Col),
-    Layout: renderFormItemComponent(Layout$2),
-    Tabs: _Tabs,
-    TabPane: TabPane$1,
-    List: renderFormItemComponent(_List)
-};
-var withComponentType = {
-    Button: ComponentClassicWithOutStore(Button$1),
-    Title: ComponentClassicWithLabel(_Typography.Title),
-    Text: ComponentClassicWithLabel(_Typography.Text),
-    Divider: ComponentClassicWithLabel(_Divider),
-    Checkbox: ComponentClassicWithLabel(_Checkbox),
-    DatePicker: ComponentClassicWithPlaceholder(DatePicker$1, 'Выберите дату'),
-    TimePicker: ComponentClassicWithPlaceholder(TimePicker$1, 'Выберите время'),
-    DateText: ComponentClassic(TypographyDate$1),
-    Input: ComponentClassicWithPlaceholder(_Input, 'Введите значение'),
-    Search: ComponentClassicWithPlaceholder(_Input.Search, 'Поиск'),
-    TextArea: ComponentClassicWithPlaceholder(_Input.TextArea, 'Введите текст'),
-    Password: ComponentClassicWithPlaceholder(_Input.Password, 'Введите пароль'),
-    InputNumber: ComponentClassicWithPlaceholder(_InputNumber, 'Введите значение'),
-    Switch: ComponentClassic(_Switch),
-    RadioGroup: ComponentClassic(_Radio.Group),
-    Select: ComponentClassicWithPlaceholder(Select$3, 'Выберите значение'),
-    TreeSelect: ComponentClassicWithPlaceholder(TreeSelect$1, 'Выберите значение'),
-    Table: ComponentClassicWithOutStore(TableWrapper),
-    RtTable: ComponentClassicWithOutStore(ConfigLoader$1),
-    AntTable: ComponentClassicWithOutStore(ConfigLoader),
-    Modal: ComponentClassicWithOutStore(RtModal),
-    Custom: ComponentClassic(Custom$1),
-    Switcher: ComponentClassic(Switcher$1),
-    UploadFile: ComponentClassic(UploadFile$1),
-    Transfer: ComponentClassic(_Transfer)
-};
-
-var classic = _extends({}, classicComponents, Object.keys(withComponentType).reduce(function (obj, key) {
-    return _extends({}, obj, defineProperty({}, key, renderClassicWithComponentType(withComponentType[key], key)));
-}, {}));
-
-Object.keys(classic).reduce(function (obj, key) {
-    return _extends({}, obj, defineProperty({}, key, renderDeclarative(classic[key])));
-}, {});
-
-var empty = React.createElement(
-	'div',
-	{ className: 'BaseTable__overlay' },
-	' ',
-	React.createElement(
-		'span',
-		null,
-		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
-	),
-	' '
-);
-
-var overlay = React.createElement(
-	'div',
-	{ className: 'BaseTable__overlay' },
-	' ',
-	React.createElement(_Spin, {
-		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
-		indicator: React.createElement(LoadingOutlined, { style: { fontSize: 24 }, spin: true })
-	}),
-	' '
-);
-
-var SelectionHead = function SelectionHead(props) {
-	var column = props.column,
-	    container = props.container;
-	var rowKey = column.rowKey,
-	    onSelectAll = column.onSelectAll,
-	    selectedRowKeys = column.selectedRowKeys,
-	    selectAll = column.selectAll;
-
-
-	var _handleChange = function _handleChange(e) {
-		var rowKeys = flatten(getTableRowKeys(container.props.data, column.rowKey));
-		var rowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
-			return rowKeys.includes(item[rowKey]);
-		});
-		var totalLength = rowKeys.length;
-		var selectLength = selectedRowKeys.length;
-		var checked = !(totalLength === selectLength);
-
-		// const newRowKeys = container.props.data.map((item) => { return item[column.rowKey] });
-		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
-	};
-
-	return React.createElement(_Checkbox, {
-		indeterminate: selectAll === null,
-		onChange: _handleChange,
-		checked: selectAll
-	});
-};
-
-var getRowChildren = function getRowChildren(data, rowKey) {
-	return data.map(function (item) {
-		if (item.children && item.children.length) {
-			return [item[rowKey], getRowChildren(item.children, rowKey)];
-		}
-		return item[rowKey];
-	});
-};
-
-var findBrothers = function findBrothers(data, selfItem, rowKey, parentKey) {
-	var rowKeys = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-
-	var arr = [];
-	data.forEach(function (item) {
-		if (item[parentKey] && item[parentKey] === selfItem[parentKey] && item[rowKey] !== selfItem[rowKey]) {
-			if (rowKeys !== null) {
-				if (rowKeys.includes(item[rowKey])) {
-					arr.push(item[rowKey]);
-				}
-			} else {
-				arr.push(item[rowKey]);
-			}
-		} else if (item.children && item.children.length) {
-			arr.push(findBrothers(item.children, selfItem, rowKey, parentKey, rowKeys));
-		}
-	});
-	return arr;
-};
-
-var parentAnalysis = function parentAnalysis(_ref) {
-	var rowData = _ref.rowData,
-	    rowKey = _ref.rowKey,
-	    parentKey = _ref.parentKey,
-	    checked = _ref.checked,
-	    nodeAssociated = _ref.nodeAssociated,
-	    treeData = _ref.treeData,
-	    selectedRowKeys = _ref.selectedRowKeys,
-	    indeterminateRowKeys = _ref.indeterminateRowKeys;
-
-	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
-	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
-
-	var currentRowData = rowData;
-	var parentExist = !!currentRowData[parentKey];
-	var lastTypeSelect = checked ? 'checked' : 'square';
-	var typeSelect = '';
-	var nextSquare = false;
-
-	/** Пока есть родитель */
-	while (parentExist && nodeAssociated) {
-		var indeterminateBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
-		var selectedBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
-		var allBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey));
-
-		if (checked) {
-			if (lastTypeSelect === 'checked' && selectedBrothers.length === allBrothers.length) typeSelect = 'checked';else typeSelect = 'square';
-		} else {
-			if (!checked && !nextSquare && (selectedBrothers.length || indeterminateBrothers.length)) nextSquare = true;
-			if (nextSquare) typeSelect = 'square';else typeSelect = 'none';
-		}
-
-		// console.log("allBrothers ", allBrothers);
-		// console.log("findParentById ", treeData,
-		//     rowKey,
-		//     parentKey,
-		//     currentRowData[parentKey]);
-		//
-		// console.log("findNodeByRowKey ", findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]));
-
-		// Найти родителя
-		currentRowData = findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]);
-
-		if (typeSelect === 'checked') {
-			// Выделить галкой
-			// console.log("checked");
-			lastTypeSelect = 'checked';
-			if (!_selectedRowKeys.includes(currentRowData[rowKey])) _selectedRowKeys.push(currentRowData[rowKey]);
-			var index = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
-			if (index > -1) _indeterminateRowKeys.splice(index, 1);
-		} else if (typeSelect === 'square') {
-			// Выдлеить квадратом
-			// console.log("square: ");
-			lastTypeSelect = 'square';
-			if (!_indeterminateRowKeys.includes(currentRowData[rowKey])) _indeterminateRowKeys.push(currentRowData[rowKey]);
-			var _index = _selectedRowKeys.indexOf(currentRowData[rowKey]);
-			if (_index > -1) _selectedRowKeys.splice(_index, 1);
-		} else if (typeSelect === 'none') {
-			// Снять выделение
-			// console.log("none: ");
-			lastTypeSelect = 'none';
-			var indexS = _selectedRowKeys.indexOf(currentRowData[rowKey]);
-			if (indexS > -1) _selectedRowKeys.splice(indexS, 1);
-			var indexI = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
-			if (indexI > -1) _indeterminateRowKeys.splice(indexI, 1);
-		}
-
-		parentExist = !!currentRowData[parentKey];
-		// parentExist = проверка наличия след родителя
-	}
-
-	return [_selectedRowKeys, _indeterminateRowKeys];
-};
-
-var SelectionCell = function SelectionCell(props) {
 	var _handleChange = function _handleChange(checked) {
 		var rowData = props.rowData,
 		    rowIndex = props.rowIndex,
@@ -5481,14 +570,14 @@ var SelectionCell = function SelectionCell(props) {
 		/** Обработка себя, поиск детей, выделение / снятие их */
 		var rowChildren = [];
 		if (checked) {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
 
 			_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
 			_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
 				return element !== rowData[rowKey] && !rowChildren.includes(element);
 			});
 		} else {
-			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+			if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren$1(rowData.children, rowKey));
 
 			_selectedRowKeys = _selectedRowKeys.filter(function (element) {
 				return element !== rowData[rowKey] && !rowChildren.includes(element);
@@ -5498,7 +587,7 @@ var SelectionCell = function SelectionCell(props) {
 			});
 		}
 
-		var _parentAnalysis = parentAnalysis({
+		var _parentAnalysis = parentAnalysis$1({
 			rowData: rowData,
 			rowKey: rowKey,
 			parentKey: parentKey,
@@ -5562,6 +651,43 @@ var SelectionCell = function SelectionCell(props) {
 		},
 		checked: checked
 	});
+};
+
+var APP_TIME_OFFSET = 3;
+
+var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
+	return date ? moment(date, format).utcOffset(APP_TIME_OFFSET) : null;
+};
+
+// export const getMomentWithOffset = (date) =>
+// 	moment(date).utcOffset(APP_TIME_OFFSET);
+var getMomentWithOffset = function getMomentWithOffset(date) {
+	return moment(date).format();
+};
+
+var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
+	return moment(date).startOf('day')
+	// .hours(0)
+	// .minutes(0)
+	// .seconds(0)
+	// .milliseconds(0)
+	.format();
+};
+
+var toFormat = function toFormat(dateString, format) {
+	if (!dateString) {
+		return '';
+	}
+	var mom = moment(dateString);
+	return mom.isValid() ? mom.format(format) : dateString;
+};
+
+var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
+	return toFormat(dateString, 'DD.MM.YYYY HH:mm:ss') || '--';
+};
+
+var getISO = function getISO(date) {
+	return moment(date).utcOffset(APP_TIME_OFFSET).toISOString();
 };
 
 var DateRange = function DateRange(props) {
@@ -5953,7 +1079,7 @@ var FilterPanel = function FilterPanel(props) {
             }));
           case "MultiSelect":
           case "SingleSelect":
-            return React.createElement(Select$2, _extends({
+            return React.createElement(Select$3, _extends({
               key: index
             }, item, {
               type: item.componentType,
@@ -6060,7 +1186,7 @@ FilterPanel.defaultProps = {
   resetFilterRender: "Сбросить"
 };
 
-var SelectionList = function SelectionList(props) {
+var SelectionList$1 = function SelectionList(props) {
 	var selectedRowObjects = props.selectedRowObjects,
 	    rowRender = props.rowRender,
 	    onClickDropSelect = props.onClickDropSelect;
@@ -6099,7 +1225,7 @@ var SelectionList = function SelectionList(props) {
 	);
 };
 
-SelectionList.propTypes = {
+SelectionList$1.propTypes = {
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
@@ -6113,9 +1239,21 @@ SelectionList.propTypes = {
 	onClickDropSelect: PropTypes.func.isRequired
 };
 
-SelectionList.defaultProps = {};
+SelectionList$1.defaultProps = {};
 
-var Table$1 = forwardRef(function (props, ref) {
+var types = {
+    INIT_STORE: 'INIT_STORE',
+    SET_DATA_STORE: 'SET_DATA_STORE'
+};
+
+var setDataStore = function setDataStore(path, row) {
+    return {
+        type: types.SET_DATA_STORE,
+        payload: { path: path, row: row }
+    };
+};
+
+var Table$5 = forwardRef(function (props, ref) {
 	/** Состояние первоначалной настройки компонента*/
 	var _useState = useState(false),
 	    _useState2 = slicedToArray(_useState, 2);
@@ -6245,10 +1383,10 @@ var Table$1 = forwardRef(function (props, ref) {
 
 	// console.log('props.commandPanelProps => ', props.commandPanelProps);
 
-	var commandPanelProps = _extends({}, CommandPanel.defaultProps, props.commandPanelProps);
+	var commandPanelProps = _extends({}, CommandPanel$1.defaultProps, props.commandPanelProps);
 	var filterPanelProps = _extends({}, FilterPanel.defaultProps, props.filterPanelProps);
 
-	var footerProps = _extends({}, Table$1.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$5.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -6279,7 +1417,7 @@ var Table$1 = forwardRef(function (props, ref) {
 				});
 				var _indeterminateRowKeys2 = [];
 				selectedRow.forEach(function (item) {
-					var _parentAnalysis = parentAnalysis({
+					var _parentAnalysis = parentAnalysis$1({
 						rowData: item,
 						rowKey: rowKey,
 						parentKey: expandParentKey,
@@ -6542,8 +1680,8 @@ var Table$1 = forwardRef(function (props, ref) {
 		if (selectable) {
 			var selectColumn = {
 				key: '__selection__',
-				headerRenderer: SelectionHead,
-				cellRenderer: SelectionCell,
+				headerRenderer: SelectionHead$1,
+				cellRenderer: SelectionCell$1,
 				width: 40,
 				flexShrink: 0,
 				resizable: false,
@@ -6573,17 +1711,17 @@ var Table$1 = forwardRef(function (props, ref) {
 			React.createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : null
+				footerProps.leftCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : null
+				footerProps.centerCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : null
+				footerProps.rightCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.rightCustomSideElement }) : null
 			),
 			selectable ? React.createElement(
 				React.Fragment,
@@ -6952,7 +2090,7 @@ var Table$1 = forwardRef(function (props, ref) {
 		React.createElement(
 			'div',
 			{ className: rtPrefix + '-table-top-panel' },
-			React.createElement(CommandPanel, _extends({}, commandPanelProps, {
+			React.createElement(CommandPanel$1, _extends({}, commandPanelProps, {
 				defaultValueSearch: defaultSearchValue,
 				disabledElements: _getDisabledElementsOfCommandPanel(),
 				onClickAddAsCopy: _onClickAddAsCopy,
@@ -6997,7 +2135,7 @@ var Table$1 = forwardRef(function (props, ref) {
 						footerHeight: _footerShow ? footerProps.height : 0,
 						headerHeight: headerHeight,
 						rowHeight: rowHeight,
-						overlayRenderer: loading ? overlay : null,
+						overlayRenderer: loading ? overlay$1 : null,
 						footerRenderer: _footer,
 						rowRenderer: rowRenderer,
 						estimatedRowHeight: estimatedRowHeight
@@ -7017,7 +2155,7 @@ var Table$1 = forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList, {
+		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList$1, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -7027,7 +2165,7 @@ var Table$1 = forwardRef(function (props, ref) {
 	);
 });
 
-Table$1.propTypes = {
+Table$5.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -7266,7 +2404,7 @@ Table$1.propTypes = {
 	subscribe: PropTypes.object
 };
 
-Table$1.defaultProps = {
+Table$5.defaultProps = {
 	defaultRows: [],
 	defaultSelectedRowKeys: [],
 	defaultSearchValue: '',
@@ -7282,8 +2420,8 @@ Table$1.defaultProps = {
 	autoDeleteRows: true,
 	rowKey: 'id',
 
-	empty: empty,
-	overlay: overlay,
+	empty: empty$1,
+	overlay: overlay$1,
 	fixWidthColumn: false,
 	footerHeight: 30,
 	footerShow: false,
@@ -7331,7 +2469,7 @@ Table$1.defaultProps = {
 	subscribe: {}
 };
 
-var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
+var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
 	var subscribe = ownProps.subscribe;
 
 	if (subscribe) {
@@ -7343,8 +2481,8 @@ var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
 
 	return {};
 };
-var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
+var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ setDateStore: setDataStore }, dispatch);
 };
 
 // const mapStateToProps = (store, ownProps) => {
@@ -7374,12 +2512,12 @@ var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
 /**
  * @deprecated [#1] since version 0.0.54 [#2].
  * */
-var Table$2 = connect(mapStateToProps$1, mapDispatchToProps$2, null, { forwardRef: true })(Table$1);
+var Table$6 = connect(mapStateToProps$2, mapDispatchToProps$4, null, { forwardRef: true })(Table$5);
 
 var Paragraph = _Typography.Paragraph;
 
 
-var Select$1 = function Select(props) {
+var Select$2 = function Select(props) {
 	var _useState = useState([]),
 	    _useState2 = slicedToArray(_useState, 2),
 	    _selectedRowKeys = _useState2[0],
@@ -7673,7 +2811,7 @@ var Select$1 = function Select(props) {
 		isSelectOpened ? React.createElement(
 			'div',
 			{ className: _getPopupCls(), style: _getPopupStyle() },
-			React.createElement(Table$2, _extends({}, props, {
+			React.createElement(Table$6, _extends({}, props, {
 				commandPanelProps: _extends({}, props.commandPanelProps, {
 					showElements: getEvents() // getShowElements(),
 				}),
@@ -7708,7 +2846,7 @@ var Select$1 = function Select(props) {
 	);
 };
 
-Select$1.propTypes = {
+Select$2.propTypes = {
 	/** Имя параметра селекта (вернется в onChangeKeys и onChangeObjects) */
 	name: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))]).isRequired,
 
@@ -7791,7 +2929,7 @@ Select$1.propTypes = {
 	expandParentKey: PropTypes.string
 };
 
-Select$1.defaultProps = {
+Select$2.defaultProps = {
 	onChangeKeys: noop,
 	// onChangeObjects: noop,
 	placeholder: 'Выбрать',
@@ -7816,13 +2954,13 @@ Select$1.defaultProps = {
 	expandLazyLoad: false,
 	expandParentKey: 'parentId'
 };
-var mapDispatchToProps$1 = function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ setDateStore: setDateStore }, dispatch);
+var mapDispatchToProps$3 = function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ setDateStore: setDataStore }, dispatch);
 };
 
-var Select$2 = connect(null, mapDispatchToProps$1)(Select$1);
+var Select$3 = connect(null, mapDispatchToProps$3)(Select$2);
 
-var _this$1 = undefined;
+var _this$3 = undefined;
 
 var AdvancedTable = forwardRef(function (props, ref) {
 	var _useState = useState({}),
@@ -7868,7 +3006,7 @@ var AdvancedTable = forwardRef(function (props, ref) {
 								return _context.stop();
 						}
 					}
-				}, _callee, _this$1);
+				}, _callee, _this$3);
 			}));
 
 			return function loadData() {
@@ -7924,7 +3062,7 @@ var AdvancedTable = forwardRef(function (props, ref) {
 
 	if (config && config.fields) {
 		// console.log('AdvancedTable render table -> ', config);
-		return React.createElement(Table$2, _extends({}, props, {
+		return React.createElement(Table$6, _extends({}, props, {
 			ref: ref,
 			columns: columnsByConfig(),
 			defaultFilter: getDefaultFilter(),
@@ -7965,9 +3103,9 @@ AdvancedTable.propTypes = {
 
 AdvancedTable.defaultProps = {};
 
-var excludeProps$4 = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$b = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
-var Form$1 = function Form(props) {
+var Form$3 = function Form(props) {
     var loadInitData = props.loadInitData,
         header = props.header,
         body = props.body,
@@ -8001,7 +3139,7 @@ var Form$1 = function Form(props) {
     }, [loaded]);
 
     useEffect(function () {
-        setAntFormProps(getObjectExcludedProps(props, excludeProps$4));
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$b));
         // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
     }, [props]);
 
@@ -8070,23 +3208,23 @@ var Form$1 = function Form(props) {
             header ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-header" },
-                React.createElement(FormItems, { items: header })
+                React.createElement(FormItems$2, { items: header })
             ) : null,
             React.createElement(
                 "div",
                 { className: getBodyCls() },
-                React.createElement(FormItems, { items: body })
+                React.createElement(FormItems$2, { items: body })
             ),
             footer ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-footer" },
-                React.createElement(FormItems, { items: footer })
+                React.createElement(FormItems$2, { items: footer })
             ) : null
         ) : null
     );
 };
 
-Form$1.propTypes = {
+Form$3.propTypes = {
 
     /** Не делать отступы у формы от краев блока */
     noPadding: PropTypes.bool,
@@ -8121,14 +3259,14 @@ Form$1.propTypes = {
     processBeforeSaveForm: PropTypes.func
 };
 
-Form$1.defaultProps = {
+Form$3.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
     autoSaveForm: true
 };
 
-var excludeProps$3 = ['type', 'initialValues', 'form'];
+var excludeProps$a = ['type', 'initialValues', 'form'];
 
 var FormModal = function FormModal(props) {
     var modal = props.modal,
@@ -8190,7 +3328,7 @@ var FormModal = function FormModal(props) {
         return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
     };
 
-    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$3));
+    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$a));
 
     var onFinish = function onFinish(values) {
         // console.log('FormModal Success:', values, selectedRow);
@@ -8252,7 +3390,7 @@ var FormModal = function FormModal(props) {
             bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
             footer: null
         }),
-        React.createElement(Form$1, _extends({}, formConfig, {
+        React.createElement(Form$3, _extends({}, formConfig, {
             onFinish: onFinish,
             onFinishFailed: onFinishFailed,
             loadInitData: _onLoadInitData
@@ -8277,9 +3415,9 @@ FormModal.propTypes = {
     saveRow: PropTypes.func
 };
 
-var _this = undefined;
+var _this$2 = undefined;
 
-var excludeProps$2 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
+var excludeProps$9 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
 
 var FormTable = forwardRef(function (props, ref) {
 
@@ -8381,7 +3519,7 @@ var FormTable = forwardRef(function (props, ref) {
                                     return _context.stop();
                             }
                         }
-                    }, _callee, _this);
+                    }, _callee, _this$2);
                 }));
 
                 return function loadData() {
@@ -8725,7 +3863,7 @@ var FormTable = forwardRef(function (props, ref) {
         { className: getTableCls(), style: props.style },
         React.createElement(AdvancedTable, _extends({
             ref: _setTableRef
-        }, getObjectExcludedProps(props, excludeProps$2), {
+        }, getObjectExcludedProps(props, excludeProps$9), {
             rows: tableRows,
             setRows: setTableRows
             // selectedRowKeys={tableSelectedRow[rowKey] ? [tableSelectedRow[rowKey]] : []}
@@ -8986,8 +4124,8 @@ FormTable.defaultProps = {
     autoDeleteRows: true,
     rowKey: 'id',
 
-    empty: empty,
-    overlay: overlay,
+    empty: empty$1,
+    overlay: overlay$1,
     fixWidthColumn: false,
     footerHeight: 30,
     footerShow: false,
@@ -9027,7 +4165,7 @@ FormTable.defaultProps = {
     isGroupKey: 'isGroup'
 };
 
-var withStore = function withStore(Component, antFormItemProps) {
+var withStore$2 = function withStore(Component, antFormItemProps) {
 
     var mapStateToProps = function mapStateToProps(store, ownProps) {
         var subscribe = ownProps.subscribe;
@@ -9042,7 +4180,7 @@ var withStore = function withStore(Component, antFormItemProps) {
         return {};
     };
     var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-        return bindActionCreators({ setDateStore: setDateStore }, dispatch);
+        return bindActionCreators({ setDateStore: setDataStore }, dispatch);
     };
 
     var defaultProps = {
@@ -9144,7 +4282,7 @@ var TypographyText = function TypographyText(props) {
     );
 };
 
-var TypographyDate = function TypographyDate(props) {
+var TypographyDate$1 = function TypographyDate(props) {
     var label = props.label,
         value = props.value,
         format = props.format;
@@ -9165,7 +4303,7 @@ var getTitle = function getTitle(type, element) {
     } else return 'Изменение файла';
 };
 
-var Modal$3 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
+var Modal$5 = function Modal(type, element, requestSaveRow, _processBeforeSaveForm, parentLoadHandler, requestLoadRows) {
     // console.log("FolderModal", type, requestSaveRow, processBeforeSaveForm, parentLoadHandler, requestLoadRows);
     var selectedRow = void 0;
     return {
@@ -9223,21 +4361,21 @@ var AddFolderModal = function AddFolderModal() {
         args[_key] = arguments[_key];
     }
 
-    return Modal$3.apply(undefined, ['add', 'Group'].concat(args));
+    return Modal$5.apply(undefined, ['add', 'Group'].concat(args));
 };
 var EditFolderModal = function EditFolderModal() {
     for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
     }
 
-    return Modal$3.apply(undefined, ['edit', 'Group'].concat(args));
+    return Modal$5.apply(undefined, ['edit', 'Group'].concat(args));
 };
 var EditFileModal = function EditFileModal() {
     for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
     }
 
-    return Modal$3.apply(undefined, ['edit', ''].concat(args));
+    return Modal$5.apply(undefined, ['edit', ''].concat(args));
 };
 
 var copyTextToClipboard = function copyTextToClipboard(text) {
@@ -9666,7 +4804,7 @@ FileManager.defaultProps = {
     expandParentKey: 'parentId'
 };
 
-var Modal$1 = function Modal(props) {
+var Modal$3 = function Modal(props) {
     var buttonProps = props.buttonProps,
         modalConfig = props.modalConfig,
         modalData = props.modalData,
@@ -9762,7 +4900,7 @@ var Modal$1 = function Modal(props) {
     );
 };
 
-Modal$1.propTypes = {
+Modal$3.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
@@ -9781,7 +4919,7 @@ Modal$1.propTypes = {
     subscribe: PropTypes.object
 };
 
-var mapStateToProps = function mapStateToProps(store, ownProps) {
+var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
     var subscribe = ownProps.subscribe;
 
     if (subscribe) {
@@ -9792,19 +4930,19 @@ var mapStateToProps = function mapStateToProps(store, ownProps) {
     }
     return {};
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ setDateStore: setDateStore }, dispatch);
+var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setDateStore: setDataStore }, dispatch);
 };
 
-var Modal$2 = connect(mapStateToProps, mapDispatchToProps)(Modal$1);
+var Modal$4 = connect(mapStateToProps$1, mapDispatchToProps$2)(Modal$3);
 
-var excludeProps$1 = ['child', 'componentType', 'field'];
+var excludeProps$8 = ['child', 'componentType', 'field'];
 
-var FormItem = function FormItem(props) {
+var FormItem$1 = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$1);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$8);
 
 	// Если тип элемента Select -> добавить доп свойства к Form.Item
 	if (child && child.componentType && (child.componentType === 'SingleSelect' || child.componentType === 'MultiSelect')) {
@@ -9827,7 +4965,7 @@ var FormItem = function FormItem(props) {
 			var placeholder = void 0;
 			switch (child.componentType) {
 				case 'Button':
-					Component = withStore(_Button, antFormItemProps);
+					Component = withStore$2(_Button, antFormItemProps);
 					// console.log('Props field => ', field);
 					var onClick = function onClick(e) {
 						return childProps.onClick && childProps.onClick(e, field);
@@ -9838,71 +4976,71 @@ var FormItem = function FormItem(props) {
 						childProps && childProps.label
 					);
 				case 'Title':
-					Component = withStore(TypographyTitle, antFormItemProps);
+					Component = withStore$2(TypographyTitle, antFormItemProps);
 					return React.createElement(Component, _extends({}, child, { componentType: child.componentType }));
 				case 'Text':
-					Component = withStore(TypographyText, antFormItemProps);
+					Component = withStore$2(TypographyText, antFormItemProps);
 					return React.createElement(Component, _extends({}, child, { componentType: true }));
 				case 'Divider':
-					Component = withStore(_Divider, antFormItemProps);
+					Component = withStore$2(_Divider, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Checkbox':
-					Component = withStore(_Checkbox, antFormItemProps);
+					Component = withStore$2(_Checkbox, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'DatePicker':
-					Component = withStore(DatePickerHOC(_DatePicker), antFormItemProps);
+					Component = withStore$2(DatePickerHOC(_DatePicker), antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Выберите дату';
 					var style = _extends({ width: '100%' }, childProps && childProps.style);
 					return React.createElement(Component, _extends({}, childProps, { style: style, placeholder: placeholder }));
 				case 'DateText':
-					Component = withStore(TypographyDate, antFormItemProps);
+					Component = withStore$2(TypographyDate$1, antFormItemProps);
 					return React.createElement(Component, child);
 				case 'Input':
-					Component = withStore(_Input, antFormItemProps);
+					Component = withStore$2(_Input, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
 					return React.createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'TextArea':
-					Component = withStore(_Input.TextArea, antFormItemProps);
+					Component = withStore$2(_Input.TextArea, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case 'Password':
-					Component = withStore(_Input.Password, antFormItemProps);
+					Component = withStore$2(_Input.Password, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите пароль';
 					return React.createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'InputNumber':
-					Component = withStore(_InputNumber, antFormItemProps);
+					Component = withStore$2(_InputNumber, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
 					return React.createElement(Component, _extends({}, childProps, { style: { width: '100%' }, placeholder: placeholder }));
 				case 'Radio':
-					Component = withStore(_Radio, antFormItemProps);
+					Component = withStore$2(_Radio, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'RadioButton':
-					Component = withStore(_Radio.Button, antFormItemProps);
+					Component = withStore$2(_Radio.Button, antFormItemProps);
 					return React.createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Switch':
-					Component = withStore(_Switch, antFormItemProps);
+					Component = withStore$2(_Switch, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case "RadioGroup":
-					Component = withStore(_Radio.Group, antFormItemProps);
+					Component = withStore$2(_Radio.Group, antFormItemProps);
 					return React.createElement(Component, childProps);
 				case 'SingleSelect':
 				case 'MultiSelect':
-					return React.createElement(Select$2, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
+					return React.createElement(Select$3, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
 				//'infinity', 'serverSide', 'localSide'
 				case 'InfinityTable':
 					childProps.type = 'infinity';
@@ -9919,9 +5057,9 @@ var FormItem = function FormItem(props) {
 				case 'FileManager':
 					return React.createElement(FileManager, _extends({}, childProps, { name: props.name }));
 				case 'Modal':
-					return React.createElement(Modal$2, _extends({}, childProps, { name: props.name }));
+					return React.createElement(Modal$4, _extends({}, childProps, { name: props.name }));
 				case 'Custom':
-					Component = withStore(child.render, antFormItemProps);
+					Component = withStore$2(child.render, antFormItemProps);
 					return React.createElement(Component, childProps);
 				default:
 					return null;
@@ -9940,11 +5078,11 @@ var FormItem = function FormItem(props) {
 	);
 };
 
-FormItem.propTypes = {
+FormItem$1.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
-var Layout$1 = function Layout(props) {
+var Layout$2 = function Layout(props) {
 
     var itemProps = {};
     Object.keys(props).forEach(function (key) {
@@ -9964,7 +5102,7 @@ var Layout$1 = function Layout(props) {
     );
 };
 
-Layout$1.propTypes = {
+Layout$2.propTypes = {
     /** Строка класса */
     className: PropTypes.string,
 
@@ -9972,9 +5110,9 @@ Layout$1.propTypes = {
     style: PropTypes.object
 };
 
-var excludeProps = ["children", "componentType"];
+var excludeProps$7 = ["children", "componentType"];
 
-var FormItems = function FormItems(props) {
+var FormItems$1 = function FormItems(props) {
     var items = props.items;
 
     // console.log('FormItems props => ', props);
@@ -9982,7 +5120,7 @@ var FormItems = function FormItems(props) {
     var getItems = function getItems(data, antFormListParams) {
 
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps);
+            var itemProps = getObjectExcludedProps(item, excludeProps$7);
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
@@ -10000,7 +5138,7 @@ var FormItems = function FormItems(props) {
                     );
                 case "Layout":
                     return React.createElement(
-                        Layout$1,
+                        Layout$2,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
@@ -10037,7 +5175,7 @@ var FormItems = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React.createElement(FormItem, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
                 case "ListItems":
                     return React.createElement(
                         _Form.List,
@@ -10073,9 +5211,11 @@ var FormItems = function FormItems(props) {
     return getItems(items);
 };
 
-FormItems.propTypes = {
+FormItems$1.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
+
+var FormItems$2 = FormItems$1;
 
 var confirm = _Modal.confirm;
 
@@ -10258,17 +5398,17 @@ var CommandPanel = function CommandPanel(props) {
 			React.createElement(
 				'div',
 				{ className: 'left-custom-side' },
-				leftCustomSideElement ? React.createElement(FormItems, { items: leftCustomSideElement }) : null
+				leftCustomSideElement ? React.createElement(FormItems$2, { items: leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'center-custom-side' },
-				centerCustomSideElement ? React.createElement(FormItems, { items: centerCustomSideElement }) : null
+				centerCustomSideElement ? React.createElement(FormItems$2, { items: centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'right-custom-side' },
-				rightCustomSideElement ? React.createElement(FormItems, { items: rightCustomSideElement }) : null
+				rightCustomSideElement ? React.createElement(FormItems$2, { items: rightCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
@@ -10369,6 +5509,7 @@ CommandPanel.defaultProps = {
 	showElements: [],
 	systemBtnProps: {}
 };
+var CommandPanel$1 = CommandPanel;
 
 /**
  * ### Список / Дерево.
@@ -10393,7 +5534,7 @@ var List$1 = function List(props) {
 			);
 		}
 	}];
-	return React.createElement(Table$2, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
+	return React.createElement(Table$6, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
 };
 
 List$1.propTypes = {
@@ -10434,17 +5575,17 @@ List$1.defaultProps = {
 
 
 var deprecated = {
-    CommandPanel: CommandPanel,
+    CommandPanel: CommandPanel$1,
     FilterPanel: FilterPanel,
-    Table: Table$2,
+    Table: Table$6,
     AdvancedTable: AdvancedTable,
     List: List$1,
-    Select: Select$2,
+    Select: Select$3,
     SingleDate: SingleDate,
     DateRange: DateRange,
-    Form: Form$1,
+    Form: Form$3,
     FileManager: FileManager,
-    Modal: Modal$2
+    Modal: Modal$4
 };
 
 var rtdReducer = function rtdReducer() {
@@ -10497,50 +5638,7116 @@ var executeRequest = function executeRequest(request) {
     };
 };
 
-// export * from './components/utils/datesUtils';
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
 
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+var getExtraData = function getExtraData(item, props) {
+    var extraData = {};
+    if (item.extraData) {
+        if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
+            return extraData[key] = props[item.name + ".extraData." + key];
+        });else extraData = props[item.name + "ExtraData"];
+    }
+    return extraData;
+};
+var mapStateToProps = function mapStateToProps(store, ownProps) {
+    var subscribe = ownProps.subscribe,
+        dispatch = ownProps.dispatch;
+    var state = {};
+    if (subscribe && subscribe.length > 0) {
+        subscribe.forEach(function (item) {
+            var name = item.name,
+                path = item.path,
+                extraData = item.extraData;
+            if (name && path) state[name] = objectPath.get(store, path);
+            if (name && extraData) if ((typeof extraData === "undefined" ? "undefined" : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
+                return state[name + ".extraData." + key] = objectPath.get(store, extraData[key]);
+            });else state[name + "ExtraData"] = objectPath.get(store, extraData);
+        });
+    }
+    if (dispatch && dispatch.extraData) {
+        // console.log('subscribe to ', dispatch.extraData)
+        state.dispatchExtraData = objectPath.get(store, dispatch.extraData);
+    }
+    return state;
+};
+var mapDispatchToProps$1 = function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setDateStore: setDataStore }, dispatch);
+};
+
+var withStore$1 = function withStore(Component, antFormItemProps) {
+
+    // const mapStateToProps = (store, ownProps) => {
+    //     const {subscribe, dispatch} = ownProps;
+    //     let state = {};
+    //     if(subscribe && subscribe.length > 0){
+    //         subscribe.forEach(item => {
+    //             const {name, path, extraData} = item;
+    //             if(name && path)
+    //                 state[name] = objectPath.get(store, path);
+    //             if(name && extraData)
+    //                 if(typeof extraData === 'object')
+    //                     Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+    //                 else
+    //                     state[`${name}ExtraData`] = objectPath.get(store, extraData);
+    //         })
+    //     }
+    //     if(dispatch && dispatch.extraData) {
+    //         // console.log('subscribe to ', dispatch.extraData)
+    //         state.dispatchExtraData = objectPath.get(store, dispatch.extraData);
+    //     }
+    //
+    //     return state;
+    // };
+    // const mapDispatchToProps = (dispatch) =>
+    //     bindActionCreators({ setDateStore: setDataStore}, dispatch);
+
+    var defaultProps = {
+        trigger: 'onChange',
+        valuePropName: 'value'
+    };
+
+    var withStoreProps = _extends({}, defaultProps, antFormItemProps);
+
+    return connect(mapStateToProps, mapDispatchToProps$1)(function (props) {
+        var componentType = props.componentType,
+            setDateStore = props.setDateStore,
+            dispatchExtraData = props.dispatchExtraData;
+
+        // Объект подписки на стор
+
+        var subscribe = props.subscribe ? props.subscribe : [];
+
+        // Объект публикации в стор
+        var dispatch = props.dispatch ? props.dispatch : {};
+
+        var _useState = useState({}),
+            _useState2 = slicedToArray(_useState, 2),
+            subscribeProps = _useState2[0],
+            setSubscribeProps = _useState2[1];
+
+        var trigger = withStoreProps.trigger,
+            valuePropName = withStoreProps.valuePropName;
+
+
+        var excludeProps = ['componentType', 'setDateStore', 'subscribe'].concat(toConsumableArray(subscribe.map(function (item) {
+            return item.name;
+        })), ['dispatch', 'dispatchExtraData']); // ...subscribe.map(item => item.name),
+
+        var isMounted = useMounted();
+
+        /** Подписка на изменение props[subscribe.name] в сторе */
+        subscribe.map(function (item) {
+            return useEffect(function () {
+                // console.log("withStore subscribe: ", item.name, item.withMount);
+                if ((item.withMount || isMounted) && item.name) {
+                    // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                    // let extraData = {};
+                    // if (item.extraData) {
+                    //     if (typeof item.extraData === 'object')
+                    //         Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+                    //     else
+                    //         extraData = props[`${item.name}ExtraData`];
+                    // }
+                    item.onChange && item.onChange({
+                        value: props[item.name],
+                        extraData: getExtraData(item, props), //extraData,
+                        setSubscribeProps: setSubscribePropsHandler });
+                }
+                // console.log("Change Props[2]: ", props.subscribeЗф);
+            }, [props[item.name]]);
+        });
+
+        /** Подписка на изменение props и отправка данных в стор */
+        useEffect(function () {
+            var _value = props[valuePropName];
+            // console.log(`storeHOC => `, _value);
+            // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
+            //     _value = undefined;
+            if (componentType !== 'Button' && componentType !== 'Search') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: _value });
+        }, [props[valuePropName]]);
+
+        /** Подписка на изменение subscribeProps.value и отправка данных в props[trigger] (как правило это onChange) */
+        // useEffect(() => {
+        //     if(isMounted) {
+        //         console.log('onChange subscribeProps.value => ', subscribeProps.value);
+        //         props[trigger] && props[trigger](subscribeProps.value);
+        //     }
+        // }, [subscribeProps.value]);
+
+        var setSubscribePropsHandler = function setSubscribePropsHandler(_subscribeProps) {
+            // console.log('onChange setSubscribePropsHandler => ', value);
+            setSubscribeProps(function (prevState) {
+                return _extends({}, prevState, _subscribeProps);
+            });
+            if (_subscribeProps && objectPath.has(_subscribeProps, valuePropName)) {
+                var value = _subscribeProps[valuePropName];
+                // console.log('setSubscribePropsHandler => ', componentType, value);
+                if (componentType === 'Search') _searchDispatchToStore(value);
+
+                props[trigger] && props[trigger](value);
+            }
+        };
+
+        var onChange = function onChange() {
+            // console.log('withStore [trigger] ',  props[trigger], args)
+            if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
+
+            if (subscribeProps && objectPath.has(subscribeProps, valuePropName)) {
+                var _subscribeProps = _extends({}, subscribeProps);
+                objectPath.del(_subscribeProps, valuePropName);
+                // console.log('onClear subscribeProps[valuePropName] => ', _subscribeProps);
+                setSubscribeProps(_subscribeProps);
+            }
+
+            props[trigger] && props[trigger].apply(props, arguments);
+        };
+
+        var _onSearch = function _onSearch(searchLine, e) {
+            e.preventDefault();
+            // console.log("_onSearch", searchLine);
+            _searchDispatchToStore(searchLine);
+        };
+        var _searchDispatchToStore = function _searchDispatchToStore(searchLine) {
+            return dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: searchLine, extraData: dispatchExtraData });
+        };
+
+        var childProps = getObjectExcludedProps(props, excludeProps);
+        var onSearchProps = componentType === 'Search' ? { onSearch: _onSearch } : {};
+        // console.log(`storeHOC Component => `, componentType, Component);
+        return React.createElement(
+            Component,
+            _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange), onSearchProps),
+            props.children
+        );
+    });
+};
+
+var render = function render(Component) {
+    return function (props) {
+        return jsx(Component, __assign({}, props), void 0);
+    };
+};
+var renderLabel = function renderLabel(Component) {
+    return function (props) {
+        return jsx(Component, __assign({}, props, { children: props.label || props.value || props.children }), void 0);
+    };
+};
+var renderClassicByName = function renderClassicByName(componentName) {
+    return function (props) {
+        // @ts-ignore
+        if (classic[componentName]) {
+            // console.log("renderClassicByName => ", props);
+            // @ts-ignore
+            return render(classic[componentName])(props);
+        } else {
+            console.log("NO renderClassicByName => ", componentName);
+            return null;
+        }
+    };
+};
+var renderDeclarativeByName = function renderDeclarativeByName(componentName) {
+    return function (props) {
+        return function (children) {
+            // @ts-ignore
+            if (classic[componentName]) {
+                // console.log("renderDeclarativeByName => ", props);
+                // @ts-ignore
+                return render(classic[componentName])(__assign(__assign({}, props), { children: children }));
+            } else {
+                console.log("NO renderDeclarativeByName => ", componentName);
+                return null;
+            }
+        };
+    };
+};
+
+var searchWrapper = function searchWrapper(Component, placeholder) {
+    return function (props) {
+        return withPlaceholder(Component, placeholder)(__assign(__assign({}, props), { componentType: 'Search' }));
+    };
+};
+var withLabel = function withLabel(Component) {
+    return function (props) {
+        return withStore(renderLabel(Component))(props);
+    };
+};
+var withPlaceholder = function withPlaceholder(Component, placeholder) {
+    return function (props) {
+        return withStore(Component)(__assign(__assign({}, props), { placeholder: props && props.placeholder ? props.placeholder : placeholder }));
+    };
+};
+var withStore = function withStore(Component) {
+    return function (props) {
+        var itemProps = props.itemProps;
+        return withItem(withStore$1(Component, itemProps))(props);
+    };
+};
+var withItem = function withItem(Component) {
+    return function (props) {
+        var itemProps = props.itemProps,
+            rest = __rest(props, ["itemProps"]);
+        return render(_Form.Item)(__assign(__assign({}, itemProps), { noStyle: !(itemProps && itemProps.label), children: render(Component)(rest) }));
+    };
+};
+
+/** Компонент кнопки со всеми пропрами AntButton */
+var Button$1 = function Button(props) {
+    var Component = withStore$1(_Button, { trigger: 'onClick' });
+    var onClick = function onClick(e) {
+        return props.onClick && props.onClick(e, props.field);
+    };
+    return renderLabel(Component)(__assign(__assign({}, props), { onClick: onClick, componentType: 'Button' }));
+};
+
+var RtDatePicker = function RtDatePicker(props) {
+    return DateTimePicker(_DatePicker)(props);
+};
+var RtTimePicker = function RtTimePicker(props) {
+    return DateTimePicker(_TimePicker)(props);
+};
+/** Компонент вывода даты в текстовом виде */
+var TypographyDate = function TypographyDate(props) {
+    var label = props.label,
+        value = props.value,
+        format = props.format;
+    var _value = value ? format ? toFormat(value, format) : getISO(value) : undefined;
+    return jsxs(_Typography.Text, __assign({}, props, { children: [" ", label || _value, " "] }), void 0);
+};
+var DateTimePicker = function DateTimePicker(Component) {
+    return function (props) {
+        var value = props.value,
+            onChange = props.onChange,
+            restProps = __rest(props, ["value", "onChange"]);
+        useEffect(function () {
+            // console.log("DatePickerHOC => onChange => string");
+            value && typeof value === "string" && onChange(moment(value), value);
+        }, []);
+        var _value = value ? typeof value === "string" ? moment(value) : value : undefined;
+        var style = __assign({ width: "100%" }, props && props.style);
+        // console.log("DatePickerHOC value => ", value);
+        return jsx(Component, __assign({}, restProps, { style: style, value: _value, onChange: onChange }), void 0);
+    };
+};
+
+/** Компонент обертка со всеми пропрами div */
+var Layout$1 = function Layout(props) {
+    var getCls = function getCls() {
+        var cls = [rtPrefix + "-layout"];
+        props.className && cls.push(props.className);
+        return cls.join(' ');
+    };
+    return jsx("div", __assign({}, props, { className: getCls() }, { children: props.children }), void 0);
+};
+
+var excludeProps$6 = ['child', 'componentType', 'field'];
+var FormItem = function FormItem(props) {
+	var child = props.child,
+	    field = props.field;
+
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$6);
+	if (child) return renderClassicByName(child.componentType)(_extends({ itemProps: _extends({}, antFormItemProps) }, child, { field: field }));else return null;
+};
+
+FormItem.propTypes = {
+	child: PropTypes.object.isRequired
+};
+
+var excludeProps$5 = ["children", "componentType"];
+
+var FormItems = function FormItems(props) {
+    var items = props.items;
+
+    // console.log('FormItems props => ', props);
+
+    var getItems = function getItems(data, antFormListParams) {
+
+        return data && data.map(function (item, index) {
+            var itemProps = getObjectExcludedProps(item, excludeProps$5);
+            // console.log('FormItems index => ', index);
+
+            switch (item.componentType) {
+                case "Item":
+                    var _item = _extends({}, item);
+                    var _key = index;
+                    if (antFormListParams && antFormListParams.field) {
+                        if (_item.name) {
+                            if (Array.isArray(_item.name)) {
+                                _item.name = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                            } else {
+                                _item.name = [antFormListParams.field.name, _item.name];
+                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                            }
+                        }
+                    }
+                    // console.log('_item ', _item.name);
+                    return React.createElement(FormItem, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                case "ListItems":
+                    return React.createElement(
+                        _Form.List,
+                        _extends({ key: index }, itemProps),
+                        function (fields, operation) {
+                            var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
+                            return getItems(item.children, param);
+                        }
+                    );
+                case "ListItem":
+                    // console.log('antFormListParams => ', antFormListParams);
+                    return React.createElement(
+                        "div",
+                        { key: index },
+                        antFormListParams && antFormListParams.fields && antFormListParams.fields.map(function (field, fIndex) {
+                            // console.log('index field.key', index, field);
+                            var param = _extends({ field: _extends({}, field) }, antFormListParams);
+                            return React.createElement(
+                                "div",
+                                { key: field.key },
+                                getItems(item.children, param),
+                                " "
+                            );
+                        })
+                    );
+                default:
+                    return renderDeclarativeByName(item.componentType)(_extends({ key: index }, itemProps))(getItems(item.children, antFormListParams));
+            }
+        }) || null;
+    };
+
+    return getItems(items);
+};
+
+FormItems.propTypes = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
+var excludeProps$4 = ["dispatch", "setDateStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+
+/** Компонент заголовка формы */
+var FormHeader$1 = function FormHeader(props) {
+    return React.createElement(
+        "div",
+        _extends({}, props, { className: rtPrefix + "-form-header " + (props.className || '') }),
+        props.children
+    );
+};
+
+/** Компонент тела формы */
+var FormBody$1 = function FormBody(props) {
+    var cls = [rtPrefix + "-form-body"];
+    props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
+    props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
+    return React.createElement(
+        "div",
+        _extends({}, props, { className: cls.join(" ") }),
+        props.children
+    );
+};
+
+/** Компонент подвала формы */
+var FormFooter$1 = function FormFooter(props) {
+    return React.createElement(
+        "div",
+        { className: rtPrefix + "-form-footer" },
+        props.children
+    );
+};
+
+/** Компонент формы */
+var Form$1 = function Form(props) {
+    var dispatch = props.dispatch,
+        setDateStore = props.setDateStore,
+        loadInitData = props.loadInitData,
+        header = props.header,
+        body = props.body,
+        footer = props.footer,
+        requestSaveForm = props.requestSaveForm,
+        methodSaveForm = props.methodSaveForm,
+        processBeforeSaveForm = props.processBeforeSaveForm;
+
+    /** Состояние первоначалной настройки компонента*/
+
+    var _useState = useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        loaded = _useState2[0],
+        setLoaded = _useState2[1];
+
+    var _useState3 = useState({}),
+        _useState4 = slicedToArray(_useState3, 2),
+        antFormProps = _useState4[0],
+        setAntFormProps = _useState4[1];
+
+    var _useState5 = useState({}),
+        _useState6 = slicedToArray(_useState5, 2),
+        initFormData = _useState6[0],
+        setInitFormData = _useState6[1];
+
+    useEffect(function () {
+        if (!loaded) {
+            if (loadInitData !== noop) loadInitData(_setInitFormData);else setLoaded(true);
+        }
+    }, [loaded]);
+
+    useEffect(function () {
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$4));
+        // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
+    }, [props]);
+
+    var _setInitFormData = function _setInitFormData(data) {
+        // console.log("Form loaded init data => ", data);
+        setInitFormData(data);
+        setLoaded(true);
+    };
+
+    var antForm = void 0;
+    if (props && props.form) {
+        antForm = props.form;
+    } else {
+        var _AntForm$useForm = _Form.useForm(),
+            _AntForm$useForm2 = slicedToArray(_AntForm$useForm, 1),
+            form = _AntForm$useForm2[0];
+
+        antForm = form;
+    }
+
+    var getBodyCls = function getBodyCls() {
+        var cls = [rtPrefix + "-form-body"];
+        props.noPadding && cls.push(rtPrefix + "-form-body-no-padding");
+        props.scrollable && cls.push(rtPrefix + "-form-body-scrollable");
+        return cls.join(" ");
+    };
+
+    var onFinish = function onFinish(rawValues) {
+        var values = processBeforeSaveForm ? processBeforeSaveForm(rawValues) : rawValues;
+        // console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, values);
+        var saveObject = _extends({}, initFormData, values);
+        console.log("Success form [" + (props.name ? props.name : 'no name form') + "]: ", saveObject);
+        if (requestSaveForm && methodSaveForm) {
+            requestSaveForm({
+                method: methodSaveForm,
+                data: saveObject
+            }).then(function (response) {
+                _notification.success({
+                    message: "Сохранение прошло успешно"
+                });
+                props.onFinish && props.onFinish(saveObject, response.data);
+            }).catch(function (error) {
+                return notificationError(error, 'Ошибка при сохранении');
+            });
+        } else if (props.onFinish) props.onFinish(saveObject);
+    };
+
+    var onFinishFailed = function onFinishFailed(errorInfo) {
+        console.error("Failed:", errorInfo);
+        props.onFinishFailed && props.onFinishFailed(errorInfo);
+    };
+
+    var Header = function Header(header) {
+        return React.createElement(
+            "div",
+            { className: rtPrefix + "-form-header" },
+            React.createElement(FormItems, { items: header })
+        );
+    };
+    var Footer = function Footer(footer) {
+        return React.createElement(
+            "div",
+            { className: rtPrefix + "-form-footer" },
+            React.createElement(FormItems, { items: footer })
+        );
+    };
+
+    return React.createElement(
+        React.Fragment,
+        null,
+        loaded ? React.createElement(
+            _Form,
+            _extends({
+                form: antForm
+            }, antFormProps, {
+                className: antFormProps.className + " " + rtPrefix + "-form",
+                style: _extends({}, antFormProps.style, { width: '100%', height: '100%' }),
+                initialValues: _extends({}, antFormProps.initialValues, initFormData),
+                onFinish: onFinish,
+                onFinishFailed: onFinishFailed,
+                onFieldsChange: function onFieldsChange(changedFields, allFields) {
+                    var values = _extends({}, initFormData, antForm.getFieldsValue());
+                    // console.log('dispatchToStore => ', dispatch, values);
+                    dispatch && dispatchToStore({ dispatch: dispatch, setDateStore: setDateStore, value: values });
+                }
+            }),
+            React.createElement(
+                React.Fragment,
+                null,
+                header ? Header(header) : null,
+                body ? React.createElement(
+                    "div",
+                    { className: getBodyCls() },
+                    React.createElement(FormItems, { items: body })
+                ) : null,
+                props.children,
+                footer ? Footer(footer) : null
+            )
+        ) : null
+    );
+};
+
+Form$1.propTypes = {
+
+    /** Не делать отступы у формы от краев блока. **Only config Form** */
+    noPadding: PropTypes.bool,
+
+    /** Разрешит скролл внтри формы. **Only config Form** */
+    scrollable: PropTypes.bool,
+
+    /** Массив объектов для шапки формы. Как правило только заголовок. */
+    header: PropTypes.arrayOf(PropTypes.object),
+
+    /** Массив объектов для тела формы */
+    body: PropTypes.arrayOf(PropTypes.object),
+
+    /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
+    footer: PropTypes.arrayOf(PropTypes.object),
+
+    /** Ссылка на функцию загрузки значений по умолчанию
+     * `(callBack) => callBack(initObject)` */
+    loadInitData: PropTypes.func,
+
+    /** Запрос для автоматического сохранения формы */
+    requestSaveForm: PropTypes.func,
+
+    /** HTTP Метод, передаваемый в запрос сохранения */
+    methodSaveForm: PropTypes.string,
+
+    /** Функция обработки перед сохранением формы */
+    processBeforeSaveForm: PropTypes.func
+};
+
+Form$1.defaultProps = {
+    noPadding: false,
+    scrollable: false,
+    loadInitData: noop,
+    methodSaveForm: 'POST'
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setDateStore: setDataStore }, dispatch);
+};
+
+var Form$2 = connect(null, mapDispatchToProps)(Form$1);
+
+var excludeProps$3 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'lostParamName', 'infinityMode', 'requestLoadRows', 'optionConverter', 'options', 'widthControl', 'pageSize'];
+
+/** Компонент выбора элемента(ов) из списка */
+var Select$1 = function Select(props) {
+	var defaultSortBy = props.defaultSortBy,
+	    defaultFilter = props.defaultFilter,
+	    defaultSearchValue = props.defaultSearchValue,
+	    sortBy = props.sortBy,
+	    filter = props.filter,
+	    searchValue = props.searchValue,
+	    searchParamName = props.searchParamName,
+	    lostParamName = props.lostParamName,
+	    infinityMode = props.infinityMode,
+	    requestLoadRows = props.requestLoadRows,
+	    optionConverter = props.optionConverter,
+	    options = props.options,
+	    widthControl = props.widthControl,
+	    pageSize = props.pageSize,
+	    mode = props.mode,
+	    onChange = props.onChange,
+	    value = props.value;
+
+	/** Наличие на сервере еще данных */
+
+	var _useState = useState(true),
+	    _useState2 = slicedToArray(_useState, 2),
+	    _hasMore = _useState2[0],
+	    _setHasMore = _useState2[1];
+	/** Индикатор загрузки данных */
+
+
+	var _useState3 = useState(false),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    _loading = _useState4[0],
+	    _setLoading = _useState4[1];
+	/** Опции селекта */
+
+
+	var _useState5 = useState(options),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    _options = _useState6[0],
+	    _setOptions = _useState6[1];
+
+	var _useState7 = useState(undefined),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    tmpOption = _useState8[0],
+	    setTmpOption = _useState8[1];
+
+	/** Индикатор достижения низа окна */
+
+
+	var _useState9 = useState(false),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    isEndReached = _useState10[0],
+	    setIsEndReached = _useState10[1];
+
+	/** Объект сортировки */
+
+
+	var _useState11 = useState(undefined),
+	    _useState12 = slicedToArray(_useState11, 2),
+	    _sortBy = _useState12[0],
+	    _setSortBy = _useState12[1];
+	/** Объект фильтрации */
+
+
+	var _useState13 = useState({}),
+	    _useState14 = slicedToArray(_useState13, 2),
+	    _filter = _useState14[0],
+	    _setFilter = _useState14[1];
+	/** Строка поиска */
+
+
+	var _useState15 = useState(undefined),
+	    _useState16 = slicedToArray(_useState15, 2),
+	    _searchValue = _useState16[0],
+	    _setSearchValue = _useState16[1];
+
+	/** Состояние параметра выбрать все */
+
+
+	var _useState17 = useState(false),
+	    _useState18 = slicedToArray(_useState17, 2),
+	    _isSelectAll = _useState18[0],
+	    _setIsSelectAll = _useState18[1];
+
+	var isMounted = useMounted();
+
+	useEffect(function () {
+		_setSearchValue(defaultSearchValue);
+		_loadOptions({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchValue: defaultSearchValue,
+			reload: true
+		});
+	}, []);
+
+	useEffect(function () {
+		if (isMounted) {
+			_setRowsHandler(options);
+		}
+	}, [options]);
+
+	useEffect(function () {
+		// console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
+		if (isMounted) {
+			var __sortBy = sortBy ? sortBy : _sortBy;
+			var __filter = filter ? filter : _filter;
+			var __searchValue = searchValue ? searchValue : _searchValue;
+			_setSortBy(__sortBy);
+			_setFilter(__filter);
+			_setSearchValue(__searchValue);
+			_loadOptions({
+				sortBy: __sortBy,
+				filter: __filter,
+				searchLine: __searchValue,
+				reload: true
+			});
+		}
+	}, [sortBy, filter, searchValue]);
+
+	var _setRowsHandler = function _setRowsHandler(options) {
+		_setOptions(options);
+		// console.log('Select _setRowsHandler value => ', options)
+		if (mode === 'multiple') {
+			if (Array.isArray(value)) if (options.reduce(function (preValue, item) {
+				return value.includes(item.value) ? preValue + 1 : preValue;
+			}, 0) === options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
+			onChange(value);
+		} else {
+			if (value && options && options.findIndex(function (option) {
+				return option.value === value;
+			}) === -1) {
+				// console.log('Load tmpOption');
+				_loadTmpOption();
+			} else {
+				// console.log('Clear tmpOption');
+				setTmpOption(undefined);
+			}
+		}
+		// setRows(rows);
+		// rowsDispatch(rows);
+	};
+
+	var getPageNum = function getPageNum(reload) {
+		return reload ? 0 : Math.floor(_options.length / pageSize);
+	};
+
+	var getSort = function getSort(sortBy) {
+		return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
+	};
+
+	var getSearchValue = function getSearchValue(searchValue) {
+		return searchValue ? defineProperty({}, searchParamName, searchValue) : null;
+	};
+
+	var _loadOptions = function _loadOptions(params) {
+		// console.log('_dataProcessing', params);
+		var sortBy = params.sortBy,
+		    filter = params.filter,
+		    searchValue = params.searchValue,
+		    reload = params.reload;
+
+		if ((_hasMore || reload) && !_loading && requestLoadRows) {
+			_setLoading(true);
+
+			var requestOptions = {
+				params: {
+					page: getPageNum(reload),
+					size: pageSize,
+					sort: getSort(sortBy)
+				},
+				data: _extends({}, filter, getSearchValue(searchValue))
+				// console.log('dataQuery', dataQuery);
+
+			};requestLoadRows(requestOptions).then(function (response) {
+				// console.log("infinity then response", response);
+				var result = response.data;
+
+				if (result && result.length < pageSize) {
+					_setHasMore(false);
+				} else {
+					_setHasMore(true);
+					setIsEndReached(false);
+				}
+				reload ? _setRowsHandler(result.map(function (option) {
+					return optionConverter(option);
+				})) // _setRows
+				: _setRowsHandler(_options.concat(result.map(function (option) {
+					return optionConverter(option);
+				}))); // _setRows
+
+				// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
+
+				_setLoading(false);
+			}).catch(function (error) {
+				notificationError(error, 'Ошибка загрузки данных');
+				_setRowsHandler(_options); // _setRows
+				// setHasMore(false);
+				_setLoading(false);
+			});
+		}
+	};
+
+	var _loadTmpOption = function _loadTmpOption() {
+		if (requestLoadRows) {
+			requestLoadRows({ params: {}, data: defineProperty({}, lostParamName, value) }).then(function (response) {
+				if (response.data) {
+					if (response.data.length === 1) {
+						setTmpOption(optionConverter(response.data[0]));
+					} else {
+						_notification.error({ message: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u043D\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430" });
+					}
+				}
+			}).catch(function (error) {
+				notificationError(error, 'Ошибка загрузки данных');
+				setTmpOption(undefined);
+			});
+		}
+	};
+
+	var onScroll = function onScroll(event) {
+		// let scrollTopMax = event.nativeEvent.target.scrollTopMax
+		var scrollTopMax = event.nativeEvent.target.scrollHeight;
+		var scrollTop = event.nativeEvent.target.scrollTop; //.body.scrollTop
+
+		var onEndReached = scrollTopMax - scrollTop;
+
+		if (onEndReached < 300 && !isEndReached) {
+			// console.log('Load Data');
+			setIsEndReached(true);
+			_setSearchValue(defaultSearchValue);
+			if (infinityMode) {
+				_loadOptions({
+					sortBy: defaultSortBy,
+					filter: defaultFilter,
+					searchValue: defaultSearchValue,
+					reload: false
+				});
+			}
+		}
+
+		// console.log("scrollTopMax / scrollTop", scrollTopMax, scrollTop, onEndReached);
+		// const lastScrollTop = this._scroll.scrxollTop;
+		// if (args.scrollTop > lastScrollTop) this._maybeCallOnEndReached();
+	};
+
+	var onSearch = function onSearch(value) {
+		_setSearchValue(value);
+		_loadOptions({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchValue: value,
+			reload: true
+		});
+	};
+
+	var _onChangeSelectAll = function _onChangeSelectAll() {
+		// console.log(`_onChangeSelectAll`, _isSelectAll);
+		if (mode === 'multiple') {
+			if (_isSelectAll) {
+				var optionsValues = _options.map(function (item) {
+					return item.value;
+				});
+				onChange(value.filter(function (item) {
+					return !optionsValues.includes(item);
+				}));
+				_setIsSelectAll(false);
+			} else {
+				if (Array.isArray(value) && value.length > 0) onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(value), toConsumableArray(_options.map(function (item) {
+					return item.value;
+				})))))));else onChange([].concat(toConsumableArray(new Set([].concat(toConsumableArray(_options.map(function (item) {
+					return item.value;
+				})))))));
+				_setIsSelectAll(true);
+			}
+		} else onChange(undefined);
+	};
+	var _onChange = function _onChange(value) {
+		// console.log(`_onChange selected`, value);
+		if (Array.isArray(value)) if (_options.reduce(function (preValue, item) {
+			return value.includes(item.value) ? preValue + 1 : preValue;
+		}, 0) === _options.length) _setIsSelectAll(true);else _setIsSelectAll(false);
+
+		onChange(value);
+	};
+
+	var getSelectAllCls = function getSelectAllCls() {
+		var cls = ['ant-select-item', 'ant-select-item-option', 'ant-select-item-option-select-all'];
+		if (_isSelectAll) cls.push('ant-select-item-option-selected');
+		return cls.join(' ');
+	};
+
+	var childProps = getObjectExcludedProps(props, excludeProps$3);
+	return React.createElement(
+		_Select,
+		_extends({
+			showArrow: true,
+			showSearch: true,
+			allowClear: true,
+			filterOption: false,
+			autoClearSearchValue: true
+
+		}, childProps, {
+
+			searchValue: _searchValue,
+			style: { width: widthControl }
+			// listHeight={heightPopup}
+			// defaultValue={['a10', 'c12']}
+			, onChange: _onChange,
+			maxTagCount: 0,
+			maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
+				return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
+			}
+			// dropdownMatchSelectWidth={200}
+			// listItemHeight={10} listHeight={250}
+			, onPopupScroll: onScroll,
+			onSearch: onSearch,
+			dropdownRender: function dropdownRender(menu) {
+				return React.createElement(
+					React.Fragment,
+					null,
+					mode === 'multiple' ? React.createElement(
+						"div",
+						{ className: getSelectAllCls(), onClick: _onChangeSelectAll },
+						React.createElement(
+							"div",
+							{ className: "ant-select-item-option-content" },
+							React.createElement(
+								"span",
+								null,
+								"\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u0432\u0441\u0435"
+							)
+						),
+						_isSelectAll ? React.createElement(
+							"span",
+							{ className: "ant-select-item-option-state" },
+							React.createElement(CheckOutlined, null)
+						) : null
+					) : null,
+					menu
+				);
+			}
+		}),
+		_options && _options.map(function (_ref2, i) {
+			var label = _ref2.label,
+			    value = _ref2.value,
+			    className = _ref2.className,
+			    disabled = _ref2.disabled;
+			return React.createElement(
+				_Select.Option,
+				{ key: i.toString(36) + i, value: value, className: className, disabled: disabled },
+				label
+			);
+		}),
+		tmpOption && React.createElement(
+			_Select.Option,
+			{ key: generateUUID(), value: tmpOption.value, className: tmpOption.className, disabled: tmpOption.disabled },
+			tmpOption.label
+		)
+	);
+};
+
+Select$1.propTypes = {
+	/** Сортировка по умолчанию */
+	defaultSortBy: PropTypes.shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes.string,
+		/** Направление сортировки */
+		order: PropTypes.oneOf(['asc', 'desc'])
+	}),
+
+	/** Объект фильтрации по умолчанию */
+	defaultFilter: PropTypes.object,
+
+	/** Значение строки поиска по умолчанию строк */
+	defaultSearchValue: PropTypes.string,
+
+	/** Сортировка */
+	sortBy: PropTypes.object,
+
+	/** Фильтр */
+	filter: PropTypes.object,
+
+	/** Значение строки поиска */
+	searchValue: PropTypes.string,
+
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes.string,
+
+	lostParamName: PropTypes.string,
+
+	/** Режим загружки по скроллу */
+	infinityMode: PropTypes.bool,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadRows: PropTypes.func,
+
+	/** Функция преобразования загруженных объектов в объекты для селекта.
+  * Сигнатура `(option) => ({})`
+  * Требоваеть вернуть объект с параметрам
+  * `{ label: ReactNode, value: any, className: string, disabled: bool }`
+  * ##### Example:
+  * ``` JS
+  * (option) => ({
+  * 	label: (<span><MehOutlined />{option.name}</span>),
+  * 	value: option.id,
+  * 	className: 'some-class',
+  * 	disabled: false,
+  * })
+  * ```
+  */
+	optionConverter: PropTypes.func,
+
+	/** Select options `[{ label, value, className, disabled }]` */
+	options: PropTypes.arrayOf(PropTypes.object),
+
+	/** Ширина поля выбора в пикселях */
+	widthControl: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+	/** Размер страницы */
+	pageSize: PropTypes.number
+};
+
+Select$1.defaultProps = {
+	// Rt Props
+	defaultSortBy: undefined,
+	defaultFilter: {},
+	defaultSearchValue: undefined,
+	infinityMode: false,
+	requestLoadRows: undefined,
+	options: [],
+	widthControl: '100%',
+	pageSize: 50,
+	searchParamName: 'name',
+	lostParamName: 'id'
+};
+
+var excludeProps$2 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
+
+/** Компонент выбора элемента(ов) из древовидного списка */
+var TreeSelect$1 = function TreeSelect(props) {
+    var defaultSortBy = props.defaultSortBy,
+        defaultFilter = props.defaultFilter,
+        defaultSearchValue = props.defaultSearchValue,
+        sortBy = props.sortBy,
+        filter = props.filter,
+        searchValue = props.searchValue,
+        searchParamName = props.searchParamName,
+        requestLoadRows = props.requestLoadRows,
+        optionConverter = props.optionConverter,
+        treeData = props.treeData;
+    /** Индикатор загрузки данных */
+
+    var _useState = useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        _loading = _useState2[0],
+        _setLoading = _useState2[1];
+    /** Опции селекта */
+
+
+    var _useState3 = useState(treeData),
+        _useState4 = slicedToArray(_useState3, 2),
+        _treeData = _useState4[0],
+        _setTreeData = _useState4[1];
+    /** Строка поиска */
+
+
+    var _useState5 = useState(undefined),
+        _useState6 = slicedToArray(_useState5, 2),
+        _searchValue = _useState6[0],
+        _setSearchValue = _useState6[1];
+
+    var isMounted = useMounted();
+
+    useEffect(function () {
+        _setSearchValue(defaultSearchValue);
+        _loadOptions({
+            sortBy: defaultSortBy,
+            filter: defaultFilter,
+            searchValue: defaultSearchValue,
+            reload: true
+        });
+    }, []);
+
+    useEffect(function () {
+        // console.log("Change sortBy, filter, searchValue", sortBy, filter, searchValue);
+        if (isMounted) {
+            _setSearchValue(searchValue);
+            _loadOptions({
+                sortBy: sortBy,
+                filter: filter,
+                searchLine: searchValue,
+                reload: true
+            });
+        }
+    }, [sortBy, filter, searchValue]);
+
+    var onSearch = function onSearch(value) {
+        // console.log('TreeSelect onSearch => ', value);
+        _setSearchValue(value);
+        _loadOptions({
+            sortBy: defaultSortBy,
+            filter: defaultFilter,
+            searchValue: value,
+            reload: true
+        });
+    };
+
+    var getSort = function getSort(sortBy) {
+        return sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null;
+    };
+
+    var getSearchValue = function getSearchValue(searchValue) {
+        return searchValue ? defineProperty({}, searchParamName, searchValue) : null;
+    };
+
+    var _optionConverter = function _optionConverter(options) {
+        if (Array.isArray(options)) return options.map(function (option) {
+            if (option.children && Array.isArray(option.children)) option.children = _optionConverter(option.children);
+            return optionConverter(option);
+        });
+    };
+
+    var _loadOptions = function _loadOptions(params) {
+        var sortBy = params.sortBy,
+            filter = params.filter,
+            searchValue = params.searchValue;
+
+        if (!_loading && requestLoadRows) {
+            _setLoading(true);
+            var requestOptions = {
+                params: {
+                    page: 0,
+                    size: 1,
+                    sort: getSort(sortBy)
+                },
+                data: _extends({}, filter, getSearchValue(searchValue))
+            };
+            requestLoadRows(requestOptions).then(function (response) {
+                // console.log("infinity then response", response);
+                var result = response.data;
+                _setTreeData(_optionConverter(result));
+                _setLoading(false);
+            }).catch(function (error) {
+                notificationError(error, 'Ошибка загрузки данных');
+                // _setRowsHandler(_options); // _setRows
+                // setHasMore(false);
+                _setLoading(false);
+            });
+        }
+    };
+
+    var childProps = getObjectExcludedProps(props, excludeProps$2);
+    return React.createElement(_TreeSelect, _extends({
+        showArrow: true,
+        showSearch: true,
+        allowClear: true,
+        filterTreeNode: false,
+        autoClearSearchValue: true,
+        treeDefaultExpandAll: true
+
+    }, childProps, {
+
+        searchValue: _searchValue,
+        onSearch: onSearch,
+        maxTagCount: 0,
+        maxTagPlaceholder: function maxTagPlaceholder(omittedValues) {
+            return "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: " + omittedValues.length;
+        },
+        treeData: _treeData
+        // loadData={onLoadData}
+    }));
+};
+
+TreeSelect$1.propTypes = {
+    /** Сортировка по умолчанию */
+    defaultSortBy: PropTypes.shape({
+        /** Ключ поля для сортировки */
+        key: PropTypes.string,
+        /** Направление сортировки */
+        order: PropTypes.oneOf(['asc', 'desc'])
+    }),
+
+    /** Объект фильтрации по умолчанию */
+    defaultFilter: PropTypes.object,
+
+    /** Значение строки поиска по умолчанию строк */
+    defaultSearchValue: PropTypes.string,
+
+    /** Сортировка */
+    sortBy: PropTypes.object,
+
+    /** Фильтр */
+    filter: PropTypes.object,
+
+    /** Значение строки поиска */
+    searchValue: PropTypes.string,
+
+    /** Имя параметра для поиска */
+    searchParamName: PropTypes.string,
+
+    /** Функция запроса для загрузки строк (данных) */
+    requestLoadRows: PropTypes.func,
+
+    /** Функция преобразования загруженных объектов в объекты для селекта.
+     * Сигнатура `(option) => ({})`
+     * Требоваеть вернуть объект с параметрам
+     * `{ label: ReactNode, value: any, children: any, checkable: bool, selectable: bool }`
+     * ##### Example:
+     * ``` JS
+     * (option) => ({
+     * 	label: (<span><MehOutlined />{option.name}</span>),
+     * 	value: option.id,
+     * 	children: option.children,
+     * 	checkable: !option.isGroup,
+     * 	selectable: !option.isGroup,
+     * })
+     * ```*/
+    optionConverter: PropTypes.func.isRequired,
+
+    /** Select options `[{ label, value, children, checkable, selectable }]` */
+    options: PropTypes.arrayOf(PropTypes.object)
+};
+
+TreeSelect$1.defaultProps = {
+    // Rt Props
+    defaultSortBy: undefined,
+    defaultFilter: {},
+    defaultSearchValue: undefined,
+    requestLoadRows: undefined,
+    searchParamName: 'name'
+};
+
+var defaultProps$3 = {
+    requestUploadFile: noop,
+    dataObject: {},
+    onCompletedUpload: noop,
+    onFailedUpload: noop,
+    uploadProps: {},
+    toolTipProps: {},
+    buttonProps: {}
+
+    /** Компонент загрузки файлов */
+};var UploadFile$1 = function UploadFile(props) {
+    var requestUploadFile = props.requestUploadFile,
+        dataObject = props.dataObject,
+        onCompletedUpload = props.onCompletedUpload,
+        onFailedUpload = props.onFailedUpload,
+        uploadProps = props.uploadProps,
+        toolTipProps = props.toolTipProps,
+        buttonProps = props.buttonProps;
+
+
+    var _uploadFile = function _uploadFile(file) {
+        // console.log('beforeUpload dataObject => ', dataObject);
+        notification(file, 'loading');
+        if (requestUploadFile) {
+            requestUploadFile({ file: file, dataObject: dataObject }).then(function (response) {
+                notification(file, 'success');
+            }).catch(function () {
+                notification(file, 'error');
+            });
+        }
+        return false;
+    };
+    var notification = function notification(file, type) {
+        var notifProps = {
+            key: file.uid,
+            duration: type === 'loading' ? 0 : 5,
+            icon: type === 'loading' ? React.createElement(_Spin, { indicator: React.createElement(LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
+            message: React.createElement(
+                "span",
+                null,
+                "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430: ",
+                React.createElement(
+                    _Typography.Text,
+                    { code: true },
+                    file.name
+                )
+            )
+        };
+        switch (type) {
+            case 'loading':
+                _notification.info(notifProps);
+                break;
+            case 'success':
+                _notification.success(notifProps);
+                onCompletedUpload(file);
+                props.onChange(file);
+                break;
+            case 'error':
+                _notification.error(notifProps);
+                onFailedUpload(file);
+                break;
+            case 'close':
+                _notification.close(file.uid);
+                break;
+        }
+    };
+    var defaultUploadProps = {
+        multiple: true,
+        showUploadList: false,
+        beforeUpload: _uploadFile
+    };
+
+    return React.createElement(
+        _Upload,
+        _extends({}, defaultUploadProps, uploadProps),
+        React.createElement(
+            _Tooltip,
+            toolTipProps,
+            React.createElement(
+                _Button,
+                _extends({
+                    icon: React.createElement(CloudUploadOutlined, null)
+                }, buttonProps),
+                buttonProps && buttonProps.label
+            )
+        )
+    );
+};
+
+UploadFile$1.propTypes = {
+    /** Функция запроса для отправки файла с данным на сервер */
+    requestUploadFile: PropTypes.func.isRequired,
+
+    /** Данные, прикрепляемые к файлу */
+    dataObject: PropTypes.object,
+
+    /** Функция, вызываемая при удачной загрузке файла */
+    onCompletedUpload: PropTypes.func,
+
+    /** Функция, вызываемая при НЕ удачной загрузке файла */
+    onFailedUpload: PropTypes.func,
+
+    /** Ant Props для [Upload](https://ant.design/components/upload/) компонента */
+    uploadProps: PropTypes.object,
+
+    /** Ant Props для [Tooltip](https://ant.design/components/tooltip/) компонента */
+    toolTipProps: PropTypes.object,
+
+    /** Ant Props для [Button](https://ant.design/components/button/) компонента */
+    buttonProps: PropTypes.object
+};
+
+UploadFile$1.defaultProps = defaultProps$3;
+
+var TabPane$1 = function TabPane(props) {
+    var cls = [];
+    props.className && cls.push(props.className);
+    props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
+    return jsx(_Tabs.TabPane, __assign({}, props, { className: cls.join(" ") }, { children: props.children }), void 0);
+};
+
+var empty = React.createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React.createElement(
+		'span',
+		null,
+		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
+	),
+	' '
+);
+
+var overlay = React.createElement(
+	'div',
+	{ className: 'BaseTable__overlay' },
+	' ',
+	React.createElement(_Spin, {
+		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
+		indicator: React.createElement(LoadingOutlined, { style: { fontSize: 24 }, spin: true })
+	}),
+	' '
+);
+
+var SelectionHead = function SelectionHead(props) {
+	var column = props.column,
+	    container = props.container;
+	var rowKey = column.rowKey,
+	    onSelectAll = column.onSelectAll,
+	    selectedRowKeys = column.selectedRowKeys,
+	    selectAll = column.selectAll;
+
+
+	var _handleChange = function _handleChange(e) {
+		var rowKeys = flatten(getTableRowKeys(container.props.data, column.rowKey));
+		var rowObjects = flatten(getTableRowObjects(container.props.data)).filter(function (item) {
+			return rowKeys.includes(item[rowKey]);
+		});
+		var totalLength = rowKeys.length;
+		var selectLength = selectedRowKeys.length;
+		var checked = !(totalLength === selectLength);
+
+		// const newRowKeys = container.props.data.map((item) => { return item[column.rowKey] });
+		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
+	};
+
+	return React.createElement(_Checkbox, {
+		indeterminate: selectAll === null,
+		onChange: _handleChange,
+		checked: selectAll
+	});
+};
+
+var getRowChildren = function getRowChildren(data, rowKey) {
+	return data.map(function (item) {
+		if (item.children && item.children.length) {
+			return [item[rowKey], getRowChildren(item.children, rowKey)];
+		}
+		return item[rowKey];
+	});
+};
+
+var findBrothers = function findBrothers(data, selfItem, rowKey, parentKey) {
+	var rowKeys = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+	var arr = [];
+	data.forEach(function (item) {
+		if (item[parentKey] && item[parentKey] === selfItem[parentKey] && item[rowKey] !== selfItem[rowKey]) {
+			if (rowKeys !== null) {
+				if (rowKeys.includes(item[rowKey])) {
+					arr.push(item[rowKey]);
+				}
+			} else {
+				arr.push(item[rowKey]);
+			}
+		} else if (item.children && item.children.length) {
+			arr.push(findBrothers(item.children, selfItem, rowKey, parentKey, rowKeys));
+		}
+	});
+	return arr;
+};
+
+var parentAnalysis = function parentAnalysis(_ref) {
+	var rowData = _ref.rowData,
+	    rowKey = _ref.rowKey,
+	    parentKey = _ref.parentKey,
+	    checked = _ref.checked,
+	    nodeAssociated = _ref.nodeAssociated,
+	    treeData = _ref.treeData,
+	    selectedRowKeys = _ref.selectedRowKeys,
+	    indeterminateRowKeys = _ref.indeterminateRowKeys;
+
+	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
+	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
+
+	var currentRowData = rowData;
+	var parentExist = !!currentRowData[parentKey];
+	var lastTypeSelect = checked ? 'checked' : 'square';
+	var typeSelect = '';
+	var nextSquare = false;
+
+	/** Пока есть родитель */
+	while (parentExist && nodeAssociated) {
+		var indeterminateBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _indeterminateRowKeys));
+		var selectedBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey, _selectedRowKeys));
+		var allBrothers = flatten(findBrothers(treeData, currentRowData, rowKey, parentKey));
+
+		if (checked) {
+			if (lastTypeSelect === 'checked' && selectedBrothers.length === allBrothers.length) typeSelect = 'checked';else typeSelect = 'square';
+		} else {
+			if (!checked && !nextSquare && (selectedBrothers.length || indeterminateBrothers.length)) nextSquare = true;
+			if (nextSquare) typeSelect = 'square';else typeSelect = 'none';
+		}
+
+		// console.log("allBrothers ", allBrothers);
+		// console.log("findParentById ", treeData,
+		//     rowKey,
+		//     parentKey,
+		//     currentRowData[parentKey]);
+		//
+		// console.log("findNodeByRowKey ", findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]));
+
+		// Найти родителя
+		currentRowData = findNodeByRowKey(treeData, rowKey, currentRowData[parentKey]);
+
+		if (typeSelect === 'checked') {
+			// Выделить галкой
+			// console.log("checked");
+			lastTypeSelect = 'checked';
+			if (!_selectedRowKeys.includes(currentRowData[rowKey])) _selectedRowKeys.push(currentRowData[rowKey]);
+			var index = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
+			if (index > -1) _indeterminateRowKeys.splice(index, 1);
+		} else if (typeSelect === 'square') {
+			// Выдлеить квадратом
+			// console.log("square: ");
+			lastTypeSelect = 'square';
+			if (!_indeterminateRowKeys.includes(currentRowData[rowKey])) _indeterminateRowKeys.push(currentRowData[rowKey]);
+			var _index = _selectedRowKeys.indexOf(currentRowData[rowKey]);
+			if (_index > -1) _selectedRowKeys.splice(_index, 1);
+		} else if (typeSelect === 'none') {
+			// Снять выделение
+			// console.log("none: ");
+			lastTypeSelect = 'none';
+			var indexS = _selectedRowKeys.indexOf(currentRowData[rowKey]);
+			if (indexS > -1) _selectedRowKeys.splice(indexS, 1);
+			var indexI = _indeterminateRowKeys.indexOf(currentRowData[rowKey]);
+			if (indexI > -1) _indeterminateRowKeys.splice(indexI, 1);
+		}
+
+		parentExist = !!currentRowData[parentKey];
+		// parentExist = проверка наличия след родителя
+	}
+
+	return [_selectedRowKeys, _indeterminateRowKeys];
+};
+
+var onChangeSelectionCell = function onChangeSelectionCell(props) {
+	var rowData = props.rowData,
+	    rowIndex = props.rowIndex,
+	    column = props.column,
+	    rows = props.rows,
+	    checked = props.checked;
+	var rowKey = column.rowKey,
+	    parentKey = column.parentKey,
+	    nodeAssociated = column.nodeAssociated,
+	    selectedRowKeys = column.selectedRowKeys,
+	    indeterminateRowKeys = column.indeterminateRowKeys,
+	    onChange = column.onChange;
+
+	// const rowKeys = flatten(getTableRowKeys([rowData], column.rowKey));
+	// const totalLength = container.props.data.length;
+	// const checked = e.target.checked;
+	// const currentRowKey = {[rowKey]: rowData[rowKey], checked};
+	// console.log("_handleChange: ", container);
+
+	var _selectedRowKeys = [].concat(toConsumableArray(selectedRowKeys));
+	var _indeterminateRowKeys = [].concat(toConsumableArray(indeterminateRowKeys));
+
+	/** Обработка себя, поиск детей, выделение / снятие их */
+	var rowChildren = [];
+	if (checked) {
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+
+		_selectedRowKeys = _selectedRowKeys.concat([rowData[rowKey]]).concat(rowChildren);
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+	} else {
+		if (rowData.children && nodeAssociated) rowChildren = flatten(getRowChildren(rowData.children, rowKey));
+
+		_selectedRowKeys = _selectedRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+		_indeterminateRowKeys = _indeterminateRowKeys.filter(function (element) {
+			return element !== rowData[rowKey] && !rowChildren.includes(element);
+		});
+	}
+
+	var _parentAnalysis = parentAnalysis({
+		rowData: rowData,
+		rowKey: rowKey,
+		parentKey: parentKey,
+		checked: checked,
+		nodeAssociated: nodeAssociated,
+		treeData: rows,
+		selectedRowKeys: _selectedRowKeys,
+		indeterminateRowKeys: _indeterminateRowKeys
+	});
+
+	var _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+
+	_selectedRowKeys = _parentAnalysis2[0];
+	_indeterminateRowKeys = _parentAnalysis2[1];
+
+
+	var keys = [].concat(toConsumableArray(new Set(_selectedRowKeys)));
+	var _selectedRowObjects = flatten(getTableRowObjects(rows)).filter(function (item) {
+		return keys.includes(item[rowKey]);
+	});
+	//return [...new Set(_disabledElements)]
+	// onChange({ selected: checked, totalLength, rowData, rowIndex });
+
+	/** Выясняем новое состояние галочки "Выделить все" */
+	var selectAll = void 0;
+	var selectLength = keys.length;
+	var totalLength = flatten(getTableRowKeys(rows, column.rowKey)).length;
+
+	if (selectLength === 0) selectAll = false;else if (totalLength === selectLength) selectAll = true;else if (totalLength !== selectLength) selectAll = null;
+
+	onChange({
+		selected: checked,
+		_selectedRow: {
+			rowData: _extends({}, rowData),
+			rowIndex: rowIndex,
+			rowKey: rowKey
+		},
+		_selectAll: selectAll,
+		_selectedRowKeys: keys, //[...new Set(_selectedRowKeys)],
+		_selectedRowObjects: _selectedRowObjects,
+		_indeterminateRowKeys: [].concat(toConsumableArray(new Set(_indeterminateRowKeys)))
+	});
+
+	// let uniqIds = {};
+	// onChange({selected: checked, rowKeys: rowKeys.filter(obj => !uniqIds[obj[rowKey]] && (uniqIds[obj[rowKey]] = true)) });
+};
+
+var SelectionCell = function SelectionCell(props) {
+	var rowData = props.rowData,
+	    column = props.column;
+	var selectedRowKeys = column.selectedRowKeys,
+	    indeterminateRowKeys = column.indeterminateRowKeys,
+	    rowKey = column.rowKey;
+
+	var det = indeterminateRowKeys.includes(rowData[rowKey]);
+	var checked = selectedRowKeys.includes(rowData[rowKey]);
+
+	return React.createElement(_Checkbox, {
+		indeterminate: det
+		// onChange={(e) => _onChangeHandler(e.target.checked)}
+		, checked: checked
+	});
+};
+
+var SelectionList = function SelectionList(props) {
+	var selectedRowObjects = props.selectedRowObjects,
+	    rowRender = props.rowRender,
+	    onClickDropSelect = props.onClickDropSelect;
+
+	// console.log("SelectionList typeof -> ", typeof(rowRender));
+
+	return React.createElement(
+		'div',
+		{ className: rtPrefix + '-table-selected-rows' },
+		selectedRowObjects && selectedRowObjects.length > 0 ? React.createElement(
+			'ul',
+			null,
+			selectedRowObjects.map(function (item, index) {
+				return React.createElement(
+					'li',
+					{ key: index },
+					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React.createElement(
+						'div',
+						null,
+						item[rowRender]
+					),
+					React.createElement(
+						'div',
+						{ onClick: function onClick() {
+								return onClickDropSelect(item);
+							} },
+						React.createElement(CloseCircleOutlined, null)
+					)
+				);
+			})
+		) : React.createElement(
+			'div',
+			null,
+			'\u041D\u0435\u0442 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439'
+		)
+	);
+};
+
+SelectionList.propTypes = {
+	/** Строка или функция для отображения элементов списка
+  * Строка - имя поля
+  * Функция - рендер строк. Параметры v
+  * { rowData, rowIndex }) */
+	rowRender: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+
+	/** Список выделенных объектов */
+	selectedRowObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+	/** Событие удаления элемента */
+	onClickDropSelect: PropTypes.func.isRequired
+};
+
+SelectionList.defaultProps = {};
+
+/** Компонент таблицы */
+var Table$3 = forwardRef(function (props, ref) {
+
+	/** LOADING AND INFINITY MODE STATES */
+	var _useState = useState(true),
+	    _useState2 = slicedToArray(_useState, 2),
+	    hasMore = _useState2[0],
+	    setHasMore = _useState2[1];
+	/** Индикатор загрузки данных */
+
+
+	var _useState3 = useState(false),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    loading = _useState4[0],
+	    setLoading = _useState4[1];
+
+	/** TABLE STATES */
+	/** Колонки таблицы */
+	// const [_columns, _setColumns] = useState([]);
+	/** Строки таблицы */
+
+
+	var _useState5 = useState([]),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    _rows = _useState6[0],
+	    _setRows = _useState6[1];
+	/** Ключи выделенных строк */
+
+
+	var _useState7 = useState([]),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    _selectedRowKeys = _useState8[0],
+	    setSelectedRowKeys = _useState8[1];
+	/** Значение строки поиска */
+
+
+	var _useState9 = useState(''),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    _searchValue = _useState10[0],
+	    setSearchValue = _useState10[1];
+	/** Объект фильтра */
+
+
+	var _useState11 = useState({}),
+	    _useState12 = slicedToArray(_useState11, 2),
+	    _filter = _useState12[0],
+	    setFilter = _useState12[1];
+	/** Объект соритировки */
+
+
+	var _useState13 = useState({}),
+	    _useState14 = slicedToArray(_useState13, 2),
+	    _sortBy = _useState14[0],
+	    setSortBy = _useState14[1];
+	/** Состояние selectAll галочки */
+
+
+	var _useState15 = useState(false),
+	    _useState16 = slicedToArray(_useState15, 2),
+	    selectAll = _useState16[0],
+	    setSelectAll = _useState16[1];
+
+	/** TREE STATES */
+	/** Ключи строк с кубиками при selectable = true */
+
+
+	var _useState17 = useState([]),
+	    _useState18 = slicedToArray(_useState17, 2),
+	    _indeterminateRowKeys = _useState18[0],
+	    setIndeterminateRowKeys = _useState18[1];
+	/** Ключи раскрытых строк при selectable = true */
+
+
+	var _useState19 = useState([]),
+	    _useState20 = slicedToArray(_useState19, 2),
+	    _expandedRowKeys = _useState20[0],
+	    setExpandedRowKeys = _useState20[1];
+
+	/** FOOTER STATES */
+	/** Отображать ли footer */
+
+
+	var _useState21 = useState(false),
+	    _useState22 = slicedToArray(_useState21, 2),
+	    _footerShow = _useState22[0],
+	    _setFooterShow = _useState22[1];
+	/** Всего строк по фильтру в таблице */
+
+
+	var _useState23 = useState(0),
+	    _useState24 = slicedToArray(_useState23, 2),
+	    _totalCountRows = _useState24[0],
+	    setTotalCountRows = _useState24[1];
+
+	var _useState25 = useState({}),
+	    _useState26 = slicedToArray(_useState25, 2),
+	    subscribeProps = _useState26[0],
+	    setSubscribeProps = _useState26[1];
+
+	var tableRef = useRef();
+
+	var isMounted = useMounted();
+
+	var _props$subscribeProps = _extends({}, props, subscribeProps),
+	    columns = _props$subscribeProps.columns,
+	    infinityMode = _props$subscribeProps.infinityMode,
+	    editMode = _props$subscribeProps.editMode,
+	    defaultRows = _props$subscribeProps.defaultRows,
+	    defaultSelectedRowKeys = _props$subscribeProps.defaultSelectedRowKeys,
+	    defaultSearchValue = _props$subscribeProps.defaultSearchValue,
+	    defaultFilter = _props$subscribeProps.defaultFilter,
+	    defaultSortBy = _props$subscribeProps.defaultSortBy,
+	    rows = _props$subscribeProps.rows,
+	    setRows = _props$subscribeProps.setRows,
+	    selectedRowKeys = _props$subscribeProps.selectedRowKeys,
+	    searchValue = _props$subscribeProps.searchValue,
+	    filter = _props$subscribeProps.filter,
+	    sortBy = _props$subscribeProps.sortBy,
+	    rowKey = _props$subscribeProps.rowKey,
+	    customFields = _props$subscribeProps.customFields,
+	    empty = _props$subscribeProps.empty,
+	    overlay = _props$subscribeProps.overlay,
+	    fixWidthColumn = _props$subscribeProps.fixWidthColumn,
+	    headerHeight = _props$subscribeProps.headerHeight,
+	    rowHeight = _props$subscribeProps.rowHeight,
+	    rowRenderer = _props$subscribeProps.rowRenderer,
+	    zebraStyle = _props$subscribeProps.zebraStyle,
+	    estimatedRowHeight = _props$subscribeProps.estimatedRowHeight,
+	    rowBordered = _props$subscribeProps.rowBordered,
+	    className = _props$subscribeProps.className,
+	    style = _props$subscribeProps.style,
+	    loadThreshold = _props$subscribeProps.loadThreshold,
+	    pageSize = _props$subscribeProps.pageSize,
+	    requestLoadRows = _props$subscribeProps.requestLoadRows,
+	    requestLoadCount = _props$subscribeProps.requestLoadCount,
+	    searchParamName = _props$subscribeProps.searchParamName,
+	    selectable = _props$subscribeProps.selectable,
+	    nodeAssociated = _props$subscribeProps.nodeAssociated,
+	    expandColumnKey = _props$subscribeProps.expandColumnKey,
+	    expandDefaultAll = _props$subscribeProps.expandDefaultAll,
+	    expandLazyLoad = _props$subscribeProps.expandLazyLoad,
+	    expandParentKey = _props$subscribeProps.expandParentKey,
+	    onRowClick = _props$subscribeProps.onRowClick,
+	    onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
+	    onRowExpand = _props$subscribeProps.onRowExpand,
+	    onSelectedRowsChange = _props$subscribeProps.onSelectedRowsChange,
+	    onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
+	    showSelection = _props$subscribeProps.showSelection,
+	    rowRenderShowSelection = _props$subscribeProps.rowRenderShowSelection,
+	    dispatchPath = _props$subscribeProps.dispatchPath,
+	    dispatch = _props$subscribeProps.dispatch,
+	    subscribe = _props$subscribeProps.subscribe,
+	    value = _props$subscribeProps.value,
+	    onChange = _props$subscribeProps.onChange;
+
+	var footerProps = _extends({}, Table$3.defaultProps.footerProps, props.footerProps);
+
+	var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + '.selected' : dispatchPath && dispatchPath + '.selected';
+	var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + '.rows' : dispatchPath && dispatchPath + '.rows';
+
+	useEffect(function () {
+		// console.log("Инициализация дефолтных значений ", selectColumn, columns);
+		// console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
+
+		// Инициализация дефолтных значений
+		// _setRows(defaultRows);
+		if (defaultRows.length > 0) _setRowsHandler(defaultRows);else if (rows.length > 0) _setRowsHandler(rows);
+		// setSelectedRowKeys(defaultSelectedRowKeys);
+		_setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows);
+		setSearchValue(defaultSearchValue);
+		setFilterHandler(defaultFilter);
+		setSortBy(defaultSortBy);
+		setSelectAll(defaultRows.length > 0 && defaultRows.length === defaultSelectedRowKeys.length);
+		// Определение нужно ли отображать подвал
+		_setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
+
+		// Only tree table
+		if (!!expandColumnKey && !expandLazyLoad) {
+			// Открытие всех нод
+			if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(defaultRows, rowKey)));
+			// Установка квадратиков на нужных нодах
+			if (defaultSelectedRowKeys && defaultSelectedRowKeys.length > 0) {
+				var flatRows = flatten(getTableRowKeys(defaultRows, rowKey));
+				var selectedRow = flatRows.filter(function (item) {
+					return defaultSelectedRowKeys.includes(item[rowKey]);
+				});
+				var _indeterminateRowKeys2 = [];
+				selectedRow.forEach(function (item) {
+					var _parentAnalysis = parentAnalysis({
+						rowData: item,
+						rowKey: rowKey,
+						parentKey: expandParentKey,
+						checked: true,
+						nodeAssociated: nodeAssociated,
+						treeData: defaultRows,
+						selectedRowKeys: defaultSelectedRowKeys,
+						indeterminateRowKeys: _indeterminateRowKeys2
+					}),
+					    _parentAnalysis2 = slicedToArray(_parentAnalysis, 2);
+					    _parentAnalysis2[0];
+					    var ii = _parentAnalysis2[1];
+
+					_indeterminateRowKeys2.push.apply(_indeterminateRowKeys2, toConsumableArray(ii));
+				});
+				setIndeterminateRowKeys([].concat(toConsumableArray(new Set(_indeterminateRowKeys2))));
+			}
+		}
+
+		// if (type !== 'localSide') {
+		_dataProcessing({
+			sortBy: defaultSortBy,
+			filter: defaultFilter,
+			searchLine: defaultSearchValue,
+			reload: true
+		});
+		// }
+		// console.log("Table => useEffect start ");
+		// setMounted(true);
+		if (ref && typeof ref === 'function') ref({ reloadData: reloadData });else if (ref && (typeof ref === 'undefined' ? 'undefined' : _typeof(ref)) === 'object') ref.current = { reloadData: reloadData };
+	}, []);
+
+	useEffect(function () {
+		if (isMounted) {
+			// console.log('useEffect rows');
+			_setRowsHandler(rows);
+			// setSelectedRowKeys(selectedRowKeys);
+			_setSelectedRowsHandler(selectedRowKeys, undefined, rows);
+			setSearchValue(searchValue);
+			setFilterHandler(filter);
+			setSortBy(sortBy);
+			if (!!expandColumnKey && !expandLazyLoad) {
+				// Открытие всех нод
+				if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(rows, rowKey)));
+			}
+		}
+	}, [rows, selectedRowKeys, searchValue, filter, sortBy]);
+
+	useEffect(function () {
+		// console.log('useEffect editMode');
+		_setSelectedRowsHandler([], []);
+	}, [editMode]);
+
+	useEffect(function () {
+		// console.log('useEffect value');
+		_setRowsHandler(value);
+	}, [value]);
+
+	/** Подписка на изменение props[subscribe.name] в сторе */
+	subscribe.map(function (item) {
+		return useEffect(function () {
+			if ((item.withMount || isMounted) && item.name) {
+				// console.log("Table => useEffect => [%s] ", item.name, props[item.name]);
+				// let extraData = {};
+				// if (item.extraData) {
+				// 	if (typeof item.extraData === 'object')
+				// 		Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+				// 	else
+				// 		extraData = props[`${item.name}ExtraData`];
+				// }
+				var onChangeObject = {
+					value: props[item.name],
+					extraData: getExtraData(item, props), //extraData, //props[`${item.name}ExtraData`],
+					reloadTable: reloadData,
+					addRows: _addRows,
+					addRow: _addRow,
+					addRowAsCopy: _addRowAsCopy,
+					editRow: _editRow,
+					removeRow: _removeRow,
+					moveUpRow: _moveUpRow,
+					moveDownRow: _moveDownRow,
+					setSubscribeProps: _setSubscribeProps
+				};
+				item.onChange && item.onChange(onChangeObject);
+			}
+		}, [props[item.name]]);
+	});
+
+	/** BASE FUNCTIONS */
+
+	var _setSubscribeProps = function _setSubscribeProps(props) {
+		// setTimeout(() => {
+		// 	console.log('_setSubscribeProps');
+		setSubscribeProps(_extends({}, subscribeProps, props));
+		// }, 2000)
+	};
+
+	var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
+		_setRowsHandler(rows);
+		onChange && onChange(rows);
+	};
+	var _setRowsHandler = function _setRowsHandler(rows) {
+		// console.log('_setRowsHandler onChange');
+		_setRows(rows);
+		setRows(rows);
+		rowsDispatch(rows);
+	};
+
+	var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
+		var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+		var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+		// console.log('_setSelectedRowsHandler => ', selectedKeys)
+		setSelectedRowKeys(selectedKeys);
+		if (selectedKeys.length === 0) {
+			if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
+		} else if (selectedKeys.length > 0 && !selectedObjects) {
+			if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
+				return selectedKeys.includes(item[rowKey]);
+			}));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
+		} else selectedDispatch(selectedObjects);
+	};
+
+	var rowsDispatch = function rowsDispatch(rows) {
+		rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+	};
+
+	var selectedDispatch = function selectedDispatch(data) {
+		selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+	};
+
+	var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
+		var dp = dispatch && dispatch.path ? dispatch.path + '.events.' + nameEvent : dispatchPath && dispatchPath + '.events.' + nameEvent;
+
+		dp && props.setDateStore && props.setDateStore(dp, {
+			timestamp: moment(),
+			value: value
+		});
+		// console.log('onTableEventsDispatch onChange');
+		Array.isArray(value) && onChange && onChange(value);
+	};
+
+	var setFilterHandler = function setFilterHandler(filter) {
+		// console.log('setFilterHandler => ', filter);
+		setFilter(filter);
+	};
+
+	var reloadData = function reloadData(_ref, appendParams) {
+		var sortBy = _ref.sortBy,
+		    filter = _ref.filter,
+		    searchValue = _ref.searchValue;
+
+		// console.log("reloadData params ", sortBy, filter, searchValue, loading);
+		tableRef.current && tableRef.current.scrollToRow(0, 'auto');
+		if (props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
+			return item[rowKey];
+		}), props.value);else _setSelectedRowsHandler();
+
+		var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
+		var __filter = appendParams ? _extends({}, _filter, filter) : filter;
+		var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
+		setSortBy(__sortBy);
+		setFilterHandler(__filter);
+		setSearchValue(__searchValue);
+		_dataProcessing({
+			sortBy: __sortBy,
+			filter: __filter,
+			searchLine: __searchValue,
+			reload: true
+		});
+		// console.log("reloadData loading ", loading);
+	};
+
+	var _dataProcessing = function _dataProcessing(params) {
+		// console.log('_dataProcessing', params);
+		var sortBy = params.sortBy,
+		    filter = params.filter,
+		    searchLine = params.searchLine,
+		    expandRow = params.expandRow,
+		    reload = params.reload;
+
+		if ((hasMore || reload) && !loading) {
+			setLoading(true);
+			var pageNum = reload ? 0 : Math.floor(_rows.length / pageSize);
+			var _params = {
+				page: pageNum,
+				size: pageSize,
+				sort: sortBy && sortBy.key ? sortBy.key + ',' + sortBy.order : null
+			};
+			var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
+			// console.log('dataQuery', dataQuery);
+
+			if (infinityMode && reload && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad) {
+				requestLoadCount({
+					params: _params,
+					data: dataQuery
+				}).then(function (response) {
+					// console.log("infinity then response", response);
+					// const result = response.data;
+					setTotalCountRows(response.data);
+				}).catch(function (error) {
+					return notificationError(error, 'Ошибка получения количества записей по фильтру');
+				});
+			}
+
+			// console.log('requestLoadRows => ', typeof requestLoadRows);
+			// if(typeof requestLoadRows !== 'function'){
+			//     setLoading(false);
+			// }
+			if (requestLoadRows) {
+				requestLoadRows({
+					params: _params,
+					data: dataQuery
+				}).then(function (response) {
+					// console.log("infinity then response", response);
+					var result = response.data;
+					// Если иерархия и ленивая, то ищим кому добавть полученные записи
+					if (!!expandColumnKey && expandLazyLoad) {
+						// lastExpandRow//, setLastExpandRow
+						// console.log('!!expandColumnKey && expandLazyLoad', result);
+						if (pageNum === 0) {
+							result.forEach(function (child) {
+								child.children = [defineProperty({}, rowKey, generateUUID())];
+							});
+							// _setRows(result);
+							_setLoadedRowsHandler(result);
+						} else {
+							var newRows = [].concat(toConsumableArray(_rows));
+							// (data, rowKey, rowValue)
+							result.forEach(function (child) {
+								child.children = [defineProperty({}, rowKey, generateUUID())];
+							});
+							var node = findNodeByRowKey(newRows, rowKey, expandRow[rowKey]);
+							node.children = result;
+							// console.log('newRows -> ', newRows);
+							// _setRows(newRows);
+							_setLoadedRowsHandler(newRows);
+						}
+					} else {
+						if (result && result.length < pageSize) {
+							setHasMore(false);
+						} else {
+							setHasMore(true);
+						}
+						pageNum === 0 ? _setLoadedRowsHandler(result) // _setRows
+						: _setLoadedRowsHandler(_rows.concat(result)); // _setRows
+
+						// console.log('expandDefaultAll ', expandDefaultAll, _expandedRowKeys);
+						if (expandDefaultAll) setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
+					}
+
+					setLoading(false);
+				}).catch(function (error) {
+					notificationError(error, 'Ошибка загрузки данных');
+					_setLoadedRowsHandler(_rows); // _setRows
+					// setHasMore(false);
+					setLoading(false);
+				});
+			} else setLoading(false);
+		}
+	};
+
+	var _onRowClick = function _onRowClick(_ref5) {
+		var rowData = _ref5.rowData,
+		    rowIndex = _ref5.rowIndex,
+		    rowKey = _ref5.rowKey;
+
+		// console.log('actionSimpleClick')
+		onTableEventsDispatch('onRowClick', rowData);
+		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
+	};
+	var _onRowDoubleClick = function _onRowDoubleClick(_ref6) {
+		var rowData = _ref6.rowData,
+		    rowIndex = _ref6.rowIndex,
+		    rowKey = _ref6.rowKey;
+
+		// console.log('onDoubleClick', rowData, rowIndex, rowKey);
+		// console.log('actionDoubleClick')
+		// rowDoubleClickDispatch(rowData);
+		onTableEventsDispatch('onRowDoubleClick', rowData);
+		_rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
+	};
+
+	var _rowSelectAfterClick = function _rowSelectAfterClick(_ref7) {
+		var rowData = _ref7.rowData,
+		    rowIndex = _ref7.rowIndex,
+		    rowKey = _ref7.rowKey,
+		    onClick = _ref7.onClick;
+
+		var checked = !_selectedRowKeys.includes(rowKey);
+		var newRowObject = {
+			rowData: _extends({}, rowData),
+			rowIndex: rowIndex,
+			rowKey: rowKey
+		};
+		if (!selectable) {
+			// console.log('_rowEventHandlers -> onClick', rowKey, rowIndex);
+			// console.log('q onRowClick => ', rowData)
+			// if(_selectedRowKeys)
+			if (checked && !editMode) _setSelectedRowsHandler([rowKey], rowData);
+			onSelectedRowsChange([rowKey], [rowData]);
+		} else {
+			onChangeSelectionCell(_extends({}, newRowObject, {
+				column: _getSelectionColumnProps(),
+				rows: _rows,
+				checked: checked
+			}));
+		}
+		onClick && onClick(_extends({ selected: checked }, newRowObject));
+	};
+
+	var _rowEventHandlers = {
+		onClick: _onRowClick,
+		onDoubleClick: _onRowDoubleClick
+
+		// onClick: useSimpleAndDoubleClick(_onRowClick, _onRowDoubleClick),
+		// onClick: simpleAndDoubleClick(_onRowClick, _onRowDoubleClick),
+
+		// onDoubleClick: console.log('onDoubleClick'),
+		// onContextMenu: console.log('context menu'),
+		// onMouseEnter: console.log('mouse enter'),
+		// onMouseLeave: console.log('mouse leave'),
+	};
+
+	/** Событие при сортировке */
+	var _onColumnSort = function _onColumnSort(sortBy) {
+		// console.log("sortBy", sortBy);
+		tableRef.current.scrollToRow(0, 'auto');
+		var localSortBy = _sortBy.order === 'desc' ? {} : sortBy;
+		setSortBy(localSortBy);
+
+		// Для серверной сортировки - сбросить выделение
+		// if (type !== 'localSide') {
+		// setSelectedRowKeys([]);
+		_setSelectedRowsHandler();
+		// }
+		var loadParams = {
+			sortBy: localSortBy,
+			filter: _filter,
+			searchLine: _searchValue,
+			reload: true
+		};
+		_dataProcessing(loadParams);
+	};
+
+	/** VIEW FUNCTIONS */
+
+	var _footer = React.createElement(
+		React.Fragment,
+		null,
+		_footerShow ? React.createElement(
+			React.Fragment,
+			null,
+			React.createElement(
+				'div',
+				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
+				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
+			),
+			React.createElement(
+				'div',
+				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
+				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
+			),
+			React.createElement(
+				'div',
+				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
+				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
+			),
+			selectable ? React.createElement(
+				React.Fragment,
+				null,
+				footerProps.showElements.includes('selected') ? React.createElement(
+					'span',
+					null,
+					footerProps.selectedTitle,
+					' ',
+					_selectedRowKeys.length
+				) : null,
+				footerProps.showElements.includes('loaded') ? React.createElement(
+					'span',
+					null,
+					footerProps.loadedTitle,
+					' ',
+					flatten(getTableRowKeys(_rows, rowKey)).length
+				) : null
+			) : null,
+			footerProps.showElements.includes('total') ? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React.createElement(
+				'span',
+				null,
+				footerProps.totalTitle,
+				' ',
+				_totalCountRows
+			) : React.createElement(
+				'span',
+				null,
+				footerProps.totalTitle,
+				' ',
+				flatten(getTableRowKeys(_rows, rowKey)).length
+			) : null
+		) : null
+	);
+
+	/** Событие при рендере для стилизации */
+	var _rowClassName = function _rowClassName(_ref8) {
+		var rowData = _ref8.rowData,
+		    rowIndex = _ref8.rowIndex;
+		var rowClassName = props.rowClassName;
+
+		return [rowClassName, _selectedRowKeys.includes(rowData[rowKey]) && 'row-selected', zebraStyle ? rowIndex % 2 === 0 ? 'even' : 'odd' : '', rowBordered ? 'bordered' : ''].join(' ');
+	};
+
+	/** LOAD DATA FUNCTIONS */
+	var onEndReached = function onEndReached() {
+		var selectAll = void 0;
+		var selectLength = _selectedRowKeys.length;
+		if (selectLength === 0) selectAll = false;else if (selectLength > 0) selectAll = null;
+
+		setSelectAll(selectAll);
+		// console.log('_filter', _filter);
+
+		if (infinityMode) {
+			var loadParams = {
+				sortBy: _sortBy,
+				filter: _filter,
+				searchLine: _searchValue,
+				reload: false
+			};
+			_dataProcessing(loadParams);
+		}
+	};
+
+	/** SELECTABLE FUNCTIONS */
+
+	/** Событие при изменении галочки одной строки */
+	var _onChangeSelectHandler = function _onChangeSelectHandler(_ref10) {
+		_ref10.selected;
+		    _ref10._selectedRow;
+		    var _selectAll = _ref10._selectAll,
+		    _selectedRowKeys = _ref10._selectedRowKeys,
+		    _selectedRowObjects = _ref10._selectedRowObjects,
+		    _indeterminateRowKeys = _ref10._indeterminateRowKeys;
+
+		// console.group("_onChangeSelectHandler", _selectedRowKeys);
+		// console.log("_selectedRowKeys", _selectedRowKeys);
+		// console.log("_indeterminateRowKeys", _indeterminateRowKeys);
+		// console.log("_selectAll", _selectAll);
+		// console.groupEnd();
+
+		// setSelectedRowKeys(_selectedRowKeys);
+		// selectedDispatch(_selectedRowObjects);
+		_setSelectedRowsHandler(_selectedRowKeys, _selectedRowObjects);
+		setIndeterminateRowKeys(_indeterminateRowKeys);
+		setSelectAll(_selectAll);
+		onSelectedRowsChange(_selectedRowKeys, _selectedRowObjects);
+	};
+
+	/** Событие при изменении галочки "Выделить все" */
+	var _onSelectAllHandler = function _onSelectAllHandler(_ref11) {
+		var selected = _ref11.selected,
+		    rowKeys = _ref11.rowKeys,
+		    rowObjects = _ref11.rowObjects;
+
+		var selectedKeys = selected ? rowKeys : [];
+		// setSelectedRowKeys(selectedKeys);
+		// selectedDispatch(selected ? rowObjects : []);
+		_setSelectedRowsHandler(selectedKeys, selected ? rowObjects : []);
+		setIndeterminateRowKeys([]);
+		setSelectAll(selected);
+		// setSelectedRowObjects(rows);
+		// console.log("_handleSelectAll", selectedKeys);
+		onSelectedRowsChange(selectedKeys, rowObjects);
+	};
+	//
+	// const SelectionCell = (props) => {
+	// 	const {rowData, column} = props;
+	// 	const {selectedRowKeys, indeterminateRowKeys, rowKey} = column;
+	// 	const det = indeterminateRowKeys.includes(rowData[rowKey]);
+	// 	const checked = selectedRowKeys.includes(rowData[rowKey]);
+	// 	React.useEffect(() => {
+	// 		console.log("selectionCell", props);
+	// 	}, []);
+	//
+	// 	const _handleChange = (checked) => {
+	// 		console.log("_handleChange", checked);
+	// 	}
+	//
+	// 	return (
+	// 		<Checkbox
+	// 			indeterminate={det}
+	// 			onChange={(e) => _handleChange(e.target.checked)}
+	// 			checked={checked}
+	// 		/>
+	// 	);
+	// };
+
+	var _getSelectionColumnProps = function _getSelectionColumnProps() {
+		return {
+			rowKey: rowKey,
+			parentKey: expandParentKey,
+			nodeAssociated: nodeAssociated,
+			selectedRowKeys: _selectedRowKeys,
+			indeterminateRowKeys: _indeterminateRowKeys,
+			onChange: _onChangeSelectHandler
+		};
+	};
+
+	var _getColumns = function _getColumns() {
+		var selectColumn = _extends({
+			key: '__selection__',
+			headerRenderer: SelectionHead,
+			cellRenderer: React.createElement(SelectionCell, null),
+			width: 40,
+			flexShrink: 0,
+			resizable: false,
+			frozen: 'left',
+			selectAll: selectAll,
+			onSelectAll: _onSelectAllHandler
+		}, _getSelectionColumnProps());
+		return selectable ? [selectColumn].concat(toConsumableArray(columns)) : [].concat(toConsumableArray(columns));
+	};
+
+	/** TREE FUNCTIONS */
+
+	var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
+		// console.log("_onExpandedRowsChange", expandedRowKeys);
+		onExpandedRowsChange(expandedRowKeys);
+	};
+	var _onRowExpand = function _onRowExpand(_ref12) {
+		var expanded = _ref12.expanded,
+		    rowData = _ref12.rowData,
+		    rowIndex = _ref12.rowIndex,
+		    rowKey = _ref12.rowKey;
+
+		// console.log("_onRowExpand", rowData, expanded, rowIndex, rowKey);
+		if (expanded) {
+			setExpandedRowKeys([].concat(toConsumableArray(_expandedRowKeys), [rowKey]));
+
+			if (expandLazyLoad) {
+				var loadParams = {
+					sortBy: _sortBy,
+					filter: _extends({}, _filter, defineProperty({}, expandParentKey, rowKey)),
+					searchLine: _searchValue,
+					reload: false,
+					expandRow: rowData
+				};
+				// _callPropsOnLoad(loadParams);
+				_dataProcessing(loadParams);
+			}
+		} else {
+			var expandedRowKeys = [].concat(toConsumableArray(_expandedRowKeys));
+			var allChildKeys = flatten(getTableRowKeys(rowData.children, props.rowKey));
+			allChildKeys.push(rowKey);
+			// console.log('allChildKeys', allChildKeys);
+			setExpandedRowKeys(expandedRowKeys.filter(function (item) {
+				return !allChildKeys.includes(item);
+			}));
+		}
+		onRowExpand({ expanded: expanded, rowData: rowData, rowIndex: rowIndex, rowKey: rowKey });
+	};
+
+	/** ROW CHANGE FUNCTIONS */
+
+	/**
+  * Find row by key
+  * @param data - table rows
+  * @param key - key row for find
+  * @param callback - function for return result
+  */
+	var loop = function loop(data, key, callback) {
+		for (var i = 0; i < data.length; i++) {
+			if (data[i][rowKey] === key) {
+				// console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
+				return callback(data[i], i, data);
+			}
+			if (data[i].children) {
+				loop(data[i].children, key, callback);
+			}
+		}
+	};
+
+	var _addRows = function _addRows(rows) {
+		var saveRows = [].concat(toConsumableArray(rows));
+		if (customFields)
+			// Фильтрация по пользовательским параметрам
+			saveRows = saveRows.filter(function (sRow) {
+				var isValid = [];
+				customFields.forEach(function (field) {
+					// Валидация по пользовательской логике функции validate
+					if (field.validate) isValid.push(field.validate(sRow, _rows));
+
+					// Создание или переобразование по пользовательской логике функции value
+					if (field.value) sRow[field.name] = field.value(sRow, _rows);
+				});
+				// console.log('_addRows isValid', isValid);
+				if (!isValid.includes(false)) return sRow;
+			});
+		var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
+		_setRowsHandler(_localRows);
+		onTableEventsDispatch('onAddRows', _localRows);
+	};
+
+	var _addRow = function _addRow(row) {
+		var _row = _extends({}, row);
+		var isValid = true;
+		if (customFields) {
+			var validations = [];
+			customFields.forEach(function (field) {
+				if (field.validate) validations.push(field.validate(_row, _rows));
+
+				if (field.value) _row[field.name] = field.value(_row, _rows);
+			});
+			isValid = !validations.includes(false);
+		}
+		if (isValid) {
+			var _localRows = [].concat(toConsumableArray(_rows), [_row]);
+			_setRowsHandler(_localRows);
+			onTableEventsDispatch('onAddRow', _localRows);
+		}
+	};
+
+	var _addRowAsCopy = function _addRowAsCopy() {
+		// console.log("_onClickAddAsCopy", selectedRow);
+		var _localRows = [].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
+		_setRowsHandler(_localRows);
+		onTableEventsDispatch('onAddRowAsCopy', _localRows);
+	};
+
+	var _editRow = function _editRow(row) {
+		// console.log("_onClickEdit", selectedRow);
+		var data = [].concat(toConsumableArray(_rows));
+		var key = row[rowKey];
+		loop(data, key, function (item, index, arr) {
+			data[index] = row;
+			_setRowsHandler(data);
+			// selectedDispatch(row)
+			_setSelectedRowsHandler(_selectedRowKeys, undefined, data);
+			onTableEventsDispatch('onEditRow', data);
+
+			// setSelectedRowKeys([]);
+		});
+		// props.onClickEdit(event, selectedRow);
+	};
+
+	var _removeRow = function _removeRow(event) {
+		// console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
+		var _localRows = _rows.filter(function (item) {
+			return !_selectedRowKeys.includes(item[rowKey]);
+		});
+		_setRowsHandler(_localRows);
+		_setSelectedRowsHandler();
+		onTableEventsDispatch('onRemoveRow', _localRows);
+
+		// setSelectedRowKeys([]);
+		// if (selectable)
+		// 	selectedDispatch([]);
+		// else
+		// 	selectedDispatch(undefined);
+		// commandPanelProps.onClickDelete(event, _selectedRowKeys);
+	};
+
+	// const _moveUpRow
+
+	var _moveUpRow = function _moveUpRow(event) {
+		var data = [].concat(toConsumableArray(_rows));
+		var key = _selectedRowKeys[0];
+		loop(data, key, function (item, index, arr) {
+			var newRowIndex = _getNewIndexRow(index, index - 1);
+			_changeIndexRow(index, newRowIndex, arr, data, 'onMoveUpRow');
+			// commandPanelProps.onClickUp(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
+		});
+	};
+
+	var _moveDownRow = function _moveDownRow(event) {
+		var data = [].concat(toConsumableArray(_rows));
+		var key = _selectedRowKeys[0];
+		loop(data, key, function (item, index, arr) {
+			var newRowIndex = _getNewIndexRow(index, index + 1);
+			_changeIndexRow(index, newRowIndex, arr, data, 'onMoveDownRow');
+			// commandPanelProps.onClickDown(event, {
+			// 	rowIndex: newRowIndex,
+			// 	rowData: findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0]),
+			// }, data);
+		});
+	};
+
+	var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
+		return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
+	};
+
+	var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data, nameEvent) {
+		if (newIndex >= 0 && newIndex < arr.length) {
+			// let arr = [..._rows]; // Копируем массив
+			var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
+			// console.log('_changeIndexRow => ',item);
+			arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
+			// console.log("_changeIndexRow", item[0]);
+			_setRowsHandler(data);
+			onTableEventsDispatch(nameEvent, data);
+		}
+	};
+
+	// const _onSearch = (searchLine, e) => {
+	// 	e.preventDefault();
+	// 	// console.log("_onSearch", searchLine);
+	// 	tableRef.current.scrollToRow(0, 'auto');
+	// 	setSearchValue(searchLine);
+	// 	const loadParams = {
+	// 		sortBy: _sortBy,
+	// 		filter: _filter,
+	// 		searchLine: searchLine,
+	// 		reload: true,
+	// 	};
+	// 	_dataProcessing(loadParams);
+	// 	commandPanelProps.onSearch(searchLine);
+	// };
+
+	/** SELECTED PANEL */
+	var _onClickDropSelectHandler = function _onClickDropSelectHandler(dropObject) {
+		var newSelectedKeys = _selectedRowKeys.filter(function (item) {
+			return item !== dropObject[rowKey];
+		});
+		// setSelectedRowKeys(newSelectedKeys);
+		_setSelectedRowsHandler(newSelectedKeys, undefined, _rows);
+		setSelectAll(newSelectedKeys.length === 0 ? false : null);
+		onSelectedRowsChange(newSelectedKeys);
+	};
+
+	return React.createElement(
+		'div',
+		{ className: rtPrefix + '-table ' + className, style: style },
+		React.createElement(
+			'div',
+			{ className: rtPrefix + '-baseTable' },
+			React.createElement(
+				AutoResizer,
+				null,
+				function (_ref13) {
+					var width = _ref13.width,
+					    height = _ref13.height;
+					return React.createElement(BaseTable, {
+						ref: tableRef
+						/** Required */
+						, columns: _getColumns(),
+						data: _rows
+						/** Control Props */
+						, sortBy: _sortBy
+						/** Base Props */
+						, width: width,
+						height: height,
+						rowKey: rowKey
+						// rowProps={rowProps}
+
+						/** View Props */
+						, rowClassName: _rowClassName,
+						emptyRenderer: empty,
+						fixed: fixWidthColumn,
+						footerHeight: _footerShow ? footerProps.height : 0,
+						headerHeight: headerHeight,
+						rowHeight: rowHeight,
+						overlayRenderer: loading ? overlay : null,
+						footerRenderer: _footer,
+						rowRenderer: rowRenderer
+						// rowProps={_rowProps}
+						// cellProps={_cellProps}
+						, estimatedRowHeight: estimatedRowHeight
+						/** Load Data Props */
+						, onEndReachedThreshold: loadThreshold,
+						onEndReached: infinityMode ? onEndReached : undefined,
+						disabled: loading
+						/** Tree Props */
+						, expandColumnKey: expandColumnKey,
+						expandedRowKeys: _expandedRowKeys
+						/** Events */
+						, onColumnSort: _onColumnSort,
+						rowEventHandlers: _rowEventHandlers,
+						onExpandedRowsChange: _onExpandedRowsChange,
+						onRowExpand: _onRowExpand,
+						editMode: editMode
+					});
+				}
+			)
+		),
+		showSelection && selectable && !expandColumnKey ? React.createElement(SelectionList, {
+			onClickDropSelect: _onClickDropSelectHandler,
+			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
+				return _selectedRowKeys.includes(item[rowKey]);
+			}),
+			rowRender: rowRenderShowSelection
+		}) : null
+	);
+});
+
+Table$3.propTypes = {
+	/**
+  * REQUIRED
+  * */
+
+	/** Столбцы таблицы */
+	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+	/** Режим загрузки данных по скроллу */
+	infinityMode: PropTypes.bool,
+
+	/**
+  * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
+  * */
+
+	/** Строки по умолчанию */
+	defaultRows: PropTypes.arrayOf(PropTypes.object),
+
+	/** Ключи выделенных по умолчанию строк */
+	defaultSelectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+
+	/** Значение строки поиска по умолчанию строк */
+	defaultSearchValue: PropTypes.string,
+
+	/** Объект фильтрации по умолчанию */
+	defaultFilter: PropTypes.object,
+
+	/** Сортировка по умолчанию */
+	defaultSortBy: PropTypes.shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes.string,
+		/** Направление сортировки */
+		order: PropTypes.oneOf(['asc', 'desc'])
+	}),
+
+	/**
+  * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
+  * */
+
+	/** Строки таблицы. Используется для контроля таблицы из вне. */
+	rows: PropTypes.arrayOf(PropTypes.object),
+
+	/** Функция задания строк таблицы. */
+	setRows: PropTypes.func,
+
+	/** Выделенные строки таблицы. */
+	selectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+
+	/** Значение строки поиска */
+	searchValue: PropTypes.string,
+
+	/** Объект фильтрации */
+	filter: PropTypes.object,
+
+	/** Объект сортировки */
+	sortBy: PropTypes.shape({
+		/** Ключ поля для сортировки */
+		key: PropTypes.string,
+		/** Направление сортировки */
+		order: PropTypes.oneOf(['asc', 'desc'])
+	}),
+
+	/**
+  * BASE PROPS
+  * */
+
+	/** Поле для уникальной идентификации строки */
+	rowKey: PropTypes.string,
+
+	/** Дополнительные поля и валидация в объекты таблицы
+  * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
+  * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
+  * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
+  * ```json
+  * [
+  * 	{
+  * 		name: <String>,
+  * 		value: <func>,
+  * 		validate: <func>
+  * 	}
+  * ]
+  * ```
+  * `name` – Имя параметра в объекте
+  * `value` – Функция формирования значения - `(row, rows) => { return {} }`
+  * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
+  * Параметра **validate** работает **только** для модельного окна тип `select`.
+  * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
+  */
+	customFields: PropTypes.arrayOf(PropTypes.object),
+
+	/**
+  * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
+  * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
+  * ```json
+  * [
+  * 	{
+  * 		name: <String>,
+  * 		cellRenderer: <func>,
+  * 		...advancedColProps
+  * 	}
+  * ]
+  * ```
+  * `name` – key колонки к которой надо применить дополнительные пропсы
+  * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
+  * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
+  */
+	customColumnProps: PropTypes.arrayOf(PropTypes.object),
+
+	/**
+  * VIEW PROPS
+  * */
+
+	/** Вывод когда нет данных */
+	empty: PropTypes.element,
+
+	/** Отображение загрузки данных */
+	overlay: PropTypes.element,
+
+	/** Фиксированная ширина столбцов. Появится боковой скрол */
+	fixWidthColumn: PropTypes.bool,
+
+	footerProps: PropTypes.shape({
+
+		/** Высота подвала */
+		height: PropTypes.number,
+
+		/** Массив элементов футтера, которые надо отобразить
+   * ['selected', 'loaded', 'total'] */
+		showElements: PropTypes.arrayOf(PropTypes.string),
+
+		/** Заколовок для кол-ва выбранных объектов */
+		selectedTitle: PropTypes.string,
+
+		/** Заколовок для кол-ва загруженны объектов */
+		loadedTitle: PropTypes.string,
+
+		/** Заколовок для кол-ва всего объектов */
+		totalTitle: PropTypes.string,
+
+		/** Левый кастомный элемент командной панели */
+		leftCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
+
+		/** Центральный кастомный элемент командной панели */
+		centerCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
+
+		/** Правый кастомный элемент командной панели */
+		rightCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)])
+	}),
+
+	/** Высота заголовка таблицы */
+	headerHeight: PropTypes.number,
+
+	/** Высота строки таблицы */
+	rowHeight: PropTypes.number,
+
+	/** Custom row renderer
+  * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
+	rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+
+	/** Строки будут в зебро-стиле */
+	zebraStyle: PropTypes.bool,
+
+	/** Высота расширения */
+	estimatedRowHeight: PropTypes.number,
+
+	/** Отображать ли разделители ячеек в строке */
+	cellBordered: PropTypes.bool,
+
+	/** Отобрадать ли разделители строк */
+	rowBordered: PropTypes.bool,
+
+	className: PropTypes.string,
+
+	style: PropTypes.object,
+
+	/**
+  * LOAD DATA PROPS
+  * */
+
+	/** Порог в пикселях для вызова _onLoad.
+  * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
+	loadThreshold: PropTypes.number,
+
+	/** Размер страницы */
+	pageSize: PropTypes.number,
+
+	/** Функция запроса для конфигурации */
+	requestLoadConfig: PropTypes.func,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadRows: PropTypes.func,
+
+	/** Функция запроса для загрузки строк (данных) */
+	requestLoadCount: PropTypes.func,
+
+	/** Имя параметра для поиска */
+	searchParamName: PropTypes.string,
+
+	/**
+  * SELECTABLE PROPS
+  * */
+
+	/** Таблица с возможностью выбора строки */
+	selectable: PropTypes.bool,
+
+	/**
+  * TREE PROPS
+  * */
+
+	/** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
+	nodeAssociated: PropTypes.bool,
+
+	/** Ключ колонки по которой строить иерархию */
+	expandColumnKey: PropTypes.string,
+
+	/** Открыть по умолчанию вложенность до уровня N или 'All' */
+	expandDefaultAll: PropTypes.bool,
+
+	/** Загружать ноды иерархии по одной */
+	expandLazyLoad: PropTypes.bool,
+
+	/** Поле в котором хранится ссылка на родителя */
+	expandParentKey: PropTypes.string,
+
+	/**
+  * EVENTS
+  * */
+
+	/** Событие при клике на строку (только при `selectable` = `false`)
+  * `({selected, rowData, rowIndex}) => {}` */
+	onRowClick: PropTypes.func,
+
+	/** Событие при двойном клике на строку.
+  * `({rowData, rowIndex, rowKey}) => {}` */
+	onRowDoubleClick: PropTypes.func,
+
+	/** События при открытии / закрытии ноды
+  * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
+	onRowExpand: PropTypes.func,
+
+	/** Событие при выборе строки.
+  * `([rowKeys], [rowDatas]) => {}` */
+	onSelectedRowsChange: PropTypes.func,
+
+	/** События при открытии / закрытии ноды
+  * `(expandedRowKeys) => {}` - массив ключей открытых нод */
+	onExpandedRowsChange: PropTypes.func,
+
+	/** SELECTED PANEL */
+
+	/** Отображать ли панель выбранных элементов */
+	showSelection: PropTypes.bool,
+
+	/** Строка или функция для отображения элементов списка выбранных
+  * Строка - имя поля
+  * Функция - рендер строк.
+  * `({ rowData, rowIndex }) => { return <Component> }` */
+	rowRenderShowSelection: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+
+	/** Путь в сторе куда класть выбранную строку таблицы */
+	dispatchPath: PropTypes.string,
+
+	/** Объект для подписки на изменения в STORE */
+	subscribe: PropTypes.arrayOf(PropTypes.object)
+};
+
+Table$3.defaultProps = {
+	infinityMode: false,
+	editMode: false,
+	defaultRows: [],
+	defaultSelectedRowKeys: [],
+	defaultSearchValue: '',
+	defaultFilter: {},
+	defaultSortBy: {},
+
+	rows: [],
+	setRows: noop,
+	selectedRowKeys: [],
+	searchValue: '',
+	filter: {},
+	sortBy: {},
+
+	rowKey: 'id',
+
+	empty: empty,
+	overlay: overlay,
+	fixWidthColumn: false,
+	footerProps: {
+		height: 30,
+		showElements: [],
+		selectedTitle: 'Выделено:',
+		loadedTitle: 'Загружено записей:',
+		totalTitle: 'Всего записей:',
+		leftCustomSideElement: null,
+		centerCustomSideElement: null,
+		rightCustomSideElement: null
+	},
+	headerHeight: 36,
+	rowHeight: 36,
+	zebraStyle: false,
+	estimatedRowHeight: undefined,
+	cellBordered: false,
+	rowBordered: true,
+	className: "",
+	style: {},
+
+	loadThreshold: 300,
+	pageSize: 50,
+	requestLoadRows: undefined,
+	requestLoadCount: noop,
+	searchParamName: 'searchLine',
+
+	selectable: false,
+
+	nodeAssociated: true,
+	expandColumnKey: undefined,
+	expandDefaultAll: true,
+	expandLazyLoad: false,
+	expandParentKey: 'parentId',
+
+	onRowClick: noop,
+	onRowDoubleClick: noop,
+	onRowExpand: noop,
+	onSelectedRowsChange: noop,
+	onExpandedRowsChange: noop,
+
+	showSelection: false,
+
+	dispatchPath: undefined,
+	subscribe: []
+};
+
+// const mapStateToProps = (store, ownProps) => {
+// 	const {subscribe} = ownProps;
+// 	let state = {};
+// 	if(subscribe && subscribe.length > 0){
+// 		subscribe.forEach(item => {
+// 			const {name, path, extraData} = item;
+// 			if(name && path)
+// 				state[name] = objectPath.get(store, path);
+// 			if(name && extraData)
+// 				if(typeof extraData === 'object')
+// 					Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+// 				else
+// 					state[`${name}ExtraData`] = objectPath.get(store, extraData);
+// 		})
+// 	}
+// 	return state;
+// };
+// const mapDispatchToProps = (dispatch) =>
+// 	bindActionCreators({ setDateStore: setDataStore}, dispatch);
+
+var Table$4 = connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$3);
+
+var _this$1 = undefined;
+
+
+var defaultProps$2 = {
+    defaultFilter: {},
+    rowKey: 'id',
+    pageSize: 50,
+    requestLoadConfig: noop,
+    expandColumnKey: undefined,
+    expandLazyLoad: false,
+    expandParentKey: 'parentId',
+    customColumnProps: []
+};
+
+var ConfigLoader$1 = function ConfigLoader(props) {
+
+    /** Конфигурация таблицы */
+    var _useState = useState(undefined),
+        _useState2 = slicedToArray(_useState, 2),
+        tableConfig = _useState2[0],
+        setTableConfig = _useState2[1];
+
+    var _defaultProps$props = _extends({}, defaultProps$2, props),
+        defaultSortBy = _defaultProps$props.defaultSortBy,
+        defaultFilter = _defaultProps$props.defaultFilter,
+        rowKey = _defaultProps$props.rowKey,
+        pageSize = _defaultProps$props.pageSize,
+        requestLoadConfig = _defaultProps$props.requestLoadConfig,
+        expandColumnKey = _defaultProps$props.expandColumnKey,
+        expandLazyLoad = _defaultProps$props.expandLazyLoad,
+        expandParentKey = _defaultProps$props.expandParentKey,
+        customColumnProps = _defaultProps$props.customColumnProps,
+        cellBordered = _defaultProps$props.cellBordered;
+
+    useEffect(function () {
+        var cleanupFunction = false;
+        var loadData = function () {
+            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (requestLoadConfig) {
+                                    // console.log('requestLoadConfig => ', typeof requestLoadConfig);
+                                    // console.log('requestLoadRows => ', typeof props.requestLoadRows);
+                                    requestLoadConfig().then(function (response) {
+                                        // let result = response.data;
+                                        // console.log('requestLoadConfig -> ', response.data);
+                                        if (!cleanupFunction) {
+                                            // setTableConfig(response.data);
+                                            configParser(response.data);
+                                        }
+                                    }).catch(function (error) {
+                                        return notificationError(error, 'Ошибка получения конфигурации');
+                                    });
+                                }
+
+                            case 1:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this$1);
+            }));
+
+            return function loadData() {
+                return _ref.apply(this, arguments);
+            };
+        }();
+        loadData().then(function (r) {
+            return r;
+        });
+        return function () {
+            return cleanupFunction = true;
+        };
+    }, []);
+
+    var configParser = function configParser(config) {
+        // Массив колонок
+        var _columns = [];
+        // Сортировка по умолчанию
+        var _defaultSorter = [];
+
+        config && config.fields && config.fields.forEach(function (item) {
+            var colProps = customColumnProps && customColumnProps.find(function (render) {
+                return render.name === item.name || render.name === item.alias;
+            });
+
+            // Индекс или имя поля в данных
+            var dataIndex = item.alias ? item.alias : item.name;
+
+            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
+
+            _columns.push(_extends({
+                key: dataIndex,
+                title: item.header ? item.header : item.name,
+                dataKey: dataIndex,
+                align: item.align,
+                width: item.width,
+                resizable: item.resizable,
+                sortable: item.sortable,
+                hidden: !item.visible,
+                className: [cellBordered ? 'bordered' : ''].join(' '),
+                headerClassName: [cellBordered ? 'bordered' : ''].join(' ')
+            }, colProps, {
+                cellRenderer: function cellRenderer(object) {
+                    if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, object);
+                    // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                    else return object.cellData ? React.createElement(
+                            _Typography.Text,
+                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
+                            object.cellData
+                        ) : React.createElement(
+                            _Typography.Text,
+                            { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
+                            "---"
+                        );
+                    // return object.cellData ? object.cellData : '---';
+                }
+            }));
+        });
+
+        var _defaultFilter = void 0;
+        if (config && config.hierarchical && config.hierarchyLazyLoad) {
+            var parentKey = config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey;
+            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
+        } else _defaultFilter = defaultFilter;
+
+        setTableConfig({
+            columns: _columns,
+            defaultSortBy: _defaultSorter[0],
+            defaultFilter: _defaultFilter,
+            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[0] : rowKey,
+            expandParentKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split('/')[1] : expandParentKey,
+            expandColumnKey: config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey,
+            expandLazyLoad: config && config.hierarchical && config.hierarchyLazyLoad ? config.hierarchyLazyLoad : expandLazyLoad,
+            pageSize: config && config.hierarchical ? 1 : pageSize
+        });
+    };
+
+    if (tableConfig) return React.createElement(Table$4, _extends({}, props, tableConfig));else return null;
+};
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var safeIsNaN = Number.isNaN ||
+    function ponyfill(value) {
+        return typeof value === 'number' && value !== value;
+    };
+function isEqual(first, second) {
+    if (first === second) {
+        return true;
+    }
+    if (safeIsNaN(first) && safeIsNaN(second)) {
+        return true;
+    }
+    return false;
+}
+function areInputsEqual(newInputs, lastInputs) {
+    if (newInputs.length !== lastInputs.length) {
+        return false;
+    }
+    for (var i = 0; i < newInputs.length; i++) {
+        if (!isEqual(newInputs[i], lastInputs[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function memoizeOne(resultFn, isEqual) {
+    if (isEqual === void 0) { isEqual = areInputsEqual; }
+    var lastThis;
+    var lastArgs = [];
+    var lastResult;
+    var calledOnce = false;
+    function memoized() {
+        var newArgs = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            newArgs[_i] = arguments[_i];
+        }
+        if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
+            return lastResult;
+        }
+        lastResult = resultFn.apply(this, newArgs);
+        calledOnce = true;
+        lastThis = this;
+        lastArgs = newArgs;
+        return lastResult;
+    }
+    return memoized;
+}
+
+var index_cjs = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var _extends = _interopDefault(_extends$1);
+var _inheritsLoose = _interopDefault(inheritsLoose);
+var _assertThisInitialized = _interopDefault(assertThisInitialized);
+var memoizeOne$1 = _interopDefault(memoizeOne);
+
+var _objectWithoutPropertiesLoose = _interopDefault(objectWithoutPropertiesLoose);
+
+// Animation frame based implementation of setTimeout.
+// Inspired by Joe Lambert, https://gist.github.com/joelambert/1002116#file-requesttimeout-js
+var hasNativePerformanceNow = typeof performance === 'object' && typeof performance.now === 'function';
+var now = hasNativePerformanceNow ? function () {
+  return performance.now();
+} : function () {
+  return Date.now();
+};
+function cancelTimeout(timeoutID) {
+  cancelAnimationFrame(timeoutID.id);
+}
+function requestTimeout(callback, delay) {
+  var start = now();
+
+  function tick() {
+    if (now() - start >= delay) {
+      callback.call(null);
+    } else {
+      timeoutID.id = requestAnimationFrame(tick);
+    }
+  }
+
+  var timeoutID = {
+    id: requestAnimationFrame(tick)
+  };
+  return timeoutID;
+}
+
+var size = -1; // This utility copied from "dom-helpers" package.
+
+function getScrollbarSize(recalculate) {
+  if (recalculate === void 0) {
+    recalculate = false;
+  }
+
+  if (size === -1 || recalculate) {
+    var div = document.createElement('div');
+    var style = div.style;
+    style.width = '50px';
+    style.height = '50px';
+    style.overflow = 'scroll';
+    document.body.appendChild(div);
+    size = div.offsetWidth - div.clientWidth;
+    document.body.removeChild(div);
+  }
+
+  return size;
+}
+var cachedRTLResult = null; // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+// Chrome does not seem to adhere; its scrollLeft values are positive (measured relative to the left).
+// Safari's elastic bounce makes detecting this even more complicated wrt potential false positives.
+// The safest way to check this is to intentionally set a negative offset,
+// and then verify that the subsequent "scroll" event matches the negative offset.
+// If it does not match, then we can assume a non-standard RTL scroll implementation.
+
+function getRTLOffsetType(recalculate) {
+  if (recalculate === void 0) {
+    recalculate = false;
+  }
+
+  if (cachedRTLResult === null || recalculate) {
+    var outerDiv = document.createElement('div');
+    var outerStyle = outerDiv.style;
+    outerStyle.width = '50px';
+    outerStyle.height = '50px';
+    outerStyle.overflow = 'scroll';
+    outerStyle.direction = 'rtl';
+    var innerDiv = document.createElement('div');
+    var innerStyle = innerDiv.style;
+    innerStyle.width = '100px';
+    innerStyle.height = '100px';
+    outerDiv.appendChild(innerDiv);
+    document.body.appendChild(outerDiv);
+
+    if (outerDiv.scrollLeft > 0) {
+      cachedRTLResult = 'positive-descending';
+    } else {
+      outerDiv.scrollLeft = 1;
+
+      if (outerDiv.scrollLeft === 0) {
+        cachedRTLResult = 'negative';
+      } else {
+        cachedRTLResult = 'positive-ascending';
+      }
+    }
+
+    document.body.removeChild(outerDiv);
+    return cachedRTLResult;
+  }
+
+  return cachedRTLResult;
+}
+
+var IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
+
+var defaultItemKey = function defaultItemKey(_ref) {
+  var columnIndex = _ref.columnIndex;
+      _ref.data;
+      var rowIndex = _ref.rowIndex;
+  return rowIndex + ":" + columnIndex;
+}; // In DEV mode, this Set helps us only log a warning once per component instance.
+// This avoids spamming the console every time a render happens.
+
+
+var devWarningsOverscanCount = null;
+var devWarningsOverscanRowsColumnsCount = null;
+var devWarningsTagName = null;
+
+if (process.env.NODE_ENV !== 'production') {
+  if (typeof window !== 'undefined' && typeof window.WeakSet !== 'undefined') {
+    devWarningsOverscanCount =
+    /*#__PURE__*/
+    new WeakSet();
+    devWarningsOverscanRowsColumnsCount =
+    /*#__PURE__*/
+    new WeakSet();
+    devWarningsTagName =
+    /*#__PURE__*/
+    new WeakSet();
+  }
+}
+
+function createGridComponent(_ref2) {
+  var _class, _temp;
+
+  var getColumnOffset = _ref2.getColumnOffset,
+      getColumnStartIndexForOffset = _ref2.getColumnStartIndexForOffset,
+      getColumnStopIndexForStartIndex = _ref2.getColumnStopIndexForStartIndex,
+      getColumnWidth = _ref2.getColumnWidth,
+      getEstimatedTotalHeight = _ref2.getEstimatedTotalHeight,
+      getEstimatedTotalWidth = _ref2.getEstimatedTotalWidth,
+      getOffsetForColumnAndAlignment = _ref2.getOffsetForColumnAndAlignment,
+      getOffsetForRowAndAlignment = _ref2.getOffsetForRowAndAlignment,
+      getRowHeight = _ref2.getRowHeight,
+      getRowOffset = _ref2.getRowOffset,
+      getRowStartIndexForOffset = _ref2.getRowStartIndexForOffset,
+      getRowStopIndexForStartIndex = _ref2.getRowStopIndexForStartIndex,
+      initInstanceProps = _ref2.initInstanceProps,
+      shouldResetStyleCacheOnItemSizeChange = _ref2.shouldResetStyleCacheOnItemSizeChange,
+      validateProps = _ref2.validateProps;
+  return _temp = _class =
+  /*#__PURE__*/
+  function (_PureComponent) {
+    _inheritsLoose(Grid, _PureComponent);
+
+    // Always use explicit constructor for React components.
+    // It produces less code after transpilation. (#26)
+    // eslint-disable-next-line no-useless-constructor
+    function Grid(props) {
+      var _this;
+
+      _this = _PureComponent.call(this, props) || this;
+      _this._instanceProps = initInstanceProps(_this.props, _assertThisInitialized(_assertThisInitialized(_this)));
+      _this._resetIsScrollingTimeoutId = null;
+      _this._outerRef = void 0;
+      _this.state = {
+        instance: _assertThisInitialized(_assertThisInitialized(_this)),
+        isScrolling: false,
+        horizontalScrollDirection: 'forward',
+        scrollLeft: typeof _this.props.initialScrollLeft === 'number' ? _this.props.initialScrollLeft : 0,
+        scrollTop: typeof _this.props.initialScrollTop === 'number' ? _this.props.initialScrollTop : 0,
+        scrollUpdateWasRequested: false,
+        verticalScrollDirection: 'forward'
+      };
+      _this._callOnItemsRendered = void 0;
+      _this._callOnItemsRendered = memoizeOne$1(function (overscanColumnStartIndex, overscanColumnStopIndex, overscanRowStartIndex, overscanRowStopIndex, visibleColumnStartIndex, visibleColumnStopIndex, visibleRowStartIndex, visibleRowStopIndex) {
+        return _this.props.onItemsRendered({
+          overscanColumnStartIndex: overscanColumnStartIndex,
+          overscanColumnStopIndex: overscanColumnStopIndex,
+          overscanRowStartIndex: overscanRowStartIndex,
+          overscanRowStopIndex: overscanRowStopIndex,
+          visibleColumnStartIndex: visibleColumnStartIndex,
+          visibleColumnStopIndex: visibleColumnStopIndex,
+          visibleRowStartIndex: visibleRowStartIndex,
+          visibleRowStopIndex: visibleRowStopIndex
+        });
+      });
+      _this._callOnScroll = void 0;
+      _this._callOnScroll = memoizeOne$1(function (scrollLeft, scrollTop, horizontalScrollDirection, verticalScrollDirection, scrollUpdateWasRequested) {
+        return _this.props.onScroll({
+          horizontalScrollDirection: horizontalScrollDirection,
+          scrollLeft: scrollLeft,
+          scrollTop: scrollTop,
+          verticalScrollDirection: verticalScrollDirection,
+          scrollUpdateWasRequested: scrollUpdateWasRequested
+        });
+      });
+      _this._getItemStyle = void 0;
+
+      _this._getItemStyle = function (rowIndex, columnIndex) {
+        var _this$props = _this.props,
+            columnWidth = _this$props.columnWidth,
+            direction = _this$props.direction,
+            rowHeight = _this$props.rowHeight;
+
+        var itemStyleCache = _this._getItemStyleCache(shouldResetStyleCacheOnItemSizeChange && columnWidth, shouldResetStyleCacheOnItemSizeChange && direction, shouldResetStyleCacheOnItemSizeChange && rowHeight);
+
+        var key = rowIndex + ":" + columnIndex;
+        var style;
+
+        if (itemStyleCache.hasOwnProperty(key)) {
+          style = itemStyleCache[key];
+        } else {
+          var _offset = getColumnOffset(_this.props, columnIndex, _this._instanceProps);
+
+          var isRtl = direction === 'rtl';
+          itemStyleCache[key] = style = {
+            position: 'absolute',
+            left: isRtl ? undefined : _offset,
+            right: isRtl ? _offset : undefined,
+            top: getRowOffset(_this.props, rowIndex, _this._instanceProps),
+            height: getRowHeight(_this.props, rowIndex, _this._instanceProps),
+            width: getColumnWidth(_this.props, columnIndex, _this._instanceProps)
+          };
+        }
+
+        return style;
+      };
+
+      _this._getItemStyleCache = void 0;
+      _this._getItemStyleCache = memoizeOne$1(function (_, __, ___) {
+        return {};
+      });
+
+      _this._onScroll = function (event) {
+        var _event$currentTarget = event.currentTarget,
+            clientHeight = _event$currentTarget.clientHeight,
+            clientWidth = _event$currentTarget.clientWidth,
+            scrollLeft = _event$currentTarget.scrollLeft,
+            scrollTop = _event$currentTarget.scrollTop,
+            scrollHeight = _event$currentTarget.scrollHeight,
+            scrollWidth = _event$currentTarget.scrollWidth;
+
+        _this.setState(function (prevState) {
+          if (prevState.scrollLeft === scrollLeft && prevState.scrollTop === scrollTop) {
+            // Scroll position may have been updated by cDM/cDU,
+            // In which case we don't need to trigger another render,
+            // And we don't want to update state.isScrolling.
+            return null;
+          }
+
+          var direction = _this.props.direction; // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+          // This is not the case for all browsers though (e.g. Chrome reports values as positive, measured relative to the left).
+          // It's also easier for this component if we convert offsets to the same format as they would be in for ltr.
+          // So the simplest solution is to determine which browser behavior we're dealing with, and convert based on it.
+
+          var calculatedScrollLeft = scrollLeft;
+
+          if (direction === 'rtl') {
+            switch (getRTLOffsetType()) {
+              case 'negative':
+                calculatedScrollLeft = -scrollLeft;
+                break;
+
+              case 'positive-descending':
+                calculatedScrollLeft = scrollWidth - clientWidth - scrollLeft;
+                break;
+            }
+          } // Prevent Safari's elastic scrolling from causing visual shaking when scrolling past bounds.
+
+
+          calculatedScrollLeft = Math.max(0, Math.min(calculatedScrollLeft, scrollWidth - clientWidth));
+          var calculatedScrollTop = Math.max(0, Math.min(scrollTop, scrollHeight - clientHeight));
+          return {
+            isScrolling: true,
+            horizontalScrollDirection: prevState.scrollLeft < scrollLeft ? 'forward' : 'backward',
+            scrollLeft: calculatedScrollLeft,
+            scrollTop: calculatedScrollTop,
+            verticalScrollDirection: prevState.scrollTop < scrollTop ? 'forward' : 'backward',
+            scrollUpdateWasRequested: false
+          };
+        }, _this._resetIsScrollingDebounced);
+      };
+
+      _this._outerRefSetter = function (ref) {
+        var outerRef = _this.props.outerRef;
+        _this._outerRef = ref;
+
+        if (typeof outerRef === 'function') {
+          outerRef(ref);
+        } else if (outerRef != null && typeof outerRef === 'object' && outerRef.hasOwnProperty('current')) {
+          outerRef.current = ref;
+        }
+      };
+
+      _this._resetIsScrollingDebounced = function () {
+        if (_this._resetIsScrollingTimeoutId !== null) {
+          cancelTimeout(_this._resetIsScrollingTimeoutId);
+        }
+
+        _this._resetIsScrollingTimeoutId = requestTimeout(_this._resetIsScrolling, IS_SCROLLING_DEBOUNCE_INTERVAL);
+      };
+
+      _this._resetIsScrolling = function () {
+        _this._resetIsScrollingTimeoutId = null;
+
+        _this.setState({
+          isScrolling: false
+        }, function () {
+          // Clear style cache after state update has been committed.
+          // This way we don't break pure sCU for items that don't use isScrolling param.
+          _this._getItemStyleCache(-1);
+        });
+      };
+
+      return _this;
+    }
+
+    Grid.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
+      validateSharedProps(nextProps, prevState);
+      validateProps(nextProps);
+      return null;
+    };
+
+    var _proto = Grid.prototype;
+
+    _proto.scrollTo = function scrollTo(_ref3) {
+      var scrollLeft = _ref3.scrollLeft,
+          scrollTop = _ref3.scrollTop;
+
+      if (scrollLeft !== undefined) {
+        scrollLeft = Math.max(0, scrollLeft);
+      }
+
+      if (scrollTop !== undefined) {
+        scrollTop = Math.max(0, scrollTop);
+      }
+
+      this.setState(function (prevState) {
+        if (scrollLeft === undefined) {
+          scrollLeft = prevState.scrollLeft;
+        }
+
+        if (scrollTop === undefined) {
+          scrollTop = prevState.scrollTop;
+        }
+
+        if (prevState.scrollLeft === scrollLeft && prevState.scrollTop === scrollTop) {
+          return null;
+        }
+
+        return {
+          horizontalScrollDirection: prevState.scrollLeft < scrollLeft ? 'forward' : 'backward',
+          scrollLeft: scrollLeft,
+          scrollTop: scrollTop,
+          scrollUpdateWasRequested: true,
+          verticalScrollDirection: prevState.scrollTop < scrollTop ? 'forward' : 'backward'
+        };
+      }, this._resetIsScrollingDebounced);
+    };
+
+    _proto.scrollToItem = function scrollToItem(_ref4) {
+      var _ref4$align = _ref4.align,
+          align = _ref4$align === void 0 ? 'auto' : _ref4$align,
+          columnIndex = _ref4.columnIndex,
+          rowIndex = _ref4.rowIndex;
+      var _this$props2 = this.props,
+          columnCount = _this$props2.columnCount,
+          height = _this$props2.height,
+          rowCount = _this$props2.rowCount,
+          width = _this$props2.width;
+      var _this$state = this.state,
+          scrollLeft = _this$state.scrollLeft,
+          scrollTop = _this$state.scrollTop;
+      var scrollbarSize = getScrollbarSize();
+
+      if (columnIndex !== undefined) {
+        columnIndex = Math.max(0, Math.min(columnIndex, columnCount - 1));
+      }
+
+      if (rowIndex !== undefined) {
+        rowIndex = Math.max(0, Math.min(rowIndex, rowCount - 1));
+      }
+
+      var estimatedTotalHeight = getEstimatedTotalHeight(this.props, this._instanceProps);
+      var estimatedTotalWidth = getEstimatedTotalWidth(this.props, this._instanceProps); // The scrollbar size should be considered when scrolling an item into view,
+      // to ensure it's fully visible.
+      // But we only need to account for its size when it's actually visible.
+
+      var horizontalScrollbarSize = estimatedTotalWidth > width ? scrollbarSize : 0;
+      var verticalScrollbarSize = estimatedTotalHeight > height ? scrollbarSize : 0;
+      this.scrollTo({
+        scrollLeft: columnIndex !== undefined ? getOffsetForColumnAndAlignment(this.props, columnIndex, align, scrollLeft, this._instanceProps, verticalScrollbarSize) : scrollLeft,
+        scrollTop: rowIndex !== undefined ? getOffsetForRowAndAlignment(this.props, rowIndex, align, scrollTop, this._instanceProps, horizontalScrollbarSize) : scrollTop
+      });
+    };
+
+    _proto.componentDidMount = function componentDidMount() {
+      var _this$props3 = this.props,
+          initialScrollLeft = _this$props3.initialScrollLeft,
+          initialScrollTop = _this$props3.initialScrollTop;
+
+      if (this._outerRef != null) {
+        var outerRef = this._outerRef;
+
+        if (typeof initialScrollLeft === 'number') {
+          outerRef.scrollLeft = initialScrollLeft;
+        }
+
+        if (typeof initialScrollTop === 'number') {
+          outerRef.scrollTop = initialScrollTop;
+        }
+      }
+
+      this._callPropsCallbacks();
+    };
+
+    _proto.componentDidUpdate = function componentDidUpdate() {
+      var direction = this.props.direction;
+      var _this$state2 = this.state,
+          scrollLeft = _this$state2.scrollLeft,
+          scrollTop = _this$state2.scrollTop,
+          scrollUpdateWasRequested = _this$state2.scrollUpdateWasRequested;
+
+      if (scrollUpdateWasRequested && this._outerRef != null) {
+        // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+        // This is not the case for all browsers though (e.g. Chrome reports values as positive, measured relative to the left).
+        // So we need to determine which browser behavior we're dealing with, and mimic it.
+        var outerRef = this._outerRef;
+
+        if (direction === 'rtl') {
+          switch (getRTLOffsetType()) {
+            case 'negative':
+              outerRef.scrollLeft = -scrollLeft;
+              break;
+
+            case 'positive-ascending':
+              outerRef.scrollLeft = scrollLeft;
+              break;
+
+            default:
+              var clientWidth = outerRef.clientWidth,
+                  scrollWidth = outerRef.scrollWidth;
+              outerRef.scrollLeft = scrollWidth - clientWidth - scrollLeft;
+              break;
+          }
+        } else {
+          outerRef.scrollLeft = Math.max(0, scrollLeft);
+        }
+
+        outerRef.scrollTop = Math.max(0, scrollTop);
+      }
+
+      this._callPropsCallbacks();
+    };
+
+    _proto.componentWillUnmount = function componentWillUnmount() {
+      if (this._resetIsScrollingTimeoutId !== null) {
+        cancelTimeout(this._resetIsScrollingTimeoutId);
+      }
+    };
+
+    _proto.render = function render() {
+      var _this$props4 = this.props,
+          children = _this$props4.children,
+          className = _this$props4.className,
+          columnCount = _this$props4.columnCount,
+          direction = _this$props4.direction,
+          height = _this$props4.height,
+          innerRef = _this$props4.innerRef,
+          innerElementType = _this$props4.innerElementType,
+          innerTagName = _this$props4.innerTagName,
+          itemData = _this$props4.itemData,
+          _this$props4$itemKey = _this$props4.itemKey,
+          itemKey = _this$props4$itemKey === void 0 ? defaultItemKey : _this$props4$itemKey,
+          outerElementType = _this$props4.outerElementType,
+          outerTagName = _this$props4.outerTagName,
+          rowCount = _this$props4.rowCount,
+          style = _this$props4.style,
+          useIsScrolling = _this$props4.useIsScrolling,
+          width = _this$props4.width;
+      var isScrolling = this.state.isScrolling;
+
+      var _this$_getHorizontalR = this._getHorizontalRangeToRender(),
+          columnStartIndex = _this$_getHorizontalR[0],
+          columnStopIndex = _this$_getHorizontalR[1];
+
+      var _this$_getVerticalRan = this._getVerticalRangeToRender(),
+          rowStartIndex = _this$_getVerticalRan[0],
+          rowStopIndex = _this$_getVerticalRan[1];
+
+      var items = [];
+
+      if (columnCount > 0 && rowCount) {
+        for (var _rowIndex = rowStartIndex; _rowIndex <= rowStopIndex; _rowIndex++) {
+          for (var _columnIndex = columnStartIndex; _columnIndex <= columnStopIndex; _columnIndex++) {
+            items.push(React.createElement(children, {
+              columnIndex: _columnIndex,
+              data: itemData,
+              isScrolling: useIsScrolling ? isScrolling : undefined,
+              key: itemKey({
+                columnIndex: _columnIndex,
+                data: itemData,
+                rowIndex: _rowIndex
+              }),
+              rowIndex: _rowIndex,
+              style: this._getItemStyle(_rowIndex, _columnIndex)
+            }));
+          }
+        }
+      } // Read this value AFTER items have been created,
+      // So their actual sizes (if variable) are taken into consideration.
+
+
+      var estimatedTotalHeight = getEstimatedTotalHeight(this.props, this._instanceProps);
+      var estimatedTotalWidth = getEstimatedTotalWidth(this.props, this._instanceProps);
+      return React.createElement(outerElementType || outerTagName || 'div', {
+        className: className,
+        onScroll: this._onScroll,
+        ref: this._outerRefSetter,
+        style: _extends({
+          position: 'relative',
+          height: height,
+          width: width,
+          overflow: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          willChange: 'transform',
+          direction: direction
+        }, style)
+      }, React.createElement(innerElementType || innerTagName || 'div', {
+        children: items,
+        ref: innerRef,
+        style: {
+          height: estimatedTotalHeight,
+          pointerEvents: isScrolling ? 'none' : undefined,
+          width: estimatedTotalWidth
+        }
+      }));
+    };
+
+    _proto._callPropsCallbacks = function _callPropsCallbacks() {
+      var _this$props5 = this.props,
+          columnCount = _this$props5.columnCount,
+          onItemsRendered = _this$props5.onItemsRendered,
+          onScroll = _this$props5.onScroll,
+          rowCount = _this$props5.rowCount;
+
+      if (typeof onItemsRendered === 'function') {
+        if (columnCount > 0 && rowCount > 0) {
+          var _this$_getHorizontalR2 = this._getHorizontalRangeToRender(),
+              _overscanColumnStartIndex = _this$_getHorizontalR2[0],
+              _overscanColumnStopIndex = _this$_getHorizontalR2[1],
+              _visibleColumnStartIndex = _this$_getHorizontalR2[2],
+              _visibleColumnStopIndex = _this$_getHorizontalR2[3];
+
+          var _this$_getVerticalRan2 = this._getVerticalRangeToRender(),
+              _overscanRowStartIndex = _this$_getVerticalRan2[0],
+              _overscanRowStopIndex = _this$_getVerticalRan2[1],
+              _visibleRowStartIndex = _this$_getVerticalRan2[2],
+              _visibleRowStopIndex = _this$_getVerticalRan2[3];
+
+          this._callOnItemsRendered(_overscanColumnStartIndex, _overscanColumnStopIndex, _overscanRowStartIndex, _overscanRowStopIndex, _visibleColumnStartIndex, _visibleColumnStopIndex, _visibleRowStartIndex, _visibleRowStopIndex);
+        }
+      }
+
+      if (typeof onScroll === 'function') {
+        var _this$state3 = this.state,
+            _horizontalScrollDirection = _this$state3.horizontalScrollDirection,
+            _scrollLeft = _this$state3.scrollLeft,
+            _scrollTop = _this$state3.scrollTop,
+            _scrollUpdateWasRequested = _this$state3.scrollUpdateWasRequested,
+            _verticalScrollDirection = _this$state3.verticalScrollDirection;
+
+        this._callOnScroll(_scrollLeft, _scrollTop, _horizontalScrollDirection, _verticalScrollDirection, _scrollUpdateWasRequested);
+      }
+    }; // Lazily create and cache item styles while scrolling,
+    // So that pure component sCU will prevent re-renders.
+    // We maintain this cache, and pass a style prop rather than index,
+    // So that List can clear cached styles and force item re-render if necessary.
+
+
+    _proto._getHorizontalRangeToRender = function _getHorizontalRangeToRender() {
+      var _this$props6 = this.props,
+          columnCount = _this$props6.columnCount,
+          overscanColumnCount = _this$props6.overscanColumnCount,
+          overscanColumnsCount = _this$props6.overscanColumnsCount,
+          overscanCount = _this$props6.overscanCount,
+          rowCount = _this$props6.rowCount;
+      var _this$state4 = this.state,
+          horizontalScrollDirection = _this$state4.horizontalScrollDirection,
+          isScrolling = _this$state4.isScrolling,
+          scrollLeft = _this$state4.scrollLeft;
+      var overscanCountResolved = overscanColumnCount || overscanColumnsCount || overscanCount || 1;
+
+      if (columnCount === 0 || rowCount === 0) {
+        return [0, 0, 0, 0];
+      }
+
+      var startIndex = getColumnStartIndexForOffset(this.props, scrollLeft, this._instanceProps);
+      var stopIndex = getColumnStopIndexForStartIndex(this.props, startIndex, scrollLeft, this._instanceProps); // Overscan by one item in each direction so that tab/focus works.
+      // If there isn't at least one extra item, tab loops back around.
+
+      var overscanBackward = !isScrolling || horizontalScrollDirection === 'backward' ? Math.max(1, overscanCountResolved) : 1;
+      var overscanForward = !isScrolling || horizontalScrollDirection === 'forward' ? Math.max(1, overscanCountResolved) : 1;
+      return [Math.max(0, startIndex - overscanBackward), Math.max(0, Math.min(columnCount - 1, stopIndex + overscanForward)), startIndex, stopIndex];
+    };
+
+    _proto._getVerticalRangeToRender = function _getVerticalRangeToRender() {
+      var _this$props7 = this.props,
+          columnCount = _this$props7.columnCount,
+          overscanCount = _this$props7.overscanCount,
+          overscanRowCount = _this$props7.overscanRowCount,
+          overscanRowsCount = _this$props7.overscanRowsCount,
+          rowCount = _this$props7.rowCount;
+      var _this$state5 = this.state,
+          isScrolling = _this$state5.isScrolling,
+          verticalScrollDirection = _this$state5.verticalScrollDirection,
+          scrollTop = _this$state5.scrollTop;
+      var overscanCountResolved = overscanRowCount || overscanRowsCount || overscanCount || 1;
+
+      if (columnCount === 0 || rowCount === 0) {
+        return [0, 0, 0, 0];
+      }
+
+      var startIndex = getRowStartIndexForOffset(this.props, scrollTop, this._instanceProps);
+      var stopIndex = getRowStopIndexForStartIndex(this.props, startIndex, scrollTop, this._instanceProps); // Overscan by one item in each direction so that tab/focus works.
+      // If there isn't at least one extra item, tab loops back around.
+
+      var overscanBackward = !isScrolling || verticalScrollDirection === 'backward' ? Math.max(1, overscanCountResolved) : 1;
+      var overscanForward = !isScrolling || verticalScrollDirection === 'forward' ? Math.max(1, overscanCountResolved) : 1;
+      return [Math.max(0, startIndex - overscanBackward), Math.max(0, Math.min(rowCount - 1, stopIndex + overscanForward)), startIndex, stopIndex];
+    };
+
+    return Grid;
+  }(React.PureComponent), _class.defaultProps = {
+    direction: 'ltr',
+    itemData: undefined,
+    useIsScrolling: false
+  }, _temp;
+}
+
+var validateSharedProps = function validateSharedProps(_ref5, _ref6) {
+  var children = _ref5.children,
+      direction = _ref5.direction,
+      height = _ref5.height,
+      innerTagName = _ref5.innerTagName,
+      outerTagName = _ref5.outerTagName,
+      overscanColumnsCount = _ref5.overscanColumnsCount,
+      overscanCount = _ref5.overscanCount,
+      overscanRowsCount = _ref5.overscanRowsCount,
+      width = _ref5.width;
+  var instance = _ref6.instance;
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (typeof overscanCount === 'number') {
+      if (devWarningsOverscanCount && !devWarningsOverscanCount.has(instance)) {
+        devWarningsOverscanCount.add(instance);
+        console.warn('The overscanCount prop has been deprecated. ' + 'Please use the overscanColumnCount and overscanRowCount props instead.');
+      }
+    }
+
+    if (typeof overscanColumnsCount === 'number' || typeof overscanRowsCount === 'number') {
+      if (devWarningsOverscanRowsColumnsCount && !devWarningsOverscanRowsColumnsCount.has(instance)) {
+        devWarningsOverscanRowsColumnsCount.add(instance);
+        console.warn('The overscanColumnsCount and overscanRowsCount props have been deprecated. ' + 'Please use the overscanColumnCount and overscanRowCount props instead.');
+      }
+    }
+
+    if (innerTagName != null || outerTagName != null) {
+      if (devWarningsTagName && !devWarningsTagName.has(instance)) {
+        devWarningsTagName.add(instance);
+        console.warn('The innerTagName and outerTagName props have been deprecated. ' + 'Please use the innerElementType and outerElementType props instead.');
+      }
+    }
+
+    if (children == null) {
+      throw Error('An invalid "children" prop has been specified. ' + 'Value should be a React component. ' + ("\"" + (children === null ? 'null' : typeof children) + "\" was specified."));
+    }
+
+    switch (direction) {
+      case 'ltr':
+      case 'rtl':
+        // Valid values
+        break;
+
+      default:
+        throw Error('An invalid "direction" prop has been specified. ' + 'Value should be either "ltr" or "rtl". ' + ("\"" + direction + "\" was specified."));
+    }
+
+    if (typeof width !== 'number') {
+      throw Error('An invalid "width" prop has been specified. ' + 'Grids must specify a number for width. ' + ("\"" + (width === null ? 'null' : typeof width) + "\" was specified."));
+    }
+
+    if (typeof height !== 'number') {
+      throw Error('An invalid "height" prop has been specified. ' + 'Grids must specify a number for height. ' + ("\"" + (height === null ? 'null' : typeof height) + "\" was specified."));
+    }
+  }
+};
+
+var DEFAULT_ESTIMATED_ITEM_SIZE = 50;
+
+var getEstimatedTotalHeight = function getEstimatedTotalHeight(_ref, _ref2) {
+  var rowCount = _ref.rowCount;
+  var rowMetadataMap = _ref2.rowMetadataMap,
+      estimatedRowHeight = _ref2.estimatedRowHeight,
+      lastMeasuredRowIndex = _ref2.lastMeasuredRowIndex;
+  var totalSizeOfMeasuredRows = 0; // Edge case check for when the number of items decreases while a scroll is in progress.
+  // https://github.com/bvaughn/react-window/pull/138
+
+  if (lastMeasuredRowIndex >= rowCount) {
+    lastMeasuredRowIndex = rowCount - 1;
+  }
+
+  if (lastMeasuredRowIndex >= 0) {
+    var itemMetadata = rowMetadataMap[lastMeasuredRowIndex];
+    totalSizeOfMeasuredRows = itemMetadata.offset + itemMetadata.size;
+  }
+
+  var numUnmeasuredItems = rowCount - lastMeasuredRowIndex - 1;
+  var totalSizeOfUnmeasuredItems = numUnmeasuredItems * estimatedRowHeight;
+  return totalSizeOfMeasuredRows + totalSizeOfUnmeasuredItems;
+};
+
+var getEstimatedTotalWidth = function getEstimatedTotalWidth(_ref3, _ref4) {
+  var columnCount = _ref3.columnCount;
+  var columnMetadataMap = _ref4.columnMetadataMap,
+      estimatedColumnWidth = _ref4.estimatedColumnWidth,
+      lastMeasuredColumnIndex = _ref4.lastMeasuredColumnIndex;
+  var totalSizeOfMeasuredRows = 0; // Edge case check for when the number of items decreases while a scroll is in progress.
+  // https://github.com/bvaughn/react-window/pull/138
+
+  if (lastMeasuredColumnIndex >= columnCount) {
+    lastMeasuredColumnIndex = columnCount - 1;
+  }
+
+  if (lastMeasuredColumnIndex >= 0) {
+    var itemMetadata = columnMetadataMap[lastMeasuredColumnIndex];
+    totalSizeOfMeasuredRows = itemMetadata.offset + itemMetadata.size;
+  }
+
+  var numUnmeasuredItems = columnCount - lastMeasuredColumnIndex - 1;
+  var totalSizeOfUnmeasuredItems = numUnmeasuredItems * estimatedColumnWidth;
+  return totalSizeOfMeasuredRows + totalSizeOfUnmeasuredItems;
+};
+
+var getItemMetadata = function getItemMetadata(itemType, props, index, instanceProps) {
+  var itemMetadataMap, itemSize, lastMeasuredIndex;
+
+  if (itemType === 'column') {
+    itemMetadataMap = instanceProps.columnMetadataMap;
+    itemSize = props.columnWidth;
+    lastMeasuredIndex = instanceProps.lastMeasuredColumnIndex;
+  } else {
+    itemMetadataMap = instanceProps.rowMetadataMap;
+    itemSize = props.rowHeight;
+    lastMeasuredIndex = instanceProps.lastMeasuredRowIndex;
+  }
+
+  if (index > lastMeasuredIndex) {
+    var offset = 0;
+
+    if (lastMeasuredIndex >= 0) {
+      var itemMetadata = itemMetadataMap[lastMeasuredIndex];
+      offset = itemMetadata.offset + itemMetadata.size;
+    }
+
+    for (var i = lastMeasuredIndex + 1; i <= index; i++) {
+      var size = itemSize(i);
+      itemMetadataMap[i] = {
+        offset: offset,
+        size: size
+      };
+      offset += size;
+    }
+
+    if (itemType === 'column') {
+      instanceProps.lastMeasuredColumnIndex = index;
+    } else {
+      instanceProps.lastMeasuredRowIndex = index;
+    }
+  }
+
+  return itemMetadataMap[index];
+};
+
+var findNearestItem = function findNearestItem(itemType, props, instanceProps, offset) {
+  var itemMetadataMap, lastMeasuredIndex;
+
+  if (itemType === 'column') {
+    itemMetadataMap = instanceProps.columnMetadataMap;
+    lastMeasuredIndex = instanceProps.lastMeasuredColumnIndex;
+  } else {
+    itemMetadataMap = instanceProps.rowMetadataMap;
+    lastMeasuredIndex = instanceProps.lastMeasuredRowIndex;
+  }
+
+  var lastMeasuredItemOffset = lastMeasuredIndex > 0 ? itemMetadataMap[lastMeasuredIndex].offset : 0;
+
+  if (lastMeasuredItemOffset >= offset) {
+    // If we've already measured items within this range just use a binary search as it's faster.
+    return findNearestItemBinarySearch(itemType, props, instanceProps, lastMeasuredIndex, 0, offset);
+  } else {
+    // If we haven't yet measured this high, fallback to an exponential search with an inner binary search.
+    // The exponential search avoids pre-computing sizes for the full set of items as a binary search would.
+    // The overall complexity for this approach is O(log n).
+    return findNearestItemExponentialSearch(itemType, props, instanceProps, Math.max(0, lastMeasuredIndex), offset);
+  }
+};
+
+var findNearestItemBinarySearch = function findNearestItemBinarySearch(itemType, props, instanceProps, high, low, offset) {
+  while (low <= high) {
+    var middle = low + Math.floor((high - low) / 2);
+    var currentOffset = getItemMetadata(itemType, props, middle, instanceProps).offset;
+
+    if (currentOffset === offset) {
+      return middle;
+    } else if (currentOffset < offset) {
+      low = middle + 1;
+    } else if (currentOffset > offset) {
+      high = middle - 1;
+    }
+  }
+
+  if (low > 0) {
+    return low - 1;
+  } else {
+    return 0;
+  }
+};
+
+var findNearestItemExponentialSearch = function findNearestItemExponentialSearch(itemType, props, instanceProps, index, offset) {
+  var itemCount = itemType === 'column' ? props.columnCount : props.rowCount;
+  var interval = 1;
+
+  while (index < itemCount && getItemMetadata(itemType, props, index, instanceProps).offset < offset) {
+    index += interval;
+    interval *= 2;
+  }
+
+  return findNearestItemBinarySearch(itemType, props, instanceProps, Math.min(index, itemCount - 1), Math.floor(index / 2), offset);
+};
+
+var getOffsetForIndexAndAlignment = function getOffsetForIndexAndAlignment(itemType, props, index, align, scrollOffset, instanceProps, scrollbarSize) {
+  var size = itemType === 'column' ? props.width : props.height;
+  var itemMetadata = getItemMetadata(itemType, props, index, instanceProps); // Get estimated total size after ItemMetadata is computed,
+  // To ensure it reflects actual measurements instead of just estimates.
+
+  var estimatedTotalSize = itemType === 'column' ? getEstimatedTotalWidth(props, instanceProps) : getEstimatedTotalHeight(props, instanceProps);
+  var maxOffset = Math.max(0, Math.min(estimatedTotalSize - size, itemMetadata.offset));
+  var minOffset = Math.max(0, itemMetadata.offset - size + scrollbarSize + itemMetadata.size);
+
+  if (align === 'smart') {
+    if (scrollOffset >= minOffset - size && scrollOffset <= maxOffset + size) {
+      align = 'auto';
+    } else {
+      align = 'center';
+    }
+  }
+
+  switch (align) {
+    case 'start':
+      return maxOffset;
+
+    case 'end':
+      return minOffset;
+
+    case 'center':
+      return Math.round(minOffset + (maxOffset - minOffset) / 2);
+
+    case 'auto':
+    default:
+      if (scrollOffset >= minOffset && scrollOffset <= maxOffset) {
+        return scrollOffset;
+      } else if (minOffset > maxOffset) {
+        // Because we only take into account the scrollbar size when calculating minOffset
+        // this value can be larger than maxOffset when at the end of the list
+        return minOffset;
+      } else if (scrollOffset < minOffset) {
+        return minOffset;
+      } else {
+        return maxOffset;
+      }
+
+  }
+};
+
+var VariableSizeGrid =
+/*#__PURE__*/
+createGridComponent({
+  getColumnOffset: function getColumnOffset(props, index, instanceProps) {
+    return getItemMetadata('column', props, index, instanceProps).offset;
+  },
+  getColumnStartIndexForOffset: function getColumnStartIndexForOffset(props, scrollLeft, instanceProps) {
+    return findNearestItem('column', props, instanceProps, scrollLeft);
+  },
+  getColumnStopIndexForStartIndex: function getColumnStopIndexForStartIndex(props, startIndex, scrollLeft, instanceProps) {
+    var columnCount = props.columnCount,
+        width = props.width;
+    var itemMetadata = getItemMetadata('column', props, startIndex, instanceProps);
+    var maxOffset = scrollLeft + width;
+    var offset = itemMetadata.offset + itemMetadata.size;
+    var stopIndex = startIndex;
+
+    while (stopIndex < columnCount - 1 && offset < maxOffset) {
+      stopIndex++;
+      offset += getItemMetadata('column', props, stopIndex, instanceProps).size;
+    }
+
+    return stopIndex;
+  },
+  getColumnWidth: function getColumnWidth(props, index, instanceProps) {
+    return instanceProps.columnMetadataMap[index].size;
+  },
+  getEstimatedTotalHeight: getEstimatedTotalHeight,
+  getEstimatedTotalWidth: getEstimatedTotalWidth,
+  getOffsetForColumnAndAlignment: function getOffsetForColumnAndAlignment(props, index, align, scrollOffset, instanceProps, scrollbarSize) {
+    return getOffsetForIndexAndAlignment('column', props, index, align, scrollOffset, instanceProps, scrollbarSize);
+  },
+  getOffsetForRowAndAlignment: function getOffsetForRowAndAlignment(props, index, align, scrollOffset, instanceProps, scrollbarSize) {
+    return getOffsetForIndexAndAlignment('row', props, index, align, scrollOffset, instanceProps, scrollbarSize);
+  },
+  getRowOffset: function getRowOffset(props, index, instanceProps) {
+    return getItemMetadata('row', props, index, instanceProps).offset;
+  },
+  getRowHeight: function getRowHeight(props, index, instanceProps) {
+    return instanceProps.rowMetadataMap[index].size;
+  },
+  getRowStartIndexForOffset: function getRowStartIndexForOffset(props, scrollTop, instanceProps) {
+    return findNearestItem('row', props, instanceProps, scrollTop);
+  },
+  getRowStopIndexForStartIndex: function getRowStopIndexForStartIndex(props, startIndex, scrollTop, instanceProps) {
+    var rowCount = props.rowCount,
+        height = props.height;
+    var itemMetadata = getItemMetadata('row', props, startIndex, instanceProps);
+    var maxOffset = scrollTop + height;
+    var offset = itemMetadata.offset + itemMetadata.size;
+    var stopIndex = startIndex;
+
+    while (stopIndex < rowCount - 1 && offset < maxOffset) {
+      stopIndex++;
+      offset += getItemMetadata('row', props, stopIndex, instanceProps).size;
+    }
+
+    return stopIndex;
+  },
+  initInstanceProps: function initInstanceProps(props, instance) {
+    var _ref5 = props,
+        estimatedColumnWidth = _ref5.estimatedColumnWidth,
+        estimatedRowHeight = _ref5.estimatedRowHeight;
+    var instanceProps = {
+      columnMetadataMap: {},
+      estimatedColumnWidth: estimatedColumnWidth || DEFAULT_ESTIMATED_ITEM_SIZE,
+      estimatedRowHeight: estimatedRowHeight || DEFAULT_ESTIMATED_ITEM_SIZE,
+      lastMeasuredColumnIndex: -1,
+      lastMeasuredRowIndex: -1,
+      rowMetadataMap: {}
+    };
+
+    instance.resetAfterColumnIndex = function (columnIndex, shouldForceUpdate) {
+      if (shouldForceUpdate === void 0) {
+        shouldForceUpdate = true;
+      }
+
+      instance.resetAfterIndices({
+        columnIndex: columnIndex,
+        shouldForceUpdate: shouldForceUpdate
+      });
+    };
+
+    instance.resetAfterRowIndex = function (rowIndex, shouldForceUpdate) {
+      if (shouldForceUpdate === void 0) {
+        shouldForceUpdate = true;
+      }
+
+      instance.resetAfterIndices({
+        rowIndex: rowIndex,
+        shouldForceUpdate: shouldForceUpdate
+      });
+    };
+
+    instance.resetAfterIndices = function (_ref6) {
+      var columnIndex = _ref6.columnIndex,
+          rowIndex = _ref6.rowIndex,
+          _ref6$shouldForceUpda = _ref6.shouldForceUpdate,
+          shouldForceUpdate = _ref6$shouldForceUpda === void 0 ? true : _ref6$shouldForceUpda;
+
+      if (typeof columnIndex === 'number') {
+        instanceProps.lastMeasuredColumnIndex = Math.min(instanceProps.lastMeasuredColumnIndex, columnIndex - 1);
+      }
+
+      if (typeof rowIndex === 'number') {
+        instanceProps.lastMeasuredRowIndex = Math.min(instanceProps.lastMeasuredRowIndex, rowIndex - 1);
+      } // We could potentially optimize further by only evicting styles after this index,
+      // But since styles are only cached while scrolling is in progress-
+      // It seems an unnecessary optimization.
+      // It's unlikely that resetAfterIndex() will be called while a user is scrolling.
+
+
+      instance._getItemStyleCache(-1);
+
+      if (shouldForceUpdate) {
+        instance.forceUpdate();
+      }
+    };
+
+    return instanceProps;
+  },
+  shouldResetStyleCacheOnItemSizeChange: false,
+  validateProps: function validateProps(_ref7) {
+    var columnWidth = _ref7.columnWidth,
+        rowHeight = _ref7.rowHeight;
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof columnWidth !== 'function') {
+        throw Error('An invalid "columnWidth" prop has been specified. ' + 'Value should be a function. ' + ("\"" + (columnWidth === null ? 'null' : typeof columnWidth) + "\" was specified."));
+      } else if (typeof rowHeight !== 'function') {
+        throw Error('An invalid "rowHeight" prop has been specified. ' + 'Value should be a function. ' + ("\"" + (rowHeight === null ? 'null' : typeof rowHeight) + "\" was specified."));
+      }
+    }
+  }
+});
+
+var IS_SCROLLING_DEBOUNCE_INTERVAL$1 = 150;
+
+var defaultItemKey$1 = function defaultItemKey(index, data) {
+  return index;
+}; // In DEV mode, this Set helps us only log a warning once per component instance.
+// This avoids spamming the console every time a render happens.
+
+
+var devWarningsDirection = null;
+var devWarningsTagName$1 = null;
+
+if (process.env.NODE_ENV !== 'production') {
+  if (typeof window !== 'undefined' && typeof window.WeakSet !== 'undefined') {
+    devWarningsDirection =
+    /*#__PURE__*/
+    new WeakSet();
+    devWarningsTagName$1 =
+    /*#__PURE__*/
+    new WeakSet();
+  }
+}
+
+function createListComponent(_ref) {
+  var _class, _temp;
+
+  var getItemOffset = _ref.getItemOffset,
+      getEstimatedTotalSize = _ref.getEstimatedTotalSize,
+      getItemSize = _ref.getItemSize,
+      getOffsetForIndexAndAlignment = _ref.getOffsetForIndexAndAlignment,
+      getStartIndexForOffset = _ref.getStartIndexForOffset,
+      getStopIndexForStartIndex = _ref.getStopIndexForStartIndex,
+      initInstanceProps = _ref.initInstanceProps,
+      shouldResetStyleCacheOnItemSizeChange = _ref.shouldResetStyleCacheOnItemSizeChange,
+      validateProps = _ref.validateProps;
+  return _temp = _class =
+  /*#__PURE__*/
+  function (_PureComponent) {
+    _inheritsLoose(List, _PureComponent);
+
+    // Always use explicit constructor for React components.
+    // It produces less code after transpilation. (#26)
+    // eslint-disable-next-line no-useless-constructor
+    function List(props) {
+      var _this;
+
+      _this = _PureComponent.call(this, props) || this;
+      _this._instanceProps = initInstanceProps(_this.props, _assertThisInitialized(_assertThisInitialized(_this)));
+      _this._outerRef = void 0;
+      _this._resetIsScrollingTimeoutId = null;
+      _this.state = {
+        instance: _assertThisInitialized(_assertThisInitialized(_this)),
+        isScrolling: false,
+        scrollDirection: 'forward',
+        scrollOffset: typeof _this.props.initialScrollOffset === 'number' ? _this.props.initialScrollOffset : 0,
+        scrollUpdateWasRequested: false
+      };
+      _this._callOnItemsRendered = void 0;
+      _this._callOnItemsRendered = memoizeOne$1(function (overscanStartIndex, overscanStopIndex, visibleStartIndex, visibleStopIndex) {
+        return _this.props.onItemsRendered({
+          overscanStartIndex: overscanStartIndex,
+          overscanStopIndex: overscanStopIndex,
+          visibleStartIndex: visibleStartIndex,
+          visibleStopIndex: visibleStopIndex
+        });
+      });
+      _this._callOnScroll = void 0;
+      _this._callOnScroll = memoizeOne$1(function (scrollDirection, scrollOffset, scrollUpdateWasRequested) {
+        return _this.props.onScroll({
+          scrollDirection: scrollDirection,
+          scrollOffset: scrollOffset,
+          scrollUpdateWasRequested: scrollUpdateWasRequested
+        });
+      });
+      _this._getItemStyle = void 0;
+
+      _this._getItemStyle = function (index) {
+        var _this$props = _this.props,
+            direction = _this$props.direction,
+            itemSize = _this$props.itemSize,
+            layout = _this$props.layout;
+
+        var itemStyleCache = _this._getItemStyleCache(shouldResetStyleCacheOnItemSizeChange && itemSize, shouldResetStyleCacheOnItemSizeChange && layout, shouldResetStyleCacheOnItemSizeChange && direction);
+
+        var style;
+
+        if (itemStyleCache.hasOwnProperty(index)) {
+          style = itemStyleCache[index];
+        } else {
+          var _offset = getItemOffset(_this.props, index, _this._instanceProps);
+
+          var size = getItemSize(_this.props, index, _this._instanceProps); // TODO Deprecate direction "horizontal"
+
+          var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+          var isRtl = direction === 'rtl';
+          var offsetHorizontal = isHorizontal ? _offset : 0;
+          itemStyleCache[index] = style = {
+            position: 'absolute',
+            left: isRtl ? undefined : offsetHorizontal,
+            right: isRtl ? offsetHorizontal : undefined,
+            top: !isHorizontal ? _offset : 0,
+            height: !isHorizontal ? size : '100%',
+            width: isHorizontal ? size : '100%'
+          };
+        }
+
+        return style;
+      };
+
+      _this._getItemStyleCache = void 0;
+      _this._getItemStyleCache = memoizeOne$1(function (_, __, ___) {
+        return {};
+      });
+
+      _this._onScrollHorizontal = function (event) {
+        var _event$currentTarget = event.currentTarget,
+            clientWidth = _event$currentTarget.clientWidth,
+            scrollLeft = _event$currentTarget.scrollLeft,
+            scrollWidth = _event$currentTarget.scrollWidth;
+
+        _this.setState(function (prevState) {
+          if (prevState.scrollOffset === scrollLeft) {
+            // Scroll position may have been updated by cDM/cDU,
+            // In which case we don't need to trigger another render,
+            // And we don't want to update state.isScrolling.
+            return null;
+          }
+
+          var direction = _this.props.direction;
+          var scrollOffset = scrollLeft;
+
+          if (direction === 'rtl') {
+            // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+            // This is not the case for all browsers though (e.g. Chrome reports values as positive, measured relative to the left).
+            // It's also easier for this component if we convert offsets to the same format as they would be in for ltr.
+            // So the simplest solution is to determine which browser behavior we're dealing with, and convert based on it.
+            switch (getRTLOffsetType()) {
+              case 'negative':
+                scrollOffset = -scrollLeft;
+                break;
+
+              case 'positive-descending':
+                scrollOffset = scrollWidth - clientWidth - scrollLeft;
+                break;
+            }
+          } // Prevent Safari's elastic scrolling from causing visual shaking when scrolling past bounds.
+
+
+          scrollOffset = Math.max(0, Math.min(scrollOffset, scrollWidth - clientWidth));
+          return {
+            isScrolling: true,
+            scrollDirection: prevState.scrollOffset < scrollLeft ? 'forward' : 'backward',
+            scrollOffset: scrollOffset,
+            scrollUpdateWasRequested: false
+          };
+        }, _this._resetIsScrollingDebounced);
+      };
+
+      _this._onScrollVertical = function (event) {
+        var _event$currentTarget2 = event.currentTarget,
+            clientHeight = _event$currentTarget2.clientHeight,
+            scrollHeight = _event$currentTarget2.scrollHeight,
+            scrollTop = _event$currentTarget2.scrollTop;
+
+        _this.setState(function (prevState) {
+          if (prevState.scrollOffset === scrollTop) {
+            // Scroll position may have been updated by cDM/cDU,
+            // In which case we don't need to trigger another render,
+            // And we don't want to update state.isScrolling.
+            return null;
+          } // Prevent Safari's elastic scrolling from causing visual shaking when scrolling past bounds.
+
+
+          var scrollOffset = Math.max(0, Math.min(scrollTop, scrollHeight - clientHeight));
+          return {
+            isScrolling: true,
+            scrollDirection: prevState.scrollOffset < scrollOffset ? 'forward' : 'backward',
+            scrollOffset: scrollOffset,
+            scrollUpdateWasRequested: false
+          };
+        }, _this._resetIsScrollingDebounced);
+      };
+
+      _this._outerRefSetter = function (ref) {
+        var outerRef = _this.props.outerRef;
+        _this._outerRef = ref;
+
+        if (typeof outerRef === 'function') {
+          outerRef(ref);
+        } else if (outerRef != null && typeof outerRef === 'object' && outerRef.hasOwnProperty('current')) {
+          outerRef.current = ref;
+        }
+      };
+
+      _this._resetIsScrollingDebounced = function () {
+        if (_this._resetIsScrollingTimeoutId !== null) {
+          cancelTimeout(_this._resetIsScrollingTimeoutId);
+        }
+
+        _this._resetIsScrollingTimeoutId = requestTimeout(_this._resetIsScrolling, IS_SCROLLING_DEBOUNCE_INTERVAL$1);
+      };
+
+      _this._resetIsScrolling = function () {
+        _this._resetIsScrollingTimeoutId = null;
+
+        _this.setState({
+          isScrolling: false
+        }, function () {
+          // Clear style cache after state update has been committed.
+          // This way we don't break pure sCU for items that don't use isScrolling param.
+          _this._getItemStyleCache(-1, null);
+        });
+      };
+
+      return _this;
+    }
+
+    List.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
+      validateSharedProps$1(nextProps, prevState);
+      validateProps(nextProps);
+      return null;
+    };
+
+    var _proto = List.prototype;
+
+    _proto.scrollTo = function scrollTo(scrollOffset) {
+      scrollOffset = Math.max(0, scrollOffset);
+      this.setState(function (prevState) {
+        if (prevState.scrollOffset === scrollOffset) {
+          return null;
+        }
+
+        return {
+          scrollDirection: prevState.scrollOffset < scrollOffset ? 'forward' : 'backward',
+          scrollOffset: scrollOffset,
+          scrollUpdateWasRequested: true
+        };
+      }, this._resetIsScrollingDebounced);
+    };
+
+    _proto.scrollToItem = function scrollToItem(index, align) {
+      if (align === void 0) {
+        align = 'auto';
+      }
+
+      var itemCount = this.props.itemCount;
+      var scrollOffset = this.state.scrollOffset;
+      index = Math.max(0, Math.min(index, itemCount - 1));
+      this.scrollTo(getOffsetForIndexAndAlignment(this.props, index, align, scrollOffset, this._instanceProps));
+    };
+
+    _proto.componentDidMount = function componentDidMount() {
+      var _this$props2 = this.props,
+          direction = _this$props2.direction,
+          initialScrollOffset = _this$props2.initialScrollOffset,
+          layout = _this$props2.layout;
+
+      if (typeof initialScrollOffset === 'number' && this._outerRef != null) {
+        var outerRef = this._outerRef; // TODO Deprecate direction "horizontal"
+
+        if (direction === 'horizontal' || layout === 'horizontal') {
+          outerRef.scrollLeft = initialScrollOffset;
+        } else {
+          outerRef.scrollTop = initialScrollOffset;
+        }
+      }
+
+      this._callPropsCallbacks();
+    };
+
+    _proto.componentDidUpdate = function componentDidUpdate() {
+      var _this$props3 = this.props,
+          direction = _this$props3.direction,
+          layout = _this$props3.layout;
+      var _this$state = this.state,
+          scrollOffset = _this$state.scrollOffset,
+          scrollUpdateWasRequested = _this$state.scrollUpdateWasRequested;
+
+      if (scrollUpdateWasRequested && this._outerRef != null) {
+        var outerRef = this._outerRef; // TODO Deprecate direction "horizontal"
+
+        if (direction === 'horizontal' || layout === 'horizontal') {
+          if (direction === 'rtl') {
+            // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+            // This is not the case for all browsers though (e.g. Chrome reports values as positive, measured relative to the left).
+            // So we need to determine which browser behavior we're dealing with, and mimic it.
+            switch (getRTLOffsetType()) {
+              case 'negative':
+                outerRef.scrollLeft = -scrollOffset;
+                break;
+
+              case 'positive-ascending':
+                outerRef.scrollLeft = scrollOffset;
+                break;
+
+              default:
+                var clientWidth = outerRef.clientWidth,
+                    scrollWidth = outerRef.scrollWidth;
+                outerRef.scrollLeft = scrollWidth - clientWidth - scrollOffset;
+                break;
+            }
+          } else {
+            outerRef.scrollLeft = scrollOffset;
+          }
+        } else {
+          outerRef.scrollTop = scrollOffset;
+        }
+      }
+
+      this._callPropsCallbacks();
+    };
+
+    _proto.componentWillUnmount = function componentWillUnmount() {
+      if (this._resetIsScrollingTimeoutId !== null) {
+        cancelTimeout(this._resetIsScrollingTimeoutId);
+      }
+    };
+
+    _proto.render = function render() {
+      var _this$props4 = this.props,
+          children = _this$props4.children,
+          className = _this$props4.className,
+          direction = _this$props4.direction,
+          height = _this$props4.height,
+          innerRef = _this$props4.innerRef,
+          innerElementType = _this$props4.innerElementType,
+          innerTagName = _this$props4.innerTagName,
+          itemCount = _this$props4.itemCount,
+          itemData = _this$props4.itemData,
+          _this$props4$itemKey = _this$props4.itemKey,
+          itemKey = _this$props4$itemKey === void 0 ? defaultItemKey$1 : _this$props4$itemKey,
+          layout = _this$props4.layout,
+          outerElementType = _this$props4.outerElementType,
+          outerTagName = _this$props4.outerTagName,
+          style = _this$props4.style,
+          useIsScrolling = _this$props4.useIsScrolling,
+          width = _this$props4.width;
+      var isScrolling = this.state.isScrolling; // TODO Deprecate direction "horizontal"
+
+      var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+      var onScroll = isHorizontal ? this._onScrollHorizontal : this._onScrollVertical;
+
+      var _this$_getRangeToRend = this._getRangeToRender(),
+          startIndex = _this$_getRangeToRend[0],
+          stopIndex = _this$_getRangeToRend[1];
+
+      var items = [];
+
+      if (itemCount > 0) {
+        for (var _index = startIndex; _index <= stopIndex; _index++) {
+          items.push(React.createElement(children, {
+            data: itemData,
+            key: itemKey(_index, itemData),
+            index: _index,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            style: this._getItemStyle(_index)
+          }));
+        }
+      } // Read this value AFTER items have been created,
+      // So their actual sizes (if variable) are taken into consideration.
+
+
+      var estimatedTotalSize = getEstimatedTotalSize(this.props, this._instanceProps);
+      return React.createElement(outerElementType || outerTagName || 'div', {
+        className: className,
+        onScroll: onScroll,
+        ref: this._outerRefSetter,
+        style: _extends({
+          position: 'relative',
+          height: height,
+          width: width,
+          overflow: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          willChange: 'transform',
+          direction: direction
+        }, style)
+      }, React.createElement(innerElementType || innerTagName || 'div', {
+        children: items,
+        ref: innerRef,
+        style: {
+          height: isHorizontal ? '100%' : estimatedTotalSize,
+          pointerEvents: isScrolling ? 'none' : undefined,
+          width: isHorizontal ? estimatedTotalSize : '100%'
+        }
+      }));
+    };
+
+    _proto._callPropsCallbacks = function _callPropsCallbacks() {
+      if (typeof this.props.onItemsRendered === 'function') {
+        var itemCount = this.props.itemCount;
+
+        if (itemCount > 0) {
+          var _this$_getRangeToRend2 = this._getRangeToRender(),
+              _overscanStartIndex = _this$_getRangeToRend2[0],
+              _overscanStopIndex = _this$_getRangeToRend2[1],
+              _visibleStartIndex = _this$_getRangeToRend2[2],
+              _visibleStopIndex = _this$_getRangeToRend2[3];
+
+          this._callOnItemsRendered(_overscanStartIndex, _overscanStopIndex, _visibleStartIndex, _visibleStopIndex);
+        }
+      }
+
+      if (typeof this.props.onScroll === 'function') {
+        var _this$state2 = this.state,
+            _scrollDirection = _this$state2.scrollDirection,
+            _scrollOffset = _this$state2.scrollOffset,
+            _scrollUpdateWasRequested = _this$state2.scrollUpdateWasRequested;
+
+        this._callOnScroll(_scrollDirection, _scrollOffset, _scrollUpdateWasRequested);
+      }
+    }; // Lazily create and cache item styles while scrolling,
+    // So that pure component sCU will prevent re-renders.
+    // We maintain this cache, and pass a style prop rather than index,
+    // So that List can clear cached styles and force item re-render if necessary.
+
+
+    _proto._getRangeToRender = function _getRangeToRender() {
+      var _this$props5 = this.props,
+          itemCount = _this$props5.itemCount,
+          overscanCount = _this$props5.overscanCount;
+      var _this$state3 = this.state,
+          isScrolling = _this$state3.isScrolling,
+          scrollDirection = _this$state3.scrollDirection,
+          scrollOffset = _this$state3.scrollOffset;
+
+      if (itemCount === 0) {
+        return [0, 0, 0, 0];
+      }
+
+      var startIndex = getStartIndexForOffset(this.props, scrollOffset, this._instanceProps);
+      var stopIndex = getStopIndexForStartIndex(this.props, startIndex, scrollOffset, this._instanceProps); // Overscan by one item in each direction so that tab/focus works.
+      // If there isn't at least one extra item, tab loops back around.
+
+      var overscanBackward = !isScrolling || scrollDirection === 'backward' ? Math.max(1, overscanCount) : 1;
+      var overscanForward = !isScrolling || scrollDirection === 'forward' ? Math.max(1, overscanCount) : 1;
+      return [Math.max(0, startIndex - overscanBackward), Math.max(0, Math.min(itemCount - 1, stopIndex + overscanForward)), startIndex, stopIndex];
+    };
+
+    return List;
+  }(React.PureComponent), _class.defaultProps = {
+    direction: 'ltr',
+    itemData: undefined,
+    layout: 'vertical',
+    overscanCount: 2,
+    useIsScrolling: false
+  }, _temp;
+} // NOTE: I considered further wrapping individual items with a pure ListItem component.
+// This would avoid ever calling the render function for the same index more than once,
+// But it would also add the overhead of a lot of components/fibers.
+// I assume people already do this (render function returning a class component),
+// So my doing it would just unnecessarily double the wrappers.
+
+var validateSharedProps$1 = function validateSharedProps(_ref2, _ref3) {
+  var children = _ref2.children,
+      direction = _ref2.direction,
+      height = _ref2.height,
+      layout = _ref2.layout,
+      innerTagName = _ref2.innerTagName,
+      outerTagName = _ref2.outerTagName,
+      width = _ref2.width;
+  var instance = _ref3.instance;
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (innerTagName != null || outerTagName != null) {
+      if (devWarningsTagName$1 && !devWarningsTagName$1.has(instance)) {
+        devWarningsTagName$1.add(instance);
+        console.warn('The innerTagName and outerTagName props have been deprecated. ' + 'Please use the innerElementType and outerElementType props instead.');
+      }
+    } // TODO Deprecate direction "horizontal"
+
+
+    var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+
+    switch (direction) {
+      case 'horizontal':
+      case 'vertical':
+        if (devWarningsDirection && !devWarningsDirection.has(instance)) {
+          devWarningsDirection.add(instance);
+          console.warn('The direction prop should be either "ltr" (default) or "rtl". ' + 'Please use the layout prop to specify "vertical" (default) or "horizontal" orientation.');
+        }
+
+        break;
+
+      case 'ltr':
+      case 'rtl':
+        // Valid values
+        break;
+
+      default:
+        throw Error('An invalid "direction" prop has been specified. ' + 'Value should be either "ltr" or "rtl". ' + ("\"" + direction + "\" was specified."));
+    }
+
+    switch (layout) {
+      case 'horizontal':
+      case 'vertical':
+        // Valid values
+        break;
+
+      default:
+        throw Error('An invalid "layout" prop has been specified. ' + 'Value should be either "horizontal" or "vertical". ' + ("\"" + layout + "\" was specified."));
+    }
+
+    if (children == null) {
+      throw Error('An invalid "children" prop has been specified. ' + 'Value should be a React component. ' + ("\"" + (children === null ? 'null' : typeof children) + "\" was specified."));
+    }
+
+    if (isHorizontal && typeof width !== 'number') {
+      throw Error('An invalid "width" prop has been specified. ' + 'Horizontal lists must specify a number for width. ' + ("\"" + (width === null ? 'null' : typeof width) + "\" was specified."));
+    } else if (!isHorizontal && typeof height !== 'number') {
+      throw Error('An invalid "height" prop has been specified. ' + 'Vertical lists must specify a number for height. ' + ("\"" + (height === null ? 'null' : typeof height) + "\" was specified."));
+    }
+  }
+};
+
+var DEFAULT_ESTIMATED_ITEM_SIZE$1 = 50;
+
+var getItemMetadata$1 = function getItemMetadata(props, index, instanceProps) {
+  var _ref = props,
+      itemSize = _ref.itemSize;
+  var itemMetadataMap = instanceProps.itemMetadataMap,
+      lastMeasuredIndex = instanceProps.lastMeasuredIndex;
+
+  if (index > lastMeasuredIndex) {
+    var offset = 0;
+
+    if (lastMeasuredIndex >= 0) {
+      var itemMetadata = itemMetadataMap[lastMeasuredIndex];
+      offset = itemMetadata.offset + itemMetadata.size;
+    }
+
+    for (var i = lastMeasuredIndex + 1; i <= index; i++) {
+      var size = itemSize(i);
+      itemMetadataMap[i] = {
+        offset: offset,
+        size: size
+      };
+      offset += size;
+    }
+
+    instanceProps.lastMeasuredIndex = index;
+  }
+
+  return itemMetadataMap[index];
+};
+
+var findNearestItem$1 = function findNearestItem(props, instanceProps, offset) {
+  var itemMetadataMap = instanceProps.itemMetadataMap,
+      lastMeasuredIndex = instanceProps.lastMeasuredIndex;
+  var lastMeasuredItemOffset = lastMeasuredIndex > 0 ? itemMetadataMap[lastMeasuredIndex].offset : 0;
+
+  if (lastMeasuredItemOffset >= offset) {
+    // If we've already measured items within this range just use a binary search as it's faster.
+    return findNearestItemBinarySearch$1(props, instanceProps, lastMeasuredIndex, 0, offset);
+  } else {
+    // If we haven't yet measured this high, fallback to an exponential search with an inner binary search.
+    // The exponential search avoids pre-computing sizes for the full set of items as a binary search would.
+    // The overall complexity for this approach is O(log n).
+    return findNearestItemExponentialSearch$1(props, instanceProps, Math.max(0, lastMeasuredIndex), offset);
+  }
+};
+
+var findNearestItemBinarySearch$1 = function findNearestItemBinarySearch(props, instanceProps, high, low, offset) {
+  while (low <= high) {
+    var middle = low + Math.floor((high - low) / 2);
+    var currentOffset = getItemMetadata$1(props, middle, instanceProps).offset;
+
+    if (currentOffset === offset) {
+      return middle;
+    } else if (currentOffset < offset) {
+      low = middle + 1;
+    } else if (currentOffset > offset) {
+      high = middle - 1;
+    }
+  }
+
+  if (low > 0) {
+    return low - 1;
+  } else {
+    return 0;
+  }
+};
+
+var findNearestItemExponentialSearch$1 = function findNearestItemExponentialSearch(props, instanceProps, index, offset) {
+  var itemCount = props.itemCount;
+  var interval = 1;
+
+  while (index < itemCount && getItemMetadata$1(props, index, instanceProps).offset < offset) {
+    index += interval;
+    interval *= 2;
+  }
+
+  return findNearestItemBinarySearch$1(props, instanceProps, Math.min(index, itemCount - 1), Math.floor(index / 2), offset);
+};
+
+var getEstimatedTotalSize = function getEstimatedTotalSize(_ref2, _ref3) {
+  var itemCount = _ref2.itemCount;
+  var itemMetadataMap = _ref3.itemMetadataMap,
+      estimatedItemSize = _ref3.estimatedItemSize,
+      lastMeasuredIndex = _ref3.lastMeasuredIndex;
+  var totalSizeOfMeasuredItems = 0; // Edge case check for when the number of items decreases while a scroll is in progress.
+  // https://github.com/bvaughn/react-window/pull/138
+
+  if (lastMeasuredIndex >= itemCount) {
+    lastMeasuredIndex = itemCount - 1;
+  }
+
+  if (lastMeasuredIndex >= 0) {
+    var itemMetadata = itemMetadataMap[lastMeasuredIndex];
+    totalSizeOfMeasuredItems = itemMetadata.offset + itemMetadata.size;
+  }
+
+  var numUnmeasuredItems = itemCount - lastMeasuredIndex - 1;
+  var totalSizeOfUnmeasuredItems = numUnmeasuredItems * estimatedItemSize;
+  return totalSizeOfMeasuredItems + totalSizeOfUnmeasuredItems;
+};
+
+var VariableSizeList =
+/*#__PURE__*/
+createListComponent({
+  getItemOffset: function getItemOffset(props, index, instanceProps) {
+    return getItemMetadata$1(props, index, instanceProps).offset;
+  },
+  getItemSize: function getItemSize(props, index, instanceProps) {
+    return instanceProps.itemMetadataMap[index].size;
+  },
+  getEstimatedTotalSize: getEstimatedTotalSize,
+  getOffsetForIndexAndAlignment: function getOffsetForIndexAndAlignment(props, index, align, scrollOffset, instanceProps) {
+    var direction = props.direction,
+        height = props.height,
+        layout = props.layout,
+        width = props.width; // TODO Deprecate direction "horizontal"
+
+    var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+    var size = isHorizontal ? width : height;
+    var itemMetadata = getItemMetadata$1(props, index, instanceProps); // Get estimated total size after ItemMetadata is computed,
+    // To ensure it reflects actual measurements instead of just estimates.
+
+    var estimatedTotalSize = getEstimatedTotalSize(props, instanceProps);
+    var maxOffset = Math.max(0, Math.min(estimatedTotalSize - size, itemMetadata.offset));
+    var minOffset = Math.max(0, itemMetadata.offset - size + itemMetadata.size);
+
+    if (align === 'smart') {
+      if (scrollOffset >= minOffset - size && scrollOffset <= maxOffset + size) {
+        align = 'auto';
+      } else {
+        align = 'center';
+      }
+    }
+
+    switch (align) {
+      case 'start':
+        return maxOffset;
+
+      case 'end':
+        return minOffset;
+
+      case 'center':
+        return Math.round(minOffset + (maxOffset - minOffset) / 2);
+
+      case 'auto':
+      default:
+        if (scrollOffset >= minOffset && scrollOffset <= maxOffset) {
+          return scrollOffset;
+        } else if (scrollOffset < minOffset) {
+          return minOffset;
+        } else {
+          return maxOffset;
+        }
+
+    }
+  },
+  getStartIndexForOffset: function getStartIndexForOffset(props, offset, instanceProps) {
+    return findNearestItem$1(props, instanceProps, offset);
+  },
+  getStopIndexForStartIndex: function getStopIndexForStartIndex(props, startIndex, scrollOffset, instanceProps) {
+    var direction = props.direction,
+        height = props.height,
+        itemCount = props.itemCount,
+        layout = props.layout,
+        width = props.width; // TODO Deprecate direction "horizontal"
+
+    var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+    var size = isHorizontal ? width : height;
+    var itemMetadata = getItemMetadata$1(props, startIndex, instanceProps);
+    var maxOffset = scrollOffset + size;
+    var offset = itemMetadata.offset + itemMetadata.size;
+    var stopIndex = startIndex;
+
+    while (stopIndex < itemCount - 1 && offset < maxOffset) {
+      stopIndex++;
+      offset += getItemMetadata$1(props, stopIndex, instanceProps).size;
+    }
+
+    return stopIndex;
+  },
+  initInstanceProps: function initInstanceProps(props, instance) {
+    var _ref4 = props,
+        estimatedItemSize = _ref4.estimatedItemSize;
+    var instanceProps = {
+      itemMetadataMap: {},
+      estimatedItemSize: estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE$1,
+      lastMeasuredIndex: -1
+    };
+
+    instance.resetAfterIndex = function (index, shouldForceUpdate) {
+      if (shouldForceUpdate === void 0) {
+        shouldForceUpdate = true;
+      }
+
+      instanceProps.lastMeasuredIndex = Math.min(instanceProps.lastMeasuredIndex, index - 1); // We could potentially optimize further by only evicting styles after this index,
+      // But since styles are only cached while scrolling is in progress-
+      // It seems an unnecessary optimization.
+      // It's unlikely that resetAfterIndex() will be called while a user is scrolling.
+
+      instance._getItemStyleCache(-1);
+
+      if (shouldForceUpdate) {
+        instance.forceUpdate();
+      }
+    };
+
+    return instanceProps;
+  },
+  shouldResetStyleCacheOnItemSizeChange: false,
+  validateProps: function validateProps(_ref5) {
+    var itemSize = _ref5.itemSize;
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof itemSize !== 'function') {
+        throw Error('An invalid "itemSize" prop has been specified. ' + 'Value should be a function. ' + ("\"" + (itemSize === null ? 'null' : typeof itemSize) + "\" was specified."));
+      }
+    }
+  }
+});
+
+var FixedSizeGrid =
+/*#__PURE__*/
+createGridComponent({
+  getColumnOffset: function getColumnOffset(_ref, index) {
+    var columnWidth = _ref.columnWidth;
+    return index * columnWidth;
+  },
+  getColumnWidth: function getColumnWidth(_ref2, index) {
+    var columnWidth = _ref2.columnWidth;
+    return columnWidth;
+  },
+  getRowOffset: function getRowOffset(_ref3, index) {
+    var rowHeight = _ref3.rowHeight;
+    return index * rowHeight;
+  },
+  getRowHeight: function getRowHeight(_ref4, index) {
+    var rowHeight = _ref4.rowHeight;
+    return rowHeight;
+  },
+  getEstimatedTotalHeight: function getEstimatedTotalHeight(_ref5) {
+    var rowCount = _ref5.rowCount,
+        rowHeight = _ref5.rowHeight;
+    return rowHeight * rowCount;
+  },
+  getEstimatedTotalWidth: function getEstimatedTotalWidth(_ref6) {
+    var columnCount = _ref6.columnCount,
+        columnWidth = _ref6.columnWidth;
+    return columnWidth * columnCount;
+  },
+  getOffsetForColumnAndAlignment: function getOffsetForColumnAndAlignment(_ref7, columnIndex, align, scrollLeft, instanceProps, scrollbarSize) {
+    var columnCount = _ref7.columnCount,
+        columnWidth = _ref7.columnWidth,
+        width = _ref7.width;
+    var lastColumnOffset = Math.max(0, columnCount * columnWidth - width);
+    var maxOffset = Math.min(lastColumnOffset, columnIndex * columnWidth);
+    var minOffset = Math.max(0, columnIndex * columnWidth - width + scrollbarSize + columnWidth);
+
+    if (align === 'smart') {
+      if (scrollLeft >= minOffset - width && scrollLeft <= maxOffset + width) {
+        align = 'auto';
+      } else {
+        align = 'center';
+      }
+    }
+
+    switch (align) {
+      case 'start':
+        return maxOffset;
+
+      case 'end':
+        return minOffset;
+
+      case 'center':
+        // "Centered" offset is usually the average of the min and max.
+        // But near the edges of the list, this doesn't hold true.
+        var middleOffset = Math.round(minOffset + (maxOffset - minOffset) / 2);
+
+        if (middleOffset < Math.ceil(width / 2)) {
+          return 0; // near the beginning
+        } else if (middleOffset > lastColumnOffset + Math.floor(width / 2)) {
+          return lastColumnOffset; // near the end
+        } else {
+          return middleOffset;
+        }
+
+      case 'auto':
+      default:
+        if (scrollLeft >= minOffset && scrollLeft <= maxOffset) {
+          return scrollLeft;
+        } else if (minOffset > maxOffset) {
+          // Because we only take into account the scrollbar size when calculating minOffset
+          // this value can be larger than maxOffset when at the end of the list
+          return minOffset;
+        } else if (scrollLeft < minOffset) {
+          return minOffset;
+        } else {
+          return maxOffset;
+        }
+
+    }
+  },
+  getOffsetForRowAndAlignment: function getOffsetForRowAndAlignment(_ref8, rowIndex, align, scrollTop, instanceProps, scrollbarSize) {
+    var rowHeight = _ref8.rowHeight,
+        height = _ref8.height,
+        rowCount = _ref8.rowCount;
+    var lastRowOffset = Math.max(0, rowCount * rowHeight - height);
+    var maxOffset = Math.min(lastRowOffset, rowIndex * rowHeight);
+    var minOffset = Math.max(0, rowIndex * rowHeight - height + scrollbarSize + rowHeight);
+
+    if (align === 'smart') {
+      if (scrollTop >= minOffset - height && scrollTop <= maxOffset + height) {
+        align = 'auto';
+      } else {
+        align = 'center';
+      }
+    }
+
+    switch (align) {
+      case 'start':
+        return maxOffset;
+
+      case 'end':
+        return minOffset;
+
+      case 'center':
+        // "Centered" offset is usually the average of the min and max.
+        // But near the edges of the list, this doesn't hold true.
+        var middleOffset = Math.round(minOffset + (maxOffset - minOffset) / 2);
+
+        if (middleOffset < Math.ceil(height / 2)) {
+          return 0; // near the beginning
+        } else if (middleOffset > lastRowOffset + Math.floor(height / 2)) {
+          return lastRowOffset; // near the end
+        } else {
+          return middleOffset;
+        }
+
+      case 'auto':
+      default:
+        if (scrollTop >= minOffset && scrollTop <= maxOffset) {
+          return scrollTop;
+        } else if (minOffset > maxOffset) {
+          // Because we only take into account the scrollbar size when calculating minOffset
+          // this value can be larger than maxOffset when at the end of the list
+          return minOffset;
+        } else if (scrollTop < minOffset) {
+          return minOffset;
+        } else {
+          return maxOffset;
+        }
+
+    }
+  },
+  getColumnStartIndexForOffset: function getColumnStartIndexForOffset(_ref9, scrollLeft) {
+    var columnWidth = _ref9.columnWidth,
+        columnCount = _ref9.columnCount;
+    return Math.max(0, Math.min(columnCount - 1, Math.floor(scrollLeft / columnWidth)));
+  },
+  getColumnStopIndexForStartIndex: function getColumnStopIndexForStartIndex(_ref10, startIndex, scrollLeft) {
+    var columnWidth = _ref10.columnWidth,
+        columnCount = _ref10.columnCount,
+        width = _ref10.width;
+    var left = startIndex * columnWidth;
+    var numVisibleColumns = Math.ceil((width + scrollLeft - left) / columnWidth);
+    return Math.max(0, Math.min(columnCount - 1, startIndex + numVisibleColumns - 1 // -1 is because stop index is inclusive
+    ));
+  },
+  getRowStartIndexForOffset: function getRowStartIndexForOffset(_ref11, scrollTop) {
+    var rowHeight = _ref11.rowHeight,
+        rowCount = _ref11.rowCount;
+    return Math.max(0, Math.min(rowCount - 1, Math.floor(scrollTop / rowHeight)));
+  },
+  getRowStopIndexForStartIndex: function getRowStopIndexForStartIndex(_ref12, startIndex, scrollTop) {
+    var rowHeight = _ref12.rowHeight,
+        rowCount = _ref12.rowCount,
+        height = _ref12.height;
+    var top = startIndex * rowHeight;
+    var numVisibleRows = Math.ceil((height + scrollTop - top) / rowHeight);
+    return Math.max(0, Math.min(rowCount - 1, startIndex + numVisibleRows - 1 // -1 is because stop index is inclusive
+    ));
+  },
+  initInstanceProps: function initInstanceProps(props) {// Noop
+  },
+  shouldResetStyleCacheOnItemSizeChange: true,
+  validateProps: function validateProps(_ref13) {
+    var columnWidth = _ref13.columnWidth,
+        rowHeight = _ref13.rowHeight;
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof columnWidth !== 'number') {
+        throw Error('An invalid "columnWidth" prop has been specified. ' + 'Value should be a number. ' + ("\"" + (columnWidth === null ? 'null' : typeof columnWidth) + "\" was specified."));
+      }
+
+      if (typeof rowHeight !== 'number') {
+        throw Error('An invalid "rowHeight" prop has been specified. ' + 'Value should be a number. ' + ("\"" + (rowHeight === null ? 'null' : typeof rowHeight) + "\" was specified."));
+      }
+    }
+  }
+});
+
+var FixedSizeList =
+/*#__PURE__*/
+createListComponent({
+  getItemOffset: function getItemOffset(_ref, index) {
+    var itemSize = _ref.itemSize;
+    return index * itemSize;
+  },
+  getItemSize: function getItemSize(_ref2, index) {
+    var itemSize = _ref2.itemSize;
+    return itemSize;
+  },
+  getEstimatedTotalSize: function getEstimatedTotalSize(_ref3) {
+    var itemCount = _ref3.itemCount,
+        itemSize = _ref3.itemSize;
+    return itemSize * itemCount;
+  },
+  getOffsetForIndexAndAlignment: function getOffsetForIndexAndAlignment(_ref4, index, align, scrollOffset) {
+    var direction = _ref4.direction,
+        height = _ref4.height,
+        itemCount = _ref4.itemCount,
+        itemSize = _ref4.itemSize,
+        layout = _ref4.layout,
+        width = _ref4.width;
+    // TODO Deprecate direction "horizontal"
+    var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+    var size = isHorizontal ? width : height;
+    var lastItemOffset = Math.max(0, itemCount * itemSize - size);
+    var maxOffset = Math.min(lastItemOffset, index * itemSize);
+    var minOffset = Math.max(0, index * itemSize - size + itemSize);
+
+    if (align === 'smart') {
+      if (scrollOffset >= minOffset - size && scrollOffset <= maxOffset + size) {
+        align = 'auto';
+      } else {
+        align = 'center';
+      }
+    }
+
+    switch (align) {
+      case 'start':
+        return maxOffset;
+
+      case 'end':
+        return minOffset;
+
+      case 'center':
+        {
+          // "Centered" offset is usually the average of the min and max.
+          // But near the edges of the list, this doesn't hold true.
+          var middleOffset = Math.round(minOffset + (maxOffset - minOffset) / 2);
+
+          if (middleOffset < Math.ceil(size / 2)) {
+            return 0; // near the beginning
+          } else if (middleOffset > lastItemOffset + Math.floor(size / 2)) {
+            return lastItemOffset; // near the end
+          } else {
+            return middleOffset;
+          }
+        }
+
+      case 'auto':
+      default:
+        if (scrollOffset >= minOffset && scrollOffset <= maxOffset) {
+          return scrollOffset;
+        } else if (scrollOffset < minOffset) {
+          return minOffset;
+        } else {
+          return maxOffset;
+        }
+
+    }
+  },
+  getStartIndexForOffset: function getStartIndexForOffset(_ref5, offset) {
+    var itemCount = _ref5.itemCount,
+        itemSize = _ref5.itemSize;
+    return Math.max(0, Math.min(itemCount - 1, Math.floor(offset / itemSize)));
+  },
+  getStopIndexForStartIndex: function getStopIndexForStartIndex(_ref6, startIndex, scrollOffset) {
+    var direction = _ref6.direction,
+        height = _ref6.height,
+        itemCount = _ref6.itemCount,
+        itemSize = _ref6.itemSize,
+        layout = _ref6.layout,
+        width = _ref6.width;
+    // TODO Deprecate direction "horizontal"
+    var isHorizontal = direction === 'horizontal' || layout === 'horizontal';
+    var offset = startIndex * itemSize;
+    var size = isHorizontal ? width : height;
+    var numVisibleItems = Math.ceil((size + scrollOffset - offset) / itemSize);
+    return Math.max(0, Math.min(itemCount - 1, startIndex + numVisibleItems - 1 // -1 is because stop index is inclusive
+    ));
+  },
+  initInstanceProps: function initInstanceProps(props) {// Noop
+  },
+  shouldResetStyleCacheOnItemSizeChange: true,
+  validateProps: function validateProps(_ref7) {
+    var itemSize = _ref7.itemSize;
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof itemSize !== 'number') {
+        throw Error('An invalid "itemSize" prop has been specified. ' + 'Value should be a number. ' + ("\"" + (itemSize === null ? 'null' : typeof itemSize) + "\" was specified."));
+      }
+    }
+  }
+});
+
+// Pulled from react-compat
+// https://github.com/developit/preact-compat/blob/7c5de00e7c85e2ffd011bf3af02899b63f699d3a/src/index.js#L349
+function shallowDiffers(prev, next) {
+  for (var attribute in prev) {
+    if (!(attribute in next)) {
+      return true;
+    }
+  }
+
+  for (var _attribute in next) {
+    if (prev[_attribute] !== next[_attribute]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// It knows to compare individual style props and ignore the wrapper object.
+// See https://reactjs.org/docs/react-api.html#reactmemo
+
+function areEqual(prevProps, nextProps) {
+  var prevStyle = prevProps.style,
+      prevRest = _objectWithoutPropertiesLoose(prevProps, ["style"]);
+
+  var nextStyle = nextProps.style,
+      nextRest = _objectWithoutPropertiesLoose(nextProps, ["style"]);
+
+  return !shallowDiffers(prevStyle, nextStyle) && !shallowDiffers(prevRest, nextRest);
+}
+
+// It knows to compare individual style props and ignore the wrapper object.
+// See https://reactjs.org/docs/react-component.html#shouldcomponentupdate
+
+function shouldComponentUpdate(nextProps, nextState) {
+  return !areEqual(this.props, nextProps) || shallowDiffers(this.state, nextState);
+}
+
+exports.VariableSizeGrid = VariableSizeGrid;
+exports.VariableSizeList = VariableSizeList;
+exports.FixedSizeGrid = FixedSizeGrid;
+exports.FixedSizeList = FixedSizeList;
+exports.areEqual = areEqual;
+exports.shouldComponentUpdate = shouldComponentUpdate;
+
+});
+
+unwrapExports(index_cjs);
+index_cjs.VariableSizeGrid;
+index_cjs.VariableSizeList;
+index_cjs.FixedSizeGrid;
+index_cjs.FixedSizeList;
+index_cjs.areEqual;
+index_cjs.shouldComponentUpdate;
+
+var HeaderCell = function HeaderCell(props) {
+    // console.log('HeaderCell => ', props);
+
+    var column = props.column,
+        onResize = props.onResize,
+        restProps = objectWithoutProperties(props, ["column", "onResize"]);
+
+
+    if (!column) return React.createElement("th", restProps);
+
+    var width = column.width,
+        resizable = column.resizable;
+        column.headerRenderer;
+
+
+    if (!width) return React.createElement("th", restProps);
+
+    // if (headerRenderer) {
+    //     let childNode
+    //     if( typeof headerRenderer === 'function') {
+    //         childNode = headerRenderer()
+    //     }
+    //     else {
+    //         childNode = headerRenderer
+    //     }
+    //
+    //     return (
+    //         <th {...restProps}>
+    //             {childNode}
+    //             {resizable &&
+    //             <ColumnResizer
+    //                 className={`${rtPrefix}-column-resizer`}
+    //                 column={{ width: width, maxWidth: 1000 }}
+    //                 onResize={onResize}
+    //             />}
+    //         </th>
+    //     );
+    // } else {
+    return React.createElement(
+        "th",
+        restProps,
+        restProps.children,
+        resizable && React.createElement(ColumnResizer, {
+            className: rtPrefix + "-column-resizer",
+            column: { width: width, maxWidth: 1000 },
+            onResize: onResize
+        })
+    );
+    // }
+};
+
+HeaderCell.propTypes = {
+    onResize: PropTypes.func,
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    resizable: PropTypes.bool
+};
+
+var HeaderRow = function HeaderRow(props) {
+    var headerRowRef = useRef();
+    var headerHeight = props.headerHeight,
+        setHeaderHeight = props.setHeaderHeight,
+        restProps = objectWithoutProperties(props, ['headerHeight', 'setHeaderHeight']);
+
+    useEffect(function () {
+
+        var newHeight = headerRowRef && headerRowRef.current && headerRowRef.current.clientHeight;
+        if (headerHeight !== newHeight) {
+            // console.log('Row height', newHeight) //clientHeight
+            setHeaderHeight(newHeight);
+        }
+    });
+    return React.createElement('tr', _extends({}, restProps, { ref: headerRowRef }));
+};
+
+HeaderRow.propTypes = {
+    headerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    setHeaderHeight: PropTypes.func
+};
+
+var BodyCell = function BodyCell(props) {
+  var column = props.column,
+      rowData = props.rowData,
+      rowIndex = props.rowIndex,
+      restProps = objectWithoutProperties(props, ["column", "rowData", "rowIndex"]);
+
+
+  if (column && column.cellComponent) {
+    // console.log('BodyCell => ', restProps);
+    return React.createElement(
+      "td",
+      _extends({}, restProps, { style: _extends({}, restProps.style, { padding: 0 }) }),
+      React.createElement(column.cellComponent, {
+        column: column,
+        cellData: restProps.title,
+        rowData: rowData,
+        rowIndex: rowIndex
+      })
+    );
+  } else {
+    return React.createElement("td", restProps);
+  }
+};
+
+BodyCell.propTypes = {};
+
+var excludeProps$1 = ["defaultRows", "defaultSelectedRowKeys", "defaultSearchValue", "defaultFilter", "defaultSortBy", "rows", "requestLoadRows", "pageSize", "searchParamName", "onRowClick", "onRowDoubleClick"];
+
+var Table$1 = function Table(props) {
+    /** Индикатор загрузки данных */
+    var _useState = useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        loading = _useState2[0],
+        setLoading = _useState2[1];
+
+    /** TABLE STATES */
+    /** Столбцы таблицы */
+
+
+    var _useState3 = useState([]),
+        _useState4 = slicedToArray(_useState3, 2),
+        _columns = _useState4[0],
+        _setColumns = _useState4[1];
+    /** Строки таблицы */
+
+
+    var _useState5 = useState([]),
+        _useState6 = slicedToArray(_useState5, 2),
+        _rows = _useState6[0],
+        _setRows = _useState6[1];
+    /** Ключи выделенных строк */
+
+
+    var _useState7 = useState([]),
+        _useState8 = slicedToArray(_useState7, 2),
+        _selectedRowKeys = _useState8[0],
+        setSelectedRowKeys = _useState8[1];
+    /** Значение строки поиска */
+
+
+    var _useState9 = useState(""),
+        _useState10 = slicedToArray(_useState9, 2),
+        _searchValue = _useState10[0],
+        setSearchValue = _useState10[1];
+    /** Объект фильтра */
+
+
+    var _useState11 = useState({}),
+        _useState12 = slicedToArray(_useState11, 2),
+        _filter = _useState12[0],
+        setFilter = _useState12[1];
+    /** Объект соритировки */
+
+
+    var _useState13 = useState({}),
+        _useState14 = slicedToArray(_useState13, 2),
+        _sortBy = _useState14[0],
+        setSortBy = _useState14[1];
+
+    /** TREE STATES */
+    /** Ключи строк с кубиками при selectable = true */
+    // const [_indeterminateRowKeys, setIndeterminateRowKeys] = useState([]);
+    /** Ключи раскрытых строк при selectable = true */
+
+
+    var _useState15 = useState([]),
+        _useState16 = slicedToArray(_useState15, 2),
+        _expandedRowKeys = _useState16[0],
+        setExpandedRowKeys = _useState16[1];
+
+    /** FOOTER STATES */
+    /** Отображать ли footer */
+
+
+    var _useState17 = useState(false),
+        _useState18 = slicedToArray(_useState17, 2),
+        _footerShow = _useState18[0],
+        _setFooterShow = _useState18[1];
+    /** Всего строк по фильтру в таблице */
+
+
+    var _useState19 = useState(0),
+        _useState20 = slicedToArray(_useState19, 2),
+        _totalCountRows = _useState20[0],
+        setTotalCountRows = _useState20[1];
+
+    var _useState21 = useState({}),
+        _useState22 = slicedToArray(_useState21, 2),
+        subscribeProps = _useState22[0],
+        setSubscribeProps = _useState22[1];
+
+    var _useState23 = useState(0),
+        _useState24 = slicedToArray(_useState23, 2),
+        headerHeight = _useState24[0],
+        setHeaderHeight = _useState24[1];
+
+    var isMounted = useMounted();
+
+    var _props$subscribeProps = _extends({}, props, subscribeProps),
+        columns = _props$subscribeProps.columns,
+        editMode = _props$subscribeProps.editMode,
+        defaultRows = _props$subscribeProps.defaultRows,
+        defaultSearchValue = _props$subscribeProps.defaultSearchValue,
+        defaultFilter = _props$subscribeProps.defaultFilter,
+        defaultSortBy = _props$subscribeProps.defaultSortBy,
+        rows = _props$subscribeProps.rows,
+        rowKey = _props$subscribeProps.rowKey,
+        customFields = _props$subscribeProps.customFields,
+        zebraStyle = _props$subscribeProps.zebraStyle,
+        className = _props$subscribeProps.className,
+        style = _props$subscribeProps.style,
+        pageSize = _props$subscribeProps.pageSize,
+        requestLoadRows = _props$subscribeProps.requestLoadRows,
+        requestLoadCount = _props$subscribeProps.requestLoadCount,
+        searchParamName = _props$subscribeProps.searchParamName,
+        rowSelection = _props$subscribeProps.rowSelection,
+        selectable = _props$subscribeProps.selectable,
+        expandable = _props$subscribeProps.expandable,
+        nodeAssociated = _props$subscribeProps.nodeAssociated,
+        expandColumnKey = _props$subscribeProps.expandColumnKey,
+        expandDefaultAll = _props$subscribeProps.expandDefaultAll,
+        onRowClick = _props$subscribeProps.onRowClick,
+        onRowDoubleClick = _props$subscribeProps.onRowDoubleClick,
+        onExpandedRowsChange = _props$subscribeProps.onExpandedRowsChange,
+        dispatchPath = _props$subscribeProps.dispatchPath,
+        dispatch = _props$subscribeProps.dispatch,
+        subscribe = _props$subscribeProps.subscribe,
+        value = _props$subscribeProps.value,
+        onChange = _props$subscribeProps.onChange;
+
+    var footerProps = _extends({}, Table.defaultProps.footerProps, props.footerProps);
+
+    var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + ".selected" : dispatchPath && dispatchPath + ".selected";
+    var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + ".rows" : dispatchPath && dispatchPath + ".rows";
+
+    useEffect(function () {
+        // console.log("Инициализация дефолтных значений ", selectColumn, columns);
+        // console.log("Инициализация дефолтных значений defaultSelectedRowKeys > ", defaultSelectedRowKeys);
+
+        // Инициализация дефолтных значений
+        // _setRows(defaultRows);
+        if (defaultRows.length > 0) _setRowsHandler(defaultRows);else if (rows.length > 0) _setRowsHandler(rows);
+        setSearchValue(defaultSearchValue);
+        setFilter(defaultFilter);
+        setSortBy(defaultSortBy);
+
+        // Определение нужно ли отображать подвал
+        _setFooterShow(footerProps.showElements.length || footerProps.leftCustomSideElement || footerProps.centerCustomSideElement || footerProps.rightCustomSideElement);
+
+        _loadRows({
+            sortBy: defaultSortBy,
+            filter: defaultFilter,
+            searchLine: defaultSearchValue,
+            reload: true
+        });
+        // console.log("tableRef", tableRef);
+    }, []);
+
+    useEffect(function () {
+        _setColumns(columns);
+    }, [columns]);
+
+    useEffect(function () {
+        if (value && Array.isArray(value)) _setRowsHandler(value);
+    }, [value]);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    subscribe.map(function (item) {
+        return useEffect(function () {
+            if ((item.withMount || isMounted) && item.name) {
+                // console.log("Table => useEffect => ", props); //item.name, props[item.name]
+                // let extraData = {};
+                // if (item.extraData) {
+                //   if (typeof item.extraData === 'object')
+                //     Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+                //   else
+                //     extraData = props[`${item.name}ExtraData`];
+                // }
+                var onChangeObject = {
+                    value: props[item.name],
+                    extraData: getExtraData(item, props), //props[`${item.name}ExtraData`],
+                    reloadTable: reloadData,
+                    addRows: _addRows,
+                    addRow: _addRow,
+                    addRowAsCopy: _addRowAsCopy,
+                    editRow: _editRow,
+                    removeRow: _removeRow,
+                    moveUpRow: _moveUpSelectedRow,
+                    moveUpRowByKey: _moveUpRowByKey,
+                    moveDownRow: _moveDownSelectedRow,
+                    moveDownRowByKey: _moveDownRowByKey,
+                    setSubscribeProps: _setSubscribeProps
+                };
+                item.onChange && item.onChange(onChangeObject);
+            }
+        }, [props[item.name]]);
+    });
+
+    /** BASE FUNCTIONS */
+    var _setSubscribeProps = function _setSubscribeProps(props) {
+        setSubscribeProps(_extends({}, subscribeProps, props));
+    };
+
+    var _setLoadedRowsHandler = function _setLoadedRowsHandler(rows) {
+        _setRowsHandler(rows);
+        onChange && onChange(rows);
+    };
+    var _setRowsHandler = function _setRowsHandler(rows) {
+        // console.log('_setRowsHandler onChange');
+        _setRows(rows);
+        // setRows(rows);
+        rowsDispatch(rows);
+    };
+
+    var _setSelectedRowsHandler = function _setSelectedRowsHandler() {
+        var selectedKeys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+        var selectedObjects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+        var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+        // console.log('_setSelectedRowsHandler => ', selectedKeys)
+        if (!editMode) {
+            setSelectedRowKeys(selectedKeys);
+            if (selectedKeys.length === 0) {
+                if (selectable) selectedDispatch([]);else selectedDispatch(undefined);
+            } else if (selectedKeys.length > 0 && !selectedObjects) {
+                if (selectable) selectedDispatch(flatten(getTableRowObjects(rows)).filter(function (item) {
+                    return selectedKeys.includes(item[rowKey]);
+                }));else selectedDispatch(findNodeByRowKey(rows, rowKey, selectedKeys[0]));
+            } else selectedDispatch(selectedObjects);
+        }
+    };
+
+    var rowsDispatch = function rowsDispatch(rows) {
+        rowsDispatchPath && props.setDateStore && props.setDateStore(rowsDispatchPath, rows);
+    };
+
+    var selectedDispatch = function selectedDispatch(data) {
+        selectedDispatchPath && props.setDateStore && props.setDateStore(selectedDispatchPath, data);
+    };
+
+    var onTableEventsDispatch = function onTableEventsDispatch(nameEvent, value) {
+        var dp = dispatch && dispatch.path ? dispatch.path + ".events." + nameEvent : dispatchPath && dispatchPath + ".events." + nameEvent;
+
+        dp && props.setDateStore && props.setDateStore(dp, {
+            timestamp: moment(),
+            value: value
+        });
+        // console.log('onTableEventsDispatch onChange');
+        Array.isArray(value) && onChange && onChange(value);
+    };
+
+    var reloadData = function reloadData(_ref, appendParams) {
+        var sortBy = _ref.sortBy,
+            filter = _ref.filter,
+            searchValue = _ref.searchValue;
+
+        // console.log("reloadData params ", sortBy, filter, searchValue, loading);
+        if (selectable && props.value && props.value.length > 0) _setSelectedRowsHandler(props.value.map(function (item) {
+            return item[rowKey];
+        }), props.value);else _setSelectedRowsHandler();
+
+        var __sortBy = appendParams ? sortBy ? sortBy : _sortBy : sortBy;
+        var __filter = appendParams ? _extends({}, _filter, filter) : filter;
+        var __searchValue = appendParams ? searchValue ? searchValue : _searchValue : searchValue;
+        setSortBy(__sortBy);
+        setFilter(__filter);
+        setSearchValue(__searchValue);
+        // console.log("reloadData params ", sortBy, filter, searchValue, loading);
+        _loadRows({
+            sortBy: __sortBy,
+            filter: __filter,
+            searchLine: __searchValue,
+            reload: true
+        });
+    };
+
+    var _loadRows = function _loadRows(params) {
+        var sortBy = params.sortBy,
+            filter = params.filter,
+            searchLine = params.searchLine;
+            params.expandRow;
+            var reload = params.reload;
+
+        if (!loading && requestLoadRows) {
+            setLoading(true);
+            var _params = {
+                page: 0,
+                size: pageSize,
+                sort: sortBy && sortBy.key ? sortBy.key + "," + sortBy.order : null
+            };
+            var dataQuery = _extends({}, filter, searchLine ? defineProperty({}, searchParamName, searchLine) : null);
+            if (reload && requestLoadCount !== noop && !expandColumnKey) {
+                requestLoadCount({ params: _params, data: dataQuery }).then(function (response) {
+                    // console.log("infinity then response", response);
+                    setTotalCountRows(response.data);
+                }).catch(function (error) {
+                    return notificationError(error, 'Ошибка получения количества записей по фильтру');
+                });
+            }
+            requestLoadRows({ params: _params, data: dataQuery }).then(function (response) {
+                // console.log("infinity then response", response);
+                var result = response.data;
+                _setLoadedRowsHandler(result); // _setRows
+
+                if (expandColumnKey) {
+                    expandDefaultAll && setExpandedRowKeys(flatten(getTableRowKeys(result, rowKey)));
+                }
+
+                setLoading(false);
+            }).catch(function (error) {
+                notificationError(error, "Ошибка загрузки данных");
+                _setLoadedRowsHandler(_rows); // _setRows
+                // setHasMore(false);
+                setLoading(false);
+            });
+        }
+    };
+
+    var onChangeTable = function onChangeTable(pagination, filters, sorter, extra) {
+        // console.log('Table onChange', pagination, filters, sorter, extra)
+        switch (extra.action) {
+            case "paginate":
+                break;
+            case "sort":
+                onSort(sorter);
+                break;
+        }
+    };
+
+    var onSort = function onSort(sorter) {
+        // console.log("Table onSort from RT", sorter);
+        var sortBy = sorter.order ? { key: sorter.field, order: sorter.order === "ascend" ? "asc" : "desc" } : {};
+        setSortBy(sortBy);
+        _loadRows({
+            sortBy: sortBy,
+            filter: _filter,
+            searchLine: _searchValue,
+            reload: true
+        });
+    };
+
+    var _onRowClick = function _onRowClick(_ref3) {
+        var rowData = _ref3.rowData,
+            rowIndex = _ref3.rowIndex,
+            rowKey = _ref3.rowKey;
+
+        // console.log('onClick', onRowClick, rowData, rowIndex, rowKey)
+        // console.log('onClick', _selectedRowKeys)
+        onTableEventsDispatch("onRowClick", rowData);
+        _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowClick });
+    };
+    var _onRowDoubleClick = function _onRowDoubleClick(_ref4) {
+        var rowData = _ref4.rowData,
+            rowIndex = _ref4.rowIndex,
+            rowKey = _ref4.rowKey;
+
+        // console.log('onDoubleClick', onRowDoubleClick, rowData, rowIndex, rowKey);
+        // console.log('actionDoubleClick')
+        onTableEventsDispatch("onRowDoubleClick", rowData);
+        _rowSelectAfterClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowKey, onClick: onRowDoubleClick });
+    };
+
+    var _rowSelectAfterClick = function _rowSelectAfterClick(_ref5) {
+        var rowData = _ref5.rowData,
+            rowIndex = _ref5.rowIndex,
+            rowKey = _ref5.rowKey,
+            onClick = _ref5.onClick;
+
+        var checked = !_selectedRowKeys.includes(rowKey);
+        var newRowObject = {
+            rowData: _extends({}, rowData),
+            rowIndex: rowIndex,
+            rowKey: rowKey
+        };
+        // _setSelectedRowsHandler([rowKey], rowData);
+        // if (!expandColumnKey) {
+        // setSelectedRowKeys([rowKey]);
+        if (selectable) {
+            // console.log('_rowSelectAfterClick ', checked);
+            if (checked && !expandColumnKey) _setSelectedRowsHandler([].concat(toConsumableArray(_selectedRowKeys), [rowKey]), undefined, _rows);else {
+                // console.log('_rowSelectAfterClick', _selectedRowKeys.filter(row => row !== rowKey), rowKey);
+                _setSelectedRowsHandler(_selectedRowKeys.filter(function (row) {
+                    return row !== rowKey;
+                }), undefined, _rows);
+            }
+        } else {
+            if (checked) _setSelectedRowsHandler([rowKey], rowData);
+        }
+        // onSelectedRowsChange([rowKey], [rowData]);
+        console.log('onRowDoubleClick = ', onClick);
+        onClick && onClick(_extends({ selected: checked }, newRowObject));
+    };
+
+    var onHeaderRowProps = function onHeaderRowProps() {
+        return { headerHeight: headerHeight, setHeaderHeight: setHeaderHeight };
+    };
+
+    var onRowEvents = function onRowEvents(rowData, rowIndex) {
+        return {
+            onClick: function onClick(event) {
+                return _onRowClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
+            }, // click row
+            onDoubleClick: function onDoubleClick(event) {
+                return _onRowDoubleClick({ rowData: rowData, rowIndex: rowIndex, rowKey: rowData[rowKey] });
+            } // double click row
+            // onScroll: console.log
+            // onContextMenu: event => {}, // right button click row
+            // onMouseEnter: event => {}, // mouse enter row
+            // onMouseLeave: event => {}, // mouse leave row
+        };
+    };
+
+    var onResizeHandler = function onResizeHandler(index) {
+        return function (_ref6, width) {
+            _ref6.key;
+
+            // console.log('handleResize index ', index, width)
+            _setColumns(function (columns) {
+                var nextColumns = [].concat(toConsumableArray(columns));
+                nextColumns[index] = _extends({}, nextColumns[index], {
+                    width: width
+                });
+                return nextColumns;
+            });
+        };
+    };
+
+    /** Utile function
+     * Find row by key
+     * @param data - table rows
+     * @param key - key row for find
+     * @param callback - function for return result
+     */
+    var loop = function loop(data, key, callback) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][rowKey] === key) {
+                // console.log(`Selected => index: [${i}], path: [${data[i].path}]`, data);
+                return callback(data[i], i, data);
+            }
+            if (data[i].children) {
+                loop(data[i].children, key, callback);
+            }
+        }
+    };
+
+    /** ROW CHANGE FUNCTIONS */
+    var _addRows = function _addRows(rows) {
+        var saveRows = [].concat(toConsumableArray(rows));
+        if (!expandColumnKey) saveRows = saveRows.map(function (row) {
+            row.children = undefined;return row;
+        });
+        if (customFields) {
+            // Фильтрация по пользовательским параметрам
+            saveRows = saveRows.filter(function (sRow) {
+                var isValid = [];
+                customFields.forEach(function (field) {
+                    // Валидация по пользовательской логике функции validate
+                    if (field.validate) isValid.push(field.validate(sRow, _rows));
+
+                    // Создание или переобразование по пользовательской логике функции value
+                    if (field.value) sRow[field.name] = field.value(sRow, _rows);
+                });
+                // console.log("_addRows isValid", isValid);
+                if (!isValid.includes(false)) return sRow;
+            });
+        }
+        var _localRows = [].concat(toConsumableArray(_rows), toConsumableArray(saveRows));
+        _setRowsHandler(_localRows);
+        onTableEventsDispatch("onAddRows", _localRows);
+    };
+
+    var _addRow = function _addRow(row) {
+        var _row = _extends({}, row);
+        if (!expandColumnKey) _row.children = undefined;
+        var isValid = true;
+        if (customFields) {
+            var validations = [];
+            customFields.forEach(function (field) {
+                if (field.validate) validations.push(field.validate(_row, _rows));
+
+                if (field.value) _row[field.name] = field.value(_row, _rows);
+            });
+            isValid = !validations.includes(false);
+        }
+        if (isValid) {
+            var _localRows = [].concat(toConsumableArray(_rows), [_row]);
+            _setRowsHandler(_localRows);
+            onTableEventsDispatch("onAddRow", _localRows);
+        }
+    };
+
+    var _addRowAsCopy = function _addRowAsCopy() {
+        // console.log("_onClickAddAsCopy", selectedRow);
+        var _localRows = [].concat(toConsumableArray(_rows), [findNodeByRowKey(_rows, rowKey, _selectedRowKeys[0])]);
+        _setRowsHandler(_localRows);
+        onTableEventsDispatch("onAddRowAsCopy", _localRows);
+    };
+
+    var _editRow = function _editRow(row) {
+        // console.log("_onClickEdit", selectedRow);
+        var data = [].concat(toConsumableArray(_rows));
+        var key = row[rowKey];
+        loop(data, key, function (item, index, arr) {
+            data[index] = row;
+            _setRowsHandler(data);
+            _setSelectedRowsHandler(_selectedRowKeys, undefined, data);
+            onTableEventsDispatch("onEditRow", data);
+        });
+    };
+
+    var _removeRow = function _removeRow(event) {
+        // console.log("_onClickDelete", autoDeleteRows, selectedRowKeys);
+        var _localRows = _rows.filter(function (item) {
+            return !_selectedRowKeys.includes(item[rowKey]);
+        });
+        _setRowsHandler(_localRows);
+        _setSelectedRowsHandler();
+        onTableEventsDispatch("onRemoveRow", _localRows);
+    };
+
+    var _moveUpSelectedRow = function _moveUpSelectedRow() {
+        _moveUpRowByKey(_selectedRowKeys[0]);
+    };
+
+    var _moveUpRowByKey = function _moveUpRowByKey(rowKey) {
+        var data = [].concat(toConsumableArray(_rows));
+        loop(data, rowKey, function (item, index, arr) {
+            var newRowIndex = _getNewIndexRow(index, index - 1);
+            _changeIndexRow(index, newRowIndex, arr, data, "onMoveUpRow");
+        });
+    };
+
+    var _moveDownSelectedRow = function _moveDownSelectedRow() {
+        _moveDownRowByKey(_selectedRowKeys[0]);
+    };
+
+    var _moveDownRowByKey = function _moveDownRowByKey(rowKey) {
+        var data = [].concat(toConsumableArray(_rows));
+        loop(data, rowKey, function (item, index, arr) {
+            var newRowIndex = _getNewIndexRow(index, index + 1);
+            _changeIndexRow(index, newRowIndex, arr, data, "onMoveDownRow");
+        });
+    };
+
+    var _getNewIndexRow = function _getNewIndexRow(oldIndex, newIndex) {
+        return newIndex >= 0 && newIndex < _rows.length ? newIndex : oldIndex;
+    };
+
+    var _changeIndexRow = function _changeIndexRow(oldIndex, newIndex, arr, data, nameEvent) {
+        if (newIndex >= 0 && newIndex < arr.length) {
+            // let arr = [..._rows]; // Копируем массив
+            var item = arr.splice(oldIndex, 1); // Удаляем элемент со старого места
+            // console.log('_changeIndexRow => ',item);
+            arr.splice(newIndex > 0 ? newIndex : 0, 0, item[0]); // Ставим элемент на новое место
+            // console.log("_changeIndexRow", item[0]);
+            _setRowsHandler(data);
+            onTableEventsDispatch(nameEvent, data);
+        }
+    };
+
+    /** TREE FUNCTIONS */
+    var _onExpandedRowsChange = function _onExpandedRowsChange(expandedRowKeys) {
+        setExpandedRowKeys(expandedRowKeys);
+        onExpandedRowsChange(expandedRowKeys);
+    };
+
+    /** SELECTABLE FUNCTIONS */
+    var onChangeSelectedHandler = function onChangeSelectedHandler(selectedRowKeys, selectedRows) {
+        // console.log("onChangeSelectedHandler");
+        _setSelectedRowsHandler(selectedRowKeys, selectedRows);
+    };
+
+    var onSelectAllHandler = function onSelectAllHandler(selected, selectedRows, changeRows) {
+        // console.log("onSelectAllHandler");
+        var selectedKeys = selected ? selectedRows.map(function (row) {
+            return row[rowKey];
+        }) : [];
+        _setSelectedRowsHandler(selectedKeys, selectedRows);
+    };
+
+    /** VIEW FUNCTIONS */
+    var _rowClassName = function _rowClassName(rowData, rowIndex) {
+        // const {rowClassName} = props;
+        return [
+        // rowClassName,
+        _selectedRowKeys.includes(rowData[rowKey]) && "ant-table-row-selected", //
+        zebraStyle ? rowIndex % 2 === 0 ? "even" : "odd" : ""
+        // rowBordered ? 'bordered' : ''
+        ].join(" ");
+    };
+
+    var ExpandIcon = function ExpandIcon(_ref7) {
+        var Icon = _ref7.Icon,
+            restProps = objectWithoutProperties(_ref7, ["Icon"]);
+        return React.createElement(
+            "span",
+            _extends({}, restProps, { className: rtPrefix + "-table-expand-icon" }),
+            React.createElement(Icon, null)
+        );
+    };
+
+    var expandIconRender = function expandIconRender(_ref8) {
+        var expanded = _ref8.expanded,
+            onExpand = _ref8.onExpand,
+            record = _ref8.record;
+        return record.children && record.children.length === 0 ? React.createElement(ExpandIcon, { Icon: CaretUpOutlined, style: { visibility: "hidden" } }) : expanded ? React.createElement(ExpandIcon, { Icon: CaretDownOutlined, onClick: function onClick(e) {
+                return onExpand(record, e);
+            } }) : React.createElement(ExpandIcon, { Icon: CaretRightOutlined, onClick: function onClick(e) {
+                return onExpand(record, e);
+            } });
+    };
+
+    var _footer = function _footer(currentPageData) {
+        // console.log('_footer => ', currentPageData);
+        return _footerShow ? React.createElement(
+            React.Fragment,
+            null,
+            React.createElement(
+                "div",
+                { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
+                footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
+            ),
+            React.createElement(
+                "div",
+                { key: "footer-center-custom-side", className: rtPrefix + "-footer-center-custom-side" },
+                footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
+            ),
+            React.createElement(
+                "div",
+                { key: "footer-right-custom-side", className: rtPrefix + "-footer-right-custom-side" },
+                footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
+            ),
+            React.createElement(
+                "div",
+                { className: rtPrefix + "-footer-right-system-side" },
+                React.createElement(
+                    _Space,
+                    null,
+                    selectable ? React.createElement(
+                        React.Fragment,
+                        null,
+                        footerProps.showElements.includes("selected") ? React.createElement(
+                            "span",
+                            null,
+                            footerProps.selectedTitle,
+                            " ",
+                            _selectedRowKeys.length
+                        ) : null,
+                        footerProps.showElements.includes("loaded") ? React.createElement(
+                            "span",
+                            null,
+                            footerProps.loadedTitle,
+                            " ",
+                            flatten(getTableRowKeys(_rows, rowKey)).length
+                        ) : null
+                    ) : null,
+                    footerProps.showElements.includes("total") ? requestLoadCount !== noop && !expandColumnKey ? React.createElement(
+                        "span",
+                        null,
+                        footerProps.totalTitle,
+                        " ",
+                        _totalCountRows
+                    ) : React.createElement(
+                        "span",
+                        null,
+                        footerProps.totalTitle,
+                        " ",
+                        flatten(getTableRowKeys(_rows, rowKey)).length
+                    ) : null
+                )
+            )
+        ) : undefined;
+    };
+
+    var getColumns = function getColumns() {
+        return _columns.map(function (col, index) {
+            return _extends({}, col, {
+                onHeaderCell: function onHeaderCell(column) {
+                    return {
+                        column: column,
+                        // resizable: column.resizable,
+                        // width: column.width,
+                        onResize: onResizeHandler(index)
+                    };
+                }
+            });
+        });
+    };
+
+    var restProps = getObjectExcludedProps(props, excludeProps$1);
+    var expandableProps = expandColumnKey ? _extends({
+        defaultExpandAllRows: expandDefaultAll,
+        expandIcon: expandIconRender
+    }, expandable, {
+        expandedRowKeys: _expandedRowKeys,
+        onExpandedRowsChange: _onExpandedRowsChange
+    }) : {};
+
+    var rowSelectionProps = selectable ? _extends({
+        type: "checkbox",
+        fixed: true,
+        checkStrictly: !nodeAssociated,
+        selectedRowKeys: _selectedRowKeys,
+        onChange: onChangeSelectedHandler,
+        onSelectAll: onSelectAllHandler
+    }, rowSelection) : undefined;
+
+    return React.createElement(
+        "div",
+        { className: rtPrefix + "-table " + className, style: style },
+        React.createElement(
+            "div",
+            { className: rtPrefix + "-baseTable" },
+            React.createElement(
+                AutoResizer
+                // onResize={({ height, width }) => {setHeight(height); setWidth(width)} }
+                ,
+                null,
+                function (_ref9) {
+                    var height = _ref9.height,
+                        width = _ref9.width;
+                    return React.createElement(
+                        "div",
+                        { style: { width: width, height: height } },
+                        React.createElement(_Table, _extends({}, restProps, {
+
+                            /** Required */
+                            columns: getColumns(),
+                            dataSource: _rows
+                            // scroll={{ x: width, y: height - headerHeight }}
+                            , scroll: { y: height - headerHeight },
+                            pagination: _extends({ position: ["none", "none"] }, restProps.pagination, { pageSize: _rows.length })
+
+                            /** Base Props */
+                            , loading: loading
+
+                            /** Tree Props */
+                            , expandable: _extends({}, expandableProps)
+                            /** Selection Props */
+                            , rowSelection: rowSelectionProps
+
+                            /** View Props */
+                            , rowClassName: _rowClassName,
+                            footer: _footerShow ? _footer : undefined,
+                            components: {
+
+                                header: {
+                                    row: HeaderRow,
+                                    cell: HeaderCell
+                                },
+                                body: {
+                                    cell: BodyCell
+                                }
+                            }
+
+                            /** Events */
+                            , onChange: onChangeTable,
+                            onHeaderRow: onHeaderRowProps,
+                            onRow: onRowEvents
+                        }))
+                    );
+                }
+            )
+        )
+    );
+};
+
+Table$1.propTypes = {
+    /**
+     * REQUIRED
+     * */
+
+    /** Столбцы таблицы */
+    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+    /** Режим загрузки данных по скроллу */
+    infinityMode: PropTypes.bool,
+
+    /**
+     * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
+     * */
+
+    /** Строки по умолчанию */
+    defaultRows: PropTypes.arrayOf(PropTypes.object),
+
+    /** Ключи выделенных по умолчанию строк */
+    defaultSelectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+
+    /** Значение строки поиска по умолчанию строк */
+    defaultSearchValue: PropTypes.string,
+
+    /** Объект фильтрации по умолчанию */
+    defaultFilter: PropTypes.object,
+
+    /** Сортировка по умолчанию */
+    defaultSortBy: PropTypes.shape({
+        /** Ключ поля для сортировки */
+        key: PropTypes.string,
+        /** Направление сортировки */
+        order: PropTypes.oneOf(["asc", "desc"])
+    }),
+
+    /**
+     * ПРОПРЫ ДЛЯ ВНЕШНЕГО КОНТРОЛЯ ТАБЛИЦЫ
+     * */
+
+    /** Строки таблицы. Используется для контроля таблицы из вне. */
+    rows: PropTypes.arrayOf(PropTypes.object),
+
+    /** Функция задания строк таблицы. */
+    setRows: PropTypes.func,
+
+    /** Выделенные строки таблицы. */
+    selectedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+
+    /** Значение строки поиска */
+    searchValue: PropTypes.string,
+
+    /** Объект фильтрации */
+    filter: PropTypes.object,
+
+    /** Объект сортировки */
+    sortBy: PropTypes.shape({
+        /** Ключ поля для сортировки */
+        key: PropTypes.string,
+        /** Направление сортировки */
+        order: PropTypes.oneOf(["asc", "desc"])
+    }),
+
+    /**
+     * BASE PROPS
+     * */
+
+    /** Поле для уникальной идентификации строки */
+    rowKey: PropTypes.string,
+
+    /** Дополнительные поля и валидация в объекты таблицы
+     * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
+     * Можно как изменить существующие поля объекта, так и добавить новые поля объекта.
+     * `customFields` - массив объектов для дополнения или изменения полей объектов таблицы
+     * ```json
+     * [
+     *  {
+     * 		name: <String>,
+     * 		value: <func>,
+     * 		validate: <func>
+     * 	}
+     * ]
+     * ```
+     * `name` – Имя параметра в объекте
+     * `value` – Функция формирования значения - `(row, rows) => { return {} }`
+     * `validate` – Функция проверки значения - `(row, rows) => { return <Bool> }`
+     * Параметра **validate** работает **только** для модельного окна тип `select`.
+     * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
+     */
+    customFields: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
+     * `customColumnProps` - массив объектов `props` к `columns`. Один объект описывает доп. параметры для одной колонки
+     * ```json
+     * [
+     *  {
+     * 		name: <String>,
+     * 		cellRenderer: <func>,
+     * 		...advancedColProps
+     * 	}
+     * ]
+     * ```
+     * `name` – key колонки к которой надо применить дополнительные пропсы
+     * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
+     * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
+     */
+    customColumnProps: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * VIEW PROPS
+     * */
+
+    /** Вывод когда нет данных */
+    empty: PropTypes.element,
+
+    /** Отображение загрузки данных */
+    overlay: PropTypes.element,
+
+    /** Фиксированная ширина столбцов. Появится боковой скрол */
+    fixWidthColumn: PropTypes.bool,
+
+    footerProps: PropTypes.shape({
+
+        /** Высота подвала */
+        height: PropTypes.number,
+
+        /** Массив элементов футтера, которые надо отобразить
+         * ['selected', 'loaded', 'total'] */
+        showElements: PropTypes.arrayOf(PropTypes.string),
+
+        /** Заколовок для кол-ва выбранных объектов */
+        selectedTitle: PropTypes.string,
+
+        /** Заколовок для кол-ва загруженны объектов */
+        loadedTitle: PropTypes.string,
+
+        /** Заколовок для кол-ва всего объектов */
+        totalTitle: PropTypes.string,
+
+        /** Левый кастомный элемент командной панели */
+        leftCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
+
+        /** Центральный кастомный элемент командной панели */
+        centerCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)]),
+
+        /** Правый кастомный элемент командной панели */
+        rightCustomSideElement: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.object)])
+    }),
+
+    /** Высота заголовка таблицы */
+    headerHeight: PropTypes.number,
+
+    /** Высота строки таблицы */
+    rowHeight: PropTypes.number,
+
+    /** Custom row renderer
+     * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
+    rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+
+    /** Строки будут в зебро-стиле */
+    zebraStyle: PropTypes.bool,
+
+    /** Высота расширения */
+    estimatedRowHeight: PropTypes.number,
+
+    /** Отображать ли разделители ячеек в строке */
+    cellBordered: PropTypes.bool,
+
+    /** Отобрадать ли разделители строк */
+    rowBordered: PropTypes.bool,
+
+    className: PropTypes.string,
+
+    style: PropTypes.object,
+
+    /**
+     * LOAD DATA PROPS
+     * */
+
+    /** Порог в пикселях для вызова _onLoad.
+     * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
+    loadThreshold: PropTypes.number,
+
+    /** Размер страницы */
+    pageSize: PropTypes.number,
+
+    /** Функция запроса для конфигурации */
+    requestLoadConfig: PropTypes.func,
+
+    /** Функция запроса для загрузки строк (данных) */
+    requestLoadRows: PropTypes.func,
+
+    /** Функция запроса для загрузки строк (данных) */
+    requestLoadCount: PropTypes.func,
+
+    /** Имя параметра для поиска */
+    searchParamName: PropTypes.string,
+
+    /**
+     * SELECTABLE PROPS
+     * */
+
+    /** Таблица с возможностью выбора строки */
+    selectable: PropTypes.bool,
+
+    /**
+     * TREE PROPS
+     * */
+
+    /** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
+    nodeAssociated: PropTypes.bool,
+
+    /** Ключ колонки по которой строить иерархию */
+    expandColumnKey: PropTypes.string,
+
+    /** Открыть по умолчанию вложенность до уровня N или 'All' */
+    expandDefaultAll: PropTypes.bool,
+
+    /** Загружать ноды иерархии по одной */
+    expandLazyLoad: PropTypes.bool,
+
+    /** Поле в котором хранится ссылка на родителя */
+    expandParentKey: PropTypes.string,
+
+    /**
+     * EVENTS
+     * */
+
+    /** Событие при клике на строку (только при `selectable` = `false`)
+     * `({selected, rowData, rowIndex}) => {}` */
+    onRowClick: PropTypes.func,
+
+    /** Событие при двойном клике на строку.
+     * `({rowData, rowIndex, rowKey}) => {}` */
+    onRowDoubleClick: PropTypes.func,
+
+    /** События при открытии / закрытии ноды
+     * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
+    onRowExpand: PropTypes.func,
+
+    /** Событие при выборе строки.
+     * `([rowKeys], [rowDatas]) => {}` */
+    onSelectedRowsChange: PropTypes.func,
+
+    /** События при открытии / закрытии ноды
+     * `(expandedRowKeys) => {}` - массив ключей открытых нод */
+    onExpandedRowsChange: PropTypes.func,
+
+    /** SELECTED PANEL */
+
+    /** Отображать ли панель выбранных элементов */
+    showSelection: PropTypes.bool,
+
+    /** Строка или функция для отображения элементов списка выбранных
+     * Строка - имя поля
+     * Функция - рендер строк.
+     * `({ rowData, rowIndex }) => { return <Component> }` */
+    rowRenderShowSelection: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+
+    /** Путь в сторе куда класть выбранную строку таблицы */
+    dispatchPath: PropTypes.string,
+
+    /** Объект для подписки на изменения в STORE */
+    subscribe: PropTypes.arrayOf(PropTypes.object)
+};
+
+Table$1.defaultProps = {
+    size: "small",
+    bordered: true,
+    infinityMode: false,
+    editMode: false,
+    defaultRows: [],
+    defaultSelectedRowKeys: [],
+    defaultSearchValue: "",
+    defaultFilter: {},
+    defaultSortBy: {},
+
+    rows: [],
+    setRows: noop,
+    selectedRowKeys: [],
+    searchValue: "",
+    filter: {},
+    sortBy: {},
+
+    rowKey: "id",
+
+    empty: empty,
+    overlay: overlay,
+    fixWidthColumn: false,
+    footerProps: {
+        height: 30,
+        showElements: [],
+        selectedTitle: "Выделено:",
+        loadedTitle: "Загружено записей:",
+        totalTitle: "Всего записей:",
+        leftCustomSideElement: null,
+        centerCustomSideElement: null,
+        rightCustomSideElement: null
+    },
+    headerHeight: 30,
+    rowHeight: 30,
+    zebraStyle: false,
+    estimatedRowHeight: undefined,
+    cellBordered: false,
+    rowBordered: true,
+    className: "",
+    style: {},
+
+    loadThreshold: 300,
+    pageSize: 50,
+    requestLoadRows: undefined,
+    requestLoadCount: noop,
+    searchParamName: "searchLine",
+
+    selectable: false,
+
+    nodeAssociated: true,
+    expandColumnKey: undefined,
+    expandDefaultAll: true,
+    expandLazyLoad: false,
+    expandParentKey: "parentId",
+
+    onRowClick: noop,
+    onRowDoubleClick: noop,
+    onRowExpand: noop,
+    onSelectedRowsChange: noop,
+    onExpandedRowsChange: noop,
+
+    showSelection: false,
+
+    dispatchPath: undefined,
+    subscribe: []
+};
+
+// const mapStateToProps = (store, ownProps) => {
+//     const { subscribe } = ownProps;
+//     let state = {};
+//     if (subscribe && subscribe.length > 0) {
+//         subscribe.forEach(item => {
+//             const { name, path, extraData } = item;
+//             if (name && path)
+//                 state[name] = objectPath.get(store, path);
+//             if (name && extraData){
+//                 if(typeof extraData === 'object')
+//                     Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+//                 else
+//                     state[`${name}ExtraData`] = objectPath.get(store, extraData);
+//             }
+//         });
+//     }
+//     return state;
+// };
+// const mapDispatchToProps = (dispatch) =>
+//     bindActionCreators({ setDateStore: setDataStore }, dispatch);
+
+var Table$2 = connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$1);
+
+var _this = undefined;
+
+var defaultProps$1 = {
+    defaultFilter: {},
+    rowKey: "id",
+    pageSize: 50,
+    requestLoadConfig: noop,
+    expandColumnKey: undefined,
+    expandLazyLoad: false,
+    expandParentKey: "parentId",
+    customColumnProps: []
+};
+
+var ConfigLoader = function ConfigLoader(props) {
+
+    /** Конфигурация таблицы */
+    var _useState = useState(undefined),
+        _useState2 = slicedToArray(_useState, 2),
+        tableConfig = _useState2[0],
+        setTableConfig = _useState2[1];
+
+    var _defaultProps$props = _extends({}, defaultProps$1, props),
+        defaultFilter = _defaultProps$props.defaultFilter,
+        defaultSortBy = _defaultProps$props.defaultSortBy,
+        rowKey = _defaultProps$props.rowKey,
+        pageSize = _defaultProps$props.pageSize,
+        requestLoadConfig = _defaultProps$props.requestLoadConfig,
+        expandColumnKey = _defaultProps$props.expandColumnKey,
+        expandParentKey = _defaultProps$props.expandParentKey,
+        customColumnProps = _defaultProps$props.customColumnProps,
+        fixWidthColumn = _defaultProps$props.fixWidthColumn,
+        selectable = _defaultProps$props.selectable;
+
+    useEffect(function () {
+        var cleanupFunction = false;
+        var loadData = function () {
+            var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (requestLoadConfig) {
+                                    // console.log("requestLoadConfig => ", typeof requestLoadConfig);
+                                    // console.log("requestLoadRows => ", typeof props.requestLoadRows);
+                                    requestLoadConfig().then(function (response) {
+                                        // let result = response.data;
+                                        // console.log('requestLoadConfig -> ', response.data);
+                                        if (!cleanupFunction) {
+                                            // setTableConfig(response.data);
+                                            configParser(response.data);
+                                        }
+                                    }).catch(function (error) {
+                                        return notificationError(error, "Ошибка получения конфигурации");
+                                    });
+                                }
+
+                            case 1:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this);
+            }));
+
+            return function loadData() {
+                return _ref.apply(this, arguments);
+            };
+        }();
+        loadData().then(function (r) {
+            return r;
+        });
+        return function () {
+            return cleanupFunction = true;
+        };
+    }, [props]);
+
+    var configParser = function configParser(config) {
+
+        // Массив колонок
+        var _columns = [];
+        // Сортировка по умолчанию
+        var _defaultSorter = [];
+        // Счетчик видимых полей
+        var visibleIndex = 0;
+        // Индекс колонки около которой ставить иконку дерева
+        var expandIconColumnIndex = -1;
+        // Ключ иерархии
+        var _expandColumnKey = config && config.hierarchical && config.hierarchyView ? config.hierarchyView : expandColumnKey;
+
+        config && config.fields && config.fields.forEach(function (item, index) {
+            // console.log('configParser item => ', item);
+
+            // Дополнительные props колонок
+            var colProps = customColumnProps && customColumnProps.find(function (render) {
+                return render.name === item.name || render.name === item.alias;
+            });
+
+            // Если поле не надо показывать, то след цикл
+            if (!item.visible || colProps && colProps.hidden) return;
+
+            // Индекс или имя поля в данных
+            var dataIndex = item.alias ? item.alias : item.name;
+            // Сортировка по умолчанию
+            if (_defaultSorter.length === 0 || _defaultSorter[1] === undefined) _defaultSorter = getSortBy(defaultSortBy, item.defaultSort, dataIndex);
+
+            // Ширина колонок
+            var widthCol = fixWidthColumn ? { width: item.width, maxWidth: 1000 } : {};
+            // Увеличить счетчик видимых полей
+            visibleIndex++;
+            // Проверка у этого ли поля ставить иконку дерева
+            if (_expandColumnKey === dataIndex) expandIconColumnIndex = visibleIndex + (selectable ? 1 : -1);
+            // Формирование title колонки
+            var titleNode = colProps && colProps.headerRenderer ? typeof colProps.headerRenderer === "function" ? colProps.headerRenderer() : colProps.headerRenderer : item.header ? item.header : item.name;
+
+            var column = _extends({
+                key: dataIndex,
+                title: titleNode,
+                dataIndex: dataIndex,
+                align: item.align,
+                resizable: item.resizable,
+                sorter: item.sortable ? item.sortable : undefined,
+                ellipsis: true,
+                defaultSortOrder: _defaultSorter[1]
+            }, widthCol, colProps);
+            // Дополнительные props для компонента ячейки
+            column.onCell = function (rowData, rowIndex) {
+                return { column: column, rowData: rowData, rowIndex: rowIndex };
+            };
+            // Рендер ячейки
+            column.render = function (cellData, rowData, rowIndex) {
+                if (colProps && colProps.cellRenderer) return React.createElement(colProps.cellRenderer, {
+                    column: column,
+                    cellData: cellData,
+                    rowData: rowData,
+                    rowIndex: rowIndex });else return item.typeData === "json" ? JSON.stringify(cellData) : cellData ? cellData : "---";
+            };
+            _columns.push(column);
+        });
+
+        var _defaultFilter = void 0;
+        if (config && config.hierarchical && config.hierarchyLazyLoad) {
+            var parentKey = config.hierarchyField ? config.hierarchyField.split("/")[1] : expandParentKey;
+            _defaultFilter = _extends({}, defaultFilter, defineProperty({}, parentKey, null));
+        } else _defaultFilter = defaultFilter;
+
+        // console.log('expandIconColumnIndex => ', _expandColumnKey, expandIconColumnIndex);
+        setTableConfig({
+            columns: _columns,
+            defaultSortBy: _defaultSorter[0],
+            defaultFilter: _defaultFilter,
+            rowKey: config && config.hierarchical && config.hierarchyField ? config.hierarchyField.split("/")[0] : rowKey,
+            // expandParentKey:
+            //     config && config.hierarchical && config.hierarchyField
+            //         ? config.hierarchyField.split('/')[1]
+            //         : expandParentKey,
+            expandColumnKey: _expandColumnKey,
+            expandable: { expandIconColumnIndex: expandIconColumnIndex },
+            // expandLazyLoad:
+            //     config && config.hierarchical && config.hierarchyLazyLoad
+            //         ? config.hierarchyLazyLoad
+            //         : expandLazyLoad,
+            pageSize: config && config.hierarchical ? 1 : pageSize
+        });
+    };
+
+    if (tableConfig) return React.createElement(Table$2, _extends({}, props, tableConfig));else return null;
+};
+
+var TableWrapper = function TableWrapper(props) {
+    var type = props.type,
+        restProps = __rest(props, ["type"]);
+    if (type) return type === 'rt' ? jsx(ConfigLoader$1, __assign({}, restProps), void 0) : jsx(ConfigLoader, __assign({}, restProps), void 0);else return props.infinityMode ? jsx(ConfigLoader$1, __assign({}, props), void 0) : jsx(ConfigLoader, __assign({}, props), void 0);
+};
+
+var excludeProps = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
+var modalTypes = ['save', 'select', 'view'];
+
+var defaultProps = {
+    subscribe: [],
+    dispatch: {},
+    methodSaveForm: 'POST'
+};
+
+var getDefaultFooterProps = function getDefaultFooterProps(modal) {
+
+    var okText = '';
+    var cancelText = '';
+    var modalTitle = '';
+
+    switch (modal.type) {
+        case 'save':
+            okText = 'Сохранить';
+            cancelText = 'Отмена';
+            break;
+        case 'select':
+            okText = 'Добавить';
+            cancelText = 'Отмена';
+            break;
+        case 'view':
+            okText = 'Закрыть';
+            break;
+    }
+
+    if (modal.okText) okText = modal.okText;
+
+    if (modal.cancelText) cancelText = modal.cancelText;
+
+    if (modal.title) modalTitle = modal.title;
+
+    return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
+};
+
+/**
+ * Компонент модального окна
+ */
+var Modal$1 = function Modal(props) {
+    var buttonProps = props.buttonProps,
+        toolTipProps = props.toolTipProps,
+        modalConfig = props.modalConfig,
+        modalData = props.modalData,
+        subscribe = props.subscribe,
+        dispatch = props.dispatch;
+
+    var modalProps = _extends({}, getDefaultFooterProps(modalConfig), getObjectExcludedProps(modalConfig, excludeProps));
+
+    var _useState = useState(false),
+        _useState2 = slicedToArray(_useState, 2),
+        visible = _useState2[0],
+        setVisible = _useState2[1];
+
+    var _useState3 = useState({}),
+        _useState4 = slicedToArray(_useState3, 2),
+        _modalData = _useState4[0],
+        _setModalData = _useState4[1];
+
+    var _useState5 = useState({}),
+        _useState6 = slicedToArray(_useState5, 2),
+        _buttonProps = _useState6[0],
+        setButtonProps = _useState6[1];
+
+    var isMounted = useMounted();
+
+    useEffect(function () {
+        _setModalData(modalData);
+    }, []);
+
+    /** Подписка на изменение props[subscribe.name] в сторе */
+    subscribe.map(function (item) {
+        return useEffect(function () {
+            // if(!isMounted && !item.name)
+            //     return;
+            if ((item.withMount || isMounted) && item.name) {
+                // console.log("storeHOC => subscribe: ", props[subscribe.name]);
+                //     let extraData = {};
+                //     if (item.extraData) {
+                //         if (typeof item.extraData === 'object')
+                //             Object.keys(item.extraData).forEach((key) => extraData[key] = props[`${item.name}.extraData.${key}`]);
+                //         else
+                //             extraData = props[`${item.name}ExtraData`];
+                //     }
+                item.onChange && item.onChange({
+                    value: props[item.name],
+                    extraData: getExtraData(item, props), //extraData,
+                    setModalData: setModalData,
+                    setButtonProps: setButtonProps,
+                    openModal: _onOpenModal,
+                    closeModal: _onCloseModal
+                });
+            }
+            // console.log("Change Props[2]: ", props.subscribeЗф);
+        }, [props[item.name]]);
+    });
+
+    var setModalData = function setModalData(value) {
+        return _setModalData && _setModalData(value);
+    };
+    var _onOpenModal = function _onOpenModal() {
+        return setVisible(true);
+    };
+    var _onCloseModal = function _onCloseModal() {
+        return setVisible(false);
+    };
+
+    var onFinishHandler = function onFinishHandler(values) {
+        //} {type, row, requestSaveRow}) => {
+        // console.log("Modal Events => before dispatchToStore: ", dispatch);
+        var saveObj = _extends({}, _modalData, values);
+
+        if (modalProps.requestSaveForm && modalProps.methodSaveForm) {
+            // console.log("Modal Events => type: ", type, method, row, _modalData);
+            modalProps.requestSaveForm({
+                method: modalProps.methodSaveForm,
+                data: saveObj
+            }).then(function (response) {
+                _notification.success({
+                    message: 'Сохранение прошло успешно'
+                });
+                modalProps.onOk && modalProps.onOk(saveObj, response.data);
+                modalProps.onFinish && modalProps.onFinish(saveObj, response.data);
+                dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
+                _onCloseModal();
+            }).catch(function (error) {
+                return notificationError(error, 'Ошибка при сохранении');
+            });
+        } else {
+            modalProps.onOk && modalProps.onOk(saveObj);
+            modalProps.onFinish && modalProps.onFinish(saveObj);
+            dispatchToStore({ dispatch: dispatch, setDateStore: props.setDateStore, value: saveObj });
+            _onCloseModal();
+        }
+    };
+
+    var onFinishFailedHandler = function onFinishFailedHandler(errorInfo) {
+        // console.log('FormModal Failed:', errorInfo);
+        console.error("FormModal fields failed: ", errorInfo);
+        props.onFinishFailed && props.onFinishFailed(errorInfo);
+    };
+
+    var loadInitDataHandler = function loadInitDataHandler(callBack) {
+        return formConfig.loadInitData(callBack, _modalData);
+    };
+
+    var _onCancelHandler = function _onCancelHandler(e) {
+        // setVisibleModals({ ...visibleModals, [modal.type]: false });
+        // form.resetFields();
+        _onCloseModal();
+        if (modalProps.onCancel) modalProps.onCancel(e);
+    };
+
+    var defaultFooter = [{
+        componentType: 'Item',
+        child: _extends({
+            componentType: 'Button',
+            label: modalProps.cancelText,
+            className: 'mr-8',
+            onClick: _onCancelHandler
+        }, modalProps.cancelButtonProps)
+    }, {
+        componentType: 'Item',
+        child: _extends({
+            componentType: 'Button',
+            label: modalProps.okText,
+            type: modalProps.okType,
+            htmlType: 'submit'
+        }, modalProps.okButtonProps)
+    }];
+
+    var formConfig = _extends({
+        footer: defaultFooter,
+        loadInitData: function loadInitData(callBack, row) {
+            return callBack(row);
+        }
+    }, modalProps.form);
+
+    return React.createElement(
+        React.Fragment,
+        null,
+        React.createElement(
+            _Tooltip,
+            toolTipProps,
+            React.createElement(
+                _Button,
+                _extends({
+                    type: "primary"
+                }, buttonProps, _buttonProps, {
+                    onClick: _onOpenModal
+                }),
+                buttonProps && buttonProps.label
+            )
+        ),
+        React.createElement(
+            _Modal,
+            _extends({}, modalProps, {
+                centered: true,
+                destroyOnClose: true,
+                visible: visible,
+                onCancel: _onCancelHandler,
+                bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
+                footer: null
+            }),
+            React.createElement(
+                Form$2,
+                _extends({}, formConfig, {
+                    onFinish: onFinishHandler,
+                    onFinishFailed: onFinishFailedHandler,
+                    loadInitData: loadInitDataHandler
+                }),
+                props.children
+            )
+        )
+    );
+};
+
+Modal$1.propTypes = {
+
+    /** Свойства [Button](https://ant.design/components/button/) из Ant Design
+     * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
+    buttonProps: PropTypes.object,
+
+    /** Объект модального окна. Стандартная конфигурация. */
+    modalConfig: PropTypes.shape({
+        /** Тип модального окна */
+        type: PropTypes.oneOf(modalTypes),
+
+        /** Запрос для автоматического сохранения формы */
+        requestSaveForm: PropTypes.func,
+
+        /** HTTP Метод, передаваемый в запрос сохранения */
+        methodSaveForm: PropTypes.string,
+
+        /** Пропсы формы.
+         * Если верстка через конфиги, то пропс body обязателен */
+        form: PropTypes.object
+    }),
+
+    /** Данные для модального окна */
+    modalData: PropTypes.object,
+
+    /** Путь в сторе куда класть данных окна после закрытия */
+    dispatch: PropTypes.object,
+
+    /** Объект для подписки на изменения в STORE.
+     * Параметры в `onChange`:
+     * * `value`: значение за которым ведется наблюдение,
+     * * `extraData`: дополнительные данные, передаваемые при срабатывании события
+     * * `setModalData`: функция задания объекта формы
+     * * `setButtonProps`: функция задания пропсов кнопке
+     * * `openModal`: функция открытия модального окна
+     * * `closeModal`: функция закрытия модального окна */
+    subscribe: PropTypes.arrayOf(PropTypes.object)
+};
+
+Modal$1.defaultProps = defaultProps;
+//
+// const mapStateToProps = (store, ownProps) => {
+//     const {subscribe} = ownProps;
+//     let state = {};
+//     if(subscribe && subscribe.length > 0){
+//         subscribe.forEach(item => {
+//             const {name, path, extraData} = item;
+//             if(name && path)
+//                 state[name] = objectPath.get(store, path);
+//             if(name && extraData)
+//                 if(typeof extraData === 'object')
+//                     Object.keys(extraData).forEach( (key) => state[`${name}.extraData.${key}`] = objectPath.get(store, extraData[key]) );
+//                 else
+//                     state[`${name}ExtraData`] = objectPath.get(store, extraData);
+//         })
+//     }
+//     return state;
+// };
+// const mapDispatchToProps = (dispatch) =>
+//     bindActionCreators( { setDateStore: setDataStore, }, dispatch);
+
+var Modal$2 = connect(mapStateToProps, mapDispatchToProps$1)(Modal$1);
+
+/** Custom компонент */
+var Custom$1 = function Custom(props) {
+    var children = props.children;
+    var childNode = null;
+    var childProps = null;
+    if (Array.isArray(children)) {
+        console.warn('Custom component: `children` is array. Don\'t render component');
+        return null;
+    } else if (props.render) {
+        // console.log('childNode = props.render')
+        childNode = props.render;
+        childProps = __assign(__assign({}, props), { componentType: 'Custom' });
+        return render(childNode)(childProps);
+    } else if (React.isValidElement(children)) {
+        // console.log('childNode = children')
+        childProps = __assign(__assign(__assign({}, children.props), props), { componentType: 'Custom' });
+        return React.cloneElement(children, childProps);
+    } else {
+        console.warn('Custom component: not exist valid render');
+        return null;
+    }
+};
+
+var Switcher$1 = function Switcher(props) {
+    var value = props.value;
+    var _a = useState(0),
+        _value = _a[0],
+        _setValue = _a[1];
+    useEffect(function () {
+        if (value !== undefined && value < props.children.length) {
+            _setValue(value);
+        }
+    }, [value]);
+    return props.children[_value];
+};
+
+// import AntTransfer, { TransferProps } from "antd/lib/transfer";
 // General
-var Button = classic.Button;
-var Title = classic.Title;
-var Text = classic.Text;
-var DateText = classic.DateText;
-var Divider = classic.Divider;
-var Layout = classic.Layout;
-var Row = classic.Row;
-var Col = classic.Col;
-var Space = classic.Space;
-var Checkbox = classic.Checkbox;
-var DatePicker = classic.DatePicker;
-var Form = classic.Form;
-var FormHeader = classic.FormHeader;
-var FormBody = classic.FormBody;
-var FormFooter = classic.FormFooter;
-var FormList = classic.FormList;
-var InputNumber = classic.InputNumber;
-var Input = classic.Input;
-var Search = classic.Search;
-var TextArea = classic.TextArea;
-var Password = classic.Password;
-var RadioGroup = classic.RadioGroup;
-var Switch = classic.Switch;
-var Slider = classic.Slider;
-var Select = classic.Select;
-var TreeSelect = classic.TreeSelect;
-var Transfer = classic.Transfer;
-var TimePicker = classic.TimePicker;
-var UploadFile = classic.UploadFile;
-var Collapse = classic.Collapse;
-var List = classic.List;
-var Popover = classic.Popover;
-var Tooltip = classic.Tooltip;
-var Tabs = classic.Tabs;
-var TabPane = classic.TabPane;
-var Modal = classic.Modal;
-var Table = classic.Table;
-var RtTable = classic.RtTable;
-var AntTable = classic.AntTable;
-var Custom = classic.Custom;
-var Switcher = classic.Switcher;
+var Button = withItem(Button$1);
+var Title = withLabel(AntTitle);
+var Text = withLabel(AntText);
+var DateText = withStore(TypographyDate);
+// Layout
+var Divider = withLabel(AntDivider);
+var Row = withStore(AntRow);
+var Col = withStore(AntCol);
+var Layout = withStore(Layout$1);
+var Space = withStore(AntSpace);
+// Data Entry
+var Checkbox = withLabel(AntCheckbox);
+var DatePicker = withPlaceholder(RtDatePicker, 'Выберите дату');
+var Form = Form$2;
+var FormHeader = FormHeader$1;
+var FormBody = FormBody$1;
+var FormFooter = FormFooter$1;
+var FormList = withStore(AntForm.List);
+var InputNumber = withPlaceholder(AntInputNumber, 'Введите значение');
+var Input = withPlaceholder(AntInput, 'Введите значение');
+var Search = searchWrapper(AntSearch, 'Поиск');
+var TextArea = withPlaceholder(AntTextArea, 'Введите текст');
+var Password = withPlaceholder(AntPassword, 'Введите пароль');
+var Radio = withStore(AntRadio);
+var RadioButton = withStore(AntRadio.Button);
+var RadioGroup = withStore(AntRadio.Group);
+var Switch = withStore(AntSwitch);
+var Slider = withStore(AntSlider);
+var Select = withPlaceholder(Select$1, 'Выберите значение');
+var TreeSelect = withPlaceholder(TreeSelect$1, 'Выберите значение');
+var TimePicker = withPlaceholder(RtTimePicker, 'Выберите время');
+var UploadFile = withStore(UploadFile$1);
+// Data Display
+var Collapse = withStore(AntCollapse);
+var CollapsePanel = withStore(AntCollapse.Panel);
+var List = withStore(AntList);
+var Popover = withStore(AntPopover);
+var Tooltip = withStore(AntTooltip);
+var Tabs = withStore(AntTabs);
+var TabPane = withStore(TabPane$1);
+var Table = withItem(TableWrapper);
+var RtTable = withItem(ConfigLoader$1);
+var AntTable = withItem(ConfigLoader);
+// Feedback
+var Modal = withItem(Modal$2);
+// Rt-design
+var Custom = withStore(Custom$1);
+var Switcher = withStore(Switcher$1);
+// export const Transfer:  FunctionComponent<TransferProps<any>> =     withStore(AntTransfer);]
 
-export { AntTable, Button, Checkbox, Col, Collapse, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, Transfer, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDateStore };
+export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore };
 //# sourceMappingURL=index.es.js.map
