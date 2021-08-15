@@ -1,3 +1,13 @@
+## 0.0.74
+
+- Fix bug with reload component after change store
+- Fix FormBody. Error in console noPadding and scrollable
+- Change call withStore
+- Change Upload props logic.
+  - Not need valuePropName
+  - Init value struct `{ dataObject: {...} }`
+  - Dispatch struct `{ dataObject: {...}, file: {...} }`
+
 ## 0.0.73
 
 - Add TypeScript to project

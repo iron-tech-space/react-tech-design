@@ -52,13 +52,14 @@ export const withLabel = (Component: React.ComponentType) => (props: any) =>
 export const withPlaceholder = (Component: React.ComponentType, placeholder: string) => (props: any) =>
     withStore(Component)({...props, placeholder: (props && props.placeholder) ? props.placeholder : placeholder})
 
-export const withStore = <T extends unknown>(Component: React.ComponentType<any>) => (props: any) => {
-    const {itemProps} = props;
-    return withItem(storeConnect(Component, itemProps))(props);
+export const withStore = (Component: React.ComponentType<any>) => {
+    let StoreComponent = storeConnect(Component);
+    return (props: any) => withItem(StoreComponent)(props);
 }
 
-export const withItem = (Component: React.ComponentType) => (props: any) => {
+export const withItem = (Component: React.ComponentType<any>) => (props: any) => {
     const {itemProps, ...rest} = props;
+    // console.log('withItems ', props)
     return render(AntForm.Item)({
         ...itemProps,
         noStyle: !(itemProps && itemProps.label),

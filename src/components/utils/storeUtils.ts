@@ -33,6 +33,7 @@ export const mapStateToProps = (store: any, ownProps: StoreProps) => {
         // console.log('subscribe to ', dispatch.extraData)
         state.dispatchExtraData = objectPath.get(store, dispatch.extraData);
     }
+    // console.log('mapStateToProps', state)
     return state;
 };
 export const mapDispatchToProps = (dispatch: any) =>

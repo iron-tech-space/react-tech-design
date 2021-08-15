@@ -10,10 +10,16 @@ export function getValueFromMultiSelect(name: any, keys: any): any;
 export function getValueFromSelectTable(rows: any): any;
 export function getObjectExcludedProps(object: any, exclude: any): {};
 export function notificationError(error: any, message: any): void;
-export function dispatchToStore({ dispatch, setDateStore, value, extraData }: {
+export function dispatchToStore({ dispatch, setDataStore, value, extraData }: {
     dispatch: any;
-    setDateStore: any;
+    setDataStore: any;
     value: any;
     extraData: any;
+}): void;
+export function dispatchToStoreEx({ dispatch, path, type, value }: {
+    dispatch: any;
+    path: any;
+    type: any;
+    value: any;
 }): void;
 export function getSortBy(clientSortBy: any, serverSortBy: any, dataIndex: any): any[];
