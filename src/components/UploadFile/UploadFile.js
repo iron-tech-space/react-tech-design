@@ -7,7 +7,7 @@ import { noop } from "../utils/baseUtils";
 
 const defaultProps = {
     requestUploadFile: noop,
-    dataObject: {},
+    dataObject: undefined,
     onCompletedUpload: noop,
     onFailedUpload: noop,
     uploadProps: {},
@@ -19,6 +19,7 @@ const defaultProps = {
 const UploadFile = props => {
 
     const {
+        value,
         requestUploadFile,
         dataObject,
         onCompletedUpload,
@@ -29,10 +30,11 @@ const UploadFile = props => {
     } = props
 
     const _uploadFile = (file) => {
-        // console.log('beforeUpload dataObject => ', dataObject);
+        // console.log('beforeUpload dataObject => ', dataObject, value, dataObject || value.dataObject);
         notification(file, 'loading');
         if (requestUploadFile) {
-            requestUploadFile({ file: file, dataObject })
+            const _dataObject = dataObject || value.dataObject
+            requestUploadFile({ file: file, dataObject: _dataObject })
                 .then((response) => {
                     notification(file, 'success');
                 })
@@ -58,7 +60,7 @@ const UploadFile = props => {
             case 'success':
                 antNotification.success(notifProps);
                 onCompletedUpload(file);
-                props.onChange(file);
+                props.onChange({...value, file});
                 break;
             case 'error':
                 antNotification.error(notifProps);

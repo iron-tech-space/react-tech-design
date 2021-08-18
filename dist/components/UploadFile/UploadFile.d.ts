@@ -16,7 +16,7 @@ declare namespace UploadFile {
 import PropTypes from "prop-types";
 declare namespace defaultProps {
     export { noop as requestUploadFile };
-    const dataObject_1: {};
+    const dataObject_1: undefined;
     export { dataObject_1 as dataObject };
     export { noop as onCompletedUpload };
     export { noop as onFailedUpload };

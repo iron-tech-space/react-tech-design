@@ -9,9 +9,7 @@ const defaultProps = {
     valuePropName: 'value',
 };
 
-export const withStore = (Component, antFormItemProps) => {
-
-    const withStoreProps = { ...defaultProps, ...antFormItemProps };
+export const withStore = (Component) => {
 
     return connect(mapStateToProps, mapDispatchToProps)( (props) => {
 
@@ -25,9 +23,9 @@ export const withStore = (Component, antFormItemProps) => {
 
         const [subscribeProps, setSubscribeProps] = useState({});
 
-        const {trigger, valuePropName} = withStoreProps;
+        const {trigger, valuePropName} = { ...defaultProps, ...props.itemProps };
 
-        const excludeProps = ['componentType', 'setDataStore', 'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
+        const excludeProps = ['itemProps', 'componentType', 'setDataStore', 'subscribe', ...subscribe.map(item => item.name), 'dispatch', 'dispatchExtraData']; // ...subscribe.map(item => item.name),
 
         const isMounted = useMounted()
 

@@ -29,10 +29,11 @@ export const FormHeader = (props) =>
 
 /** Компонент тела формы */
 export const FormBody = (props) => {
+    const {noPadding, scrollable, ...rest} = props;
     let cls = [`${rtPrefix}-form-body`];
-    props.noPadding && cls.push(`${rtPrefix}-form-body-no-padding`);
-    props.scrollable && cls.push(`${rtPrefix}-form-body-scrollable`);
-    return <div {...props} className={cls.join(" ")}>{props.children}</div>
+    noPadding && cls.push(`${rtPrefix}-form-body-no-padding`);
+    scrollable && cls.push(`${rtPrefix}-form-body-scrollable`);
+    return <div {...rest} className={cls.join(" ")}/>
 }
 
 /** Компонент подвала формы */

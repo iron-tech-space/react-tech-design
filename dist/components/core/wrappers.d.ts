@@ -39,5 +39,5 @@ export interface StoreProps {
 export declare const searchWrapper: (Component: React.ComponentType, placeholder: string) => (props: any) => JSX.Element;
 export declare const withLabel: (Component: React.ComponentType) => (props: any) => JSX.Element;
 export declare const withPlaceholder: (Component: React.ComponentType, placeholder: string) => (props: any) => JSX.Element;
-export declare const withStore: <T extends unknown>(Component: React.ComponentType<any>) => (props: any) => JSX.Element;
-export declare const withItem: (Component: React.ComponentType) => (props: any) => JSX.Element;
+export declare const withStore: (Component: React.ComponentType<any>) => (props: any) => JSX.Element;
+export declare const withItem: (Component: React.ComponentType<any>) => (props: any) => JSX.Element;

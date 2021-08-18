@@ -1,1 +1,1 @@
-export function withStore(Component: any, antFormItemProps: any): any;
+export function withStore(Component: any): any;

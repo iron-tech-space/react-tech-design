@@ -15,9 +15,9 @@ export interface ButtonProps extends AntButtonProps, StoreProps {
 
 /** Компонент кнопки со всеми пропрами AntButton */
 const Button: FunctionComponent<ButtonProps> = (props: ButtonProps) => {
-    const Component = withStore(AntButton, { trigger: 'onClick' });
+    const Component = withStore(AntButton);
     const onClick = (e: React.MouseEvent<HTMLElement>) => props.onClick && props.onClick(e, props.field);
-    return renderLabel(Component)({...props, onClick: onClick, componentType: 'Button'})
+    return renderLabel(Component)({...props, itemProps: { trigger: 'onClick' }, onClick: onClick, componentType: 'Button'})
 }
 
 export default Button;
