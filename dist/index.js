@@ -5893,10 +5893,9 @@ var withStore = function withStore(Component) {
 };
 var withItem = function withItem(Component) {
     return function (props) {
-        var itemProps = props.itemProps,
-            rest = __rest(props, ["itemProps"]);
+        var itemProps = props.itemProps;
         // console.log('withItems ', props)
-        return render(_Form__default['default'].Item)(__assign(__assign({}, itemProps), { noStyle: !(itemProps && itemProps.label), children: render(Component)(rest) }));
+        return render(_Form__default['default'].Item)(__assign(__assign({}, itemProps), { noStyle: !(itemProps && itemProps.label), children: render(Component)(props) }));
     };
 };
 

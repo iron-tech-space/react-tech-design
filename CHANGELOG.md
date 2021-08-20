@@ -1,3 +1,7 @@
+## 0.0.75
+
+- Fix bug withItem props
+
 ## 0.0.74
 
 - Fix bug with reload component after change store

@@ -58,12 +58,12 @@ export const withStore = (Component: React.ComponentType<any>) => {
 }
 
 export const withItem = (Component: React.ComponentType<any>) => (props: any) => {
-    const {itemProps, ...rest} = props;
+    const {itemProps} = props;
     // console.log('withItems ', props)
     return render(AntForm.Item)({
         ...itemProps,
         noStyle: !(itemProps && itemProps.label),
-        children: render(Component)(rest)
+        children: render(Component)(props)
     })
 }
 
