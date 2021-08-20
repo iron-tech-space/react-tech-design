@@ -2,6 +2,7 @@ import RtTable from "./ReactBaseTable/ConfigLoader";
 import AntTable from "./AntTable/ConfigLoader";
 import React, { FunctionComponent, ReactNode } from "react";
 import { Request, sortBy } from "../core/interfaces";
+import { FormItemProps as AntFormItemProps } from "antd/lib/form/FormItem";
 export { RtTable, AntTable };
 export declare const TableWrapper: FunctionComponent<TableProps>;
 export interface TablesSubscribeOnChangeOptions {
@@ -37,6 +38,8 @@ export interface TablesSubscribeOnChangeOptions {
     setSubscribeProps: (props?: any) => void;
 }
 export interface TableProps {
+    /** Объект с props для Form Item */
+    itemProps?: AntFormItemProps;
     /** Тип таблицы */
     type?: 'rt' | undefined;
     /** Столбцы таблицы */
@@ -194,6 +197,12 @@ export interface TableProps {
     }) => void | string;
     /** Путь в сторе куда класть выбранную строку таблицы */
     dispatchPath?: string;
+    /** Параметры записи в Store изменений компонента  */
+    dispatch?: {
+        path: string;
+        type?: 'event' | undefined;
+        extraData?: any;
+    };
     /** Объект для подписки на изменения в STORE */
     subscribe?: {
         /** Имя параметра в props с которым связать значение Store */

@@ -44,6 +44,11 @@ declare namespace Select {
         export { searchParamName_1 as searchParamName };
         const lostParamName_1: string;
         export { lostParamName_1 as lostParamName };
+        export function optionConverter_1(option: any): {
+            label: any;
+            value: any;
+        };
+        export { optionConverter_1 as optionConverter };
     }
 }
 import PropTypes from "prop-types";

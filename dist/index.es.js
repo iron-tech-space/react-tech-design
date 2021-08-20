@@ -6618,7 +6618,10 @@ Select$1.defaultProps = {
 	widthControl: '100%',
 	pageSize: 50,
 	searchParamName: 'name',
-	lostParamName: 'id'
+	lostParamName: 'id',
+	optionConverter: function optionConverter(option) {
+		return { label: option.name, value: option.id };
+	}
 };
 
 var excludeProps$2 = ['componentType', 'defaultSortBy', 'defaultFilter', 'defaultSearchValue', 'sortBy', 'filter', 'searchValue', 'searchParamName', 'requestLoadRows', 'optionConverter', 'treeData'];
@@ -6814,7 +6817,10 @@ TreeSelect$1.defaultProps = {
     defaultFilter: {},
     defaultSearchValue: undefined,
     requestLoadRows: undefined,
-    searchParamName: 'name'
+    searchParamName: 'name',
+    optionConverter: function optionConverter(option) {
+        return { label: option.name, value: option.id, children: option.children };
+    }
 };
 
 var defaultProps$3 = {
@@ -10422,7 +10428,6 @@ var Modal = withItem(Modal$2);
 // Rt-design
 var Custom = withStore(Custom$1);
 var Switcher = withStore(Switcher$1);
-// export const Transfer:  FunctionComponent<TransferProps<any>> =     withStore(AntTransfer);]
 
 var rtdReducer = function rtdReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};

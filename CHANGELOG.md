@@ -1,3 +1,7 @@
+## 0.0.76
+
+- Fix bugs with types
+
 ## 0.0.75
 
 - Fix bug withItem props

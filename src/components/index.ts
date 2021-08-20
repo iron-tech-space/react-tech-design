@@ -1,13 +1,17 @@
 import { FunctionComponent } from "react";
 
 import {
+    LabelProps,
     StoreProps,
+    SubscribeOnChangeOptions,
     searchWrapper,
     withLabel,
     withPlaceholder,
     withStore,
     withItem
 } from "./core/wrappers";
+
+import { sortBy } from './core/interfaces';
 
 // General
 import RtButton, { ButtonProps } from "./Button/Button";
@@ -50,12 +54,12 @@ import AntPopover, { PopoverProps } from "antd/lib/popover";
 import AntTooltip, { TooltipProps } from "antd/lib/tooltip";
 import AntTabs, { TabsProps } from "antd/lib/tabs";
 import { TabPane as RtTabPane, TabPaneProps } from "./Tabs";
-import { TableProps, TableWrapper } from "./Table/Table";
+import { TableWrapper, TableProps, TablesSubscribeOnChangeOptions } from "./Table/Table";
 import { RtTable as InternalRtTable } from "./Table/Table";
 import { AntTable as InternalAntTable } from "./Table/Table";
 
 // Feedback
-import RtModal, { ModalProps } from "./Modal";
+import RtModal, { ModalProps, ModalSubscribeOnChangeOptions } from "./Modal";
 
 // Rt-design
 import RtCustom, { CustomProps } from "./Custom/Custom";
@@ -65,19 +69,19 @@ import RtSwitcher, { SwitcherProps } from "./Switcher/Switcher";
 
 // General
 export const Button:     FunctionComponent<ButtonProps> =                   withItem(RtButton);
-export const Title:      FunctionComponent<TitleProps & StoreProps> =       withLabel(AntTitle);
-export const Text:       FunctionComponent<TextProps & StoreProps> =        withLabel(AntText);
+export const Title:      FunctionComponent<TitleProps & LabelProps & StoreProps> = withLabel(AntTitle);
+export const Text:       FunctionComponent<TextProps & LabelProps & StoreProps> =  withLabel(AntText);
 export const DateText:   FunctionComponent<DatePickerProps & StoreProps> =  withStore(RtDateText);
 
 // Layout
-export const Divider:   FunctionComponent<DividerProps & StoreProps> =      withLabel(AntDivider);
+export const Divider:   FunctionComponent<DividerProps & LabelProps & StoreProps> = withLabel(AntDivider);
 export const Row:       FunctionComponent<RowProps & StoreProps> =          withStore(AntRow);
 export const Col:       FunctionComponent<ColProps & StoreProps> =          withStore(AntCol);
 export const Layout:    FunctionComponent<LayoutProps> =                    withStore(RtLayout);
 export const Space:     FunctionComponent<SpaceProps & StoreProps> =        withStore(AntSpace);
 
 // Data Entry
-export const Checkbox:   FunctionComponent<CheckboxProps & StoreProps> =     withLabel(AntCheckbox);
+export const Checkbox:   FunctionComponent<CheckboxProps & LabelProps & StoreProps> = withLabel(AntCheckbox);
 export const DatePicker: FunctionComponent<DatePickerProps & StoreProps> =   withPlaceholder(RtDatePicker, 'Выберите дату');
 export const Form:       FunctionComponent<FormProps> =          RtForm;
 export const FormHeader: FunctionComponent<FormHeaderProps> =    RtFormHeader;
@@ -119,3 +123,85 @@ export const Custom:    FunctionComponent<CustomProps> =            withStore(Rt
 export const Switcher:  FunctionComponent<SwitcherProps> =          withStore(RtSwitcher);
 
 // export const Transfer:  FunctionComponent<TransferProps<any>> =     withStore(AntTransfer);]
+
+export type {
+
+    // Rt types
+    LabelProps,
+    StoreProps,
+    CustomProps,
+    SwitcherProps,
+
+    SubscribeOnChangeOptions,
+    ModalSubscribeOnChangeOptions,
+    TablesSubscribeOnChangeOptions,
+    sortBy,
+
+    // General
+    ButtonProps,
+    TitleProps,
+    TextProps,
+    DatePickerProps,
+
+    // Layout
+    DividerProps,
+    RowProps,
+    ColProps,
+    LayoutProps,
+    SpaceProps,
+
+    // Data Entry
+    CheckboxProps,
+    FormProps,
+    FormHeaderProps,
+    FormBodyProps,
+    FormFooterProps,
+    FormListProps,
+    InputNumberProps,
+    InputProps,
+    SearchProps,
+    TextAreaProps,
+    PasswordProps,
+    RadioProps,
+    RadioGroupProps,
+    SwitchProps,
+    SliderSingleProps,
+    SliderRangeProps,
+    SelectProps,
+    TreeSelectProps,
+    TimePickerProps,
+    UploadFileProps,
+
+    // Data Display
+    CollapseProps,
+    CollapsePanelProps,
+    ListProps,
+    PopoverProps,
+    TooltipProps,
+    TabsProps,
+    TabPaneProps,
+    TableProps,
+
+    // Feedback
+    ModalProps
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

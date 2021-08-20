@@ -398,6 +398,7 @@ Select.defaultProps = {
 	pageSize: 50,
 	searchParamName: 'name',
 	lostParamName: 'id',
+	optionConverter: (option) => ({ label: option.name, value: option.id })
 }
 
 export default Select;

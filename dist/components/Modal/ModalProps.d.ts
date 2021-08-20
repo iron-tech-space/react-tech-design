@@ -2,7 +2,7 @@ import { StoreProps } from "../core/wrappers";
 import { ButtonProps, ModalProps as AntModalProps } from "antd";
 import { Request } from "../core/interfaces";
 import { FormProps } from "../Form/FormProps";
-export interface ModalOnChangeOptions {
+export interface ModalSubscribeOnChangeOptions {
     /** Значение лежащие в Store по пути subscribe[i].path */
     value: any;
     /** Значение доп данных в Store по пути subscribe[i].extraData */
@@ -54,6 +54,6 @@ export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
          * По умолчанию false */
         withMount?: boolean;
         /** Вызывается при изменение объекта по указанному path */
-        onChange: (params: ModalOnChangeOptions) => void;
+        onChange: (params: ModalSubscribeOnChangeOptions) => void;
     }[];
 }

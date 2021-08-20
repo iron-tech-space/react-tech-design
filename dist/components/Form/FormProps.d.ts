@@ -34,6 +34,7 @@ export interface FormProps extends AntFormProps {
     /** Параметры записи в store изменений всех полей формы  */
     dispatch?: {
         path: string;
+        type?: 'event' | undefined;
         extraData?: any;
     };
 }
