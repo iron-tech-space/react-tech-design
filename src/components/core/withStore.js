@@ -47,7 +47,7 @@ export const withStore = (Component) => {
         /** Подписка на изменение props и отправка данных в стор */
         useEffect(() => {
             let _value = props[valuePropName];
-            // console.log(`storeHOC => `, _value);
+            // console.log(`storeHOC => `, dispatch.path, _value, valuePropName);
             // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
             //     _value = undefined;
             if (componentType !== 'Button' && componentType !== 'Search')
@@ -63,7 +63,7 @@ export const withStore = (Component) => {
         // }, [subscribeProps.value]);
 
         const setSubscribePropsHandler = (_subscribeProps) => {
-            // console.log('onChange setSubscribePropsHandler => ', value);
+            // console.log('onChange setSubscribePropsHandler => ', dispatch.path, _subscribeProps);
             setSubscribeProps((prevState) => ({ ...prevState, ..._subscribeProps }));
             if(_subscribeProps && objectPath.has(_subscribeProps, valuePropName)) {
                 const value = _subscribeProps[valuePropName]
@@ -76,7 +76,7 @@ export const withStore = (Component) => {
         }
 
         const onChange = (...args) => {
-            // console.log('withStore [trigger] ',  props[trigger], args)
+            // console.log('withStore [trigger] ', dispatch.path, props[trigger], args)
             if(componentType === 'Button')
                 dispatchToStore({dispatch, setDataStore, value: args[0], extraData: dispatchExtraData});
 

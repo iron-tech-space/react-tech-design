@@ -1,3 +1,9 @@
+## 0.0.77
+
+- Fix Ant Table two load configs
+- Fix two dispatch in Table
+- Fix Ant Table footer height
+
 ## 0.0.76
 
 - Fix bugs with types

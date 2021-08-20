@@ -6,7 +6,7 @@ import { render, renderLabel } from "./renders";
 export interface LabelProps {
     label?: string | ReactNode;
     value?: any | ReactNode;
-    children?: ReactNode;
+    children?: ReactNode | undefined;
 }
 
 export interface SubscribeOnChangeOptions {
@@ -24,6 +24,7 @@ export interface StoreProps {
     /** Параметры записи в Store изменений компонента  */
     dispatch?: {
         path: string;
+        type?: 'event' | undefined;
         extraData?: any;
     };
 

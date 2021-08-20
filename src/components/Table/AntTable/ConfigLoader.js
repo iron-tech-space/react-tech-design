@@ -53,7 +53,7 @@ const ConfigLoader = props => {
         };
         loadData().then(r => r);
         return () => cleanupFunction = true;
-    }, [props]);
+    }, []);
 
     const configParser = (config) => {
 

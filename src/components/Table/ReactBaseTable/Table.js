@@ -246,7 +246,8 @@ const Table = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		// console.log('useEffect value');
-		_setRowsHandler(value)
+		if(value && Array.isArray(value) && !requestLoadRows)
+			_setRowsHandler(value)
 	}, [value])
 
 	/** Подписка на изменение props[subscribe.name] в сторе */
@@ -310,6 +311,7 @@ const Table = forwardRef((props, ref) => {
 	}
 
 	const rowsDispatch = (rows) => {
+		// console.log('rowsDispatch ', rowsDispatchPath);
 		rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
 	};
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { rtPrefix } from "../../utils/variables";
 import { connect } from "react-redux";
 import { AutoResizer } from "react-base-table";
@@ -194,7 +194,8 @@ const Table = props => {
     }, [columns]);
 
     useEffect(() => {
-        if(value && Array.isArray(value))
+        // console.log('useEffect value', value);
+        if(value && Array.isArray(value) && !requestLoadRows)
             _setRowsHandler(value)
     }, [value])
 
@@ -259,6 +260,7 @@ const Table = props => {
     };
 
     const rowsDispatch = (rows) => {
+        // console.log('rowsDispatch ', rowsDispatchPath);
         rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
     };
 
@@ -417,7 +419,7 @@ const Table = props => {
                 _setSelectedRowsHandler([rowKey], rowData);
         }
         // onSelectedRowsChange([rowKey], [rowData]);
-        console.log('onRowDoubleClick = ', onClick);
+        // console.log('onRowDoubleClick = ', onClick);
         onClick && onClick({ selected: checked, ...newRowObject });
     };
 
@@ -629,7 +631,7 @@ const Table = props => {
         // console.log('_footer => ', currentPageData);
         return (
             _footerShow ? (
-                <React.Fragment>
+                <div style={{display: 'flex', flex: 'auto', height: `${footerProps.height}px`}}>
                     {/*className={'BaseTable__footer__counter'}>*/}
                     <div key={"footer-left-custom-side"} className={`${rtPrefix}-footer-left-custom-side`}>
                         {footerProps.leftCustomSideElement
@@ -672,7 +674,7 @@ const Table = props => {
                                 : null}
                         </Space>
                     </div>
-                </React.Fragment>
+                </div>
             ) : undefined
         );
     };
@@ -725,8 +727,8 @@ const Table = props => {
                                 /** Required */
                                 columns={getColumns()}
                                 dataSource={_rows}
-                                // scroll={{ x: width, y: height - headerHeight }}
-                                scroll={{ y: height - headerHeight }}
+                                // scroll={{ x: width, y: height - headerHeight }} // 16 (paddings) + 2 + 2 borders
+                                scroll={{ y: height - headerHeight - (_footerShow ? (footerProps.height + 20) : 0) }}
                                 pagination={{ position: ["none", "none"], ...restProps.pagination, pageSize: _rows.length }}
 
                                 /** Base Props */
@@ -741,7 +743,6 @@ const Table = props => {
                                 rowClassName={_rowClassName}
                                 footer={_footerShow ? _footer : undefined}
                                 components={{
-
                                     header: {
                                         row: HeaderRow,
                                         cell: HeaderCell
