@@ -30,6 +30,12 @@ declare namespace TreeSelect {
         export { requestLoadRows_1 as requestLoadRows };
         const searchParamName_1: string;
         export { searchParamName_1 as searchParamName };
+        export function optionConverter_1(option: any): {
+            label: any;
+            value: any;
+            children: any;
+        };
+        export { optionConverter_1 as optionConverter };
     }
 }
 import PropTypes from "prop-types";

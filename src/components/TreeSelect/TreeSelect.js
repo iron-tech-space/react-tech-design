@@ -200,7 +200,8 @@ TreeSelect.defaultProps = {
     defaultFilter: {},
     defaultSearchValue: undefined,
     requestLoadRows: undefined,
-    searchParamName: 'name'
+    searchParamName: 'name',
+    optionConverter: (option) => ({ label: option.name, value: option.id, children: option.children })
 };
 
 export default TreeSelect;
