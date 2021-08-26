@@ -5769,7 +5769,7 @@ var withStore$1 = function withStore(Component) {
         /** Подписка на изменение props и отправка данных в стор */
         React.useEffect(function () {
             var _value = props[valuePropName];
-            // console.log(`storeHOC => `, _value);
+            // console.log(`storeHOC => `, dispatch.path, _value, valuePropName);
             // if (_value === null || _value === undefined || (typeof _value === 'string' && _value.trim() === ''))
             //     _value = undefined;
             if (componentType !== 'Button' && componentType !== 'Search') dispatchToStore({ dispatch: dispatch, setDataStore: setDataStore, value: _value });
@@ -5784,7 +5784,7 @@ var withStore$1 = function withStore(Component) {
         // }, [subscribeProps.value]);
 
         var setSubscribePropsHandler = function setSubscribePropsHandler(_subscribeProps) {
-            // console.log('onChange setSubscribePropsHandler => ', value);
+            // console.log('onChange setSubscribePropsHandler => ', dispatch.path, _subscribeProps);
             setSubscribeProps(function (prevState) {
                 return _extends({}, prevState, _subscribeProps);
             });
@@ -5798,7 +5798,7 @@ var withStore$1 = function withStore(Component) {
         };
 
         var onChange = function onChange() {
-            // console.log('withStore [trigger] ',  props[trigger], args)
+            // console.log('withStore [trigger] ', dispatch.path, props[trigger], args)
             if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDataStore: setDataStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
 
             if (subscribeProps && objectPath__default['default'].has(subscribeProps, valuePropName)) {
@@ -7567,7 +7567,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
 
 	React.useEffect(function () {
 		// console.log('useEffect value');
-		_setRowsHandler(value);
+		if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);
 	}, [value]);
 
 	/** Подписка на изменение props[subscribe.name] в сторе */
@@ -7630,6 +7630,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
 	};
 
 	var rowsDispatch = function rowsDispatch(rows) {
+		// console.log('rowsDispatch ', rowsDispatchPath);
 		rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
 	};
 
@@ -9040,7 +9041,8 @@ var Table$1 = function Table(props) {
     }, [columns]);
 
     React.useEffect(function () {
-        if (value && Array.isArray(value)) _setRowsHandler(value);
+        // console.log('useEffect value', value);
+        if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);
     }, [value]);
 
     /** Подписка на изменение props[subscribe.name] в сторе */
@@ -9103,6 +9105,7 @@ var Table$1 = function Table(props) {
     };
 
     var rowsDispatch = function rowsDispatch(rows) {
+        // console.log('rowsDispatch ', rowsDispatchPath);
         rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
     };
 
@@ -9259,7 +9262,7 @@ var Table$1 = function Table(props) {
             if (checked) _setSelectedRowsHandler([rowKey], rowData);
         }
         // onSelectedRowsChange([rowKey], [rowData]);
-        console.log('onRowDoubleClick = ', onClick);
+        // console.log('onRowDoubleClick = ', onClick);
         onClick && onClick(_extends({ selected: checked }, newRowObject));
     };
 
@@ -9485,8 +9488,8 @@ var Table$1 = function Table(props) {
     var _footer = function _footer(currentPageData) {
         // console.log('_footer => ', currentPageData);
         return _footerShow ? React__default['default'].createElement(
-            React__default['default'].Fragment,
-            null,
+            "div",
+            { style: { display: 'flex', flex: 'auto', height: footerProps.height + "px" } },
             React__default['default'].createElement(
                 "div",
                 { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
@@ -9599,8 +9602,8 @@ var Table$1 = function Table(props) {
                             /** Required */
                             columns: getColumns(),
                             dataSource: _rows
-                            // scroll={{ x: width, y: height - headerHeight }}
-                            , scroll: { y: height - headerHeight },
+                            // scroll={{ x: width, y: height - headerHeight }} // 16 (paddings) + 2 + 2 borders
+                            , scroll: { y: height - headerHeight - (_footerShow ? footerProps.height + 20 : 0) },
                             pagination: _extends({ position: ["none", "none"] }, restProps.pagination, { pageSize: _rows.length })
 
                             /** Base Props */
@@ -9615,7 +9618,6 @@ var Table$1 = function Table(props) {
                             , rowClassName: _rowClassName,
                             footer: _footerShow ? _footer : undefined,
                             components: {
-
                                 header: {
                                     row: HeaderRow,
                                     cell: HeaderCell
@@ -10047,7 +10049,7 @@ var ConfigLoader = function ConfigLoader(props) {
         return function () {
             return cleanupFunction = true;
         };
-    }, [props]);
+    }, []);
 
     var configParser = function configParser(config) {
 

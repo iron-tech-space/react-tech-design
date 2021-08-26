@@ -7,7 +7,7 @@ export interface CustomProps extends StoreProps{
     render?: React.FunctionComponent;
 
     /** Возможен только 1 ребенок для рендоракомпонеента */
-    children?: ReactNode;
+    children?: ReactNode | undefined;
 }
 
 /** Custom компонент */
