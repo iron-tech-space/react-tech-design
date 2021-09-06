@@ -80,7 +80,7 @@ import 'antd/es/space/style';
 import _Space from 'antd/es/space';
 import ColumnResizer from 'react-base-table/lib/ColumnResizer';
 
-var classic = /*#__PURE__*/Object.freeze({
+var rtComponents = /*#__PURE__*/Object.freeze({
     __proto__: null,
     get Button () { return Button; },
     get Title () { return Title; },
@@ -97,6 +97,8 @@ var classic = /*#__PURE__*/Object.freeze({
     get FormHeader () { return FormHeader; },
     get FormBody () { return FormBody; },
     get FormFooter () { return FormFooter; },
+    get FormItems () { return FormItems; },
+    get FormItem () { return FormItem; },
     get FormList () { return FormList; },
     get InputNumber () { return InputNumber; },
     get Input () { return Input; },
@@ -1707,17 +1709,17 @@ var Table$5 = forwardRef(function (props, ref) {
 			React.createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.leftCustomSideElement }) : null
+				footerProps.leftCustomSideElement ? React.createElement(FormItems$3, { items: footerProps.leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.centerCustomSideElement }) : null
+				footerProps.centerCustomSideElement ? React.createElement(FormItems$3, { items: footerProps.centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? React.createElement(FormItems$2, { items: footerProps.rightCustomSideElement }) : null
+				footerProps.rightCustomSideElement ? React.createElement(FormItems$3, { items: footerProps.rightCustomSideElement }) : null
 			),
 			selectable ? React.createElement(
 				React.Fragment,
@@ -3099,7 +3101,7 @@ AdvancedTable.propTypes = {
 
 AdvancedTable.defaultProps = {};
 
-var excludeProps$b = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
+var excludeProps$a = ["noPadding", "scrollable", "header", "body", "footer", "loadInitData", "autoSaveForm", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
 
 var Form$3 = function Form(props) {
     var loadInitData = props.loadInitData,
@@ -3135,7 +3137,7 @@ var Form$3 = function Form(props) {
     }, [loaded]);
 
     useEffect(function () {
-        setAntFormProps(getObjectExcludedProps(props, excludeProps$b));
+        setAntFormProps(getObjectExcludedProps(props, excludeProps$a));
         // console.log('antFormProps props => ', getObjectExcludedProps(props, excludeProps));
     }, [props]);
 
@@ -3204,17 +3206,17 @@ var Form$3 = function Form(props) {
             header ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-header" },
-                React.createElement(FormItems$2, { items: header })
+                React.createElement(FormItems$3, { items: header })
             ) : null,
             React.createElement(
                 "div",
                 { className: getBodyCls() },
-                React.createElement(FormItems$2, { items: body })
+                React.createElement(FormItems$3, { items: body })
             ),
             footer ? React.createElement(
                 "div",
                 { className: rtPrefix + "-form-footer" },
-                React.createElement(FormItems$2, { items: footer })
+                React.createElement(FormItems$3, { items: footer })
             ) : null
         ) : null
     );
@@ -3262,7 +3264,7 @@ Form$3.defaultProps = {
     autoSaveForm: true
 };
 
-var excludeProps$a = ['type', 'initialValues', 'form'];
+var excludeProps$9 = ['type', 'initialValues', 'form'];
 
 var FormModal = function FormModal(props) {
     var modal = props.modal,
@@ -3324,7 +3326,7 @@ var FormModal = function FormModal(props) {
         return { okText: okText, cancelText: cancelText, title: modalTitle, okType: 'primary' };
     };
 
-    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$a));
+    var modalProps = _extends({}, getDefaultFooterProps(), getObjectExcludedProps(modal, excludeProps$9));
 
     var onFinish = function onFinish(values) {
         // console.log('FormModal Success:', values, selectedRow);
@@ -3413,7 +3415,7 @@ FormModal.propTypes = {
 
 var _this$2 = undefined;
 
-var excludeProps$9 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
+var excludeProps$8 = ['onChange', 'defaultValue', 'modals', 'events', 'history'];
 
 var FormTable = forwardRef(function (props, ref) {
 
@@ -3859,7 +3861,7 @@ var FormTable = forwardRef(function (props, ref) {
         { className: getTableCls(), style: props.style },
         React.createElement(AdvancedTable, _extends({
             ref: _setTableRef
-        }, getObjectExcludedProps(props, excludeProps$9), {
+        }, getObjectExcludedProps(props, excludeProps$8), {
             rows: tableRows,
             setRows: setTableRows
             // selectedRowKeys={tableSelectedRow[rowKey] ? [tableSelectedRow[rowKey]] : []}
@@ -4932,13 +4934,13 @@ var mapDispatchToProps$2 = function mapDispatchToProps(dispatch) {
 
 var Modal$4 = connect(mapStateToProps$1, mapDispatchToProps$2)(Modal$3);
 
-var excludeProps$8 = ['child', 'componentType', 'field'];
+var excludeProps$7 = ['child', 'componentType', 'field'];
 
-var FormItem$1 = function FormItem(props) {
+var FormItem$2 = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$8);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$7);
 
 	// Если тип элемента Select -> добавить доп свойства к Form.Item
 	if (child && child.componentType && (child.componentType === 'SingleSelect' || child.componentType === 'MultiSelect')) {
@@ -5074,7 +5076,7 @@ var FormItem$1 = function FormItem(props) {
 	);
 };
 
-FormItem$1.propTypes = {
+FormItem$2.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
@@ -5106,9 +5108,9 @@ Layout$2.propTypes = {
     style: PropTypes.object
 };
 
-var excludeProps$7 = ["children", "componentType"];
+var excludeProps$6 = ["children", "componentType"];
 
-var FormItems$1 = function FormItems(props) {
+var FormItems$2 = function FormItems(props) {
     var items = props.items;
 
     // console.log('FormItems props => ', props);
@@ -5116,7 +5118,7 @@ var FormItems$1 = function FormItems(props) {
     var getItems = function getItems(data, antFormListParams) {
 
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$7);
+            var itemProps = getObjectExcludedProps(item, excludeProps$6);
             // console.log('FormItems index => ', index);
 
             switch (item.componentType) {
@@ -5171,7 +5173,7 @@ var FormItems$1 = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React.createElement(FormItem$2, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
                 case "ListItems":
                     return React.createElement(
                         _Form.List,
@@ -5207,11 +5209,11 @@ var FormItems$1 = function FormItems(props) {
     return getItems(items);
 };
 
-FormItems$1.propTypes = {
+FormItems$2.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-var FormItems$2 = FormItems$1;
+var FormItems$3 = FormItems$2;
 
 var confirm = _Modal.confirm;
 
@@ -5394,17 +5396,17 @@ var CommandPanel = function CommandPanel(props) {
 			React.createElement(
 				'div',
 				{ className: 'left-custom-side' },
-				leftCustomSideElement ? React.createElement(FormItems$2, { items: leftCustomSideElement }) : null
+				leftCustomSideElement ? React.createElement(FormItems$3, { items: leftCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'center-custom-side' },
-				centerCustomSideElement ? React.createElement(FormItems$2, { items: centerCustomSideElement }) : null
+				centerCustomSideElement ? React.createElement(FormItems$3, { items: centerCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
 				{ className: 'right-custom-side' },
-				rightCustomSideElement ? React.createElement(FormItems$2, { items: rightCustomSideElement }) : null
+				rightCustomSideElement ? React.createElement(FormItems$3, { items: rightCustomSideElement }) : null
 			),
 			React.createElement(
 				'div',
@@ -5784,10 +5786,10 @@ var renderLabel = function renderLabel(Component) {
 var renderClassicByName = function renderClassicByName(componentName) {
     return function (props) {
         // @ts-ignore
-        if (classic[componentName]) {
+        if (rtComponents[componentName]) {
             // console.log("renderClassicByName => ", props);
             // @ts-ignore
-            return render(classic[componentName])(props);
+            return render(rtComponents[componentName])(props);
         } else {
             console.log("NO renderClassicByName => ", componentName);
             return null;
@@ -5798,10 +5800,10 @@ var renderDeclarativeByName = function renderDeclarativeByName(componentName) {
     return function (props) {
         return function (children) {
             // @ts-ignore
-            if (classic[componentName]) {
+            if (rtComponents[componentName]) {
                 // console.log("renderDeclarativeByName => ", props);
                 // @ts-ignore
-                return render(classic[componentName])(__assign(__assign({}, props), { children: children }));
+                return render(rtComponents[componentName])(__assign(__assign({}, props), { children: children }));
             } else {
                 console.log("NO renderDeclarativeByName => ", componentName);
                 return null;
@@ -5888,85 +5890,79 @@ var Layout$1 = function Layout(props) {
     return jsx("div", __assign({}, props, { className: getCls() }, { children: props.children }), void 0);
 };
 
-var excludeProps$6 = ['child', 'componentType', 'field'];
-var FormItem = function FormItem(props) {
+var excludeProps$5 = ['child', 'componentType', 'field'];
+var FormItem$1 = function FormItem(props) {
 	var child = props.child,
 	    field = props.field;
 
-	var antFormItemProps = getObjectExcludedProps(props, excludeProps$6);
+	var antFormItemProps = getObjectExcludedProps(props, excludeProps$5);
 	if (child) return renderClassicByName(child.componentType)(_extends({ itemProps: _extends({}, antFormItemProps) }, child, { field: field }));else return null;
 };
 
-FormItem.propTypes = {
+FormItem$1.propTypes = {
 	child: PropTypes.object.isRequired
 };
 
-var excludeProps$5 = ["children", "componentType"];
-
-var FormItems = function FormItems(props) {
+var FormItems$1 = function FormItems(props) {
     var items = props.items;
-
     // console.log('FormItems props => ', props);
 
-    var getItems = function getItems(data, antFormListParams) {
-
+    var getItems = function getItems(data, formListProps) {
         return data && data.map(function (item, index) {
-            var itemProps = getObjectExcludedProps(item, excludeProps$5);
+            var componentType = item.componentType,
+                children = item.children,
+                itemProps = objectWithoutProperties(item, ["componentType", "children"]);
             // console.log('FormItems index => ', index);
 
-            switch (item.componentType) {
+            switch (componentType) {
                 case "Item":
                     var _item = _extends({}, item);
                     var _key = index;
-                    if (antFormListParams && antFormListParams.field) {
+                    if (formListProps && formListProps.field) {
                         if (_item.name) {
                             if (Array.isArray(_item.name)) {
-                                _item.name = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
-                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                                _item.name = [formListProps.field.name].concat(toConsumableArray(_item.name));
+                                _item.fieldKey = [formListProps.field.name].concat(toConsumableArray(_item.name));
                             } else {
-                                _item.name = [antFormListParams.field.name, _item.name];
-                                _item.fieldKey = [antFormListParams.field.name].concat(toConsumableArray(_item.name));
+                                _item.name = [formListProps.field.name, _item.name];
+                                _item.fieldKey = [formListProps.field.name].concat(toConsumableArray(_item.name));
                             }
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React.createElement(FormItem, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React.createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, formListProps) }));
                 case "ListItems":
                     return React.createElement(
                         _Form.List,
                         _extends({ key: index }, itemProps),
                         function (fields, operation) {
                             var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
-                            return getItems(item.children, param);
+                            return getItems(children, param);
                         }
                     );
                 case "ListItem":
-                    // console.log('antFormListParams => ', antFormListParams);
+                    // console.log('formListProps => ', formListProps);
                     return React.createElement(
                         "div",
                         { key: index },
-                        antFormListParams && antFormListParams.fields && antFormListParams.fields.map(function (field, fIndex) {
+                        formListProps && formListProps.fields && formListProps.fields.map(function (field, fIndex) {
                             // console.log('index field.key', index, field);
-                            var param = _extends({ field: _extends({}, field) }, antFormListParams);
+                            var param = _extends({ field: _extends({}, field) }, formListProps);
                             return React.createElement(
                                 "div",
                                 { key: field.key },
-                                getItems(item.children, param),
+                                getItems(children, param),
                                 " "
                             );
                         })
                     );
                 default:
-                    return renderDeclarativeByName(item.componentType)(_extends({ key: index }, itemProps))(getItems(item.children, antFormListParams));
+                    return renderDeclarativeByName(componentType)(_extends({ key: index }, itemProps))(getItems(children, formListProps));
             }
         }) || null;
     };
 
     return getItems(items);
-};
-
-FormItems.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 var excludeProps$4 = ["dispatch", "setDataStore", "componentType", "noPadding", "scrollable", "header", "body", "footer", "loadInitData", "requestSaveForm", "methodSaveForm", "processBeforeSaveForm"];
@@ -6092,14 +6088,14 @@ var Form$1 = function Form(props) {
         return React.createElement(
             "div",
             { className: rtPrefix + "-form-header" },
-            React.createElement(FormItems, { items: header })
+            React.createElement(FormItems$1, { items: header })
         );
     };
     var Footer = function Footer(footer) {
         return React.createElement(
             "div",
             { className: rtPrefix + "-form-footer" },
-            React.createElement(FormItems, { items: footer })
+            React.createElement(FormItems$1, { items: footer })
         );
     };
 
@@ -6129,7 +6125,7 @@ var Form$1 = function Form(props) {
                 body ? React.createElement(
                     "div",
                     { className: getBodyCls() },
-                    React.createElement(FormItems, { items: body })
+                    React.createElement(FormItems$1, { items: body })
                 ) : null,
                 props.children,
                 footer ? Footer(footer) : null
@@ -7803,17 +7799,17 @@ var Table$3 = forwardRef(function (props, ref) {
 			React.createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
+				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
+				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
 			),
 			React.createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
+				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
 			),
 			selectable ? React.createElement(
 				React.Fragment,
@@ -9433,17 +9429,17 @@ var Table$1 = function Table(props) {
             React.createElement(
                 "div",
                 { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
-                footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
+                footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React.createElement(footerProps.leftCustomSideElement, null) : null
             ),
             React.createElement(
                 "div",
                 { key: "footer-center-custom-side", className: rtPrefix + "-footer-center-custom-side" },
-                footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
+                footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React.createElement(footerProps.centerCustomSideElement, null) : null
             ),
             React.createElement(
                 "div",
                 { key: "footer-right-custom-side", className: rtPrefix + "-footer-right-custom-side" },
-                footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
+                footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React.createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React.createElement(footerProps.rightCustomSideElement, null) : null
             ),
             React.createElement(
                 "div",
@@ -10399,6 +10395,8 @@ var Form = Form$2;
 var FormHeader = FormHeader$1;
 var FormBody = FormBody$1;
 var FormFooter = FormFooter$1;
+var FormItems = FormItems$1;
+var FormItem = FormItem$1;
 var FormList = withStore(AntForm.List);
 var InputNumber = withPlaceholder(AntInputNumber, 'Введите значение');
 var Input = withPlaceholder(AntInput, 'Введите значение');
@@ -10481,5 +10479,5 @@ var executeRequest = function executeRequest(request) {
     };
 };
 
-export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
+export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormItem, FormItems, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
 //# sourceMappingURL=index.es.js.map

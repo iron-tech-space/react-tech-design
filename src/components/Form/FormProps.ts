@@ -11,6 +11,13 @@ export type FormBodyProps = React.HTMLAttributes<HTMLDivElement> & {
 }
 export type FormFooterProps = React.HTMLAttributes<HTMLDivElement>
 
+export type FormItemsProps = {
+    items: object[];
+}
+export type FormItemProps = {
+    child: object;
+}
+
 export interface FormProps extends AntFormProps{
     /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding?: boolean;

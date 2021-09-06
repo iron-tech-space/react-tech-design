@@ -1,6 +1,6 @@
 {
 	"name": "rt-design",
-	"version": "0.0.77",
+	"version": "0.0.78",
 	"description": "React technical design library",
 	"author": "Iron tech space",
 	"license": "MIT",
@@ -23,7 +23,7 @@
 		"clean": "rm -rf node_modules package-lock.json && npm run clean:lib && npm run clean:dist",
 		"reinstall": "npm run clean && npm install",
 		"rebuild": "npm run clean && npm install && npm run build",
-		"start:dist": "rollup -c -w",
+		"start": "rollup -c -w",
 		"prepare": "npm run build",
 		"predeploy": "cd website && npm install && npm run build",
 		"prettier:lib": "prettier --write 'src/**/*'",

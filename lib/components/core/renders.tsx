@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { LabelProps } from "./wrappers";
-import * as classic from "../index";
+import * as rtComponents from "../index";
 
 
 export const render = (Component: React.ComponentType) => (props: any) =>
@@ -14,10 +14,10 @@ export const renderComponentType = (Component: React.ComponentType, componentTyp
 
 export const renderClassicByName = (componentName: string) => (props: any) => {
     // @ts-ignore
-    if(classic[componentName]) {
+    if(rtComponents[componentName]) {
         // console.log("renderClassicByName => ", props);
         // @ts-ignore
-        return render(classic[componentName])(props)
+        return render(rtComponents[componentName])(props)
     } else {
         console.log("NO renderClassicByName => ", componentName);
         return null;
@@ -25,10 +25,10 @@ export const renderClassicByName = (componentName: string) => (props: any) => {
 }
 export const renderDeclarativeByName = (componentName: string) => (props: any) => (children: ReactNode) => {
     // @ts-ignore
-    if(classic[componentName]) {
+    if(rtComponents[componentName]) {
         // console.log("renderDeclarativeByName => ", props);
         // @ts-ignore
-        return render(classic[componentName])({...props, children})
+        return render(rtComponents[componentName])({...props, children})
     } else {
         console.log("NO renderDeclarativeByName => ", componentName);
         return null;

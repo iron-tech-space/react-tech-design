@@ -9,6 +9,12 @@ export declare type FormBodyProps = React.HTMLAttributes<HTMLDivElement> & {
     scrollable?: boolean;
 };
 export declare type FormFooterProps = React.HTMLAttributes<HTMLDivElement>;
+export declare type FormItemsProps = {
+    items: object[];
+};
+export declare type FormItemProps = {
+    child: object;
+};
 export interface FormProps extends AntFormProps {
     /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding?: boolean;
