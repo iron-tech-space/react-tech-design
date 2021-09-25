@@ -1,3 +1,7 @@
+## 0.0.79
+
+- Add setSelectedRowsHandler for change value in Table
+
 ## 0.0.78
 
 - Add export `FormItems` and `FormItem`
