@@ -79,7 +79,7 @@ const Table = props => {
 
         /** Def values */
         defaultRows,
-        // defaultSelectedRowKeys,
+        defaultSelectedRowKeys,
         defaultSearchValue,
         defaultFilter,
         defaultSortBy,
@@ -169,6 +169,10 @@ const Table = props => {
         // _setRows(defaultRows);
         if (defaultRows.length > 0) _setRowsHandler(defaultRows);
         else if (rows.length > 0) _setRowsHandler(rows);
+        if (selectable && props.value && props.value.length > 0)
+            _setSelectedRowsHandler(props.value.map(item => item[rowKey]), props.value);
+        else
+            _setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows);
         setSearchValue(defaultSearchValue);
         setFilter(defaultFilter);
         setSortBy(defaultSortBy);
@@ -194,11 +198,8 @@ const Table = props => {
     }, [columns]);
 
     useEffect(() => {
-        // console.log('useEffect value', value);
         if(value && Array.isArray(value) && !requestLoadRows)
             _setRowsHandler(value)
-        else if(selectable && value && Array.isArray(value))
-            _setSelectedRowsHandler(value.map(item => item[rowKey]), value);
     }, [value])
 
     /** Подписка на изменение props[subscribe.name] в сторе */
@@ -233,7 +234,7 @@ const Table = props => {
 
     const _setLoadedRowsHandler = (rows) => {
         _setRowsHandler(rows);
-        onChange && onChange(rows);
+        // !selectable && onChange && onChange(rows);
     };
     const _setRowsHandler = (rows) => {
         // console.log('_setRowsHandler onChange');
@@ -264,10 +265,12 @@ const Table = props => {
     const rowsDispatch = (rows) => {
         // console.log('rowsDispatch ', rowsDispatchPath);
         rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
+        !selectable && onChange && onChange(rows);
     };
 
     const selectedDispatch = (data) => {
         selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, data);
+        selectable && onChange && onChange(data);
     };
 
     const onTableEventsDispatch = (nameEvent, value) => {

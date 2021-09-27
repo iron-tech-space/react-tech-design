@@ -162,7 +162,11 @@ const Table = forwardRef((props, ref) => {
 		if(defaultRows.length > 0) _setRowsHandler(defaultRows);
 		else if(rows.length > 0) _setRowsHandler(rows);
 		// setSelectedRowKeys(defaultSelectedRowKeys);
-		_setSelectedRowsHandler(defaultSelectedRowKeys,undefined, defaultRows)
+		// _setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows)
+		if (selectable && props.value && props.value.length > 0)
+			_setSelectedRowsHandler(props.value.map(item => item[rowKey]), props.value);
+		else
+			_setSelectedRowsHandler(defaultSelectedRowKeys, undefined, defaultRows);
 		setSearchValue(defaultSearchValue);
 		setFilterHandler(defaultFilter);
 		setSortBy(defaultSortBy);
@@ -248,8 +252,6 @@ const Table = forwardRef((props, ref) => {
 		// console.log('useEffect value');
 		if(value && Array.isArray(value) && !requestLoadRows)
 			_setRowsHandler(value)
-		else if(selectable && value && Array.isArray(value))
-			_setSelectedRowsHandler(value.map(item => item[rowKey]), value);
 	}, [value])
 
 	/** Подписка на изменение props[subscribe.name] в сторе */
@@ -286,7 +288,7 @@ const Table = forwardRef((props, ref) => {
 
 	const _setLoadedRowsHandler = (rows) => {
 		_setRowsHandler(rows)
-		onChange && onChange(rows)
+		// !selectable && onChange && onChange(rows)
 	};
 	const _setRowsHandler = (rows) => {
 		// console.log('_setRowsHandler onChange');
@@ -315,10 +317,12 @@ const Table = forwardRef((props, ref) => {
 	const rowsDispatch = (rows) => {
 		// console.log('rowsDispatch ', rowsDispatchPath);
 		rowsDispatchPath && props.setDataStore && props.setDataStore(rowsDispatchPath, rows);
+		!selectable && onChange && onChange(rows);
 	};
 
 	const selectedDispatch = (data) => {
 		selectedDispatchPath && props.setDataStore && props.setDataStore(selectedDispatchPath, data);
+		selectable && onChange && onChange(data);
 	}
 
 	const onTableEventsDispatch = (nameEvent, value) => {
