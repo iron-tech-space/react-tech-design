@@ -248,6 +248,8 @@ const Table = forwardRef((props, ref) => {
 		// console.log('useEffect value');
 		if(value && Array.isArray(value) && !requestLoadRows)
 			_setRowsHandler(value)
+		else if(selectable && value && Array.isArray(value))
+			_setSelectedRowsHandler(value.map(item => item[rowKey]), value);
 	}, [value])
 
 	/** Подписка на изменение props[subscribe.name] в сторе */

@@ -7563,7 +7563,9 @@ var Table$3 = React.forwardRef(function (props, ref) {
 
 	React.useEffect(function () {
 		// console.log('useEffect value');
-		if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);
+		if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);else if (selectable && value && Array.isArray(value)) _setSelectedRowsHandler(value.map(function (item) {
+			return item[rowKey];
+		}), value);
 	}, [value]);
 
 	/** Подписка на изменение props[subscribe.name] в сторе */
@@ -9038,7 +9040,9 @@ var Table$1 = function Table(props) {
 
     React.useEffect(function () {
         // console.log('useEffect value', value);
-        if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);
+        if (value && Array.isArray(value) && !requestLoadRows) _setRowsHandler(value);else if (selectable && value && Array.isArray(value)) _setSelectedRowsHandler(value.map(function (item) {
+            return item[rowKey];
+        }), value);
     }, [value]);
 
     /** Подписка на изменение props[subscribe.name] в сторе */
