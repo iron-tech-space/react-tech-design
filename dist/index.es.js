@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import 'antd/es/notification/style';
 import _notification from 'antd/es/notification';
 import moment from 'moment';
-import { LoadingOutlined, CloseCircleOutlined, UpOutlined, DownOutlined, CloseCircleFilled, HomeOutlined, RollbackOutlined, CopyOutlined, PlusOutlined, FileOutlined, FileZipOutlined, FileTextOutlined, FilePptOutlined, FilePdfOutlined, FileMarkdownOutlined, FileImageOutlined, FileExcelOutlined, FileWordOutlined, FolderFilled, FolderAddOutlined, EditOutlined, DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, SettingOutlined, FilterOutlined, ExclamationCircleOutlined, CheckOutlined, CloudUploadOutlined, CaretUpOutlined, CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { LoadingOutlined, CloseCircleOutlined, UpOutlined, DownOutlined, CloseCircleFilled, HomeOutlined, RollbackOutlined, CopyOutlined, PlusOutlined, FileOutlined, FileZipOutlined, FileTextOutlined, FilePptOutlined, FilePdfOutlined, FileMarkdownOutlined, FileImageOutlined, FileExcelOutlined, FileWordOutlined, FolderFilled, FolderAddOutlined, EditOutlined, DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, SettingOutlined, FilterOutlined, ExclamationCircleOutlined, CheckOutlined, CloudUploadOutlined, CaretUpOutlined, CaretDownOutlined, CaretRightOutlined, StopOutlined } from '@ant-design/icons';
 import 'antd/es/form/style';
 import _Form from 'antd/es/form';
 import 'antd/es/radio/style';
@@ -79,6 +79,12 @@ import _Table from 'antd/es/table';
 import 'antd/es/space/style';
 import _Space from 'antd/es/space';
 import ColumnResizer from 'react-base-table/lib/ColumnResizer';
+import RGL, { WidthProvider } from 'react-grid-layout';
+import sizeMe from 'react-sizeme';
+import 'antd/es/cascader/style';
+import _Cascader from 'antd/es/cascader';
+import { w3cwebsocket } from 'websocket';
+import { LineChart as LineChart$1, CartesianGrid, Tooltip as Tooltip$1, Legend, XAxis, YAxis, Line } from 'recharts';
 
 var rtComponents = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -126,7 +132,8 @@ var rtComponents = /*#__PURE__*/Object.freeze({
     get AntTable () { return AntTable; },
     get Modal () { return Modal; },
     get Custom () { return Custom; },
-    get Switcher () { return Switcher; }
+    get Switcher () { return Switcher; },
+    get Dashboard () { return Dashboard; }
 });
 
 var types = {
@@ -10386,6 +10393,332 @@ var Switcher$1 = function Switcher(props) {
     return props.children[_value];
 };
 
+var styles = {
+	row: {
+		display: 'flex',
+		borderBottom: '1px solid #d9d9d9'
+	},
+	inputUrl: {
+		flexBasis: '200px',
+		borderRight: '1px solid #d9d9d9'
+	},
+	inputQuery: {
+		flex: '1',
+		borderRight: '1px solid #d9d9d9'
+	},
+	autoScroll: {
+		padding: '0 8px',
+		display: 'flex',
+		borderRight: '1px solid #d9d9d9'
+	},
+	buttonStart: { color: 'green' },
+	buttonStop: { color: 'red' },
+	pre: {
+		// height: '100%',
+		overflow: 'auto',
+		marginBottom: 0
+	}
+};
+
+var scrollToBottom = function scrollToBottom(block) {
+	var scrollHeight = block.scrollHeight;
+	var height = block.clientHeight;
+	var maxScrollTop = scrollHeight - height;
+	block.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+};
+
+var Logs = function Logs(props) {
+	var _useState = useState(null),
+	    _useState2 = slicedToArray(_useState, 2),
+	    ws = _useState2[0],
+	    setWs = _useState2[1];
+
+	var _useState3 = useState([]),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    Logs = _useState4[0],
+	    setLogs = _useState4[1];
+
+	var _useState5 = useState(null),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    logsRef = _useState6[0],
+	    setLogsRef = _useState6[1];
+
+	var _useState7 = useState({ url: props.loki.url, query: props.loki.query }),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    wsParams = _useState8[0],
+	    setWsParams = _useState8[1];
+
+	var _useState9 = useState(true),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    autoScroll = _useState10[0],
+	    setAutoScroll = _useState10[1];
+
+	var onOpen = function onOpen() {
+		// setWs(new W3CWebSocket("ws://10.5.121.117:3100/loki/api/v1/tail?query={dynamicdq=\"oauth.dias-dev.ru\"}", 'echo-protocol'));
+		setWs(new w3cwebsocket('ws://' + wsParams.url + '/loki/api/v1/tail?query=' + wsParams.query, 'echo-protocol'));
+		setLogs([]);
+		console.log('onCreate ws => ', ws);
+	};
+	var onClose = function onClose() {
+		console.log('onClose ws => ', ws);
+		ws && ws.close();
+		setWs(undefined);
+	};
+
+	if (ws != null) {
+		ws.onmessage = function (msg) {
+			var streams = JSON.parse(msg.data).streams;
+			var data = streams.map(function (streamItem) {
+				return streamItem.values.map(function (valueItem) {
+					// console.log('valueItem[0].substr(0, 13) => ', moment(valueItem[0].substr(0, 13),"x").format("YYYY-MM-DD hh:mm:ss") ); //
+					return React.createElement(
+						'div',
+						{ key: valueItem[0] },
+						React.createElement(
+							'span',
+							null,
+							moment(valueItem[0].substr(0, 13), 'x').format('YYYY-MM-DD hh:mm:ss')
+						),
+						React.createElement(
+							'span',
+							null,
+							valueItem[1]
+						)
+					);
+				});
+			});
+			setLogs(function (state) {
+				return [].concat(toConsumableArray(state), [data]);
+			});
+			if (logsRef && autoScroll) scrollToBottom(logsRef);
+			// console.log('Logs => ', streams)
+		};
+	}
+
+	var onChangeApp = function onChangeApp(value) {
+		// console.log(value);
+		onClose();
+		setWsParams(_extends({}, wsParams, { query: '{server="' + value[0] + '", app="' + value[1] + '"}' }));
+	};
+
+	return React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(
+			'div',
+			{ style: styles.row },
+			React.createElement(
+				'div',
+				{ style: styles.inputUrl },
+				React.createElement(_Cascader, { options: props.servers, onChange: onChangeApp, placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u0435', bordered: false })
+			),
+			React.createElement(
+				'div',
+				{ style: styles.inputQuery },
+				React.createElement(_Input, { value: wsParams.query, bordered: false, disabled: true })
+			),
+			React.createElement(
+				'div',
+				{ style: styles.autoScroll },
+				React.createElement(
+					_Checkbox,
+					{
+						style: { margin: 'auto' },
+						checked: autoScroll,
+						onChange: function onChange(e) {
+							return setAutoScroll(e.target.checked);
+						}
+					},
+					'Auto scroll'
+				)
+			),
+			ws != null ? React.createElement(
+				'div',
+				null,
+				React.createElement(_Button, {
+					onClick: onClose,
+					type: 'text',
+					icon: React.createElement(StopOutlined, null),
+					style: styles.buttonStop
+				})
+			) : React.createElement(
+				'div',
+				null,
+				React.createElement(_Button, {
+					onClick: onOpen,
+					type: 'text',
+					icon: React.createElement(CaretRightOutlined, null),
+					style: styles.buttonStart
+				})
+			)
+		),
+		React.createElement(
+			'pre',
+			{ style: styles.pre, ref: function ref(_ref) {
+					return setLogsRef(_ref);
+				} },
+			Logs
+		)
+	);
+};
+
+// interface LineChartProps {
+//     size: {width: number; height: number}
+//     configName?: string;
+//     grid?: CartesianGridProps | undefined;
+//     tooltip?: object;
+//     legend?: LegendProps;
+//     xAxis?: XAxisProps;
+//     yAxes?: YAxisProps[];
+//     lines?: LineProps[];
+// }
+
+var LineChart = function LineChart(props) {
+	var size = props.size,
+	    configName = props.configName,
+	    requestLoadRows = props.requestLoadRows,
+	    grid = props.grid,
+	    tooltip = props.tooltip,
+	    legend = props.legend,
+	    xAxis = props.xAxis,
+	    yAxes = props.yAxes,
+	    lines = props.lines;
+
+	var _useState = useState([]),
+	    _useState2 = slicedToArray(_useState, 2),
+	    data = _useState2[0],
+	    setData = _useState2[1];
+
+	useEffect(function () {
+		requestLoadRows(configName)({
+			data: {
+				from: '2021-09-29T16:00:00.000Z',
+				to: '2021-09-30T20:00:00.000Z'
+			},
+			params: {}
+		}).then(function (res) {
+			return setData(res.data);
+		}).catch(function (error) {
+			return notificationError(error, 'Ошибка загрузки данных');
+		});
+	}, []);
+
+	if (data.length > 0) {
+		// console.log("data.length / 105 => ", Math.floor(data.length / 105))
+		return React.createElement(
+			LineChart$1,
+			{ width: size.width, height: size.height - 32, data: data },
+			grid ? React.createElement(CartesianGrid, grid) : null,
+			tooltip ? React.createElement(Tooltip$1, tooltip) : null,
+			legend ? React.createElement(Legend, legend) : null,
+			xAxis ? React.createElement(XAxis, _extends({}, xAxis, {
+				interval: Math.floor(data.length / xAxis.interval)
+			})) : null,
+			yAxes && Array.isArray(yAxes) && yAxes.map(function (yAxis) {
+				return React.createElement(YAxis, yAxis);
+			}),
+			lines && Array.isArray(lines) && lines.map(function (line) {
+				return React.createElement(Line, line);
+			})
+		);
+	} else return null;
+};
+
+var ReactGridLayout = WidthProvider(RGL);
+var startGridWidth = 1200;
+
+var contents = {
+	logs: Logs,
+	lineChart: LineChart
+};
+
+var DashboardPanel = sizeMe.withSize({ monitorHeight: true })(function (_ref) {
+	var size = _ref.size,
+	    title = _ref.title,
+	    type = _ref.type,
+	    params = _ref.params;
+
+	// console.log('DashboardPanel', size)
+	var Content = contents[type];
+	return React.createElement(
+		'div',
+		{ className: 'dashboard-panel' },
+		React.createElement(
+			'div',
+			{ className: 'dashboard-panel-header' },
+			title
+		),
+		React.createElement(
+			'div',
+			{ className: 'dashboard-panel-content' },
+			React.createElement(Content, _extends({ size: size }, params))
+		)
+	);
+});
+
+var DashboardGrid = sizeMe.withSize()(function (_ref2) {
+	var size = _ref2.size,
+	    panels = _ref2.panels;
+
+	var width = size.width > 0 ? size.width : startGridWidth;
+	// console.log('Grid dashboard', size)
+	var renderPanels = panels && panels.map(function (_ref3, index) {
+		var gridPos = _ref3.gridPos,
+		    panel = objectWithoutProperties(_ref3, ['gridPos']);
+		return React.createElement(
+			'div',
+			{ key: index, 'data-grid': gridPos },
+			React.createElement(DashboardPanel, panel)
+		);
+	});
+	return React.createElement(
+		ReactGridLayout,
+		{
+			className: 'layout',
+			rowHeight: 30,
+			cols: 12,
+			width: width,
+			draggableHandle: '.dashboard-panel-header'
+		},
+		renderPanels
+	);
+});
+
+var Dashboard$1 = function Dashboard(props) {
+	var id = props.id,
+	    requestLoadConfig = props.requestLoadConfig;
+
+	var _useState = useState(props.dashboard),
+	    _useState2 = slicedToArray(_useState, 2),
+	    dashboard = _useState2[0],
+	    setDashboard = _useState2[1];
+
+	useEffect(function () {
+		requestLoadConfig && requestLoadConfig({
+			data: { id: id },
+			params: {}
+		}).then(function (res) {
+			return res.data && res.data.dashboard && setDashboard(JSON.parse(res.data.dashboard));
+		}).catch(function (err) {
+			return notificationError("Ошибка загрузки dashboard", err);
+		});
+	}, [id]);
+
+	console.log('dashboard => ', dashboard);
+	return React.createElement(
+		'div',
+		{
+			style: {
+				backgroundColor: '#f0f2f5',
+				width: '100%',
+				height: '100%',
+				overflow: 'auto'
+			}
+		},
+		React.createElement(DashboardGrid, { panels: dashboard.panels })
+	);
+};
+
 // import AntTransfer, { TransferProps } from "antd/lib/transfer";
 // General
 var Button = withItem(Button$1);
@@ -10438,6 +10771,7 @@ var Modal = withItem(Modal$2);
 // Rt-design
 var Custom = withStore(Custom$1);
 var Switcher = withStore(Switcher$1);
+var Dashboard = Dashboard$1;
 
 var rtdReducer = function rtdReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -10489,5 +10823,5 @@ var executeRequest = function executeRequest(request) {
     };
 };
 
-export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormItem, FormItems, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
+export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, Dashboard, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormItem, FormItems, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
 //# sourceMappingURL=index.es.js.map
