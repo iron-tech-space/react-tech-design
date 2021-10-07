@@ -1,3 +1,7 @@
+## 0.0.80
+
+- Add dashboards with logs
+
 ## 0.0.79
 
 - Add setSelectedRowsHandler for change value in Table

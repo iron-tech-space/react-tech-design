@@ -83,6 +83,12 @@ var _Table = require('antd/es/table');
 require('antd/es/space/style');
 var _Space = require('antd/es/space');
 var ColumnResizer = require('react-base-table/lib/ColumnResizer');
+var RGL = require('react-grid-layout');
+var sizeMe = require('react-sizeme');
+require('antd/es/cascader/style');
+var _Cascader = require('antd/es/cascader');
+var websocket = require('websocket');
+var recharts = require('recharts');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -139,6 +145,9 @@ var AntTabs__default = /*#__PURE__*/_interopDefaultLegacy(AntTabs);
 var _Table__default = /*#__PURE__*/_interopDefaultLegacy(_Table);
 var _Space__default = /*#__PURE__*/_interopDefaultLegacy(_Space);
 var ColumnResizer__default = /*#__PURE__*/_interopDefaultLegacy(ColumnResizer);
+var RGL__default = /*#__PURE__*/_interopDefaultLegacy(RGL);
+var sizeMe__default = /*#__PURE__*/_interopDefaultLegacy(sizeMe);
+var _Cascader__default = /*#__PURE__*/_interopDefaultLegacy(_Cascader);
 
 var rtComponents = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -186,7 +195,8 @@ var rtComponents = /*#__PURE__*/Object.freeze({
     get AntTable () { return AntTable; },
     get Modal () { return Modal; },
     get Custom () { return Custom; },
-    get Switcher () { return Switcher; }
+    get Switcher () { return Switcher; },
+    get Dashboard () { return Dashboard; }
 });
 
 var types = {
@@ -409,13 +419,13 @@ var notificationError = function notificationError(error, message) {
 	if (error.response) {
 		console.error(error.response.status, error.response.data);
 		var errorDescription = error.response.data && error.response.data.error ? error.response.data.error : "Нет описания ошибки";
-		_notification__default['default'].error({
+		_notification__default["default"].error({
 			message: '[' + error.response.status + '] ' + message,
 			description: errorDescription
 		});
 	} else {
 		console.error(error);
-		_notification__default['default'].error({
+		_notification__default["default"].error({
 			message: 'Не удалось детектировать ошибку. См. console.error'
 		});
 	}
@@ -430,7 +440,7 @@ var dispatchToStore = function dispatchToStore(_ref) {
 	if (dispatch.path) {
 		// console.log("storeHOC => dispatchToStore", dispatch, setDataStore);
 		if (dispatch.type === 'event') setDataStore && setDataStore(dispatch.path, {
-			timestamp: moment__default['default'](),
+			timestamp: moment__default["default"](),
 			// type: dispatch.type,
 			value: value,
 			extraData: extraData
@@ -439,12 +449,12 @@ var dispatchToStore = function dispatchToStore(_ref) {
 };
 
 function useMounted() {
-	var _React$useState = React__default['default'].useState(false),
+	var _React$useState = React__default["default"].useState(false),
 	    _React$useState2 = slicedToArray(_React$useState, 2),
 	    isMounted = _React$useState2[0],
 	    setIsMounted = _React$useState2[1];
 
-	React__default['default'].useEffect(function () {
+	React__default["default"].useEffect(function () {
 		setIsMounted(true);
 	}, []);
 	return isMounted;
@@ -460,11 +470,11 @@ var getSortBy = function getSortBy(clientSortBy, serverSortBy, dataIndex) {
 
 var rtPrefix = 'rt';
 
-var empty$1 = React__default['default'].createElement(
+var empty$1 = React__default["default"].createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
-	React__default['default'].createElement(
+	React__default["default"].createElement(
 		'span',
 		null,
 		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
@@ -472,13 +482,13 @@ var empty$1 = React__default['default'].createElement(
 	' '
 );
 
-var overlay$1 = React__default['default'].createElement(
+var overlay$1 = React__default["default"].createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
-	React__default['default'].createElement(_Spin__default['default'], {
+	React__default["default"].createElement(_Spin__default["default"], {
 		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
-		indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
+		indicator: React__default["default"].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
 	}),
 	' '
 );
@@ -505,7 +515,7 @@ var SelectionHead$1 = function SelectionHead(props) {
 		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
 	};
 
-	return React__default['default'].createElement(_Checkbox__default['default'], {
+	return React__default["default"].createElement(_Checkbox__default["default"], {
 		indeterminate: selectAll === null,
 		onChange: _handleChange,
 		checked: selectAll
@@ -714,7 +724,7 @@ var SelectionCell$1 = function SelectionCell(props) {
 	var det = indeterminateRowKeys.includes(rowData[rowKey]);
 	var checked = selectedRowKeys.includes(rowData[rowKey]);
 
-	return React__default['default'].createElement(_Checkbox__default['default'], {
+	return React__default["default"].createElement(_Checkbox__default["default"], {
 		indeterminate: det,
 		onChange: function onChange(e) {
 			return _handleChange(e.target.checked);
@@ -726,17 +736,17 @@ var SelectionCell$1 = function SelectionCell(props) {
 var APP_TIME_OFFSET = 3;
 
 var getMomentFromStringByFormat = function getMomentFromStringByFormat(date, format) {
-	return date ? moment__default['default'](date, format).utcOffset(APP_TIME_OFFSET) : null;
+	return date ? moment__default["default"](date, format).utcOffset(APP_TIME_OFFSET) : null;
 };
 
 // export const getMomentWithOffset = (date) =>
 // 	moment(date).utcOffset(APP_TIME_OFFSET);
 var getMomentWithOffset = function getMomentWithOffset(date) {
-	return moment__default['default'](date).format();
+	return moment__default["default"](date).format();
 };
 
 var getMomentWithOffsetTruncateDay = function getMomentWithOffsetTruncateDay(date) {
-	return moment__default['default'](date).startOf('day')
+	return moment__default["default"](date).startOf('day')
 	// .hours(0)
 	// .minutes(0)
 	// .seconds(0)
@@ -748,7 +758,7 @@ var toFormat = function toFormat(dateString, format) {
 	if (!dateString) {
 		return '';
 	}
-	var mom = moment__default['default'](dateString);
+	var mom = moment__default["default"](dateString);
 	return mom.isValid() ? mom.format(format) : dateString;
 };
 
@@ -757,7 +767,7 @@ var toDDMMYYYYHHMMSS = function toDDMMYYYYHHMMSS(dateString) {
 };
 
 var getISO = function getISO(date) {
-	return moment__default['default'](date).utcOffset(APP_TIME_OFFSET).toISOString();
+	return moment__default["default"](date).utcOffset(APP_TIME_OFFSET).toISOString();
 };
 
 var DateRange = function DateRange(props) {
@@ -806,13 +816,13 @@ var DateRange = function DateRange(props) {
 
 	React.useEffect(function () {
 		if (valueStart) {
-			setStartValue(moment__default['default'](valueStart));
+			setStartValue(moment__default["default"](valueStart));
 			// console.log('useEffect -> valueStart', valueStart);
 		} else if (!props.defaultValueStart) setStartValue(null);
 	}, [valueStart]);
 	React.useEffect(function () {
 		if (valueEnd) {
-			setEndValue(moment__default['default'](valueEnd));
+			setEndValue(moment__default["default"](valueEnd));
 			// console.log('useEffect -> valueEnd', valueEnd);
 		} else if (!props.defaultValueEnd) setEndValue(null);
 	}, [valueEnd]);
@@ -847,24 +857,24 @@ var DateRange = function DateRange(props) {
 		} else onChange(name, value);
 	};
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{ className: className + ' ' + rtPrefix + '-date-range' },
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			null,
-			title ? React__default['default'].createElement(
+			title ? React__default["default"].createElement(
 				'div',
 				{ className: 'title' },
 				title
 			) : null,
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'span',
 				{ className: 'subtitleStart' },
 				'c'
 			),
-			React__default['default'].createElement(_DatePicker__default['default'], {
-				locale: locale__default['default']
+			React__default["default"].createElement(_DatePicker__default["default"], {
+				locale: locale__default["default"]
 				// defaultValue={ checkDefValue(props.defaultValueStart) }
 				, size: size,
 				style: { width: !!showTime ? '160px' : '135px' },
@@ -876,16 +886,16 @@ var DateRange = function DateRange(props) {
 				showTime: showTime
 			})
 		),
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			null,
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'span',
 				{ className: 'subtitleEnd' },
 				'\u043F\u043E'
 			),
-			React__default['default'].createElement(_DatePicker__default['default'], {
-				locale: locale__default['default']
+			React__default["default"].createElement(_DatePicker__default["default"], {
+				locale: locale__default["default"]
 				// defaultValue={ checkDefValue(props.defaultValueEnd) }
 				, size: size,
 				style: { width: showTime ? '160px' : '135px' },
@@ -902,7 +912,7 @@ var DateRange = function DateRange(props) {
 
 DateRange.propTypes = {
 	/** Формат отображения даты (не влияет на формат в onChange) */
-	dateFormat: PropTypes__default['default'].string,
+	dateFormat: PropTypes__default["default"].string,
 
 	/** Значение по умолчанию для первого пикера */
 	// defaultValueStart: PropTypes.string,
@@ -911,22 +921,22 @@ DateRange.propTypes = {
 	// defaultValueEnd: PropTypes.string,
 
 	/** Дополнительное имя класса для элемента */
-	className: PropTypes__default['default'].string,
+	className: PropTypes__default["default"].string,
 
 	/** Наименование параметра для первого пикера */
-	nameStart: PropTypes__default['default'].string,
+	nameStart: PropTypes__default["default"].string,
 
 	/** Наименование параметра для второго пикера */
-	nameEnd: PropTypes__default['default'].string,
+	nameEnd: PropTypes__default["default"].string,
 
 	/** Событие при изменении любого из пикеров */
-	onChange: PropTypes__default['default'].func,
+	onChange: PropTypes__default["default"].func,
 
 	/** Размер пикера ['small', 'middle', 'large'] */
-	size: PropTypes__default['default'].oneOf(['small', 'middle', 'large']),
+	size: PropTypes__default["default"].oneOf(['small', 'middle', 'large']),
 
 	/** Заголовок */
-	title: PropTypes__default['default'].string
+	title: PropTypes__default["default"].string
 
 	/** Значение даты первого пикера (используется для управления датой из родительного компонента) */
 	// valueStart: PropTypes.string,
@@ -979,7 +989,7 @@ var SingleDate = function SingleDate(props) {
 
 	React.useEffect(function () {
 		if (value) {
-			setValue(moment__default['default'](value));
+			setValue(moment__default["default"](value));
 		} else if (!defaultValue) setValue(null);
 	}, [value]);
 
@@ -992,15 +1002,15 @@ var SingleDate = function SingleDate(props) {
 		if (value) onChange(name, getMomentWithOffsetTruncateDay(value));else onChange(name, value);
 	};
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{ className: 'single-date-container ' + className },
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			{ className: 'title' },
 			title
 		),
-		React__default['default'].createElement(_DatePicker__default['default'], {
+		React__default["default"].createElement(_DatePicker__default["default"], {
 			size: 'small',
 			style: { width: '135px' },
 			onChange: _onChangePicker,
@@ -1013,25 +1023,25 @@ var SingleDate = function SingleDate(props) {
 
 SingleDate.propTypes = {
 	/** Формат отображения даты (не влияет на формат в onChange) */
-	dateFormat: PropTypes__default['default'].string,
+	dateFormat: PropTypes__default["default"].string,
 
 	/** Значение по умолчанию */
-	defaultValue: PropTypes__default['default'].string,
+	defaultValue: PropTypes__default["default"].string,
 
 	/** Наименование параметра */
-	name: PropTypes__default['default'].string,
+	name: PropTypes__default["default"].string,
 
 	/** Дополнительное имя класса для элемента */
-	className: PropTypes__default['default'].string,
+	className: PropTypes__default["default"].string,
 
 	/** Событие при изменении пикера */
-	onChange: PropTypes__default['default'].func,
+	onChange: PropTypes__default["default"].func,
 
 	/** Заголовок */
-	title: PropTypes__default['default'].string,
+	title: PropTypes__default["default"].string,
 
 	/** Значение даты */
-	value: PropTypes__default['default'].string
+	value: PropTypes__default["default"].string
 };
 
 SingleDate.defaultProps = {
@@ -1115,10 +1125,10 @@ var FilterPanel = function FilterPanel(props) {
     return cls.join(" ");
   };
 
-  return React__default['default'].createElement(
-    React__default['default'].Fragment,
+  return React__default["default"].createElement(
+    React__default["default"].Fragment,
     null,
-    configFilter && configFilter.length ? React__default['default'].createElement(
+    configFilter && configFilter.length ? React__default["default"].createElement(
       "div",
       { className: getPanelCls() },
       configFilter.map(function (item, index) {
@@ -1127,7 +1137,7 @@ var FilterPanel = function FilterPanel(props) {
         item.className && cls.push(item.className);
         switch (item.componentType) {
           case "DateRange":
-            return React__default['default'].createElement(DateRange, _extends({
+            return React__default["default"].createElement(DateRange, _extends({
               key: index
             }, item, {
               className: cls.join(" "),
@@ -1138,7 +1148,7 @@ var FilterPanel = function FilterPanel(props) {
               valueEnd: filter[item.nameEnd]
             }));
           case "SingleDate":
-            return React__default['default'].createElement(SingleDate, _extends({
+            return React__default["default"].createElement(SingleDate, _extends({
               key: index
             }, item, {
               className: cls.join(" "),
@@ -1149,7 +1159,7 @@ var FilterPanel = function FilterPanel(props) {
             }));
           case "MultiSelect":
           case "SingleSelect":
-            return React__default['default'].createElement(Select$3, _extends({
+            return React__default["default"].createElement(Select$3, _extends({
               key: index
             }, item, {
               type: item.componentType,
@@ -1161,8 +1171,8 @@ var FilterPanel = function FilterPanel(props) {
               value: filter[item.name]
             }));
           case "Custom":
-            return React__default['default'].createElement(
-              React__default['default'].Fragment,
+            return React__default["default"].createElement(
+              React__default["default"].Fragment,
               { key: index },
               item.render({
                 onChange: _onChangeData,
@@ -1174,11 +1184,11 @@ var FilterPanel = function FilterPanel(props) {
             return null;
         }
       }),
-      React__default['default'].createElement(
-        _Tooltip__default['default'],
+      React__default["default"].createElement(
+        _Tooltip__default["default"],
         { title: applyFilterTooltip },
-        React__default['default'].createElement(
-          _Button__default['default'],
+        React__default["default"].createElement(
+          _Button__default["default"],
           {
             type: "primary",
             size: applyFilterSize,
@@ -1188,11 +1198,11 @@ var FilterPanel = function FilterPanel(props) {
           applyFilterRender
         )
       ),
-      React__default['default'].createElement(
-        _Tooltip__default['default'],
+      React__default["default"].createElement(
+        _Tooltip__default["default"],
         { title: resetFilterTooltip },
-        React__default['default'].createElement(
-          _Button__default['default'],
+        React__default["default"].createElement(
+          _Button__default["default"],
           {
             size: resetFilterSize,
             style: { marginLeft: "10px" },
@@ -1208,38 +1218,38 @@ var FilterPanel = function FilterPanel(props) {
 FilterPanel.propTypes = {
 
   /** Тест Tooltip для кнопки "Применить фильтр" */
-  applyFilterTooltip: PropTypes__default['default'].string,
+  applyFilterTooltip: PropTypes__default["default"].string,
 
   /** Размер кнопки "Применить фильтр" ['small', 'middle', 'large'] */
-  applyFilterSize: PropTypes__default['default'].oneOf(["small", "middle", "large"]),
+  applyFilterSize: PropTypes__default["default"].oneOf(["small", "middle", "large"]),
 
   /** Строка / функция / элемент для отображения в кнопке "Применить фильтр" */
-  applyFilterRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element, PropTypes__default['default'].string]),
+  applyFilterRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element, PropTypes__default["default"].string]),
 
   /** Тип бордера панели (по умолчанию 'none')
    * ['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right'] */
-  borderStyle: PropTypes__default['default'].oneOf(["all", "none", "top", "left", "bottom", "right", "top-bottom", "left-right"]),
+  borderStyle: PropTypes__default["default"].oneOf(["all", "none", "top", "left", "bottom", "right", "top-bottom", "left-right"]),
 
   /** Объект фильтра по умолчанию */
-  defaultFilter: PropTypes__default['default'].object,
+  defaultFilter: PropTypes__default["default"].object,
 
   /** Конфигурация панели фильтров */
-  configFilter: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+  configFilter: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
   /** Событие по кнопке выполнить фильтр */
-  onApplyFilter: PropTypes__default['default'].func,
+  onApplyFilter: PropTypes__default["default"].func,
 
   /** Событие по изменение объекта фильтра */
-  onChangeFilter: PropTypes__default['default'].func,
+  onChangeFilter: PropTypes__default["default"].func,
 
   /** Тест Tooltip для кнопки "Сбросить фильтр" */
-  resetFilterTooltip: PropTypes__default['default'].string,
+  resetFilterTooltip: PropTypes__default["default"].string,
 
   /** Размер кнопки "Сбросить фильтр" ['small', 'middle', 'large'] */
-  resetFilterSize: PropTypes__default['default'].oneOf(["small", "middle", "large"]),
+  resetFilterSize: PropTypes__default["default"].oneOf(["small", "middle", "large"]),
 
   /** Строка / функция / элемент для отображения в кнопке "Сбросить фильтр" */
-  resetFilterRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element, PropTypes__default['default'].string])
+  resetFilterRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element, PropTypes__default["default"].string])
 };
 
 FilterPanel.defaultProps = {
@@ -1263,31 +1273,31 @@ var SelectionList$1 = function SelectionList(props) {
 
 	// console.log("SelectionList typeof -> ", typeof(rowRender));
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{ className: rtPrefix + '-table-selected-rows' },
-		selectedRowObjects && selectedRowObjects.length > 0 ? React__default['default'].createElement(
+		selectedRowObjects && selectedRowObjects.length > 0 ? React__default["default"].createElement(
 			'ul',
 			null,
 			selectedRowObjects.map(function (item, index) {
-				return React__default['default'].createElement(
+				return React__default["default"].createElement(
 					'li',
 					{ key: index },
-					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React__default['default'].createElement(
+					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React__default["default"].createElement(
 						'div',
 						null,
 						item[rowRender]
 					),
-					React__default['default'].createElement(
+					React__default["default"].createElement(
 						'div',
 						{ onClick: function onClick() {
 								return onClickDropSelect(item);
 							} },
-						React__default['default'].createElement(icons.CloseCircleOutlined, null)
+						React__default["default"].createElement(icons.CloseCircleOutlined, null)
 					)
 				);
 			})
-		) : React__default['default'].createElement(
+		) : React__default["default"].createElement(
 			'div',
 			null,
 			'\u041D\u0435\u0442 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439'
@@ -1300,13 +1310,13 @@ SelectionList$1.propTypes = {
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
   * { rowData, rowIndex }) */
-	rowRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+	rowRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
 	/** Список выделенных объектов */
-	selectedRowObjects: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+	selectedRowObjects: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
 	/** Событие удаления элемента */
-	onClickDropSelect: PropTypes__default['default'].func.isRequired
+	onClickDropSelect: PropTypes__default["default"].func.isRequired
 };
 
 SelectionList$1.defaultProps = {};
@@ -1760,38 +1770,38 @@ var Table$5 = React.forwardRef(function (props, ref) {
 
 	/** VIEW FUNCTIONS */
 
-	var _footer = React__default['default'].createElement(
-		React__default['default'].Fragment,
+	var _footer = React__default["default"].createElement(
+		React__default["default"].Fragment,
 		null,
-		_footerShow ? React__default['default'].createElement(
-			React__default['default'].Fragment,
+		_footerShow ? React__default["default"].createElement(
+			React__default["default"].Fragment,
 			null,
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: footerProps.leftCustomSideElement }) : null
+				footerProps.leftCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: footerProps.leftCustomSideElement }) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: footerProps.centerCustomSideElement }) : null
+				footerProps.centerCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: footerProps.centerCustomSideElement }) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: footerProps.rightCustomSideElement }) : null
+				footerProps.rightCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: footerProps.rightCustomSideElement }) : null
 			),
-			selectable ? React__default['default'].createElement(
-				React__default['default'].Fragment,
+			selectable ? React__default["default"].createElement(
+				React__default["default"].Fragment,
 				null,
-				footerProps.showElements.includes('selected') ? React__default['default'].createElement(
+				footerProps.showElements.includes('selected') ? React__default["default"].createElement(
 					'span',
 					null,
 					footerProps.selectedTitle,
 					' ',
 					_selectedRowKeys.length
 				) : null,
-				footerProps.showElements.includes('loaded') ? React__default['default'].createElement(
+				footerProps.showElements.includes('loaded') ? React__default["default"].createElement(
 					'span',
 					null,
 					footerProps.loadedTitle,
@@ -1799,13 +1809,13 @@ var Table$5 = React.forwardRef(function (props, ref) {
 					flatten(getTableRowKeys(_rows, rowKey)).length
 				) : null
 			) : null,
-			footerProps.showElements.includes('total') ? type === 'infinity' && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React__default['default'].createElement(
+			footerProps.showElements.includes('total') ? type === 'infinity' && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React__default["default"].createElement(
 				'span',
 				null,
 				footerProps.totalTitle,
 				' ',
 				_totalCountRows
-			) : React__default['default'].createElement(
+			) : React__default["default"].createElement(
 				'span',
 				null,
 				footerProps.totalTitle,
@@ -2139,16 +2149,16 @@ var Table$5 = React.forwardRef(function (props, ref) {
 	//     }
 	// };
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{
 			className: rtPrefix + '-table',
 			style: { width: '100%', height: '100%' }
 		},
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			{ className: rtPrefix + '-table-top-panel' },
-			React__default['default'].createElement(CommandPanel$1, _extends({}, commandPanelProps, {
+			React__default["default"].createElement(CommandPanel$1, _extends({}, commandPanelProps, {
 				defaultValueSearch: defaultSearchValue,
 				disabledElements: _getDisabledElementsOfCommandPanel(),
 				onClickAddAsCopy: _onClickAddAsCopy,
@@ -2158,22 +2168,22 @@ var Table$5 = React.forwardRef(function (props, ref) {
 				onClickUp: _onClickUp,
 				onSearch: _onSearch
 			})),
-			React__default['default'].createElement(FilterPanel, _extends({}, filterPanelProps, {
+			React__default["default"].createElement(FilterPanel, _extends({}, filterPanelProps, {
 				defaultFilter: defaultFilter,
 				onChangeFilter: _onChangeFilter,
 				onApplyFilter: _onApplyFilter
 			}))
 		),
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			{ className: rtPrefix + '-baseTable' },
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				BaseTable.AutoResizer,
 				null,
 				function (_ref11) {
 					var width = _ref11.width,
 					    height = _ref11.height;
-					return React__default['default'].createElement(BaseTable__default['default'], {
+					return React__default["default"].createElement(BaseTable__default["default"], {
 						ref: tableRef
 						/** Required */
 						, columns: _getColumns(),
@@ -2213,7 +2223,7 @@ var Table$5 = React.forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React__default['default'].createElement(SelectionList$1, {
+		showSelection && selectable && !expandColumnKey ? React__default["default"].createElement(SelectionList$1, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -2229,42 +2239,42 @@ Table$5.propTypes = {
   * */
 
 	/** Столбцы таблицы */
-	columns: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+	columns: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
 	/** Тип таблицы
   * **infinity** - загрузка данных по скроллу. Фильтрация, сортировка и поиск через сервер.
   * **serverSide** - первичная загрузка таблицы с сервера. Фильтрация, сортировка и поиск через сервер. Lazy Load для дерева тоже тут.
   * **localSide** - полностью локальная таблица. Фильтрация, сортировка и поиск через локальный rows */
-	type: PropTypes__default['default'].oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
+	type: PropTypes__default["default"].oneOf(['infinity', 'serverSide', 'localSide']).isRequired,
 
 	/** Объект со свойствами Command Panel */
-	commandPanelProps: PropTypes__default['default'].object,
+	commandPanelProps: PropTypes__default["default"].object,
 
 	/** Объект со свойствами Filter Panel */
-	filterPanelProps: PropTypes__default['default'].object,
+	filterPanelProps: PropTypes__default["default"].object,
 
 	/**
   * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
   * */
 
 	/** Строки по умолчанию */
-	defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	defaultRows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Ключи выделенных по умолчанию строк */
-	defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+	defaultSelectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
 	/** Значение строки поиска по умолчанию строк */
-	defaultSearchValue: PropTypes__default['default'].string,
+	defaultSearchValue: PropTypes__default["default"].string,
 
 	/** Объект фильтрации по умолчанию */
-	defaultFilter: PropTypes__default['default'].object,
+	defaultFilter: PropTypes__default["default"].object,
 
 	/** Сортировка по умолчанию */
-	defaultSortBy: PropTypes__default['default'].shape({
+	defaultSortBy: PropTypes__default["default"].shape({
 		/** Ключ поля для сортировки */
-		key: PropTypes__default['default'].string,
+		key: PropTypes__default["default"].string,
 		/** Направление сортировки */
-		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+		order: PropTypes__default["default"].oneOf(['asc', 'desc'])
 	}),
 
 	/**
@@ -2272,26 +2282,26 @@ Table$5.propTypes = {
   * */
 
 	/** Строки таблицы. Используется для контроля таблицы из вне. */
-	rows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	rows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Функция задания строк таблицы. */
-	setRows: PropTypes__default['default'].func,
+	setRows: PropTypes__default["default"].func,
 
 	/** Выделенные строки таблицы. */
-	selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+	selectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
 	/** Значение строки поиска */
-	searchValue: PropTypes__default['default'].string,
+	searchValue: PropTypes__default["default"].string,
 
 	/** Объект фильтрации */
-	filter: PropTypes__default['default'].object,
+	filter: PropTypes__default["default"].object,
 
 	/** Объект сортировки */
-	sortBy: PropTypes__default['default'].shape({
+	sortBy: PropTypes__default["default"].shape({
 		/** Ключ поля для сортировки */
-		key: PropTypes__default['default'].string,
+		key: PropTypes__default["default"].string,
 		/** Направление сортировки */
-		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+		order: PropTypes__default["default"].oneOf(['asc', 'desc'])
 	}),
 
 	/**
@@ -2299,80 +2309,80 @@ Table$5.propTypes = {
   * */
 
 	/** Автоудаление строк из таблицы по кнопке в командной панели*/
-	autoDeleteRows: PropTypes__default['default'].bool,
+	autoDeleteRows: PropTypes__default["default"].bool,
 
 	/** Поле для уникальной идентификации строки */
-	rowKey: PropTypes__default['default'].string,
+	rowKey: PropTypes__default["default"].string,
 
 	/**
   * VIEW PROPS
   * */
 
 	/** Вывод когда нет данных */
-	empty: PropTypes__default['default'].element,
+	empty: PropTypes__default["default"].element,
 
 	/** Отображение загрузки данных */
-	overlay: PropTypes__default['default'].element,
+	overlay: PropTypes__default["default"].element,
 
 	/** Фиксированная ширина столбцов. Появится боковой скрол */
-	fixWidthColumn: PropTypes__default['default'].bool,
+	fixWidthColumn: PropTypes__default["default"].bool,
 
 	/** Высота подвала */
-	footerHeight: PropTypes__default['default'].number,
+	footerHeight: PropTypes__default["default"].number,
 
 	/** Отображать ли подвал */
-	footerShow: PropTypes__default['default'].bool,
+	footerShow: PropTypes__default["default"].bool,
 
 	/** Заголовки футтера */
-	footerTitles: PropTypes__default['default'].shape({
+	footerTitles: PropTypes__default["default"].shape({
 		/** Заголовок выделенных элементов */
-		selectedRows: PropTypes__default['default'].string,
+		selectedRows: PropTypes__default["default"].string,
 		/** Заголовок загруженных элементов */
-		loadedRows: PropTypes__default['default'].string,
+		loadedRows: PropTypes__default["default"].string,
 		/** Заголовок всего элементов */
-		totalRows: PropTypes__default['default'].string
+		totalRows: PropTypes__default["default"].string
 	}),
 
-	footerProps: PropTypes__default['default'].shape({
+	footerProps: PropTypes__default["default"].shape({
 
 		/** Высота подвала */
-		height: PropTypes__default['default'].number,
+		height: PropTypes__default["default"].number,
 
 		/** Массив элементов футтера, которые надо отобразить
    * ['selected', 'loaded', 'total'] */
-		showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+		showElements: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string),
 
 		/** Заколовок для кол-ва выбранных объектов */
-		selectedTitle: PropTypes__default['default'].string,
+		selectedTitle: PropTypes__default["default"].string,
 
 		/** Заколовок для кол-ва загруженны объектов */
-		loadedTitle: PropTypes__default['default'].string,
+		loadedTitle: PropTypes__default["default"].string,
 
 		/** Заколовок для кол-ва всего объектов */
-		totalTitle: PropTypes__default['default'].string,
+		totalTitle: PropTypes__default["default"].string,
 
 		/** Левый кастомный элемент командной панели */
-		leftCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+		leftCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 		/** Центральный кастомный элемент командной панели */
-		centerCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+		centerCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 		/** Правый кастомный элемент командной панели */
-		rightCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+		rightCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 	}),
 
 	/** Высота заголовка таблицы */
-	headerHeight: PropTypes__default['default'].number,
+	headerHeight: PropTypes__default["default"].number,
 
 	/** Высота строки таблицы */
-	rowHeight: PropTypes__default['default'].number,
+	rowHeight: PropTypes__default["default"].number,
 
 	/** Custom row renderer
   * Параметры - ({ isScrolling, cells, columns, rowData, rowIndex, depth }) */
-	rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+	rowRenderer: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element]),
 
 	/** Строки будут в зебро-стиле */
-	zebraStyle: PropTypes__default['default'].bool,
+	zebraStyle: PropTypes__default["default"].bool,
 
 	/**
   * LOAD DATA PROPS
@@ -2380,45 +2390,45 @@ Table$5.propTypes = {
 
 	/** Порог в пикселях для вызова _onLoad.
   * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-	loadThreshold: PropTypes__default['default'].number,
+	loadThreshold: PropTypes__default["default"].number,
 
 	/** Размер страницы */
-	pageSize: PropTypes__default['default'].number,
+	pageSize: PropTypes__default["default"].number,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes__default['default'].func,
+	requestLoadRows: PropTypes__default["default"].func,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadCount: PropTypes__default['default'].func,
+	requestLoadCount: PropTypes__default["default"].func,
 
 	/** Имя параметра для поиска */
-	searchParamName: PropTypes__default['default'].string,
+	searchParamName: PropTypes__default["default"].string,
 
 	/**
   * SELECTABLE PROPS
   * */
 
 	/** Таблица с возможностью выбора строки */
-	selectable: PropTypes__default['default'].bool,
+	selectable: PropTypes__default["default"].bool,
 
 	/**
   * TREE PROPS
   * */
 
 	/** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
-	nodeAssociated: PropTypes__default['default'].bool,
+	nodeAssociated: PropTypes__default["default"].bool,
 
 	/** Ключ колонки по которой строить иерархию */
-	expandColumnKey: PropTypes__default['default'].string,
+	expandColumnKey: PropTypes__default["default"].string,
 
 	/** Открыть по умолчанию вложенность до уровня N или 'All' */
-	expandDefaultAll: PropTypes__default['default'].bool,
+	expandDefaultAll: PropTypes__default["default"].bool,
 
 	/** Загружать ноды иерархии по одной */
-	expandLazyLoad: PropTypes__default['default'].bool,
+	expandLazyLoad: PropTypes__default["default"].bool,
 
 	/** Поле в котором хранится ссылка на родителя */
-	expandParentKey: PropTypes__default['default'].string,
+	expandParentKey: PropTypes__default["default"].string,
 
 	/**
   * EVENTS
@@ -2426,40 +2436,40 @@ Table$5.propTypes = {
 
 	/** Событие при клике на строку (только при selectable = false)
   * Параметр - ({selected, rowData, rowIndex}) */
-	onRowClick: PropTypes__default['default'].func,
+	onRowClick: PropTypes__default["default"].func,
 
 	/** Событие при двойном клике на строку.
   * Параметр - ({rowData, rowIndex, rowKey}) */
-	onRowDoubleClick: PropTypes__default['default'].func,
+	onRowDoubleClick: PropTypes__default["default"].func,
 
 	/** События при открытии / закрытии ноды
   * Парметры - ({ expanded, rowData, rowIndex, rowKey }) */
-	onRowExpand: PropTypes__default['default'].func,
+	onRowExpand: PropTypes__default["default"].func,
 
 	/** Событие при выборе строки.
   * Параметр - массив выбранных строе (только rowKey) */
-	onSelectedRowsChange: PropTypes__default['default'].func,
+	onSelectedRowsChange: PropTypes__default["default"].func,
 
 	/** События при открытии / закрытии ноды
   * Парметры - (expandedRowKeys) - массив ключей открытых нод */
-	onExpandedRowsChange: PropTypes__default['default'].func,
+	onExpandedRowsChange: PropTypes__default["default"].func,
 
 	/** SELECTED PANEL */
 
 	/** Отображать ли панель выбранных элементов */
-	showSelection: PropTypes__default['default'].bool,
+	showSelection: PropTypes__default["default"].bool,
 
 	/** Строка или функция для отображения элементов списка выбранных
   * Строка - имя поля
   * Функция - рендер строк.
   * `({ rowData, rowIndex }) => { return <Component> }` */
-	rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+	rowRenderShowSelection: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
 	/** Путь в сторе куда класть выбранную строку таблицы */
-	dispatchPath: PropTypes__default['default'].string,
+	dispatchPath: PropTypes__default["default"].string,
 
 	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes__default['default'].object
+	subscribe: PropTypes__default["default"].object
 };
 
 Table$5.defaultProps = {
@@ -2534,7 +2544,7 @@ var mapStateToProps$2 = function mapStateToProps(store, ownProps) {
 		var name = subscribe.name,
 		    path = subscribe.path;
 
-		if (name && path) return defineProperty({}, name, objectPath__default['default'].get(store, path));
+		if (name && path) return defineProperty({}, name, objectPath__default["default"].get(store, path));
 	}
 
 	return {};
@@ -2572,7 +2582,7 @@ var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
  * */
 var Table$6 = reactRedux.connect(mapStateToProps$2, mapDispatchToProps$4, null, { forwardRef: true })(Table$5);
 
-var Paragraph = _Typography__default['default'].Paragraph;
+var Paragraph = _Typography__default["default"].Paragraph;
 
 
 var Select$2 = function Select(props) {
@@ -2713,7 +2723,7 @@ var Select$2 = function Select(props) {
 		width: 500,
 		cellRenderer: typeof rowRender === 'function' ? rowRender : function (_ref2) {
 			var rowData = _ref2.rowData;
-			return React__default['default'].createElement(
+			return React__default["default"].createElement(
 				'div',
 				{ className: 'rt-table-cell' },
 				rowData[rowRender]
@@ -2829,18 +2839,18 @@ var Select$2 = function Select(props) {
 		_onChange([]);
 	};
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{
 			className: rtPrefix + '-select ' + (className ? className : ''),
 			ref: node
 		},
-		title ? React__default['default'].createElement(
+		title ? React__default["default"].createElement(
 			'div',
 			{ className: 'title' },
 			title
 		) : null,
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			{
 				className: _getHeadCls(),
@@ -2849,13 +2859,13 @@ var Select$2 = function Select(props) {
 				}
 
 			},
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: rtPrefix + '-select-selector'
 					// onFocus={ () => {setIsSelectOpened(true)} }
 					, onClick: onOpenPopup
 				},
-				React__default['default'].createElement(
+				React__default["default"].createElement(
 					Paragraph,
 					{ ellipsis: true },
 					' ',
@@ -2863,13 +2873,13 @@ var Select$2 = function Select(props) {
 					' '
 				)
 			),
-			isSelectOpened ? React__default['default'].createElement(icons.UpOutlined, { onClick: onOpenPopup, className: rtPrefix + '-select-header-icon' }) : React__default['default'].createElement(icons.DownOutlined, { onClick: onOpenPopup, className: rtPrefix + '-select-header-icon' }),
-			_selectedRowKeys.length > 0 ? React__default['default'].createElement(icons.CloseCircleFilled, { onClick: onClickClear, className: rtPrefix + '-select-header-clear' }) : null
+			isSelectOpened ? React__default["default"].createElement(icons.UpOutlined, { onClick: onOpenPopup, className: rtPrefix + '-select-header-icon' }) : React__default["default"].createElement(icons.DownOutlined, { onClick: onOpenPopup, className: rtPrefix + '-select-header-icon' }),
+			_selectedRowKeys.length > 0 ? React__default["default"].createElement(icons.CloseCircleFilled, { onClick: onClickClear, className: rtPrefix + '-select-header-clear' }) : null
 		),
-		isSelectOpened ? React__default['default'].createElement(
+		isSelectOpened ? React__default["default"].createElement(
 			'div',
 			{ className: _getPopupCls(), style: _getPopupStyle() },
-			React__default['default'].createElement(Table$6, _extends({}, props, {
+			React__default["default"].createElement(Table$6, _extends({}, props, {
 				commandPanelProps: _extends({}, props.commandPanelProps, {
 					showElements: getEvents() // getShowElements(),
 				}),
@@ -2886,11 +2896,11 @@ var Select$2 = function Select(props) {
 				onRowClick: _SingleSelectRow,
 				onSelectedRowsChange: _onChange
 			})),
-			type === 'MultiSelect' ? React__default['default'].createElement(
+			type === 'MultiSelect' ? React__default["default"].createElement(
 				'div',
 				{ className: 'close-panel' },
-				React__default['default'].createElement(
-					_Button__default['default'],
+				React__default["default"].createElement(
+					_Button__default["default"],
 					{
 						onClick: function onClick() {
 							return setIsSelectOpened(false);
@@ -2906,85 +2916,85 @@ var Select$2 = function Select(props) {
 
 Select$2.propTypes = {
 	/** Имя параметра селекта (вернется в onChangeKeys и onChangeObjects) */
-	name: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number, PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]))]).isRequired,
+	name: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number, PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number]))]).isRequired,
 
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
   * { rowData, rowIndex }) */
-	rowRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]).isRequired,
+	rowRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]).isRequired,
 
 	/** Тип селекта (SingleSelect и MultiSelect) */
-	type: PropTypes__default['default'].oneOf(['SingleSelect', 'MultiSelect']).isRequired,
+	type: PropTypes__default["default"].oneOf(['SingleSelect', 'MultiSelect']).isRequired,
 
 	/** Дополнительное имя класса для элемента */
-	className: PropTypes__default['default'].string,
+	className: PropTypes__default["default"].string,
 
 	/** Заголовок фильтра */
-	title: PropTypes__default['default'].string,
+	title: PropTypes__default["default"].string,
 
 	/** Строка, когда ничего не выбрано */
-	placeholder: PropTypes__default['default'].string,
+	placeholder: PropTypes__default["default"].string,
 
 	/** Запрос на загрузку дефолтных данных */
-	requestLoadDefault: PropTypes__default['default'].func,
+	requestLoadDefault: PropTypes__default["default"].func,
 
 	/** Массив выбранных значений */
-	selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+	selectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
 	/** Размер селектора ['small', 'middle', 'large'] */
-	size: PropTypes__default['default'].oneOf(['small', 'middle', 'large']),
+	size: PropTypes__default["default"].oneOf(['small', 'middle', 'large']),
 
 	// /** Показывать ли поисковую строку */
 	// searchable: PropTypes.bool,
 
 	/** Ширина поля выбора в пикселях */
-	widthControl: PropTypes__default['default'].number,
+	widthControl: PropTypes__default["default"].number,
 
 	/** Ширина выпадающего меню */
-	widthPopup: PropTypes__default['default'].number,
+	widthPopup: PropTypes__default["default"].number,
 
 	/** Высота выпадающего меню (по умолчанию считается сама) */
-	heightPopup: PropTypes__default['default'].number,
+	heightPopup: PropTypes__default["default"].number,
 
 	/** Событие об изменении состояния селектора */
-	onChangeKeys: PropTypes__default['default'].func,
+	onChangeKeys: PropTypes__default["default"].func,
 
 	/** Поле для уникальной идентификации строки */
-	rowKey: PropTypes__default['default'].string,
+	rowKey: PropTypes__default["default"].string,
 
 	/** Высота строки таблицы */
-	rowHeight: PropTypes__default['default'].number,
+	rowHeight: PropTypes__default["default"].number,
 
 	/** Строки будут в зебро-стиле */
-	zebraStyle: PropTypes__default['default'].bool,
+	zebraStyle: PropTypes__default["default"].bool,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes__default['default'].func,
+	requestLoadRows: PropTypes__default["default"].func,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadCount: PropTypes__default['default'].func,
+	requestLoadCount: PropTypes__default["default"].func,
 
 	/** Значение строки поиска */
-	searchValue: PropTypes__default['default'].string,
+	searchValue: PropTypes__default["default"].string,
 
 	/** Имя параметра для поиска */
-	searchParamName: PropTypes__default['default'].string,
+	searchParamName: PropTypes__default["default"].string,
 
 	/** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
-	nodeAssociated: PropTypes__default['default'].bool,
+	nodeAssociated: PropTypes__default["default"].bool,
 
 	/** Ключ колонки по которой строить иерархию */
-	expandColumnKey: PropTypes__default['default'].string,
+	expandColumnKey: PropTypes__default["default"].string,
 
 	/** Открыть по умолчанию вложенность до уровня N или 'All' */
-	expandDefaultAll: PropTypes__default['default'].bool,
+	expandDefaultAll: PropTypes__default["default"].bool,
 
 	/** Загружать ноды иерархии по одной */
-	expandLazyLoad: PropTypes__default['default'].bool,
+	expandLazyLoad: PropTypes__default["default"].bool,
 
 	/** Поле в котором хранится ссылка на родителя */
-	expandParentKey: PropTypes__default['default'].string
+	expandParentKey: PropTypes__default["default"].string
 };
 
 Select$2.defaultProps = {
@@ -3094,14 +3104,14 @@ var AdvancedTable = React.forwardRef(function (props, ref) {
 				hidden: !item.visible
 			}, colProps, {
 				cellRenderer: function cellRenderer(object) {
-					if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, object);
+					if (colProps && colProps.cellRenderer) return React__default["default"].createElement(colProps.cellRenderer, object);
 					// return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-					else return object.cellData ? React__default['default'].createElement(
-							_Typography__default['default'].Text,
+					else return object.cellData ? React__default["default"].createElement(
+							_Typography__default["default"].Text,
 							{ ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
 							object.cellData
-						) : React__default['default'].createElement(
-							_Typography__default['default'].Text,
+						) : React__default["default"].createElement(
+							_Typography__default["default"].Text,
 							{ ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
 							'---'
 						);
@@ -3120,7 +3130,7 @@ var AdvancedTable = React.forwardRef(function (props, ref) {
 
 	if (config && config.fields) {
 		// console.log('AdvancedTable render table -> ', config);
-		return React__default['default'].createElement(Table$6, _extends({}, props, {
+		return React__default["default"].createElement(Table$6, _extends({}, props, {
 			ref: ref,
 			columns: columnsByConfig(),
 			defaultFilter: getDefaultFilter(),
@@ -3135,28 +3145,28 @@ var AdvancedTable = React.forwardRef(function (props, ref) {
 
 AdvancedTable.propTypes = {
 	/** Функция запроса на получение конфига для таблицы */
-	requestLoadConfig: PropTypes__default['default'].func,
+	requestLoadConfig: PropTypes__default["default"].func,
 
 	/** Конфигурация внешнего вида таблицы */
-	configData: PropTypes__default['default'].shape({
-		hierarchical: PropTypes__default['default'].bool,
-		hierarchyField: PropTypes__default['default'].string,
-		hierarchyView: PropTypes__default['default'].string,
-		hierarchyLazyLoad: PropTypes__default['default'].bool,
-		fields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].shape({
-			name: PropTypes__default['default'].string,
-			alias: PropTypes__default['default'].string,
-			header: PropTypes__default['default'].string,
-			visible: PropTypes__default['default'].bool,
-			resizable: PropTypes__default['default'].bool,
-			sortable: PropTypes__default['default'].bool,
-			align: PropTypes__default['default'].oneOf(['left', 'center', 'right']),
-			width: PropTypes__default['default'].number
+	configData: PropTypes__default["default"].shape({
+		hierarchical: PropTypes__default["default"].bool,
+		hierarchyField: PropTypes__default["default"].string,
+		hierarchyView: PropTypes__default["default"].string,
+		hierarchyLazyLoad: PropTypes__default["default"].bool,
+		fields: PropTypes__default["default"].arrayOf(PropTypes__default["default"].shape({
+			name: PropTypes__default["default"].string,
+			alias: PropTypes__default["default"].string,
+			header: PropTypes__default["default"].string,
+			visible: PropTypes__default["default"].bool,
+			resizable: PropTypes__default["default"].bool,
+			sortable: PropTypes__default["default"].bool,
+			align: PropTypes__default["default"].oneOf(['left', 'center', 'right']),
+			width: PropTypes__default["default"].number
 		}))
 	}),
 
 	/** Дополнительные пропсы для колонок */
-	customColumnProps: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+	customColumnProps: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
 AdvancedTable.defaultProps = {};
@@ -3211,7 +3221,7 @@ var Form$3 = function Form(props) {
     if (props && props.form) {
         antForm = props.form;
     } else {
-        var _AntForm$useForm = _Form__default['default'].useForm(),
+        var _AntForm$useForm = _Form__default["default"].useForm(),
             _AntForm$useForm2 = slicedToArray(_AntForm$useForm, 1),
             form = _AntForm$useForm2[0];
 
@@ -3234,7 +3244,7 @@ var Form$3 = function Form(props) {
                 method: methodSaveForm,
                 data: saveObject
             }).then(function (response) {
-                _notification__default['default'].success({
+                _notification__default["default"].success({
                     message: "Сохранение прошло успешно"
                 });
                 if (props.onFinish) props.onFinish(values);
@@ -3249,11 +3259,11 @@ var Form$3 = function Form(props) {
         props.onFinishFailed && props.onFinishFailed(errorInfo);
     };
 
-    return React__default['default'].createElement(
-        React__default['default'].Fragment,
+    return React__default["default"].createElement(
+        React__default["default"].Fragment,
         null,
-        loaded ? React__default['default'].createElement(
-            _Form__default['default'],
+        loaded ? React__default["default"].createElement(
+            _Form__default["default"],
             _extends({
                 form: antForm
             }, antFormProps, {
@@ -3263,20 +3273,20 @@ var Form$3 = function Form(props) {
                 onFinish: onFinish,
                 onFinishFailed: onFinishFailed
             }),
-            header ? React__default['default'].createElement(
+            header ? React__default["default"].createElement(
                 "div",
                 { className: rtPrefix + "-form-header" },
-                React__default['default'].createElement(FormItems$3, { items: header })
+                React__default["default"].createElement(FormItems$3, { items: header })
             ) : null,
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 "div",
                 { className: getBodyCls() },
-                React__default['default'].createElement(FormItems$3, { items: body })
+                React__default["default"].createElement(FormItems$3, { items: body })
             ),
-            footer ? React__default['default'].createElement(
+            footer ? React__default["default"].createElement(
                 "div",
                 { className: rtPrefix + "-form-footer" },
-                React__default['default'].createElement(FormItems$3, { items: footer })
+                React__default["default"].createElement(FormItems$3, { items: footer })
             ) : null
         ) : null
     );
@@ -3285,36 +3295,36 @@ var Form$3 = function Form(props) {
 Form$3.propTypes = {
 
     /** Не делать отступы у формы от краев блока */
-    noPadding: PropTypes__default['default'].bool,
+    noPadding: PropTypes__default["default"].bool,
 
     /** scrollable
      */
-    scrollable: PropTypes__default['default'].bool,
+    scrollable: PropTypes__default["default"].bool,
 
     /** Массив объектов для шапки формы. Как правило только заголовок. */
-    header: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    header: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Массив объектов для тела формы */
-    body: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+    body: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
     /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
-    footer: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    footer: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Ссылка на функцию загрузки значений по умолчанию
      * (callBack) => callBack(initObject) */
-    loadInitData: PropTypes__default['default'].func,
+    loadInitData: PropTypes__default["default"].func,
 
     /** Производить ли автоматическое сохранение по параметрам requestSaveForm и methodSaveForm */
-    autoSaveForm: PropTypes__default['default'].bool,
+    autoSaveForm: PropTypes__default["default"].bool,
 
     /** Запрос для автоматического сохранения формы */
-    requestSaveForm: PropTypes__default['default'].func,
+    requestSaveForm: PropTypes__default["default"].func,
 
     /** HTTP Метод, передаваемый в запрос сохранения */
-    methodSaveForm: PropTypes__default['default'].string,
+    methodSaveForm: PropTypes__default["default"].string,
 
     /** Функция обработки перед сохранением формы */
-    processBeforeSaveForm: PropTypes__default['default'].func
+    processBeforeSaveForm: PropTypes__default["default"].func
 };
 
 Form$3.defaultProps = {
@@ -3438,8 +3448,8 @@ var FormModal = function FormModal(props) {
     var formConfig = _extends({
         footer: defaultFooter
     }, modal.form);
-    return React__default['default'].createElement(
-        _Modal__default['default'],
+    return React__default["default"].createElement(
+        _Modal__default["default"],
         _extends({}, modalProps, {
             centered: true,
             destroyOnClose: true,
@@ -3448,7 +3458,7 @@ var FormModal = function FormModal(props) {
             bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
             footer: null
         }),
-        React__default['default'].createElement(Form$3, _extends({}, formConfig, {
+        React__default["default"].createElement(Form$3, _extends({}, formConfig, {
             onFinish: onFinish,
             onFinishFailed: onFinishFailed,
             loadInitData: _onLoadInitData
@@ -3458,19 +3468,19 @@ var FormModal = function FormModal(props) {
 
 FormModal.propTypes = {
     /** Объект модального окна */
-    modal: PropTypes__default['default'].object,
+    modal: PropTypes__default["default"].object,
 
     /** Выделенная строка таблицы */
-    selectedRow: PropTypes__default['default'].object,
+    selectedRow: PropTypes__default["default"].object,
 
     /** Состояние видимости модалки */
-    visible: PropTypes__default['default'].bool,
+    visible: PropTypes__default["default"].bool,
 
     /** Задание состояния видимости модалки */
-    setVisible: PropTypes__default['default'].func,
+    setVisible: PropTypes__default["default"].func,
 
     /** CallBack функция для сохранения данных */
-    saveRow: PropTypes__default['default'].func
+    saveRow: PropTypes__default["default"].func
 };
 
 var _this$2 = undefined;
@@ -3608,7 +3618,7 @@ var FormTable = React.forwardRef(function (props, ref) {
     /** Получить рендер модалок */
     var getModals = function getModals() {
         return modals.map(function (modal, index) {
-            return React__default['default'].createElement(FormModal, {
+            return React__default["default"].createElement(FormModal, {
                 key: index,
                 modal: modal,
                 selectedRow: tableSelectedRow,
@@ -3720,7 +3730,7 @@ var FormTable = React.forwardRef(function (props, ref) {
                     return _extends(defineProperty({}, rowKey, item), dataDeleteRow);
                 });
                 requestDeleteRow({ data: { deleteData: deleteData } }).then(function (response) {
-                    _notification__default['default'].success({ message: 'Успешное удаленение' });
+                    _notification__default["default"].success({ message: 'Успешное удаленение' });
                     tableRef && tableRef.reloadData({});
                 }).catch(function (error) {
                     notificationError(error, 'Ошибка удаления записи');
@@ -3777,7 +3787,7 @@ var FormTable = React.forwardRef(function (props, ref) {
                     if (!isValid.includes(false)) return sRow;
                 });
             setVisibleModals(_extends({}, visibleModals, defineProperty({}, type, false)));
-            _notification__default['default'].success({
+            _notification__default["default"].success({
                 message: '\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u043E ' + saveRows.length + ' \u0441\u0442\u0440\u043E\u043A'
             });
             // console.log("FormTable -> _onSaveRow -> saveRows [2]", saveRows);
@@ -3857,7 +3867,7 @@ var FormTable = React.forwardRef(function (props, ref) {
                 method: method,
                 data: saveRow
             }).then(function (response) {
-                _notification__default['default'].success({
+                _notification__default["default"].success({
                     message: 'Сохранение прошло успешно'
                 });
                 setVisibleModals(_extends({}, visibleModals, defineProperty({}, type, false)));
@@ -3916,10 +3926,10 @@ var FormTable = React.forwardRef(function (props, ref) {
         return cls.join(' ');
     };
 
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         'div',
         { className: getTableCls(), style: props.style },
-        React__default['default'].createElement(AdvancedTable, _extends({
+        React__default["default"].createElement(AdvancedTable, _extends({
             ref: _setTableRef
         }, getObjectExcludedProps(props, excludeProps$8), {
             rows: tableRows,
@@ -3948,31 +3958,31 @@ var FormTable = React.forwardRef(function (props, ref) {
 
 FormTable.propTypes = {
     /** Объект со свойствами Command Panel */
-    commandPanelProps: PropTypes__default['default'].object,
+    commandPanelProps: PropTypes__default["default"].object,
 
     /** Объект со свойствами Filter Panel */
-    filterPanelProps: PropTypes__default['default'].object,
+    filterPanelProps: PropTypes__default["default"].object,
 
     /**
      * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
      * */
 
     /** Строки по умолчанию */
-    defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    defaultRows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Ключи выделенных по умолчанию строк */
-    defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+    defaultSelectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
     /** Значение строки поиска по умолчанию строк */
-    defaultSearchValue: PropTypes__default['default'].string,
+    defaultSearchValue: PropTypes__default["default"].string,
 
     /** Объект фильтрации по умолчанию */
-    defaultFilter: PropTypes__default['default'].object,
+    defaultFilter: PropTypes__default["default"].object,
 
     /** Сортировка по умолчанию */
-    defaultSortBy: PropTypes__default['default'].shape({
-        key: PropTypes__default['default'].string,
-        order: PropTypes__default['default'].oneOf([SortOrder__default['default'].ASC, SortOrder__default['default'].DESC])
+    defaultSortBy: PropTypes__default["default"].shape({
+        key: PropTypes__default["default"].string,
+        order: PropTypes__default["default"].oneOf([SortOrder__default["default"].ASC, SortOrder__default["default"].DESC])
     }),
 
     /**
@@ -3980,18 +3990,18 @@ FormTable.propTypes = {
      * */
 
     /** Значение строки поиска */
-    searchValue: PropTypes__default['default'].string,
+    searchValue: PropTypes__default["default"].string,
 
     /** Фильтр */
-    filter: PropTypes__default['default'].object,
+    filter: PropTypes__default["default"].object,
 
     /** Объект сортировки ({ key: 'string', order: 'asc' }).
      * key - поле по которому сотрировать,
      * order - направление сортировки ("asc", "desc")
      * */
-    sortBy: PropTypes__default['default'].shape({
-        key: PropTypes__default['default'].string,
-        order: PropTypes__default['default'].oneOf([SortOrder__default['default'].ASC, SortOrder__default['default'].DESC])
+    sortBy: PropTypes__default["default"].shape({
+        key: PropTypes__default["default"].string,
+        order: PropTypes__default["default"].oneOf([SortOrder__default["default"].ASC, SortOrder__default["default"].DESC])
     }),
 
     /**
@@ -3999,52 +4009,52 @@ FormTable.propTypes = {
      * */
 
     /** Автоудаление строк из таблицы по кнопке в командной панели*/
-    autoDeleteRows: PropTypes__default['default'].bool,
+    autoDeleteRows: PropTypes__default["default"].bool,
 
     /** Поле для уникальной идентификации строки */
-    rowKey: PropTypes__default['default'].string,
+    rowKey: PropTypes__default["default"].string,
 
     /** Тип поля для уникальной идентификации строки */
-    rowKeyType: PropTypes__default['default'].oneOf(['uuid', 'number']),
+    rowKeyType: PropTypes__default["default"].oneOf(['uuid', 'number']),
 
     /**
      * VIEW PROPS
      * */
 
     /** Вывод когда нет данных. JSX для заглушки "Нет данных".  */
-    empty: PropTypes__default['default'].element,
+    empty: PropTypes__default["default"].element,
 
     /** Отображение загрузки данных. JSX для загрузки данных. */
-    overlay: PropTypes__default['default'].element,
+    overlay: PropTypes__default["default"].element,
 
     /** Фиксированная ширина столбцов. Появится боковой скрол */
-    fixWidthColumn: PropTypes__default['default'].bool,
+    fixWidthColumn: PropTypes__default["default"].bool,
 
     /** Высота подвала */
-    footerHeight: PropTypes__default['default'].number,
+    footerHeight: PropTypes__default["default"].number,
 
     /** Отображать ли подвал */
-    footerShow: PropTypes__default['default'].bool,
+    footerShow: PropTypes__default["default"].bool,
 
     /** Названия футтера */
-    footerTitles: PropTypes__default['default'].shape({
-        selectedRows: PropTypes__default['default'].string,
-        loadedRows: PropTypes__default['default'].string,
-        totalRows: PropTypes__default['default'].string
+    footerTitles: PropTypes__default["default"].shape({
+        selectedRows: PropTypes__default["default"].string,
+        loadedRows: PropTypes__default["default"].string,
+        totalRows: PropTypes__default["default"].string
     }),
 
     /** Высота заголовка таблицы */
-    headerHeight: PropTypes__default['default'].number,
+    headerHeight: PropTypes__default["default"].number,
 
     /** Высота строки таблицы */
-    rowHeight: PropTypes__default['default'].number,
+    rowHeight: PropTypes__default["default"].number,
 
     /** Custom row renderer
      * Параметры - ({ isScrolling, cells, columns, rowData, rowIndex, depth }) */
-    rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+    rowRenderer: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element]),
 
     /** Строки будут в зебро-стиле */
-    zebraStyle: PropTypes__default['default'].bool,
+    zebraStyle: PropTypes__default["default"].bool,
 
     /**
      * LOAD DATA PROPS
@@ -4052,45 +4062,45 @@ FormTable.propTypes = {
 
     /** Порог в пикселях для вызова _onLoad.
      * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-    loadThreshold: PropTypes__default['default'].number,
+    loadThreshold: PropTypes__default["default"].number,
 
     /** Размер страницы */
-    pageSize: PropTypes__default['default'].number,
+    pageSize: PropTypes__default["default"].number,
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadRows: PropTypes__default['default'].func,
+    requestLoadRows: PropTypes__default["default"].func,
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadCount: PropTypes__default['default'].func,
+    requestLoadCount: PropTypes__default["default"].func,
 
     /** Имя параметра для поиска */
-    searchParamName: PropTypes__default['default'].string,
+    searchParamName: PropTypes__default["default"].string,
 
     /**
      * SELECTABLE PROPS
      * */
 
     /** Таблица с возможностью выбора строки */
-    selectable: PropTypes__default['default'].bool,
+    selectable: PropTypes__default["default"].bool,
 
     /**
      * TREE PROPS
      * */
 
     /** Родительский узел и дочерние узлы связаны (Работает только при selectable) */
-    nodeAssociated: PropTypes__default['default'].bool,
+    nodeAssociated: PropTypes__default["default"].bool,
 
     /** Ключ колонки по которой строить иерархию */
-    expandColumnKey: PropTypes__default['default'].string,
+    expandColumnKey: PropTypes__default["default"].string,
 
     /** Открыть по умолчанию вложенность до уровня N или 'All' */
-    expandDefaultAll: PropTypes__default['default'].bool,
+    expandDefaultAll: PropTypes__default["default"].bool,
 
     /** Загружать ноды иерархии по одной */
-    expandLazyLoad: PropTypes__default['default'].bool,
+    expandLazyLoad: PropTypes__default["default"].bool,
 
     /** Поле в котором хранится ссылка на родителя */
-    expandParentKey: PropTypes__default['default'].string,
+    expandParentKey: PropTypes__default["default"].string,
 
     /**
      * EVENTS
@@ -4098,74 +4108,74 @@ FormTable.propTypes = {
 
     /** Событие при клике на строку (только при selectable = false)
      * Параметр - ({selected, rowData, rowIndex}) */
-    onRowClick: PropTypes__default['default'].func,
+    onRowClick: PropTypes__default["default"].func,
 
     /** Событие при двойном клике на строку.
      * Параметр - ({rowData, rowIndex, rowKey}) */
-    onRowDoubleClick: PropTypes__default['default'].func,
+    onRowDoubleClick: PropTypes__default["default"].func,
 
     /** События при открытии / закрытии ноды
      * Парметры - ({ expanded, rowData, rowIndex, rowKey }) */
-    onRowExpand: PropTypes__default['default'].func,
+    onRowExpand: PropTypes__default["default"].func,
 
     /** Событие при выборе строки.
      * Параметр - массив выбранных строе (только rowKey) */
-    onSelectedRowsChange: PropTypes__default['default'].func,
+    onSelectedRowsChange: PropTypes__default["default"].func,
 
     /** События при открытии / закрытии ноды
      * Парметры - (expandedRowKeys) - массив ключей открытых нод */
-    onExpandedRowsChange: PropTypes__default['default'].func,
+    onExpandedRowsChange: PropTypes__default["default"].func,
 
     /** SELECTED PANEL */
 
     /** Отображать ли панель выбранных элементов */
-    showSelection: PropTypes__default['default'].bool,
+    showSelection: PropTypes__default["default"].bool,
 
     /** Строка или функция для отображения элементов списка выбранных
      * Строка - имя поля
      * Функция - рендер строк.
      * Параметры - ({ rowData, rowIndex }) */
-    rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+    rowRenderShowSelection: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
     /** Дополнительные пропсы для колонок */
-    customColumnProps: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    customColumnProps: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Дополнительные поля и валидация в объекты таблицы */
-    customFields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    customFields: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Модальные окна */
-    modals: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    modals: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Событие об изменении объектов таблицы
      * Параметр - (rows)*/
-    onChange: PropTypes__default['default'].func,
+    onChange: PropTypes__default["default"].func,
 
     /** implemented - только для (LocalTable + selectable) - Контроль значение из вне */
     // value: PropTypes.arrayOf(PropTypes.object),
 
     /** Not implemented - Задание значений по умолчанию */
-    defaultValue: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    defaultValue: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Классы стилей */
-    className: PropTypes__default['default'].string,
+    className: PropTypes__default["default"].string,
 
     /** Стили */
-    style: PropTypes__default['default'].object,
+    style: PropTypes__default["default"].object,
 
     /** Поле для идентификации группы */
-    isGroupKey: PropTypes__default['default'].string,
+    isGroupKey: PropTypes__default["default"].string,
 
     /** Объект history для перемещения по путям */
-    history: PropTypes__default['default'].object,
+    history: PropTypes__default["default"].object,
 
     /** Функция запроса на получение конфига для таблицы */
-    requestLoadConfig: PropTypes__default['default'].func,
+    requestLoadConfig: PropTypes__default["default"].func,
 
     /** Функция запроса на уделание данных */
-    requestDeleteRow: PropTypes__default['default'].func,
+    requestDeleteRow: PropTypes__default["default"].func,
 
     /** Параметры объекта удаления */
-    dataDeleteRow: PropTypes__default['default'].object
+    dataDeleteRow: PropTypes__default["default"].object
 };
 
 FormTable.defaultProps = {
@@ -4232,7 +4242,7 @@ var withStore$2 = function withStore(Component, antFormItemProps) {
             var name = subscribe.name,
                 path = subscribe.path;
 
-            if (name && path) return defineProperty({}, name, objectPath__default['default'].get(store, path));
+            if (name && path) return defineProperty({}, name, objectPath__default["default"].get(store, path));
         }
 
         return {};
@@ -4298,7 +4308,7 @@ var withStore$2 = function withStore(Component, antFormItemProps) {
         };
 
         var childProps = getObjectExcludedProps(props, excludeProps);
-        return React__default['default'].createElement(Component, _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange)));
+        return React__default["default"].createElement(Component, _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange)));
     });
 };
 
@@ -4308,21 +4318,21 @@ var DatePickerHOC = function DatePickerHOC(Component) {
         if (props.value) {
             if (typeof props.value === 'string') {
                 // console.log("DatePickerHOC => onChange => string");
-                props.onChange(moment__default['default'](props.value), props.value);
+                props.onChange(moment__default["default"](props.value), props.value);
             }
             // else {
             // 	console.log("DatePickerHOC => onChange => moment");
             // 	props.onChange(props.value, props.format ? toFormat(props.value,props.format) : getISO(props.value));
             // }
         }
-        var value = props.value ? typeof props.value === 'string' ? moment__default['default'](props.value) : props.value : null;
-        return React__default['default'].createElement(Component, _extends({}, props, { value: value }));
+        var value = props.value ? typeof props.value === 'string' ? moment__default["default"](props.value) : props.value : null;
+        return React__default["default"].createElement(Component, _extends({}, props, { value: value }));
     };
 };
 
 var TypographyTitle = function TypographyTitle(props) {
-    return React__default['default'].createElement(
-        _Typography__default['default'].Title,
+    return React__default["default"].createElement(
+        _Typography__default["default"].Title,
         props,
         ' ',
         props.label || props.value,
@@ -4331,8 +4341,8 @@ var TypographyTitle = function TypographyTitle(props) {
 };
 
 var TypographyText = function TypographyText(props) {
-    return React__default['default'].createElement(
-        _Typography__default['default'].Text,
+    return React__default["default"].createElement(
+        _Typography__default["default"].Text,
         props,
         ' ',
         props.label || props.value,
@@ -4346,8 +4356,8 @@ var TypographyDate$1 = function TypographyDate(props) {
         format = props.format;
 
     var _value = value ? format ? toFormat(value, format) : getISO(value) : null;
-    return React__default['default'].createElement(
-        _Typography__default['default'].Text,
+    return React__default["default"].createElement(
+        _Typography__default["default"].Text,
         props,
         ' ',
         label || _value,
@@ -4475,7 +4485,7 @@ var fallbackCopyTextToClipboard = function fallbackCopyTextToClipboard(text) {
 };
 
 var openNotificationWithIcon = function openNotificationWithIcon(type, title, msg) {
-	_notification__default['default'][type]({
+	_notification__default["default"][type]({
 		message: title,
 		description: msg
 	});
@@ -4499,7 +4509,7 @@ var FileManager = function FileManager(props) {
 
     // const tableRef = React.createRef();
 
-    var _useState3 = React.useState([(_ref = {}, defineProperty(_ref, rowKey, null), defineProperty(_ref, "name", React__default['default'].createElement(icons.HomeOutlined, null)), _ref)]),
+    var _useState3 = React.useState([(_ref = {}, defineProperty(_ref, rowKey, null), defineProperty(_ref, "name", React__default["default"].createElement(icons.HomeOutlined, null)), _ref)]),
         _useState4 = slicedToArray(_useState3, 2),
         breadcrumb = _useState4[0],
         setBreadcrumb = _useState4[1];
@@ -4550,7 +4560,7 @@ var FileManager = function FileManager(props) {
             var _data;
 
             props.requestDeleteRow({ data: (_data = {}, defineProperty(_data, rowKey, _selectedRowKeys[0]), defineProperty(_data, "deleted", true), _data) }).then(function (response) {
-                _notification__default['default'].success({ message: 'Файл успешно удален' });
+                _notification__default["default"].success({ message: 'Файл успешно удален' });
                 tableRef && tableRef.reloadData({ filter: tableFilter });
             }).catch(function (error) {
                 notificationError(error, 'Ошибка удаления файла');
@@ -4622,13 +4632,13 @@ var FileManager = function FileManager(props) {
         var notifProps = {
             key: file.uid,
             duration: type === 'loading' ? 0 : 5,
-            icon: type === 'loading' ? React__default['default'].createElement(_Spin__default['default'], { indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
-            message: React__default['default'].createElement(
+            icon: type === 'loading' ? React__default["default"].createElement(_Spin__default["default"], { indicator: React__default["default"].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
+            message: React__default["default"].createElement(
                 "span",
                 null,
                 "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430: ",
-                React__default['default'].createElement(
-                    _Typography__default['default'].Text,
+                React__default["default"].createElement(
+                    _Typography__default["default"].Text,
                     { code: true },
                     file.name
                 )
@@ -4636,16 +4646,16 @@ var FileManager = function FileManager(props) {
         };
         switch (type) {
             case 'loading':
-                _notification__default['default'].info(notifProps);
+                _notification__default["default"].info(notifProps);
                 break;
             case 'success':
-                _notification__default['default'].success(notifProps);
+                _notification__default["default"].success(notifProps);
                 break;
             case 'error':
-                _notification__default['default'].error(notifProps);
+                _notification__default["default"].error(notifProps);
                 break;
             case 'close':
-                _notification__default['default'].close(file.uid);
+                _notification__default["default"].close(file.uid);
                 break;
         }
     };
@@ -4669,10 +4679,10 @@ var FileManager = function FileManager(props) {
         name: 'path',
         cellRenderer: function cellRenderer(_ref6) {
             var rowData = _ref6.rowData;
-            return rowData[isGroupKey] ? null : React__default['default'].createElement(
-                _Tooltip__default['default'],
+            return rowData[isGroupKey] ? null : React__default["default"].createElement(
+                _Tooltip__default["default"],
                 { title: "\u0421\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u043F\u0443\u0442\u044C \u043A \u0444\u0430\u0439\u043B\u0443" },
-                React__default['default'].createElement(icons.CopyOutlined, { onClick: function onClick() {
+                React__default["default"].createElement(icons.CopyOutlined, { onClick: function onClick() {
                         return copyTextToClipboard(props.pathDownloadFile(rowData[rowKey]));
                     } })
             );
@@ -4741,10 +4751,10 @@ var FileManager = function FileManager(props) {
                     Icon = icons.FileOutlined;
             }
 
-            return React__default['default'].createElement(
+            return React__default["default"].createElement(
                 "div",
                 { style: styleDiv },
-                React__default['default'].createElement(Icon, { style: styleIcon }),
+                React__default["default"].createElement(Icon, { style: styleIcon }),
                 rowData.name
             );
         }
@@ -4757,19 +4767,19 @@ var FileManager = function FileManager(props) {
     };
 
     var uploadRender = function uploadRender() {
-        return React__default['default'].createElement(
-            _Upload__default['default'],
+        return React__default["default"].createElement(
+            _Upload__default["default"],
             uploadProps,
-            React__default['default'].createElement(_Button__default['default'], { icon: React__default['default'].createElement(icons.PlusOutlined, null) })
+            React__default["default"].createElement(_Button__default["default"], { icon: React__default["default"].createElement(icons.PlusOutlined, null) })
         );
     };
 
     var breadcrumbRender = function breadcrumbRender() {
-        return React__default['default'].createElement(
+        return React__default["default"].createElement(
             "span",
             { className: rtPrefix + "-file-manager-breadcrumb ml-8" },
             breadcrumb.map(function (item, index) {
-                return React__default['default'].createElement(
+                return React__default["default"].createElement(
                     "span",
                     {
                         key: item[rowKey]
@@ -4779,12 +4789,12 @@ var FileManager = function FileManager(props) {
                             return _onClickBreadcrumb(item[rowKey], index + 1);
                         }
                     },
-                    React__default['default'].createElement(
+                    React__default["default"].createElement(
                         "span",
                         null,
                         "/"
                     ),
-                    React__default['default'].createElement(
+                    React__default["default"].createElement(
                         "span",
                         null,
                         item.name
@@ -4794,7 +4804,7 @@ var FileManager = function FileManager(props) {
         );
     };
 
-    return React__default['default'].createElement(FormTable, _extends({}, props, {
+    return React__default["default"].createElement(FormTable, _extends({}, props, {
         ref: _setTableRef,
         type: 'serverSide',
         componentType: 'FilesTable',
@@ -4817,7 +4827,7 @@ var FileManager = function FileManager(props) {
                 componentType: 'Item',
                 child: {
                     componentType: 'Button',
-                    icon: React__default['default'].createElement(icons.RollbackOutlined, null),
+                    icon: React__default["default"].createElement(icons.RollbackOutlined, null),
                     label: 'Back',
                     className: 'ml-4',
                     disabled: breadcrumb.length === 1,
@@ -4850,10 +4860,10 @@ var FileManager = function FileManager(props) {
 FileManager.propTypes = {
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadRows: PropTypes__default['default'].func,
+    requestLoadRows: PropTypes__default["default"].func,
 
     /** Функция запроса на получение конфига для таблицы */
-    requestLoadConfig: PropTypes__default['default'].func
+    requestLoadConfig: PropTypes__default["default"].func
 };
 
 FileManager.defaultProps = {
@@ -4926,7 +4936,7 @@ var Modal$3 = function Modal(props) {
                 method: method,
                 data: row
             }).then(function (response) {
-                _notification__default['default'].success({
+                _notification__default["default"].success({
                     message: 'Сохранение прошло успешно'
                 });
                 _onCloseModal();
@@ -4936,11 +4946,11 @@ var Modal$3 = function Modal(props) {
         } else _onCloseModal();
     };
 
-    return React__default['default'].createElement(
-        React__default['default'].Fragment,
+    return React__default["default"].createElement(
+        React__default["default"].Fragment,
         null,
-        React__default['default'].createElement(
-            _Button__default['default'],
+        React__default["default"].createElement(
+            _Button__default["default"],
             _extends({
                 type: "primary"
             }, buttonProps, _buttonProps, {
@@ -4948,7 +4958,7 @@ var Modal$3 = function Modal(props) {
             }),
             buttonProps && buttonProps.label
         ),
-        React__default['default'].createElement(FormModal, {
+        React__default["default"].createElement(FormModal, {
             modal: modalConfig,
             selectedRow: _modalData,
             visible: visible,
@@ -4962,19 +4972,19 @@ Modal$3.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
-    buttonProps: PropTypes__default['default'].object,
+    buttonProps: PropTypes__default["default"].object,
 
     /** Объект модального окна. Стандартная конфигурация. */
-    modalConfig: PropTypes__default['default'].object,
+    modalConfig: PropTypes__default["default"].object,
 
     /** Данные для модального окна */
-    modalData: PropTypes__default['default'].object,
+    modalData: PropTypes__default["default"].object,
 
     /** Путь в сторе куда класть данных окна после закрытия */
-    dispatchPath: PropTypes__default['default'].string,
+    dispatchPath: PropTypes__default["default"].string,
 
     /** Объект для подписки на изменения в STORE */
-    subscribe: PropTypes__default['default'].object
+    subscribe: PropTypes__default["default"].object
 };
 
 var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
@@ -4984,7 +4994,7 @@ var mapStateToProps$1 = function mapStateToProps(store, ownProps) {
         var name = subscribe.name,
             path = subscribe.path;
 
-        if (name && path) return defineProperty({}, name, objectPath__default['default'].get(store, path));
+        if (name && path) return defineProperty({}, name, objectPath__default["default"].get(store, path));
     }
     return {};
 };
@@ -5023,121 +5033,121 @@ var FormItem$2 = function FormItem(props) {
 			var placeholder = void 0;
 			switch (child.componentType) {
 				case 'Button':
-					Component = withStore$2(_Button__default['default'], antFormItemProps);
+					Component = withStore$2(_Button__default["default"], antFormItemProps);
 					// console.log('Props field => ', field);
 					var onClick = function onClick(e) {
 						return childProps.onClick && childProps.onClick(e, field);
 					};
-					return React__default['default'].createElement(
+					return React__default["default"].createElement(
 						Component,
 						_extends({}, childProps, { onClick: onClick }),
 						childProps && childProps.label
 					);
 				case 'Title':
 					Component = withStore$2(TypographyTitle, antFormItemProps);
-					return React__default['default'].createElement(Component, _extends({}, child, { componentType: child.componentType }));
+					return React__default["default"].createElement(Component, _extends({}, child, { componentType: child.componentType }));
 				case 'Text':
 					Component = withStore$2(TypographyText, antFormItemProps);
-					return React__default['default'].createElement(Component, _extends({}, child, { componentType: true }));
+					return React__default["default"].createElement(Component, _extends({}, child, { componentType: true }));
 				case 'Divider':
-					Component = withStore$2(_Divider__default['default'], antFormItemProps);
-					return React__default['default'].createElement(
+					Component = withStore$2(_Divider__default["default"], antFormItemProps);
+					return React__default["default"].createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Checkbox':
-					Component = withStore$2(_Checkbox__default['default'], antFormItemProps);
-					return React__default['default'].createElement(
+					Component = withStore$2(_Checkbox__default["default"], antFormItemProps);
+					return React__default["default"].createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'DatePicker':
-					Component = withStore$2(DatePickerHOC(_DatePicker__default['default']), antFormItemProps);
+					Component = withStore$2(DatePickerHOC(_DatePicker__default["default"]), antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Выберите дату';
 					var style = _extends({ width: '100%' }, childProps && childProps.style);
-					return React__default['default'].createElement(Component, _extends({}, childProps, { style: style, placeholder: placeholder }));
+					return React__default["default"].createElement(Component, _extends({}, childProps, { style: style, placeholder: placeholder }));
 				case 'DateText':
 					Component = withStore$2(TypographyDate$1, antFormItemProps);
-					return React__default['default'].createElement(Component, child);
+					return React__default["default"].createElement(Component, child);
 				case 'Input':
-					Component = withStore$2(_Input__default['default'], antFormItemProps);
+					Component = withStore$2(_Input__default["default"], antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
-					return React__default['default'].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
+					return React__default["default"].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'TextArea':
-					Component = withStore$2(_Input__default['default'].TextArea, antFormItemProps);
-					return React__default['default'].createElement(Component, childProps);
+					Component = withStore$2(_Input__default["default"].TextArea, antFormItemProps);
+					return React__default["default"].createElement(Component, childProps);
 				case 'Password':
-					Component = withStore$2(_Input__default['default'].Password, antFormItemProps);
+					Component = withStore$2(_Input__default["default"].Password, antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите пароль';
-					return React__default['default'].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
+					return React__default["default"].createElement(Component, _extends({}, childProps, { placeholder: placeholder }));
 				case 'InputNumber':
-					Component = withStore$2(_InputNumber__default['default'], antFormItemProps);
+					Component = withStore$2(_InputNumber__default["default"], antFormItemProps);
 					placeholder = childProps && childProps.placeholder ? childProps.placeholder : 'Введите значение';
-					return React__default['default'].createElement(Component, _extends({}, childProps, { style: { width: '100%' }, placeholder: placeholder }));
+					return React__default["default"].createElement(Component, _extends({}, childProps, { style: { width: '100%' }, placeholder: placeholder }));
 				case 'Radio':
-					Component = withStore$2(_Radio__default['default'], antFormItemProps);
-					return React__default['default'].createElement(
+					Component = withStore$2(_Radio__default["default"], antFormItemProps);
+					return React__default["default"].createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'RadioButton':
-					Component = withStore$2(_Radio__default['default'].Button, antFormItemProps);
-					return React__default['default'].createElement(
+					Component = withStore$2(_Radio__default["default"].Button, antFormItemProps);
+					return React__default["default"].createElement(
 						Component,
 						childProps,
 						childProps && childProps.label
 					);
 				case 'Switch':
-					Component = withStore$2(_Switch__default['default'], antFormItemProps);
-					return React__default['default'].createElement(Component, childProps);
+					Component = withStore$2(_Switch__default["default"], antFormItemProps);
+					return React__default["default"].createElement(Component, childProps);
 				case "RadioGroup":
-					Component = withStore$2(_Radio__default['default'].Group, antFormItemProps);
-					return React__default['default'].createElement(Component, childProps);
+					Component = withStore$2(_Radio__default["default"].Group, antFormItemProps);
+					return React__default["default"].createElement(Component, childProps);
 				case 'SingleSelect':
 				case 'MultiSelect':
-					return React__default['default'].createElement(Select$3, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
+					return React__default["default"].createElement(Select$3, _extends({}, childProps, { type: child.componentType, name: antFormItemProps.name }));
 				//'infinity', 'serverSide', 'localSide'
 				case 'InfinityTable':
 					childProps.type = 'infinity';
-					return React__default['default'].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
+					return React__default["default"].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
 				case 'ServerTable':
 					childProps.type = 'serverSide';
-					return React__default['default'].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
+					return React__default["default"].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
 				case 'LocalTable':
 					childProps.type = 'localSide';
-					return React__default['default'].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
+					return React__default["default"].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
 				case 'SelectTable':
 					childProps.type = 'localSide';
-					return React__default['default'].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
+					return React__default["default"].createElement(FormTable, _extends({}, childProps, { name: props.name, componentType: child.componentType }));
 				case 'FileManager':
-					return React__default['default'].createElement(FileManager, _extends({}, childProps, { name: props.name }));
+					return React__default["default"].createElement(FileManager, _extends({}, childProps, { name: props.name }));
 				case 'Modal':
-					return React__default['default'].createElement(Modal$4, _extends({}, childProps, { name: props.name }));
+					return React__default["default"].createElement(Modal$4, _extends({}, childProps, { name: props.name }));
 				case 'Custom':
 					Component = withStore$2(child.render, antFormItemProps);
-					return React__default['default'].createElement(Component, childProps);
+					return React__default["default"].createElement(Component, childProps);
 				default:
 					return null;
 			}
 		}
 	};
 
-	if (!antFormItemProps.label) return React__default['default'].createElement(
-		_Form__default['default'].Item,
+	if (!antFormItemProps.label) return React__default["default"].createElement(
+		_Form__default["default"].Item,
 		_extends({}, antFormItemProps, { noStyle: true }),
 		getItem()
-	);else return React__default['default'].createElement(
-		_Form__default['default'].Item,
+	);else return React__default["default"].createElement(
+		_Form__default["default"].Item,
 		antFormItemProps,
 		getItem()
 	);
 };
 
 FormItem$2.propTypes = {
-	child: PropTypes__default['default'].object.isRequired
+	child: PropTypes__default["default"].object.isRequired
 };
 
 var Layout$2 = function Layout(props) {
@@ -5153,7 +5163,7 @@ var Layout$2 = function Layout(props) {
         return cls.join(' ');
     };
 
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         'div',
         _extends({}, itemProps, { className: getCls() }),
         props.children
@@ -5162,10 +5172,10 @@ var Layout$2 = function Layout(props) {
 
 Layout$2.propTypes = {
     /** Строка класса */
-    className: PropTypes__default['default'].string,
+    className: PropTypes__default["default"].string,
 
     /** Объект стиля */
-    style: PropTypes__default['default'].object
+    style: PropTypes__default["default"].object
 };
 
 var excludeProps$6 = ["children", "componentType"];
@@ -5183,38 +5193,38 @@ var FormItems$2 = function FormItems(props) {
 
             switch (item.componentType) {
                 case "Row":
-                    return React__default['default'].createElement(
-                        _Row__default['default'],
+                    return React__default["default"].createElement(
+                        _Row__default["default"],
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
                 case "Col":
-                    return React__default['default'].createElement(
-                        _Col__default['default'],
+                    return React__default["default"].createElement(
+                        _Col__default["default"],
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
                 case "Layout":
-                    return React__default['default'].createElement(
+                    return React__default["default"].createElement(
                         Layout$2,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
                 case "Tabs":
-                    return React__default['default'].createElement(
-                        _Tabs__default['default'],
+                    return React__default["default"].createElement(
+                        _Tabs__default["default"],
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
                 case "TabPane":
-                    return React__default['default'].createElement(
-                        _Tabs__default['default'].TabPane,
+                    return React__default["default"].createElement(
+                        _Tabs__default["default"].TabPane,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
                 case "RadioGroup":
-                    return React__default['default'].createElement(
-                        _Radio__default['default'].Group,
+                    return React__default["default"].createElement(
+                        _Radio__default["default"].Group,
                         _extends({ key: index }, itemProps),
                         item.children && item.children.length > 0 && getItems(item.children, antFormListParams)
                     );
@@ -5233,10 +5243,10 @@ var FormItems$2 = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React__default['default'].createElement(FormItem$2, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
+                    return React__default["default"].createElement(FormItem$2, _extends({ key: "" + _key }, _item, { field: _extends({}, antFormListParams) }));
                 case "ListItems":
-                    return React__default['default'].createElement(
-                        _Form__default['default'].List,
+                    return React__default["default"].createElement(
+                        _Form__default["default"].List,
                         _extends({ key: index }, itemProps),
                         function (fields, operation) {
                             var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
@@ -5245,13 +5255,13 @@ var FormItems$2 = function FormItems(props) {
                     );
                 case "ListItem":
                     // console.log('antFormListParams => ', antFormListParams);
-                    return React__default['default'].createElement(
+                    return React__default["default"].createElement(
                         "div",
                         { key: index },
                         antFormListParams && antFormListParams.fields && antFormListParams.fields.map(function (field, fIndex) {
                             // console.log('index field.key', index, field);
                             var param = _extends({ field: _extends({}, field) }, antFormListParams);
-                            return React__default['default'].createElement(
+                            return React__default["default"].createElement(
                                 "div",
                                 { key: field.key },
                                 getItems(item.children, param),
@@ -5270,12 +5280,12 @@ var FormItems$2 = function FormItems(props) {
 };
 
 FormItems$2.propTypes = {
-    items: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired
+    items: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired
 };
 
 var FormItems$3 = FormItems$2;
 
-var confirm = _Modal__default['default'].confirm;
+var confirm = _Modal__default["default"].confirm;
 
 
 var CommandPanel = function CommandPanel(props) {
@@ -5305,36 +5315,36 @@ var CommandPanel = function CommandPanel(props) {
 		add: {
 			tooltip: 'Добавить',
 			onClick: onClickAdd,
-			icon: React__default['default'].createElement(icons.PlusOutlined, null)
+			icon: React__default["default"].createElement(icons.PlusOutlined, null)
 		},
 		addAsCopy: {
 			tooltip: 'Добавить копированием',
 			onClick: onClickAddAsCopy,
-			icon: React__default['default'].createElement(icons.CopyOutlined, null)
+			icon: React__default["default"].createElement(icons.CopyOutlined, null)
 		},
 		addGroup: {
 			tooltip: 'Добавить группу',
 			onClick: onClickAddGroup,
-			icon: React__default['default'].createElement(icons.FolderAddOutlined, null)
+			icon: React__default["default"].createElement(icons.FolderAddOutlined, null)
 		},
 		edit: {
 			tooltip: 'Изменить',
 			onClick: onClickEdit,
-			icon: React__default['default'].createElement(icons.EditOutlined, null)
+			icon: React__default["default"].createElement(icons.EditOutlined, null)
 		},
 		delete: {
 			tooltip: 'Удалить',
-			icon: React__default['default'].createElement(icons.DeleteOutlined, null)
+			icon: React__default["default"].createElement(icons.DeleteOutlined, null)
 		},
 		up: {
 			tooltip: 'Переместить вверх',
 			onClick: onClickUp,
-			icon: React__default['default'].createElement(icons.ArrowUpOutlined, null)
+			icon: React__default["default"].createElement(icons.ArrowUpOutlined, null)
 		},
 		down: {
 			tooltip: 'Переместить вниз',
 			onClick: onClickDown,
-			icon: React__default['default'].createElement(icons.ArrowDownOutlined, null)
+			icon: React__default["default"].createElement(icons.ArrowDownOutlined, null)
 		},
 		search: {
 			placeholder: 'Поиск',
@@ -5344,13 +5354,13 @@ var CommandPanel = function CommandPanel(props) {
 			tooltip: 'Настройки таблицы',
 			tooltipPlacement: 'topRight',
 			onClick: function onClick() {},
-			icon: React__default['default'].createElement(icons.SettingOutlined, null)
+			icon: React__default["default"].createElement(icons.SettingOutlined, null)
 		},
 		filter: {
 			tooltip: 'Настройки фильтров',
 			tooltipPlacement: 'topRight',
 			onClick: function onClick() {},
-			icon: React__default['default'].createElement(icons.FilterOutlined, null)
+			icon: React__default["default"].createElement(icons.FilterOutlined, null)
 		}
 	};
 
@@ -5363,8 +5373,8 @@ var CommandPanel = function CommandPanel(props) {
 	};
 
 	var deleteButtonPopupConfirm = function deleteButtonPopupConfirm() {
-		return React__default['default'].createElement(
-			_Popconfirm__default['default'],
+		return React__default["default"].createElement(
+			_Popconfirm__default["default"],
 			{
 				placement: 'top',
 				title: deleteConfirmDescription,
@@ -5379,7 +5389,7 @@ var CommandPanel = function CommandPanel(props) {
 	var deleteButtonModalConfirm = function deleteButtonModalConfirm() {
 		confirm({
 			title: deleteConfirmTitle,
-			icon: React__default['default'].createElement(icons.ExclamationCircleOutlined, null),
+			icon: React__default["default"].createElement(icons.ExclamationCircleOutlined, null),
 			content: deleteConfirmDescription,
 			centered: true,
 			okText: 'Ок',
@@ -5394,10 +5404,10 @@ var CommandPanel = function CommandPanel(props) {
 		var genProps = _extends({}, defaultSystemBtnProps['all'], systemBtnProps['all']);
 		var btnProps = _extends({}, defaultSystemBtnProps['delete'], systemBtnProps['delete']);
 
-		return React__default['default'].createElement(
-			_Tooltip__default['default'],
+		return React__default["default"].createElement(
+			_Tooltip__default["default"],
 			{ title: btnProps.tooltip },
-			React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
+			React__default["default"].createElement(_Button__default["default"], _extends({}, genProps, {
 				className: rtPrefix + '-btn',
 				icon: btnProps.icon,
 				onClick: withOnClick ? _onClickDelete : null,
@@ -5415,16 +5425,16 @@ var CommandPanel = function CommandPanel(props) {
 				disabled: disabledElements.includes(type),
 				onClick: btnProps.onClick,
 				onSearch: btnProps.onSearch
-			});else if (type === 'search') return React__default['default'].createElement(_Input__default['default'].Search, {
+			});else if (type === 'search') return React__default["default"].createElement(_Input__default["default"].Search, {
 				disabled: disabledElements.includes(type),
 				defaultValue: defaultValueSearch,
 				placeholder: btnProps.placeholder,
 				onSearch: btnProps.onSearch,
 				className: 'search'
-			});else return React__default['default'].createElement(
-				_Tooltip__default['default'],
+			});else return React__default["default"].createElement(
+				_Tooltip__default["default"],
 				{ title: btnProps.tooltip, placement: btnProps.tooltipPlacement ? btnProps.tooltipPlacement : 'top' },
-				React__default['default'].createElement(_Button__default['default'], _extends({}, genProps, {
+				React__default["default"].createElement(_Button__default["default"], _extends({}, genProps, {
 					className: rtPrefix + '-btn',
 					icon: btnProps.icon,
 					onClick: btnProps.onClick,
@@ -5434,15 +5444,15 @@ var CommandPanel = function CommandPanel(props) {
 		} else return null;
 	};
 
-	return React__default['default'].createElement(
-		React__default['default'].Fragment,
+	return React__default["default"].createElement(
+		React__default["default"].Fragment,
 		null,
-		showElements.length || leftCustomSideElement || centerCustomSideElement || rightCustomSideElement ? React__default['default'].createElement(
+		showElements.length || leftCustomSideElement || centerCustomSideElement || rightCustomSideElement ? React__default["default"].createElement(
 			'div',
 			{
 				className: rtPrefix + '-command-panel border-' + borderStyle
 			},
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: 'left-system-side' },
 				renderBtn('add'),
@@ -5453,22 +5463,22 @@ var CommandPanel = function CommandPanel(props) {
 				renderBtn('up'),
 				renderBtn('down')
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: 'left-custom-side' },
-				leftCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: leftCustomSideElement }) : null
+				leftCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: leftCustomSideElement }) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: 'center-custom-side' },
-				centerCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: centerCustomSideElement }) : null
+				centerCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: centerCustomSideElement }) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: 'right-custom-side' },
-				rightCustomSideElement ? React__default['default'].createElement(FormItems$3, { items: rightCustomSideElement }) : null
+				rightCustomSideElement ? React__default["default"].createElement(FormItems$3, { items: rightCustomSideElement }) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ className: 'right-system-side' },
 				renderBtn('search'),
@@ -5481,68 +5491,68 @@ var CommandPanel = function CommandPanel(props) {
 
 CommandPanel.propTypes = {
 	/** Центральный кастомный элемент командной панели */
-	centerCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object), // PropTypes.element,
+	centerCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object), // PropTypes.element,
 
 	/** Тип бордера панели (по умолчанию 'bottom')
   * ['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right'] */
-	borderStyle: PropTypes__default['default'].oneOf(['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right']),
+	borderStyle: PropTypes__default["default"].oneOf(['all', 'none', 'top', 'left', 'bottom', 'right', 'top-bottom', 'left-right']),
 
 	/** Значение по умолчанию для строки поиска */
-	defaultValueSearch: PropTypes__default['default'].string,
+	defaultValueSearch: PropTypes__default["default"].string,
 
 	/** Нужно ли делать подтверждение на кнопке удалить */
-	deleteConfirm: PropTypes__default['default'].bool,
+	deleteConfirm: PropTypes__default["default"].bool,
 
 	/** Тип подтверждения удаления 'Popup' / 'Modal' */
-	deleteConfirmType: PropTypes__default['default'].oneOf(['Popup', 'Modal']),
+	deleteConfirmType: PropTypes__default["default"].oneOf(['Popup', 'Modal']),
 
 	/** Текст подтверждения на удаление элемента */
-	deleteConfirmTitle: PropTypes__default['default'].string,
+	deleteConfirmTitle: PropTypes__default["default"].string,
 
 	/** Текст подтверждения на удаление элемента */
-	deleteConfirmDescription: PropTypes__default['default'].string,
+	deleteConfirmDescription: PropTypes__default["default"].string,
 
 	/** Массив элементов командной панели для блокировки
      ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
-	disabledElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+	disabledElements: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string),
 
 	/** Левый кастомный элемент командной панели */
-	leftCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	leftCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Событие при нажатии на кнопку "Добавить" */
-	onClickAdd: PropTypes__default['default'].func,
+	onClickAdd: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Добавить копированием" */
-	onClickAddAsCopy: PropTypes__default['default'].func,
+	onClickAddAsCopy: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Добавить группу" */
-	onClickAddGroup: PropTypes__default['default'].func,
+	onClickAddGroup: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Удалить" */
-	onClickDelete: PropTypes__default['default'].func,
+	onClickDelete: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Переместить вниз" */
-	onClickDown: PropTypes__default['default'].func,
+	onClickDown: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Изменить" */
-	onClickEdit: PropTypes__default['default'].func,
+	onClickEdit: PropTypes__default["default"].func,
 
 	/** Событие при нажатии на кнопку "Переместить вверх" */
-	onClickUp: PropTypes__default['default'].func,
+	onClickUp: PropTypes__default["default"].func,
 
 	/** Событие при поиске */
-	onSearch: PropTypes__default['default'].func,
+	onSearch: PropTypes__default["default"].func,
 
 	/** Правый кастомный элемент командной панели */
-	rightCustomSideElement: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	rightCustomSideElement: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Массив элементов командной панели, которые надо отобразить
      ['add', 'addAsCopy', 'addGroup', 'delete', 'edit', 'up', 'down', 'search', 'settings', 'filter'] */
-	showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+	showElements: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string),
 
 	/** Объект кастомизации системных кнопок
   { [btnType]: { tooltip: <String>, icon: <Icon />, render: ({disabled, onClick}) => <Component /> } } */
-	systemBtnProps: PropTypes__default['default'].object
+	systemBtnProps: PropTypes__default["default"].object
 };
 
 CommandPanel.defaultProps = {
@@ -5585,28 +5595,28 @@ var List$1 = function List(props) {
 		width: 500,
 		cellRenderer: typeof rowRender === 'function' ? rowRender : function (_ref) {
 			var rowData = _ref.rowData;
-			return React__default['default'].createElement(
+			return React__default["default"].createElement(
 				'div',
 				null,
 				rowData[rowRender]
 			);
 		}
 	}];
-	return React__default['default'].createElement(Table$6, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
+	return React__default["default"].createElement(Table$6, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
 };
 
 List$1.propTypes = {
 	/** Поле для уникальной идентификации строки */
-	rowKey: PropTypes__default['default'].string,
+	rowKey: PropTypes__default["default"].string,
 
 	/** Строка или функция для отображения элементов списка
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
   * { cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) */
-	rowRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+	rowRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
 	/** Заголовок списка (по умолчанию скрыт)*/
-	title: PropTypes__default['default'].string
+	title: PropTypes__default["default"].string
 };
 
 List$1.defaultProps = {
@@ -5702,15 +5712,15 @@ var mapStateToProps = function mapStateToProps(store, ownProps) {
             var name = item.name,
                 path = item.path,
                 extraData = item.extraData;
-            if (name && path) state[name] = objectPath__default['default'].get(store, path);
+            if (name && path) state[name] = objectPath__default["default"].get(store, path);
             if (name && extraData) if ((typeof extraData === "undefined" ? "undefined" : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
-                return state[name + ".extraData." + key] = objectPath__default['default'].get(store, extraData[key]);
-            });else state[name + "ExtraData"] = objectPath__default['default'].get(store, extraData);
+                return state[name + ".extraData." + key] = objectPath__default["default"].get(store, extraData[key]);
+            });else state[name + "ExtraData"] = objectPath__default["default"].get(store, extraData);
         });
     }
     if (dispatch && dispatch.extraData) {
         // console.log('subscribe to ', dispatch.extraData)
-        state.dispatchExtraData = objectPath__default['default'].get(store, dispatch.extraData);
+        state.dispatchExtraData = objectPath__default["default"].get(store, dispatch.extraData);
     }
     // console.log('mapStateToProps', state)
     return state;
@@ -5790,7 +5800,7 @@ var withStore$1 = function withStore(Component) {
             setSubscribeProps(function (prevState) {
                 return _extends({}, prevState, _subscribeProps);
             });
-            if (_subscribeProps && objectPath__default['default'].has(_subscribeProps, valuePropName)) {
+            if (_subscribeProps && objectPath__default["default"].has(_subscribeProps, valuePropName)) {
                 var value = _subscribeProps[valuePropName];
                 // console.log('setSubscribePropsHandler => ', componentType, value);
                 if (componentType === 'Search') _searchDispatchToStore(value);
@@ -5803,9 +5813,9 @@ var withStore$1 = function withStore(Component) {
             // console.log('withStore [trigger] ', dispatch.path, props[trigger], args)
             if (componentType === 'Button') dispatchToStore({ dispatch: dispatch, setDataStore: setDataStore, value: arguments.length <= 0 ? undefined : arguments[0], extraData: dispatchExtraData });
 
-            if (subscribeProps && objectPath__default['default'].has(subscribeProps, valuePropName)) {
+            if (subscribeProps && objectPath__default["default"].has(subscribeProps, valuePropName)) {
                 var _subscribeProps = _extends({}, subscribeProps);
-                objectPath__default['default'].del(_subscribeProps, valuePropName);
+                objectPath__default["default"].del(_subscribeProps, valuePropName);
                 // console.log('onClear subscribeProps[valuePropName] => ', _subscribeProps);
                 setSubscribeProps(_subscribeProps);
             }
@@ -5825,7 +5835,7 @@ var withStore$1 = function withStore(Component) {
         var childProps = getObjectExcludedProps(props, excludeProps);
         var onSearchProps = componentType === 'Search' ? { onSearch: _onSearch } : {};
         // console.log(`storeHOC Component => `, componentType, Component);
-        return React__default['default'].createElement(
+        return React__default["default"].createElement(
             Component,
             _extends({}, childProps, subscribeProps, defineProperty({}, trigger, onChange), onSearchProps),
             props.children
@@ -5897,13 +5907,13 @@ var withItem = function withItem(Component) {
     return function (props) {
         var itemProps = props.itemProps;
         // console.log('withItems ', props)
-        return render(_Form__default['default'].Item)(__assign(__assign({}, itemProps), { noStyle: !(itemProps && itemProps.label), children: render(Component)(props) }));
+        return render(_Form__default["default"].Item)(__assign(__assign({}, itemProps), { noStyle: !(itemProps && itemProps.label), children: render(Component)(props) }));
     };
 };
 
 /** Компонент кнопки со всеми пропрами AntButton */
 var Button$1 = function Button(props) {
-    var Component = withStore$1(_Button__default['default']);
+    var Component = withStore$1(_Button__default["default"]);
     var onClick = function onClick(e) {
         return props.onClick && props.onClick(e, props.field);
     };
@@ -5911,10 +5921,10 @@ var Button$1 = function Button(props) {
 };
 
 var RtDatePicker = function RtDatePicker(props) {
-    return DateTimePicker(_DatePicker__default['default'])(props);
+    return DateTimePicker(_DatePicker__default["default"])(props);
 };
 var RtTimePicker = function RtTimePicker(props) {
-    return DateTimePicker(_TimePicker__default['default'])(props);
+    return DateTimePicker(_TimePicker__default["default"])(props);
 };
 /** Компонент вывода даты в текстовом виде */
 var TypographyDate = function TypographyDate(props) {
@@ -5922,7 +5932,7 @@ var TypographyDate = function TypographyDate(props) {
         value = props.value,
         format = props.format;
     var _value = value ? format ? toFormat(value, format) : getISO(value) : undefined;
-    return jsxRuntime.jsxs(_Typography__default['default'].Text, __assign({}, props, { children: [" ", label || _value, " "] }), void 0);
+    return jsxRuntime.jsxs(_Typography__default["default"].Text, __assign({}, props, { children: [" ", label || _value, " "] }), void 0);
 };
 var DateTimePicker = function DateTimePicker(Component) {
     return function (props) {
@@ -5931,9 +5941,9 @@ var DateTimePicker = function DateTimePicker(Component) {
             restProps = __rest(props, ["value", "onChange"]);
         React.useEffect(function () {
             // console.log("DatePickerHOC => onChange => string");
-            value && typeof value === "string" && onChange(moment__default['default'](value), value);
+            value && typeof value === "string" && onChange(moment__default["default"](value), value);
         }, []);
-        var _value = value ? typeof value === "string" ? moment__default['default'](value) : value : undefined;
+        var _value = value ? typeof value === "string" ? moment__default["default"](value) : value : undefined;
         var style = __assign({ width: "100%" }, props && props.style);
         // console.log("DatePickerHOC value => ", value);
         return jsxRuntime.jsx(Component, __assign({}, restProps, { style: style, value: _value, onChange: onChange }), void 0);
@@ -5960,7 +5970,7 @@ var FormItem$1 = function FormItem(props) {
 };
 
 FormItem$1.propTypes = {
-	child: PropTypes__default['default'].object.isRequired
+	child: PropTypes__default["default"].object.isRequired
 };
 
 var FormItems$1 = function FormItems(props) {
@@ -5990,10 +6000,10 @@ var FormItems$1 = function FormItems(props) {
                         }
                     }
                     // console.log('_item ', _item.name);
-                    return React__default['default'].createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, formListProps) }));
+                    return React__default["default"].createElement(FormItem$1, _extends({ key: "" + _key }, _item, { field: _extends({}, formListProps) }));
                 case "ListItems":
-                    return React__default['default'].createElement(
-                        _Form__default['default'].List,
+                    return React__default["default"].createElement(
+                        _Form__default["default"].List,
                         _extends({ key: index }, itemProps),
                         function (fields, operation) {
                             var param = { fields: [].concat(toConsumableArray(fields)), operation: _extends({}, operation) };
@@ -6002,13 +6012,13 @@ var FormItems$1 = function FormItems(props) {
                     );
                 case "ListItem":
                     // console.log('formListProps => ', formListProps);
-                    return React__default['default'].createElement(
+                    return React__default["default"].createElement(
                         "div",
                         { key: index },
                         formListProps && formListProps.fields && formListProps.fields.map(function (field, fIndex) {
                             // console.log('index field.key', index, field);
                             var param = _extends({ field: _extends({}, field) }, formListProps);
-                            return React__default['default'].createElement(
+                            return React__default["default"].createElement(
                                 "div",
                                 { key: field.key },
                                 getItems(children, param),
@@ -6029,7 +6039,7 @@ var excludeProps$4 = ["dispatch", "setDataStore", "componentType", "noPadding", 
 
 /** Компонент заголовка формы */
 var FormHeader$1 = function FormHeader(props) {
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         "div",
         _extends({}, props, { className: rtPrefix + "-form-header " + (props.className || '') }),
         props.children
@@ -6045,10 +6055,10 @@ var FormBody$1 = function FormBody(props) {
     var cls = [rtPrefix + "-form-body"];
     noPadding && cls.push(rtPrefix + "-form-body-no-padding");
     scrollable && cls.push(rtPrefix + "-form-body-scrollable");
-    return React__default['default'].createElement("div", _extends({}, rest, { className: cls.join(" ") }));
+    return React__default["default"].createElement("div", _extends({}, rest, { className: cls.join(" ") }));
 };
 var FormFooter$1 = function FormFooter(props) {
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         "div",
         { className: rtPrefix + "-form-footer" },
         props.children
@@ -6105,7 +6115,7 @@ var Form$1 = function Form(props) {
     if (props && props.form) {
         antForm = props.form;
     } else {
-        var _AntForm$useForm = _Form__default['default'].useForm(),
+        var _AntForm$useForm = _Form__default["default"].useForm(),
             _AntForm$useForm2 = slicedToArray(_AntForm$useForm, 1),
             form = _AntForm$useForm2[0];
 
@@ -6129,7 +6139,7 @@ var Form$1 = function Form(props) {
                 method: methodSaveForm,
                 data: saveObject
             }).then(function (response) {
-                _notification__default['default'].success({
+                _notification__default["default"].success({
                     message: "Сохранение прошло успешно"
                 });
                 props.onFinish && props.onFinish(saveObject, response.data);
@@ -6145,25 +6155,25 @@ var Form$1 = function Form(props) {
     };
 
     var Header = function Header(header) {
-        return React__default['default'].createElement(
+        return React__default["default"].createElement(
             "div",
             { className: rtPrefix + "-form-header" },
-            React__default['default'].createElement(FormItems$1, { items: header })
+            React__default["default"].createElement(FormItems$1, { items: header })
         );
     };
     var Footer = function Footer(footer) {
-        return React__default['default'].createElement(
+        return React__default["default"].createElement(
             "div",
             { className: rtPrefix + "-form-footer" },
-            React__default['default'].createElement(FormItems$1, { items: footer })
+            React__default["default"].createElement(FormItems$1, { items: footer })
         );
     };
 
-    return React__default['default'].createElement(
-        React__default['default'].Fragment,
+    return React__default["default"].createElement(
+        React__default["default"].Fragment,
         null,
-        loaded ? React__default['default'].createElement(
-            _Form__default['default'],
+        loaded ? React__default["default"].createElement(
+            _Form__default["default"],
             _extends({
                 form: antForm
             }, antFormProps, {
@@ -6178,14 +6188,14 @@ var Form$1 = function Form(props) {
                     dispatch && dispatchToStore({ dispatch: dispatch, setDataStore: setDataStore, value: values });
                 }
             }),
-            React__default['default'].createElement(
-                React__default['default'].Fragment,
+            React__default["default"].createElement(
+                React__default["default"].Fragment,
                 null,
                 header ? Header(header) : null,
-                body ? React__default['default'].createElement(
+                body ? React__default["default"].createElement(
                     "div",
                     { className: getBodyCls() },
-                    React__default['default'].createElement(FormItems$1, { items: body })
+                    React__default["default"].createElement(FormItems$1, { items: body })
                 ) : null,
                 props.children,
                 footer ? Footer(footer) : null
@@ -6197,32 +6207,32 @@ var Form$1 = function Form(props) {
 Form$1.propTypes = {
 
     /** Не делать отступы у формы от краев блока. **Only config Form** */
-    noPadding: PropTypes__default['default'].bool,
+    noPadding: PropTypes__default["default"].bool,
 
     /** Разрешит скролл внтри формы. **Only config Form** */
-    scrollable: PropTypes__default['default'].bool,
+    scrollable: PropTypes__default["default"].bool,
 
     /** Массив объектов для шапки формы. Как правило только заголовок. */
-    header: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    header: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Массив объектов для тела формы */
-    body: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    body: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Массив объектов для подвала формы. Как правило только кнопки "Сохранить" и "Отмена" */
-    footer: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    footer: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Ссылка на функцию загрузки значений по умолчанию
      * `(callBack) => callBack(initObject)` */
-    loadInitData: PropTypes__default['default'].func,
+    loadInitData: PropTypes__default["default"].func,
 
     /** Запрос для автоматического сохранения формы */
-    requestSaveForm: PropTypes__default['default'].func,
+    requestSaveForm: PropTypes__default["default"].func,
 
     /** HTTP Метод, передаваемый в запрос сохранения */
-    methodSaveForm: PropTypes__default['default'].string,
+    methodSaveForm: PropTypes__default["default"].string,
 
     /** Функция обработки перед сохранением формы */
-    processBeforeSaveForm: PropTypes__default['default'].func
+    processBeforeSaveForm: PropTypes__default["default"].func
 };
 
 Form$1.defaultProps = {
@@ -6450,7 +6460,7 @@ var Select$1 = function Select(props) {
 					if (response.data.length === 1) {
 						setTmpOption(optionConverter(response.data[0]));
 					} else {
-						_notification__default['default'].error({ message: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u043D\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430" });
+						_notification__default["default"].error({ message: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u043D\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430" });
 					}
 				}
 			}).catch(function (error) {
@@ -6533,8 +6543,8 @@ var Select$1 = function Select(props) {
 	};
 
 	var childProps = getObjectExcludedProps(props, excludeProps$3);
-	return React__default['default'].createElement(
-		_Select__default['default'],
+	return React__default["default"].createElement(
+		_Select__default["default"],
 		_extends({
 			showArrow: true,
 			showSearch: true,
@@ -6558,25 +6568,25 @@ var Select$1 = function Select(props) {
 			, onPopupScroll: onScroll,
 			onSearch: onSearch,
 			dropdownRender: function dropdownRender(menu) {
-				return React__default['default'].createElement(
-					React__default['default'].Fragment,
+				return React__default["default"].createElement(
+					React__default["default"].Fragment,
 					null,
-					mode === 'multiple' ? React__default['default'].createElement(
+					mode === 'multiple' ? React__default["default"].createElement(
 						"div",
 						{ className: getSelectAllCls(), onClick: _onChangeSelectAll },
-						React__default['default'].createElement(
+						React__default["default"].createElement(
 							"div",
 							{ className: "ant-select-item-option-content" },
-							React__default['default'].createElement(
+							React__default["default"].createElement(
 								"span",
 								null,
 								"\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u0432\u0441\u0435"
 							)
 						),
-						_isSelectAll ? React__default['default'].createElement(
+						_isSelectAll ? React__default["default"].createElement(
 							"span",
 							{ className: "ant-select-item-option-state" },
-							React__default['default'].createElement(icons.CheckOutlined, null)
+							React__default["default"].createElement(icons.CheckOutlined, null)
 						) : null
 					) : null,
 					menu
@@ -6588,14 +6598,14 @@ var Select$1 = function Select(props) {
 			    value = _ref2.value,
 			    className = _ref2.className,
 			    disabled = _ref2.disabled;
-			return React__default['default'].createElement(
-				_Select__default['default'].Option,
+			return React__default["default"].createElement(
+				_Select__default["default"].Option,
 				{ key: i.toString(36) + i, value: value, className: className, disabled: disabled },
 				label
 			);
 		}),
-		tmpOption && React__default['default'].createElement(
-			_Select__default['default'].Option,
+		tmpOption && React__default["default"].createElement(
+			_Select__default["default"].Option,
 			{ key: generateUUID(), value: tmpOption.value, className: tmpOption.className, disabled: tmpOption.disabled },
 			tmpOption.label
 		)
@@ -6604,38 +6614,38 @@ var Select$1 = function Select(props) {
 
 Select$1.propTypes = {
 	/** Сортировка по умолчанию */
-	defaultSortBy: PropTypes__default['default'].shape({
+	defaultSortBy: PropTypes__default["default"].shape({
 		/** Ключ поля для сортировки */
-		key: PropTypes__default['default'].string,
+		key: PropTypes__default["default"].string,
 		/** Направление сортировки */
-		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+		order: PropTypes__default["default"].oneOf(['asc', 'desc'])
 	}),
 
 	/** Объект фильтрации по умолчанию */
-	defaultFilter: PropTypes__default['default'].object,
+	defaultFilter: PropTypes__default["default"].object,
 
 	/** Значение строки поиска по умолчанию строк */
-	defaultSearchValue: PropTypes__default['default'].string,
+	defaultSearchValue: PropTypes__default["default"].string,
 
 	/** Сортировка */
-	sortBy: PropTypes__default['default'].object,
+	sortBy: PropTypes__default["default"].object,
 
 	/** Фильтр */
-	filter: PropTypes__default['default'].object,
+	filter: PropTypes__default["default"].object,
 
 	/** Значение строки поиска */
-	searchValue: PropTypes__default['default'].string,
+	searchValue: PropTypes__default["default"].string,
 
 	/** Имя параметра для поиска */
-	searchParamName: PropTypes__default['default'].string,
+	searchParamName: PropTypes__default["default"].string,
 
-	lostParamName: PropTypes__default['default'].string,
+	lostParamName: PropTypes__default["default"].string,
 
 	/** Режим загружки по скроллу */
-	infinityMode: PropTypes__default['default'].bool,
+	infinityMode: PropTypes__default["default"].bool,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes__default['default'].func,
+	requestLoadRows: PropTypes__default["default"].func,
 
 	/** Функция преобразования загруженных объектов в объекты для селекта.
   * Сигнатура `(option) => ({})`
@@ -6651,16 +6661,16 @@ Select$1.propTypes = {
   * })
   * ```
   */
-	optionConverter: PropTypes__default['default'].func,
+	optionConverter: PropTypes__default["default"].func,
 
 	/** Select options `[{ label, value, className, disabled }]` */
-	options: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	options: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Ширина поля выбора в пикселях */
-	widthControl: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]),
+	widthControl: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number]),
 
 	/** Размер страницы */
-	pageSize: PropTypes__default['default'].number
+	pageSize: PropTypes__default["default"].number
 };
 
 Select$1.defaultProps = {
@@ -6796,7 +6806,7 @@ var TreeSelect$1 = function TreeSelect(props) {
     };
 
     var childProps = getObjectExcludedProps(props, excludeProps$2);
-    return React__default['default'].createElement(_TreeSelect__default['default'], _extends({
+    return React__default["default"].createElement(_TreeSelect__default["default"], _extends({
         showArrow: true,
         showSearch: true,
         allowClear: true,
@@ -6819,33 +6829,33 @@ var TreeSelect$1 = function TreeSelect(props) {
 
 TreeSelect$1.propTypes = {
     /** Сортировка по умолчанию */
-    defaultSortBy: PropTypes__default['default'].shape({
+    defaultSortBy: PropTypes__default["default"].shape({
         /** Ключ поля для сортировки */
-        key: PropTypes__default['default'].string,
+        key: PropTypes__default["default"].string,
         /** Направление сортировки */
-        order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+        order: PropTypes__default["default"].oneOf(['asc', 'desc'])
     }),
 
     /** Объект фильтрации по умолчанию */
-    defaultFilter: PropTypes__default['default'].object,
+    defaultFilter: PropTypes__default["default"].object,
 
     /** Значение строки поиска по умолчанию строк */
-    defaultSearchValue: PropTypes__default['default'].string,
+    defaultSearchValue: PropTypes__default["default"].string,
 
     /** Сортировка */
-    sortBy: PropTypes__default['default'].object,
+    sortBy: PropTypes__default["default"].object,
 
     /** Фильтр */
-    filter: PropTypes__default['default'].object,
+    filter: PropTypes__default["default"].object,
 
     /** Значение строки поиска */
-    searchValue: PropTypes__default['default'].string,
+    searchValue: PropTypes__default["default"].string,
 
     /** Имя параметра для поиска */
-    searchParamName: PropTypes__default['default'].string,
+    searchParamName: PropTypes__default["default"].string,
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadRows: PropTypes__default['default'].func,
+    requestLoadRows: PropTypes__default["default"].func,
 
     /** Функция преобразования загруженных объектов в объекты для селекта.
      * Сигнатура `(option) => ({})`
@@ -6861,10 +6871,10 @@ TreeSelect$1.propTypes = {
      * 	selectable: !option.isGroup,
      * })
      * ```*/
-    optionConverter: PropTypes__default['default'].func.isRequired,
+    optionConverter: PropTypes__default["default"].func.isRequired,
 
     /** Select options `[{ label, value, children, checkable, selectable }]` */
-    options: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+    options: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
 TreeSelect$1.defaultProps = {
@@ -6917,13 +6927,13 @@ var defaultProps$3 = {
         var notifProps = {
             key: file.uid,
             duration: type === 'loading' ? 0 : 5,
-            icon: type === 'loading' ? React__default['default'].createElement(_Spin__default['default'], { indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
-            message: React__default['default'].createElement(
+            icon: type === 'loading' ? React__default["default"].createElement(_Spin__default["default"], { indicator: React__default["default"].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true }) }) : null,
+            message: React__default["default"].createElement(
                 "span",
                 null,
                 "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430: ",
-                React__default['default'].createElement(
-                    _Typography__default['default'].Text,
+                React__default["default"].createElement(
+                    _Typography__default["default"].Text,
                     { code: true },
                     file.name
                 )
@@ -6931,19 +6941,19 @@ var defaultProps$3 = {
         };
         switch (type) {
             case 'loading':
-                _notification__default['default'].info(notifProps);
+                _notification__default["default"].info(notifProps);
                 break;
             case 'success':
-                _notification__default['default'].success(notifProps);
+                _notification__default["default"].success(notifProps);
                 onCompletedUpload(file);
                 props.onChange(_extends({}, value, { file: file }));
                 break;
             case 'error':
-                _notification__default['default'].error(notifProps);
+                _notification__default["default"].error(notifProps);
                 onFailedUpload(file);
                 break;
             case 'close':
-                _notification__default['default'].close(file.uid);
+                _notification__default["default"].close(file.uid);
                 break;
         }
     };
@@ -6953,16 +6963,16 @@ var defaultProps$3 = {
         beforeUpload: _uploadFile
     };
 
-    return React__default['default'].createElement(
-        _Upload__default['default'],
+    return React__default["default"].createElement(
+        _Upload__default["default"],
         _extends({}, defaultUploadProps, uploadProps),
-        React__default['default'].createElement(
-            _Tooltip__default['default'],
+        React__default["default"].createElement(
+            _Tooltip__default["default"],
             toolTipProps,
-            React__default['default'].createElement(
-                _Button__default['default'],
+            React__default["default"].createElement(
+                _Button__default["default"],
                 _extends({
-                    icon: React__default['default'].createElement(icons.CloudUploadOutlined, null)
+                    icon: React__default["default"].createElement(icons.CloudUploadOutlined, null)
                 }, buttonProps),
                 buttonProps && buttonProps.label
             )
@@ -6972,25 +6982,25 @@ var defaultProps$3 = {
 
 UploadFile$1.propTypes = {
     /** Функция запроса для отправки файла с данным на сервер */
-    requestUploadFile: PropTypes__default['default'].func.isRequired,
+    requestUploadFile: PropTypes__default["default"].func.isRequired,
 
     /** Данные, прикрепляемые к файлу */
-    dataObject: PropTypes__default['default'].object,
+    dataObject: PropTypes__default["default"].object,
 
     /** Функция, вызываемая при удачной загрузке файла */
-    onCompletedUpload: PropTypes__default['default'].func,
+    onCompletedUpload: PropTypes__default["default"].func,
 
     /** Функция, вызываемая при НЕ удачной загрузке файла */
-    onFailedUpload: PropTypes__default['default'].func,
+    onFailedUpload: PropTypes__default["default"].func,
 
     /** Ant Props для [Upload](https://ant.design/components/upload/) компонента */
-    uploadProps: PropTypes__default['default'].object,
+    uploadProps: PropTypes__default["default"].object,
 
     /** Ant Props для [Tooltip](https://ant.design/components/tooltip/) компонента */
-    toolTipProps: PropTypes__default['default'].object,
+    toolTipProps: PropTypes__default["default"].object,
 
     /** Ant Props для [Button](https://ant.design/components/button/) компонента */
-    buttonProps: PropTypes__default['default'].object
+    buttonProps: PropTypes__default["default"].object
 };
 
 UploadFile$1.defaultProps = defaultProps$3;
@@ -6999,14 +7009,14 @@ var TabPane$1 = function TabPane(props) {
     var cls = [];
     props.className && cls.push(props.className);
     props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
-    return jsxRuntime.jsx(_Tabs__default['default'].TabPane, __assign({}, props, { className: cls.join(" ") }, { children: props.children }), void 0);
+    return jsxRuntime.jsx(_Tabs__default["default"].TabPane, __assign({}, props, { className: cls.join(" ") }, { children: props.children }), void 0);
 };
 
-var empty = React__default['default'].createElement(
+var empty = React__default["default"].createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
-	React__default['default'].createElement(
+	React__default["default"].createElement(
 		'span',
 		null,
 		'\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445'
@@ -7014,13 +7024,13 @@ var empty = React__default['default'].createElement(
 	' '
 );
 
-var overlay = React__default['default'].createElement(
+var overlay = React__default["default"].createElement(
 	'div',
 	{ className: 'BaseTable__overlay' },
 	' ',
-	React__default['default'].createElement(_Spin__default['default'], {
+	React__default["default"].createElement(_Spin__default["default"], {
 		tip: '\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...',
-		indicator: React__default['default'].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
+		indicator: React__default["default"].createElement(icons.LoadingOutlined, { style: { fontSize: 24 }, spin: true })
 	}),
 	' '
 );
@@ -7047,7 +7057,7 @@ var SelectionHead = function SelectionHead(props) {
 		onSelectAll({ selected: checked, rowKeys: rowKeys, rowObjects: rowObjects });
 	};
 
-	return React__default['default'].createElement(_Checkbox__default['default'], {
+	return React__default["default"].createElement(_Checkbox__default["default"], {
 		indeterminate: selectAll === null,
 		onChange: _handleChange,
 		checked: selectAll
@@ -7257,7 +7267,7 @@ var SelectionCell = function SelectionCell(props) {
 	var det = indeterminateRowKeys.includes(rowData[rowKey]);
 	var checked = selectedRowKeys.includes(rowData[rowKey]);
 
-	return React__default['default'].createElement(_Checkbox__default['default'], {
+	return React__default["default"].createElement(_Checkbox__default["default"], {
 		indeterminate: det
 		// onChange={(e) => _onChangeHandler(e.target.checked)}
 		, checked: checked
@@ -7271,31 +7281,31 @@ var SelectionList = function SelectionList(props) {
 
 	// console.log("SelectionList typeof -> ", typeof(rowRender));
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{ className: rtPrefix + '-table-selected-rows' },
-		selectedRowObjects && selectedRowObjects.length > 0 ? React__default['default'].createElement(
+		selectedRowObjects && selectedRowObjects.length > 0 ? React__default["default"].createElement(
 			'ul',
 			null,
 			selectedRowObjects.map(function (item, index) {
-				return React__default['default'].createElement(
+				return React__default["default"].createElement(
 					'li',
 					{ key: index },
-					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React__default['default'].createElement(
+					typeof rowRender === 'function' ? rowRender({ rowData: item, rowIndex: index }) : React__default["default"].createElement(
 						'div',
 						null,
 						item[rowRender]
 					),
-					React__default['default'].createElement(
+					React__default["default"].createElement(
 						'div',
 						{ onClick: function onClick() {
 								return onClickDropSelect(item);
 							} },
-						React__default['default'].createElement(icons.CloseCircleOutlined, null)
+						React__default["default"].createElement(icons.CloseCircleOutlined, null)
 					)
 				);
 			})
-		) : React__default['default'].createElement(
+		) : React__default["default"].createElement(
 			'div',
 			null,
 			'\u041D\u0435\u0442 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u0437\u0430\u043F\u0438\u0441\u0435\u0439'
@@ -7308,13 +7318,13 @@ SelectionList.propTypes = {
   * Строка - имя поля
   * Функция - рендер строк. Параметры v
   * { rowData, rowIndex }) */
-	rowRender: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+	rowRender: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
 	/** Список выделенных объектов */
-	selectedRowObjects: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+	selectedRowObjects: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
 	/** Событие удаления элемента */
-	onClickDropSelect: PropTypes__default['default'].func.isRequired
+	onClickDropSelect: PropTypes__default["default"].func.isRequired
 };
 
 SelectionList.defaultProps = {};
@@ -7643,7 +7653,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
 		var dp = dispatch && dispatch.path ? dispatch.path + '.events.' + nameEvent : dispatchPath && dispatchPath + '.events.' + nameEvent;
 
 		dp && props.setDataStore && props.setDataStore(dp, {
-			timestamp: moment__default['default'](),
+			timestamp: moment__default["default"](),
 			value: value
 		});
 		// console.log('onTableEventsDispatch onChange');
@@ -7855,38 +7865,38 @@ var Table$3 = React.forwardRef(function (props, ref) {
 
 	/** VIEW FUNCTIONS */
 
-	var _footer = React__default['default'].createElement(
-		React__default['default'].Fragment,
+	var _footer = React__default["default"].createElement(
+		React__default["default"].Fragment,
 		null,
-		_footerShow ? React__default['default'].createElement(
-			React__default['default'].Fragment,
+		_footerShow ? React__default["default"].createElement(
+			React__default["default"].Fragment,
 			null,
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-left-custom-side', className: 'left-custom-side' },
-				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React__default['default'].createElement(footerProps.leftCustomSideElement, null) : null
+				footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React__default["default"].createElement(footerProps.leftCustomSideElement, null) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-center-custom-side', className: 'center-custom-side' },
-				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React__default['default'].createElement(footerProps.centerCustomSideElement, null) : null
+				footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React__default["default"].createElement(footerProps.centerCustomSideElement, null) : null
 			),
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				'div',
 				{ key: 'footer-right-custom-side', className: 'right-custom-side' },
-				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React__default['default'].createElement(footerProps.rightCustomSideElement, null) : null
+				footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React__default["default"].createElement(footerProps.rightCustomSideElement, null) : null
 			),
-			selectable ? React__default['default'].createElement(
-				React__default['default'].Fragment,
+			selectable ? React__default["default"].createElement(
+				React__default["default"].Fragment,
 				null,
-				footerProps.showElements.includes('selected') ? React__default['default'].createElement(
+				footerProps.showElements.includes('selected') ? React__default["default"].createElement(
 					'span',
 					null,
 					footerProps.selectedTitle,
 					' ',
 					_selectedRowKeys.length
 				) : null,
-				footerProps.showElements.includes('loaded') ? React__default['default'].createElement(
+				footerProps.showElements.includes('loaded') ? React__default["default"].createElement(
 					'span',
 					null,
 					footerProps.loadedTitle,
@@ -7894,13 +7904,13 @@ var Table$3 = React.forwardRef(function (props, ref) {
 					flatten(getTableRowKeys(_rows, rowKey)).length
 				) : null
 			) : null,
-			footerProps.showElements.includes('total') ? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React__default['default'].createElement(
+			footerProps.showElements.includes('total') ? infinityMode && requestLoadCount !== noop && !expandColumnKey && !expandLazyLoad ? React__default["default"].createElement(
 				'span',
 				null,
 				footerProps.totalTitle,
 				' ',
 				_totalCountRows
-			) : React__default['default'].createElement(
+			) : React__default["default"].createElement(
 				'span',
 				null,
 				footerProps.totalTitle,
@@ -8018,7 +8028,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
 		var selectColumn = _extends({
 			key: '__selection__',
 			headerRenderer: SelectionHead,
-			cellRenderer: React__default['default'].createElement(SelectionCell, null),
+			cellRenderer: React__default["default"].createElement(SelectionCell, null),
 			width: 40,
 			flexShrink: 0,
 			resizable: false,
@@ -8238,19 +8248,19 @@ var Table$3 = React.forwardRef(function (props, ref) {
 		onSelectedRowsChange(newSelectedKeys);
 	};
 
-	return React__default['default'].createElement(
+	return React__default["default"].createElement(
 		'div',
 		{ className: rtPrefix + '-table ' + className, style: style },
-		React__default['default'].createElement(
+		React__default["default"].createElement(
 			'div',
 			{ className: rtPrefix + '-baseTable' },
-			React__default['default'].createElement(
+			React__default["default"].createElement(
 				BaseTable.AutoResizer,
 				null,
 				function (_ref13) {
 					var width = _ref13.width,
 					    height = _ref13.height;
-					return React__default['default'].createElement(BaseTable__default['default'], {
+					return React__default["default"].createElement(BaseTable__default["default"], {
 						ref: tableRef
 						/** Required */
 						, columns: _getColumns(),
@@ -8293,7 +8303,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
 				}
 			)
 		),
-		showSelection && selectable && !expandColumnKey ? React__default['default'].createElement(SelectionList, {
+		showSelection && selectable && !expandColumnKey ? React__default["default"].createElement(SelectionList, {
 			onClickDropSelect: _onClickDropSelectHandler,
 			selectedRowObjects: flatten(getTableRowObjects(_rows)).filter(function (item) {
 				return _selectedRowKeys.includes(item[rowKey]);
@@ -8309,33 +8319,33 @@ Table$3.propTypes = {
   * */
 
 	/** Столбцы таблицы */
-	columns: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+	columns: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
 	/** Режим загрузки данных по скроллу */
-	infinityMode: PropTypes__default['default'].bool,
+	infinityMode: PropTypes__default["default"].bool,
 
 	/**
   * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
   * */
 
 	/** Строки по умолчанию */
-	defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	defaultRows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Ключи выделенных по умолчанию строк */
-	defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+	defaultSelectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
 	/** Значение строки поиска по умолчанию строк */
-	defaultSearchValue: PropTypes__default['default'].string,
+	defaultSearchValue: PropTypes__default["default"].string,
 
 	/** Объект фильтрации по умолчанию */
-	defaultFilter: PropTypes__default['default'].object,
+	defaultFilter: PropTypes__default["default"].object,
 
 	/** Сортировка по умолчанию */
-	defaultSortBy: PropTypes__default['default'].shape({
+	defaultSortBy: PropTypes__default["default"].shape({
 		/** Ключ поля для сортировки */
-		key: PropTypes__default['default'].string,
+		key: PropTypes__default["default"].string,
 		/** Направление сортировки */
-		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+		order: PropTypes__default["default"].oneOf(['asc', 'desc'])
 	}),
 
 	/**
@@ -8343,26 +8353,26 @@ Table$3.propTypes = {
   * */
 
 	/** Строки таблицы. Используется для контроля таблицы из вне. */
-	rows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	rows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/** Функция задания строк таблицы. */
-	setRows: PropTypes__default['default'].func,
+	setRows: PropTypes__default["default"].func,
 
 	/** Выделенные строки таблицы. */
-	selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+	selectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
 	/** Значение строки поиска */
-	searchValue: PropTypes__default['default'].string,
+	searchValue: PropTypes__default["default"].string,
 
 	/** Объект фильтрации */
-	filter: PropTypes__default['default'].object,
+	filter: PropTypes__default["default"].object,
 
 	/** Объект сортировки */
-	sortBy: PropTypes__default['default'].shape({
+	sortBy: PropTypes__default["default"].shape({
 		/** Ключ поля для сортировки */
-		key: PropTypes__default['default'].string,
+		key: PropTypes__default["default"].string,
 		/** Направление сортировки */
-		order: PropTypes__default['default'].oneOf(['asc', 'desc'])
+		order: PropTypes__default["default"].oneOf(['asc', 'desc'])
 	}),
 
 	/**
@@ -8370,7 +8380,7 @@ Table$3.propTypes = {
   * */
 
 	/** Поле для уникальной идентификации строки */
-	rowKey: PropTypes__default['default'].string,
+	rowKey: PropTypes__default["default"].string,
 
 	/** Дополнительные поля и валидация в объекты таблицы
   * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
@@ -8391,7 +8401,7 @@ Table$3.propTypes = {
   * Параметра **validate** работает **только** для модельного окна тип `select`.
   * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
   */
-	customFields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	customFields: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/**
   * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
@@ -8409,74 +8419,74 @@ Table$3.propTypes = {
   * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
   * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
   */
-	customColumnProps: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+	customColumnProps: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
 	/**
   * VIEW PROPS
   * */
 
 	/** Вывод когда нет данных */
-	empty: PropTypes__default['default'].element,
+	empty: PropTypes__default["default"].element,
 
 	/** Отображение загрузки данных */
-	overlay: PropTypes__default['default'].element,
+	overlay: PropTypes__default["default"].element,
 
 	/** Фиксированная ширина столбцов. Появится боковой скрол */
-	fixWidthColumn: PropTypes__default['default'].bool,
+	fixWidthColumn: PropTypes__default["default"].bool,
 
-	footerProps: PropTypes__default['default'].shape({
+	footerProps: PropTypes__default["default"].shape({
 
 		/** Высота подвала */
-		height: PropTypes__default['default'].number,
+		height: PropTypes__default["default"].number,
 
 		/** Массив элементов футтера, которые надо отобразить
    * ['selected', 'loaded', 'total'] */
-		showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+		showElements: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string),
 
 		/** Заколовок для кол-ва выбранных объектов */
-		selectedTitle: PropTypes__default['default'].string,
+		selectedTitle: PropTypes__default["default"].string,
 
 		/** Заколовок для кол-ва загруженны объектов */
-		loadedTitle: PropTypes__default['default'].string,
+		loadedTitle: PropTypes__default["default"].string,
 
 		/** Заколовок для кол-ва всего объектов */
-		totalTitle: PropTypes__default['default'].string,
+		totalTitle: PropTypes__default["default"].string,
 
 		/** Левый кастомный элемент командной панели */
-		leftCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+		leftCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)]),
 
 		/** Центральный кастомный элемент командной панели */
-		centerCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+		centerCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)]),
 
 		/** Правый кастомный элемент командной панели */
-		rightCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)])
+		rightCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)])
 	}),
 
 	/** Высота заголовка таблицы */
-	headerHeight: PropTypes__default['default'].number,
+	headerHeight: PropTypes__default["default"].number,
 
 	/** Высота строки таблицы */
-	rowHeight: PropTypes__default['default'].number,
+	rowHeight: PropTypes__default["default"].number,
 
 	/** Custom row renderer
   * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
-	rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+	rowRenderer: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element]),
 
 	/** Строки будут в зебро-стиле */
-	zebraStyle: PropTypes__default['default'].bool,
+	zebraStyle: PropTypes__default["default"].bool,
 
 	/** Высота расширения */
-	estimatedRowHeight: PropTypes__default['default'].number,
+	estimatedRowHeight: PropTypes__default["default"].number,
 
 	/** Отображать ли разделители ячеек в строке */
-	cellBordered: PropTypes__default['default'].bool,
+	cellBordered: PropTypes__default["default"].bool,
 
 	/** Отобрадать ли разделители строк */
-	rowBordered: PropTypes__default['default'].bool,
+	rowBordered: PropTypes__default["default"].bool,
 
-	className: PropTypes__default['default'].string,
+	className: PropTypes__default["default"].string,
 
-	style: PropTypes__default['default'].object,
+	style: PropTypes__default["default"].object,
 
 	/**
   * LOAD DATA PROPS
@@ -8484,48 +8494,48 @@ Table$3.propTypes = {
 
 	/** Порог в пикселях для вызова _onLoad.
   * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-	loadThreshold: PropTypes__default['default'].number,
+	loadThreshold: PropTypes__default["default"].number,
 
 	/** Размер страницы */
-	pageSize: PropTypes__default['default'].number,
+	pageSize: PropTypes__default["default"].number,
 
 	/** Функция запроса для конфигурации */
-	requestLoadConfig: PropTypes__default['default'].func,
+	requestLoadConfig: PropTypes__default["default"].func,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadRows: PropTypes__default['default'].func,
+	requestLoadRows: PropTypes__default["default"].func,
 
 	/** Функция запроса для загрузки строк (данных) */
-	requestLoadCount: PropTypes__default['default'].func,
+	requestLoadCount: PropTypes__default["default"].func,
 
 	/** Имя параметра для поиска */
-	searchParamName: PropTypes__default['default'].string,
+	searchParamName: PropTypes__default["default"].string,
 
 	/**
   * SELECTABLE PROPS
   * */
 
 	/** Таблица с возможностью выбора строки */
-	selectable: PropTypes__default['default'].bool,
+	selectable: PropTypes__default["default"].bool,
 
 	/**
   * TREE PROPS
   * */
 
 	/** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
-	nodeAssociated: PropTypes__default['default'].bool,
+	nodeAssociated: PropTypes__default["default"].bool,
 
 	/** Ключ колонки по которой строить иерархию */
-	expandColumnKey: PropTypes__default['default'].string,
+	expandColumnKey: PropTypes__default["default"].string,
 
 	/** Открыть по умолчанию вложенность до уровня N или 'All' */
-	expandDefaultAll: PropTypes__default['default'].bool,
+	expandDefaultAll: PropTypes__default["default"].bool,
 
 	/** Загружать ноды иерархии по одной */
-	expandLazyLoad: PropTypes__default['default'].bool,
+	expandLazyLoad: PropTypes__default["default"].bool,
 
 	/** Поле в котором хранится ссылка на родителя */
-	expandParentKey: PropTypes__default['default'].string,
+	expandParentKey: PropTypes__default["default"].string,
 
 	/**
   * EVENTS
@@ -8533,40 +8543,40 @@ Table$3.propTypes = {
 
 	/** Событие при клике на строку (только при `selectable` = `false`)
   * `({selected, rowData, rowIndex}) => {}` */
-	onRowClick: PropTypes__default['default'].func,
+	onRowClick: PropTypes__default["default"].func,
 
 	/** Событие при двойном клике на строку.
   * `({rowData, rowIndex, rowKey}) => {}` */
-	onRowDoubleClick: PropTypes__default['default'].func,
+	onRowDoubleClick: PropTypes__default["default"].func,
 
 	/** События при открытии / закрытии ноды
   * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
-	onRowExpand: PropTypes__default['default'].func,
+	onRowExpand: PropTypes__default["default"].func,
 
 	/** Событие при выборе строки.
   * `([rowKeys], [rowDatas]) => {}` */
-	onSelectedRowsChange: PropTypes__default['default'].func,
+	onSelectedRowsChange: PropTypes__default["default"].func,
 
 	/** События при открытии / закрытии ноды
   * `(expandedRowKeys) => {}` - массив ключей открытых нод */
-	onExpandedRowsChange: PropTypes__default['default'].func,
+	onExpandedRowsChange: PropTypes__default["default"].func,
 
 	/** SELECTED PANEL */
 
 	/** Отображать ли панель выбранных элементов */
-	showSelection: PropTypes__default['default'].bool,
+	showSelection: PropTypes__default["default"].bool,
 
 	/** Строка или функция для отображения элементов списка выбранных
   * Строка - имя поля
   * Функция - рендер строк.
   * `({ rowData, rowIndex }) => { return <Component> }` */
-	rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+	rowRenderShowSelection: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
 	/** Путь в сторе куда класть выбранную строку таблицы */
-	dispatchPath: PropTypes__default['default'].string,
+	dispatchPath: PropTypes__default["default"].string,
 
 	/** Объект для подписки на изменения в STORE */
-	subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+	subscribe: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
 Table$3.defaultProps = {
@@ -8743,14 +8753,14 @@ var ConfigLoader$1 = function ConfigLoader(props) {
                 headerClassName: [cellBordered ? 'bordered' : ''].join(' ')
             }, colProps, {
                 cellRenderer: function cellRenderer(object) {
-                    if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, object);
+                    if (colProps && colProps.cellRenderer) return React__default["default"].createElement(colProps.cellRenderer, object);
                     // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
-                    else return object.cellData ? React__default['default'].createElement(
-                            _Typography__default['default'].Text,
+                    else return object.cellData ? React__default["default"].createElement(
+                            _Typography__default["default"].Text,
                             { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
                             object.cellData
-                        ) : React__default['default'].createElement(
-                            _Typography__default['default'].Text,
+                        ) : React__default["default"].createElement(
+                            _Typography__default["default"].Text,
                             { ellipsis: true, style: { width: '100%' }, className: 'rt-table-cell' },
                             "---"
                         );
@@ -8777,7 +8787,7 @@ var ConfigLoader$1 = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React__default['default'].createElement(Table$4, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React__default["default"].createElement(Table$4, _extends({}, props, tableConfig));else return null;
 };
 
 var HeaderCell = function HeaderCell(props) {
@@ -8788,14 +8798,14 @@ var HeaderCell = function HeaderCell(props) {
         restProps = objectWithoutProperties(props, ["column", "onResize"]);
 
 
-    if (!column) return React__default['default'].createElement("th", restProps);
+    if (!column) return React__default["default"].createElement("th", restProps);
 
     var width = column.width,
         resizable = column.resizable;
         column.headerRenderer;
 
 
-    if (!width) return React__default['default'].createElement("th", restProps);
+    if (!width) return React__default["default"].createElement("th", restProps);
 
     // if (headerRenderer) {
     //     let childNode
@@ -8818,11 +8828,11 @@ var HeaderCell = function HeaderCell(props) {
     //         </th>
     //     );
     // } else {
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         "th",
         restProps,
         restProps.children,
-        resizable && React__default['default'].createElement(ColumnResizer__default['default'], {
+        resizable && React__default["default"].createElement(ColumnResizer__default["default"], {
             className: rtPrefix + "-column-resizer",
             column: { width: width, maxWidth: 1000 },
             onResize: onResize
@@ -8832,9 +8842,9 @@ var HeaderCell = function HeaderCell(props) {
 };
 
 HeaderCell.propTypes = {
-    onResize: PropTypes__default['default'].func,
-    width: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]),
-    resizable: PropTypes__default['default'].bool
+    onResize: PropTypes__default["default"].func,
+    width: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number]),
+    resizable: PropTypes__default["default"].bool
 };
 
 var HeaderRow = function HeaderRow(props) {
@@ -8851,12 +8861,12 @@ var HeaderRow = function HeaderRow(props) {
             setHeaderHeight(newHeight);
         }
     });
-    return React__default['default'].createElement('tr', _extends({}, restProps, { ref: headerRowRef }));
+    return React__default["default"].createElement('tr', _extends({}, restProps, { ref: headerRowRef }));
 };
 
 HeaderRow.propTypes = {
-    headerHeight: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number]),
-    setHeaderHeight: PropTypes__default['default'].func
+    headerHeight: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number]),
+    setHeaderHeight: PropTypes__default["default"].func
 };
 
 var BodyCell = function BodyCell(props) {
@@ -8868,10 +8878,10 @@ var BodyCell = function BodyCell(props) {
 
   if (column && column.cellComponent) {
     // console.log('BodyCell => ', restProps);
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
       "td",
       _extends({}, restProps, { style: _extends({}, restProps.style, { padding: 0 }) }),
-      React__default['default'].createElement(column.cellComponent, {
+      React__default["default"].createElement(column.cellComponent, {
         column: column,
         cellData: restProps.title,
         rowData: rowData,
@@ -8879,7 +8889,7 @@ var BodyCell = function BodyCell(props) {
       })
     );
   } else {
-    return React__default['default'].createElement("td", restProps);
+    return React__default["default"].createElement("td", restProps);
   }
 };
 
@@ -9123,7 +9133,7 @@ var Table$1 = function Table(props) {
         var dp = dispatch && dispatch.path ? dispatch.path + ".events." + nameEvent : dispatchPath && dispatchPath + ".events." + nameEvent;
 
         dp && props.setDataStore && props.setDataStore(dp, {
-            timestamp: moment__default['default'](),
+            timestamp: moment__default["default"](),
             value: value
         });
         // console.log('onTableEventsDispatch onChange');
@@ -9473,10 +9483,10 @@ var Table$1 = function Table(props) {
     var ExpandIcon = function ExpandIcon(_ref7) {
         var Icon = _ref7.Icon,
             restProps = objectWithoutProperties(_ref7, ["Icon"]);
-        return React__default['default'].createElement(
+        return React__default["default"].createElement(
             "span",
             _extends({}, restProps, { className: rtPrefix + "-table-expand-icon" }),
-            React__default['default'].createElement(Icon, null)
+            React__default["default"].createElement(Icon, null)
         );
     };
 
@@ -9484,50 +9494,50 @@ var Table$1 = function Table(props) {
         var expanded = _ref8.expanded,
             onExpand = _ref8.onExpand,
             record = _ref8.record;
-        return record.children && record.children.length === 0 ? React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretUpOutlined, style: { visibility: "hidden" } }) : expanded ? React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretDownOutlined, onClick: function onClick(e) {
+        return record.children && record.children.length === 0 ? React__default["default"].createElement(ExpandIcon, { Icon: icons.CaretUpOutlined, style: { visibility: "hidden" } }) : expanded ? React__default["default"].createElement(ExpandIcon, { Icon: icons.CaretDownOutlined, onClick: function onClick(e) {
                 return onExpand(record, e);
-            } }) : React__default['default'].createElement(ExpandIcon, { Icon: icons.CaretRightOutlined, onClick: function onClick(e) {
+            } }) : React__default["default"].createElement(ExpandIcon, { Icon: icons.CaretRightOutlined, onClick: function onClick(e) {
                 return onExpand(record, e);
             } });
     };
 
     var _footer = function _footer(currentPageData) {
         // console.log('_footer => ', currentPageData);
-        return _footerShow ? React__default['default'].createElement(
+        return _footerShow ? React__default["default"].createElement(
             "div",
             { style: { display: 'flex', flex: 'auto', height: footerProps.height + "px" } },
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 "div",
                 { key: "footer-left-custom-side", className: rtPrefix + "-footer-left-custom-side" },
-                footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React__default['default'].createElement(footerProps.leftCustomSideElement, null) : null
+                footerProps.leftCustomSideElement ? Array.isArray(footerProps.leftCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.leftCustomSideElement }) : React__default["default"].createElement(footerProps.leftCustomSideElement, null) : null
             ),
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 "div",
                 { key: "footer-center-custom-side", className: rtPrefix + "-footer-center-custom-side" },
-                footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React__default['default'].createElement(footerProps.centerCustomSideElement, null) : null
+                footerProps.centerCustomSideElement ? Array.isArray(footerProps.centerCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.centerCustomSideElement }) : React__default["default"].createElement(footerProps.centerCustomSideElement, null) : null
             ),
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 "div",
                 { key: "footer-right-custom-side", className: rtPrefix + "-footer-right-custom-side" },
-                footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React__default['default'].createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React__default['default'].createElement(footerProps.rightCustomSideElement, null) : null
+                footerProps.rightCustomSideElement ? Array.isArray(footerProps.rightCustomSideElement) ? React__default["default"].createElement(FormItems$1, { items: footerProps.rightCustomSideElement }) : React__default["default"].createElement(footerProps.rightCustomSideElement, null) : null
             ),
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 "div",
                 { className: rtPrefix + "-footer-right-system-side" },
-                React__default['default'].createElement(
-                    _Space__default['default'],
+                React__default["default"].createElement(
+                    _Space__default["default"],
                     null,
-                    selectable ? React__default['default'].createElement(
-                        React__default['default'].Fragment,
+                    selectable ? React__default["default"].createElement(
+                        React__default["default"].Fragment,
                         null,
-                        footerProps.showElements.includes("selected") ? React__default['default'].createElement(
+                        footerProps.showElements.includes("selected") ? React__default["default"].createElement(
                             "span",
                             null,
                             footerProps.selectedTitle,
                             " ",
                             _selectedRowKeys.length
                         ) : null,
-                        footerProps.showElements.includes("loaded") ? React__default['default'].createElement(
+                        footerProps.showElements.includes("loaded") ? React__default["default"].createElement(
                             "span",
                             null,
                             footerProps.loadedTitle,
@@ -9535,13 +9545,13 @@ var Table$1 = function Table(props) {
                             flatten(getTableRowKeys(_rows, rowKey)).length
                         ) : null
                     ) : null,
-                    footerProps.showElements.includes("total") ? requestLoadCount !== noop && !expandColumnKey ? React__default['default'].createElement(
+                    footerProps.showElements.includes("total") ? requestLoadCount !== noop && !expandColumnKey ? React__default["default"].createElement(
                         "span",
                         null,
                         footerProps.totalTitle,
                         " ",
                         _totalCountRows
-                    ) : React__default['default'].createElement(
+                    ) : React__default["default"].createElement(
                         "span",
                         null,
                         footerProps.totalTitle,
@@ -9586,13 +9596,13 @@ var Table$1 = function Table(props) {
         onSelectAll: onSelectAllHandler
     }, rowSelection) : undefined;
 
-    return React__default['default'].createElement(
+    return React__default["default"].createElement(
         "div",
         { className: rtPrefix + "-table " + className, style: style },
-        React__default['default'].createElement(
+        React__default["default"].createElement(
             "div",
             { className: rtPrefix + "-baseTable" },
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 BaseTable.AutoResizer
                 // onResize={({ height, width }) => {setHeight(height); setWidth(width)} }
                 ,
@@ -9600,10 +9610,10 @@ var Table$1 = function Table(props) {
                 function (_ref9) {
                     var height = _ref9.height,
                         width = _ref9.width;
-                    return React__default['default'].createElement(
+                    return React__default["default"].createElement(
                         "div",
                         { style: { width: width, height: height } },
-                        React__default['default'].createElement(_Table__default['default'], _extends({}, restProps, {
+                        React__default["default"].createElement(_Table__default["default"], _extends({}, restProps, {
 
                             /** Required */
                             columns: getColumns(),
@@ -9651,33 +9661,33 @@ Table$1.propTypes = {
      * */
 
     /** Столбцы таблицы */
-    columns: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object).isRequired,
+    columns: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object).isRequired,
 
     /** Режим загрузки данных по скроллу */
-    infinityMode: PropTypes__default['default'].bool,
+    infinityMode: PropTypes__default["default"].bool,
 
     /**
      * ПРОПСЫ ЗАДАНИЯ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
      * */
 
     /** Строки по умолчанию */
-    defaultRows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    defaultRows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Ключи выделенных по умолчанию строк */
-    defaultSelectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+    defaultSelectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
     /** Значение строки поиска по умолчанию строк */
-    defaultSearchValue: PropTypes__default['default'].string,
+    defaultSearchValue: PropTypes__default["default"].string,
 
     /** Объект фильтрации по умолчанию */
-    defaultFilter: PropTypes__default['default'].object,
+    defaultFilter: PropTypes__default["default"].object,
 
     /** Сортировка по умолчанию */
-    defaultSortBy: PropTypes__default['default'].shape({
+    defaultSortBy: PropTypes__default["default"].shape({
         /** Ключ поля для сортировки */
-        key: PropTypes__default['default'].string,
+        key: PropTypes__default["default"].string,
         /** Направление сортировки */
-        order: PropTypes__default['default'].oneOf(["asc", "desc"])
+        order: PropTypes__default["default"].oneOf(["asc", "desc"])
     }),
 
     /**
@@ -9685,26 +9695,26 @@ Table$1.propTypes = {
      * */
 
     /** Строки таблицы. Используется для контроля таблицы из вне. */
-    rows: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    rows: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /** Функция задания строк таблицы. */
-    setRows: PropTypes__default['default'].func,
+    setRows: PropTypes__default["default"].func,
 
     /** Выделенные строки таблицы. */
-    selectedRowKeys: PropTypes__default['default'].arrayOf(PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].number])),
+    selectedRowKeys: PropTypes__default["default"].arrayOf(PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].number])),
 
     /** Значение строки поиска */
-    searchValue: PropTypes__default['default'].string,
+    searchValue: PropTypes__default["default"].string,
 
     /** Объект фильтрации */
-    filter: PropTypes__default['default'].object,
+    filter: PropTypes__default["default"].object,
 
     /** Объект сортировки */
-    sortBy: PropTypes__default['default'].shape({
+    sortBy: PropTypes__default["default"].shape({
         /** Ключ поля для сортировки */
-        key: PropTypes__default['default'].string,
+        key: PropTypes__default["default"].string,
         /** Направление сортировки */
-        order: PropTypes__default['default'].oneOf(["asc", "desc"])
+        order: PropTypes__default["default"].oneOf(["asc", "desc"])
     }),
 
     /**
@@ -9712,7 +9722,7 @@ Table$1.propTypes = {
      * */
 
     /** Поле для уникальной идентификации строки */
-    rowKey: PropTypes__default['default'].string,
+    rowKey: PropTypes__default["default"].string,
 
     /** Дополнительные поля и валидация в объекты таблицы
      * Данный параметр (props) осуществляет дополнительную обработку объекта таблицы после закрытия модалки, но перед добавлением в таблицу.
@@ -9733,7 +9743,7 @@ Table$1.propTypes = {
      * Параметра **validate** работает **только** для модельного окна тип `select`.
      * Validate можно наложить на любое кол-во полей объекта и если хотя бы один `validate` === `false`, то исключает строку из добавления.
      */
-    customFields: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    customFields: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /**
      * Данный параметр (props) позволяет добавить или переопределить пропсы для колонок, которые заданы конфигурацией на сервере
@@ -9751,74 +9761,74 @@ Table$1.propTypes = {
      * `cellRenderer` – `({ cellData, columns, column, columnIndex, rowData, rowIndex, container, isScrolling }) => return <ReactNode>`
      * `advancedColProps` – подолнительные свойства колонок тут -> [Column](https://autodesk.github.io/react-base-table/api/column)
      */
-    customColumnProps: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object),
+    customColumnProps: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object),
 
     /**
      * VIEW PROPS
      * */
 
     /** Вывод когда нет данных */
-    empty: PropTypes__default['default'].element,
+    empty: PropTypes__default["default"].element,
 
     /** Отображение загрузки данных */
-    overlay: PropTypes__default['default'].element,
+    overlay: PropTypes__default["default"].element,
 
     /** Фиксированная ширина столбцов. Появится боковой скрол */
-    fixWidthColumn: PropTypes__default['default'].bool,
+    fixWidthColumn: PropTypes__default["default"].bool,
 
-    footerProps: PropTypes__default['default'].shape({
+    footerProps: PropTypes__default["default"].shape({
 
         /** Высота подвала */
-        height: PropTypes__default['default'].number,
+        height: PropTypes__default["default"].number,
 
         /** Массив элементов футтера, которые надо отобразить
          * ['selected', 'loaded', 'total'] */
-        showElements: PropTypes__default['default'].arrayOf(PropTypes__default['default'].string),
+        showElements: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string),
 
         /** Заколовок для кол-ва выбранных объектов */
-        selectedTitle: PropTypes__default['default'].string,
+        selectedTitle: PropTypes__default["default"].string,
 
         /** Заколовок для кол-ва загруженны объектов */
-        loadedTitle: PropTypes__default['default'].string,
+        loadedTitle: PropTypes__default["default"].string,
 
         /** Заколовок для кол-ва всего объектов */
-        totalTitle: PropTypes__default['default'].string,
+        totalTitle: PropTypes__default["default"].string,
 
         /** Левый кастомный элемент командной панели */
-        leftCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+        leftCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)]),
 
         /** Центральный кастомный элемент командной панели */
-        centerCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)]),
+        centerCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)]),
 
         /** Правый кастомный элемент командной панели */
-        rightCustomSideElement: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)])
+        rightCustomSideElement: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)])
     }),
 
     /** Высота заголовка таблицы */
-    headerHeight: PropTypes__default['default'].number,
+    headerHeight: PropTypes__default["default"].number,
 
     /** Высота строки таблицы */
-    rowHeight: PropTypes__default['default'].number,
+    rowHeight: PropTypes__default["default"].number,
 
     /** Custom row renderer
      * Параметры - `({ isScrolling, cells, columns, rowData, rowIndex, depth })` */
-    rowRenderer: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].element]),
+    rowRenderer: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].element]),
 
     /** Строки будут в зебро-стиле */
-    zebraStyle: PropTypes__default['default'].bool,
+    zebraStyle: PropTypes__default["default"].bool,
 
     /** Высота расширения */
-    estimatedRowHeight: PropTypes__default['default'].number,
+    estimatedRowHeight: PropTypes__default["default"].number,
 
     /** Отображать ли разделители ячеек в строке */
-    cellBordered: PropTypes__default['default'].bool,
+    cellBordered: PropTypes__default["default"].bool,
 
     /** Отобрадать ли разделители строк */
-    rowBordered: PropTypes__default['default'].bool,
+    rowBordered: PropTypes__default["default"].bool,
 
-    className: PropTypes__default['default'].string,
+    className: PropTypes__default["default"].string,
 
-    style: PropTypes__default['default'].object,
+    style: PropTypes__default["default"].object,
 
     /**
      * LOAD DATA PROPS
@@ -9826,48 +9836,48 @@ Table$1.propTypes = {
 
     /** Порог в пикселях для вызова _onLoad.
      * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
-    loadThreshold: PropTypes__default['default'].number,
+    loadThreshold: PropTypes__default["default"].number,
 
     /** Размер страницы */
-    pageSize: PropTypes__default['default'].number,
+    pageSize: PropTypes__default["default"].number,
 
     /** Функция запроса для конфигурации */
-    requestLoadConfig: PropTypes__default['default'].func,
+    requestLoadConfig: PropTypes__default["default"].func,
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadRows: PropTypes__default['default'].func,
+    requestLoadRows: PropTypes__default["default"].func,
 
     /** Функция запроса для загрузки строк (данных) */
-    requestLoadCount: PropTypes__default['default'].func,
+    requestLoadCount: PropTypes__default["default"].func,
 
     /** Имя параметра для поиска */
-    searchParamName: PropTypes__default['default'].string,
+    searchParamName: PropTypes__default["default"].string,
 
     /**
      * SELECTABLE PROPS
      * */
 
     /** Таблица с возможностью выбора строки */
-    selectable: PropTypes__default['default'].bool,
+    selectable: PropTypes__default["default"].bool,
 
     /**
      * TREE PROPS
      * */
 
     /** Родительский узел и дочерние узлы связаны (Работает только при `selectable`) */
-    nodeAssociated: PropTypes__default['default'].bool,
+    nodeAssociated: PropTypes__default["default"].bool,
 
     /** Ключ колонки по которой строить иерархию */
-    expandColumnKey: PropTypes__default['default'].string,
+    expandColumnKey: PropTypes__default["default"].string,
 
     /** Открыть по умолчанию вложенность до уровня N или 'All' */
-    expandDefaultAll: PropTypes__default['default'].bool,
+    expandDefaultAll: PropTypes__default["default"].bool,
 
     /** Загружать ноды иерархии по одной */
-    expandLazyLoad: PropTypes__default['default'].bool,
+    expandLazyLoad: PropTypes__default["default"].bool,
 
     /** Поле в котором хранится ссылка на родителя */
-    expandParentKey: PropTypes__default['default'].string,
+    expandParentKey: PropTypes__default["default"].string,
 
     /**
      * EVENTS
@@ -9875,40 +9885,40 @@ Table$1.propTypes = {
 
     /** Событие при клике на строку (только при `selectable` = `false`)
      * `({selected, rowData, rowIndex}) => {}` */
-    onRowClick: PropTypes__default['default'].func,
+    onRowClick: PropTypes__default["default"].func,
 
     /** Событие при двойном клике на строку.
      * `({rowData, rowIndex, rowKey}) => {}` */
-    onRowDoubleClick: PropTypes__default['default'].func,
+    onRowDoubleClick: PropTypes__default["default"].func,
 
     /** События при открытии / закрытии ноды
      * `({ expanded, rowData, rowIndex, rowKey }) => {}` */
-    onRowExpand: PropTypes__default['default'].func,
+    onRowExpand: PropTypes__default["default"].func,
 
     /** Событие при выборе строки.
      * `([rowKeys], [rowDatas]) => {}` */
-    onSelectedRowsChange: PropTypes__default['default'].func,
+    onSelectedRowsChange: PropTypes__default["default"].func,
 
     /** События при открытии / закрытии ноды
      * `(expandedRowKeys) => {}` - массив ключей открытых нод */
-    onExpandedRowsChange: PropTypes__default['default'].func,
+    onExpandedRowsChange: PropTypes__default["default"].func,
 
     /** SELECTED PANEL */
 
     /** Отображать ли панель выбранных элементов */
-    showSelection: PropTypes__default['default'].bool,
+    showSelection: PropTypes__default["default"].bool,
 
     /** Строка или функция для отображения элементов списка выбранных
      * Строка - имя поля
      * Функция - рендер строк.
      * `({ rowData, rowIndex }) => { return <Component> }` */
-    rowRenderShowSelection: PropTypes__default['default'].oneOfType([PropTypes__default['default'].func, PropTypes__default['default'].string]),
+    rowRenderShowSelection: PropTypes__default["default"].oneOfType([PropTypes__default["default"].func, PropTypes__default["default"].string]),
 
     /** Путь в сторе куда класть выбранную строку таблицы */
-    dispatchPath: PropTypes__default['default'].string,
+    dispatchPath: PropTypes__default["default"].string,
 
     /** Объект для подписки на изменения в STORE */
-    subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+    subscribe: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
 Table$1.defaultProps = {
@@ -10111,7 +10121,7 @@ var ConfigLoader = function ConfigLoader(props) {
             };
             // Рендер ячейки
             column.render = function (cellData, rowData, rowIndex) {
-                if (colProps && colProps.cellRenderer) return React__default['default'].createElement(colProps.cellRenderer, {
+                if (colProps && colProps.cellRenderer) return React__default["default"].createElement(colProps.cellRenderer, {
                     column: column,
                     cellData: cellData,
                     rowData: rowData,
@@ -10146,7 +10156,7 @@ var ConfigLoader = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React__default['default'].createElement(Table$2, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React__default["default"].createElement(Table$2, _extends({}, props, tableConfig));else return null;
 };
 
 var TableWrapper = function TableWrapper(props) {
@@ -10268,7 +10278,7 @@ var Modal$1 = function Modal(props) {
                 method: modalProps.methodSaveForm,
                 data: saveObj
             }).then(function (response) {
-                _notification__default['default'].success({
+                _notification__default["default"].success({
                     message: 'Сохранение прошло успешно'
                 });
                 modalProps.onOk && modalProps.onOk(saveObj, response.data);
@@ -10328,14 +10338,14 @@ var Modal$1 = function Modal(props) {
         }
     }, modalProps.form);
 
-    return React__default['default'].createElement(
-        React__default['default'].Fragment,
+    return React__default["default"].createElement(
+        React__default["default"].Fragment,
         null,
-        React__default['default'].createElement(
-            _Tooltip__default['default'],
+        React__default["default"].createElement(
+            _Tooltip__default["default"],
             toolTipProps,
-            React__default['default'].createElement(
-                _Button__default['default'],
+            React__default["default"].createElement(
+                _Button__default["default"],
                 _extends({
                     type: "primary"
                 }, buttonProps, _buttonProps, {
@@ -10344,8 +10354,8 @@ var Modal$1 = function Modal(props) {
                 buttonProps && buttonProps.label
             )
         ),
-        React__default['default'].createElement(
-            _Modal__default['default'],
+        React__default["default"].createElement(
+            _Modal__default["default"],
             _extends({}, modalProps, {
                 centered: true,
                 destroyOnClose: true,
@@ -10354,7 +10364,7 @@ var Modal$1 = function Modal(props) {
                 bodyStyle: _extends({ padding: 0 }, modalProps.bodyStyle),
                 footer: null
             }),
-            React__default['default'].createElement(
+            React__default["default"].createElement(
                 Form$2,
                 _extends({}, formConfig, {
                     onFinish: onFinishHandler,
@@ -10371,29 +10381,29 @@ Modal$1.propTypes = {
 
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
-    buttonProps: PropTypes__default['default'].object,
+    buttonProps: PropTypes__default["default"].object,
 
     /** Объект модального окна. Стандартная конфигурация. */
-    modalConfig: PropTypes__default['default'].shape({
+    modalConfig: PropTypes__default["default"].shape({
         /** Тип модального окна */
-        type: PropTypes__default['default'].oneOf(modalTypes),
+        type: PropTypes__default["default"].oneOf(modalTypes),
 
         /** Запрос для автоматического сохранения формы */
-        requestSaveForm: PropTypes__default['default'].func,
+        requestSaveForm: PropTypes__default["default"].func,
 
         /** HTTP Метод, передаваемый в запрос сохранения */
-        methodSaveForm: PropTypes__default['default'].string,
+        methodSaveForm: PropTypes__default["default"].string,
 
         /** Пропсы формы.
          * Если верстка через конфиги, то пропс body обязателен */
-        form: PropTypes__default['default'].object
+        form: PropTypes__default["default"].object
     }),
 
     /** Данные для модального окна */
-    modalData: PropTypes__default['default'].object,
+    modalData: PropTypes__default["default"].object,
 
     /** Путь в сторе куда класть данных окна после закрытия */
-    dispatch: PropTypes__default['default'].object,
+    dispatch: PropTypes__default["default"].object,
 
     /** Объект для подписки на изменения в STORE.
      * Параметры в `onChange`:
@@ -10403,7 +10413,7 @@ Modal$1.propTypes = {
      * * `setButtonProps`: функция задания пропсов кнопке
      * * `openModal`: функция открытия модального окна
      * * `closeModal`: функция закрытия модального окна */
-    subscribe: PropTypes__default['default'].arrayOf(PropTypes__default['default'].object)
+    subscribe: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
 Modal$1.defaultProps = defaultProps;
@@ -10423,10 +10433,10 @@ var Custom$1 = function Custom(props) {
         childNode = props.render;
         childProps = __assign(__assign({}, props), { componentType: 'Custom' });
         return render(childNode)(childProps);
-    } else if (React__default['default'].isValidElement(children)) {
+    } else if (React__default["default"].isValidElement(children)) {
         // console.log('childNode = children')
         childProps = __assign(__assign(__assign({}, children.props), props), { componentType: 'Custom' });
-        return React__default['default'].cloneElement(children, childProps);
+        return React__default["default"].cloneElement(children, childProps);
     } else {
         console.warn('Custom component: not exist valid render');
         return null;
@@ -10446,20 +10456,346 @@ var Switcher$1 = function Switcher(props) {
     return props.children[_value];
 };
 
+var styles = {
+	row: {
+		display: 'flex',
+		borderBottom: '1px solid #d9d9d9'
+	},
+	inputUrl: {
+		flexBasis: '200px',
+		borderRight: '1px solid #d9d9d9'
+	},
+	inputQuery: {
+		flex: '1',
+		borderRight: '1px solid #d9d9d9'
+	},
+	autoScroll: {
+		padding: '0 8px',
+		display: 'flex',
+		borderRight: '1px solid #d9d9d9'
+	},
+	buttonStart: { color: 'green' },
+	buttonStop: { color: 'red' },
+	pre: {
+		// height: '100%',
+		overflow: 'auto',
+		marginBottom: 0
+	}
+};
+
+var scrollToBottom = function scrollToBottom(block) {
+	var scrollHeight = block.scrollHeight;
+	var height = block.clientHeight;
+	var maxScrollTop = scrollHeight - height;
+	block.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+};
+
+var Logs = function Logs(props) {
+	var _useState = React.useState(null),
+	    _useState2 = slicedToArray(_useState, 2),
+	    ws = _useState2[0],
+	    setWs = _useState2[1];
+
+	var _useState3 = React.useState([]),
+	    _useState4 = slicedToArray(_useState3, 2),
+	    Logs = _useState4[0],
+	    setLogs = _useState4[1];
+
+	var _useState5 = React.useState(null),
+	    _useState6 = slicedToArray(_useState5, 2),
+	    logsRef = _useState6[0],
+	    setLogsRef = _useState6[1];
+
+	var _useState7 = React.useState({ url: props.loki.url, query: props.loki.query }),
+	    _useState8 = slicedToArray(_useState7, 2),
+	    wsParams = _useState8[0],
+	    setWsParams = _useState8[1];
+
+	var _useState9 = React.useState(true),
+	    _useState10 = slicedToArray(_useState9, 2),
+	    autoScroll = _useState10[0],
+	    setAutoScroll = _useState10[1];
+
+	var onOpen = function onOpen() {
+		// setWs(new W3CWebSocket("ws://10.5.121.117:3100/loki/api/v1/tail?query={dynamicdq=\"oauth.dias-dev.ru\"}", 'echo-protocol'));
+		setWs(new websocket.w3cwebsocket('ws://' + wsParams.url + '/loki/api/v1/tail?query=' + wsParams.query, 'echo-protocol'));
+		setLogs([]);
+		console.log('onCreate ws => ', ws);
+	};
+	var onClose = function onClose() {
+		console.log('onClose ws => ', ws);
+		ws && ws.close();
+		setWs(undefined);
+	};
+
+	if (ws != null) {
+		ws.onmessage = function (msg) {
+			var streams = JSON.parse(msg.data).streams;
+			var data = streams.map(function (streamItem) {
+				return streamItem.values.map(function (valueItem) {
+					// console.log('valueItem[0].substr(0, 13) => ', moment(valueItem[0].substr(0, 13),"x").format("YYYY-MM-DD hh:mm:ss") ); //
+					return React__default["default"].createElement(
+						'div',
+						{ key: valueItem[0] },
+						React__default["default"].createElement(
+							'span',
+							null,
+							moment__default["default"](valueItem[0].substr(0, 13), 'x').format('YYYY-MM-DD hh:mm:ss')
+						),
+						React__default["default"].createElement(
+							'span',
+							null,
+							valueItem[1]
+						)
+					);
+				});
+			});
+			setLogs(function (state) {
+				return [].concat(toConsumableArray(state), [data]);
+			});
+			if (logsRef && autoScroll) scrollToBottom(logsRef);
+			// console.log('Logs => ', streams)
+		};
+	}
+
+	var onChangeApp = function onChangeApp(value) {
+		// console.log(value);
+		onClose();
+		setWsParams(_extends({}, wsParams, { query: '{server="' + value[0] + '", app="' + value[1] + '"}' }));
+	};
+
+	return React__default["default"].createElement(
+		React__default["default"].Fragment,
+		null,
+		React__default["default"].createElement(
+			'div',
+			{ style: styles.row },
+			React__default["default"].createElement(
+				'div',
+				{ style: styles.inputUrl },
+				React__default["default"].createElement(_Cascader__default["default"], { options: props.servers, onChange: onChangeApp, placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u0435', bordered: false })
+			),
+			React__default["default"].createElement(
+				'div',
+				{ style: styles.inputQuery },
+				React__default["default"].createElement(_Input__default["default"], { value: wsParams.query, bordered: false, disabled: true })
+			),
+			React__default["default"].createElement(
+				'div',
+				{ style: styles.autoScroll },
+				React__default["default"].createElement(
+					_Checkbox__default["default"],
+					{
+						style: { margin: 'auto' },
+						checked: autoScroll,
+						onChange: function onChange(e) {
+							return setAutoScroll(e.target.checked);
+						}
+					},
+					'Auto scroll'
+				)
+			),
+			ws != null ? React__default["default"].createElement(
+				'div',
+				null,
+				React__default["default"].createElement(_Button__default["default"], {
+					onClick: onClose,
+					type: 'text',
+					icon: React__default["default"].createElement(icons.StopOutlined, null),
+					style: styles.buttonStop
+				})
+			) : React__default["default"].createElement(
+				'div',
+				null,
+				React__default["default"].createElement(_Button__default["default"], {
+					onClick: onOpen,
+					type: 'text',
+					icon: React__default["default"].createElement(icons.CaretRightOutlined, null),
+					style: styles.buttonStart
+				})
+			)
+		),
+		React__default["default"].createElement(
+			'pre',
+			{ style: styles.pre, ref: function ref(_ref) {
+					return setLogsRef(_ref);
+				} },
+			Logs
+		)
+	);
+};
+
+// interface LineChartProps {
+//     size: {width: number; height: number}
+//     configName?: string;
+//     grid?: CartesianGridProps | undefined;
+//     tooltip?: object;
+//     legend?: LegendProps;
+//     xAxis?: XAxisProps;
+//     yAxes?: YAxisProps[];
+//     lines?: LineProps[];
+// }
+
+var LineChart = function LineChart(props) {
+	var size = props.size,
+	    configName = props.configName,
+	    requestLoadRows = props.requestLoadRows,
+	    grid = props.grid,
+	    tooltip = props.tooltip,
+	    legend = props.legend,
+	    xAxis = props.xAxis,
+	    yAxes = props.yAxes,
+	    lines = props.lines;
+
+	var _useState = React.useState([]),
+	    _useState2 = slicedToArray(_useState, 2),
+	    data = _useState2[0],
+	    setData = _useState2[1];
+
+	React.useEffect(function () {
+		requestLoadRows(configName)({
+			data: {
+				from: '2021-09-29T16:00:00.000Z',
+				to: '2021-09-30T20:00:00.000Z'
+			},
+			params: {}
+		}).then(function (res) {
+			return setData(res.data);
+		}).catch(function (error) {
+			return notificationError(error, 'Ошибка загрузки данных');
+		});
+	}, []);
+
+	if (data.length > 0) {
+		// console.log("data.length / 105 => ", Math.floor(data.length / 105))
+		return React__default["default"].createElement(
+			recharts.LineChart,
+			{ width: size.width, height: size.height - 32, data: data },
+			grid ? React__default["default"].createElement(recharts.CartesianGrid, grid) : null,
+			tooltip ? React__default["default"].createElement(recharts.Tooltip, tooltip) : null,
+			legend ? React__default["default"].createElement(recharts.Legend, legend) : null,
+			xAxis ? React__default["default"].createElement(recharts.XAxis, _extends({}, xAxis, {
+				interval: Math.floor(data.length / xAxis.interval)
+			})) : null,
+			yAxes && Array.isArray(yAxes) && yAxes.map(function (yAxis) {
+				return React__default["default"].createElement(recharts.YAxis, yAxis);
+			}),
+			lines && Array.isArray(lines) && lines.map(function (line) {
+				return React__default["default"].createElement(recharts.Line, line);
+			})
+		);
+	} else return null;
+};
+
+var ReactGridLayout = RGL.WidthProvider(RGL__default["default"]);
+var startGridWidth = 1200;
+
+var contents = {
+	logs: Logs,
+	lineChart: LineChart
+};
+
+var DashboardPanel = sizeMe__default["default"].withSize({ monitorHeight: true })(function (_ref) {
+	var size = _ref.size,
+	    title = _ref.title,
+	    type = _ref.type,
+	    params = _ref.params;
+
+	// console.log('DashboardPanel', size)
+	var Content = contents[type];
+	return React__default["default"].createElement(
+		'div',
+		{ className: 'dashboard-panel' },
+		React__default["default"].createElement(
+			'div',
+			{ className: 'dashboard-panel-header' },
+			title
+		),
+		React__default["default"].createElement(
+			'div',
+			{ className: 'dashboard-panel-content' },
+			React__default["default"].createElement(Content, _extends({ size: size }, params))
+		)
+	);
+});
+
+var DashboardGrid = sizeMe__default["default"].withSize()(function (_ref2) {
+	var size = _ref2.size,
+	    panels = _ref2.panels;
+
+	var width = size.width > 0 ? size.width : startGridWidth;
+	// console.log('Grid dashboard', size)
+	var renderPanels = panels && panels.map(function (_ref3, index) {
+		var gridPos = _ref3.gridPos,
+		    panel = objectWithoutProperties(_ref3, ['gridPos']);
+		return React__default["default"].createElement(
+			'div',
+			{ key: index, 'data-grid': gridPos },
+			React__default["default"].createElement(DashboardPanel, panel)
+		);
+	});
+	return React__default["default"].createElement(
+		ReactGridLayout,
+		{
+			className: 'layout',
+			rowHeight: 30,
+			cols: 12,
+			width: width,
+			draggableHandle: '.dashboard-panel-header'
+		},
+		renderPanels
+	);
+});
+
+var Dashboard$1 = function Dashboard(props) {
+	var id = props.id,
+	    requestLoadConfig = props.requestLoadConfig;
+
+	var _useState = React.useState(props.dashboard),
+	    _useState2 = slicedToArray(_useState, 2),
+	    dashboard = _useState2[0],
+	    setDashboard = _useState2[1];
+
+	React.useEffect(function () {
+		requestLoadConfig && requestLoadConfig({
+			data: { id: id },
+			params: {}
+		}).then(function (res) {
+			return res.data && res.data.dashboard && setDashboard(JSON.parse(res.data.dashboard));
+		}).catch(function (err) {
+			return notificationError("Ошибка загрузки dashboard", err);
+		});
+	}, [id]);
+
+	console.log('dashboard => ', dashboard);
+	return React__default["default"].createElement(
+		'div',
+		{
+			style: {
+				backgroundColor: '#f0f2f5',
+				width: '100%',
+				height: '100%',
+				overflow: 'auto'
+			}
+		},
+		React__default["default"].createElement(DashboardGrid, { panels: dashboard.panels })
+	);
+};
+
 // import AntTransfer, { TransferProps } from "antd/lib/transfer";
 // General
 var Button = withItem(Button$1);
-var Title = withLabel(AntTitle__default['default']);
-var Text = withLabel(AntText__default['default']);
+var Title = withLabel(AntTitle__default["default"]);
+var Text = withLabel(AntText__default["default"]);
 var DateText = withStore(TypographyDate);
 // Layout
-var Divider = withLabel(AntDivider__default['default']);
-var Row = withStore(AntRow__default['default']);
-var Col = withStore(AntCol__default['default']);
+var Divider = withLabel(AntDivider__default["default"]);
+var Row = withStore(AntRow__default["default"]);
+var Col = withStore(AntCol__default["default"]);
 var Layout = withStore(Layout$1);
-var Space = withStore(AntSpace__default['default']);
+var Space = withStore(AntSpace__default["default"]);
 // Data Entry
-var Checkbox = withLabel(AntCheckbox__default['default']);
+var Checkbox = withLabel(AntCheckbox__default["default"]);
 var DatePicker = withPlaceholder(RtDatePicker, 'Выберите дату');
 var Form = Form$2;
 var FormHeader = FormHeader$1;
@@ -10467,28 +10803,28 @@ var FormBody = FormBody$1;
 var FormFooter = FormFooter$1;
 var FormItems = FormItems$1;
 var FormItem = FormItem$1;
-var FormList = withStore(AntForm__default['default'].List);
-var InputNumber = withPlaceholder(AntInputNumber__default['default'], 'Введите значение');
-var Input = withPlaceholder(AntInput__default['default'], 'Введите значение');
-var Search = searchWrapper(AntSearch__default['default'], 'Поиск');
-var TextArea = withPlaceholder(AntTextArea__default['default'], 'Введите текст');
-var Password = withPlaceholder(AntPassword__default['default'], 'Введите пароль');
-var Radio = withStore(AntRadio__default['default']);
-var RadioButton = withStore(AntRadio__default['default'].Button);
-var RadioGroup = withStore(AntRadio__default['default'].Group);
-var Switch = withStore(AntSwitch__default['default']);
-var Slider = withStore(AntSlider__default['default']);
+var FormList = withStore(AntForm__default["default"].List);
+var InputNumber = withPlaceholder(AntInputNumber__default["default"], 'Введите значение');
+var Input = withPlaceholder(AntInput__default["default"], 'Введите значение');
+var Search = searchWrapper(AntSearch__default["default"], 'Поиск');
+var TextArea = withPlaceholder(AntTextArea__default["default"], 'Введите текст');
+var Password = withPlaceholder(AntPassword__default["default"], 'Введите пароль');
+var Radio = withStore(AntRadio__default["default"]);
+var RadioButton = withStore(AntRadio__default["default"].Button);
+var RadioGroup = withStore(AntRadio__default["default"].Group);
+var Switch = withStore(AntSwitch__default["default"]);
+var Slider = withStore(AntSlider__default["default"]);
 var Select = withPlaceholder(Select$1, 'Выберите значение');
 var TreeSelect = withPlaceholder(TreeSelect$1, 'Выберите значение');
 var TimePicker = withPlaceholder(RtTimePicker, 'Выберите время');
 var UploadFile = withStore(UploadFile$1);
 // Data Display
-var Collapse = withStore(AntCollapse__default['default']);
-var CollapsePanel = withStore(AntCollapse__default['default'].Panel);
-var List = withStore(AntList__default['default']);
-var Popover = withStore(AntPopover__default['default']);
-var Tooltip = withStore(AntTooltip__default['default']);
-var Tabs = withStore(AntTabs__default['default']);
+var Collapse = withStore(AntCollapse__default["default"]);
+var CollapsePanel = withStore(AntCollapse__default["default"].Panel);
+var List = withStore(AntList__default["default"]);
+var Popover = withStore(AntPopover__default["default"]);
+var Tooltip = withStore(AntTooltip__default["default"]);
+var Tabs = withStore(AntTabs__default["default"]);
 var TabPane = withStore(TabPane$1);
 var Table = withItem(TableWrapper);
 var RtTable = withItem(ConfigLoader$1);
@@ -10498,6 +10834,7 @@ var Modal = withItem(Modal$2);
 // Rt-design
 var Custom = withStore(Custom$1);
 var Switcher = withStore(Switcher$1);
+var Dashboard = Dashboard$1;
 
 var rtdReducer = function rtdReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -10510,7 +10847,7 @@ var rtdReducer = function rtdReducer() {
                 // console.log("INIT_TABLE_STORE: ", path);
 
                 var newState = _extends({}, state);
-                objectPath__default['default'].set(newState, path, {});
+                objectPath__default["default"].set(newState, path, {});
                 return newState;
             }
         case types.SET_DATA_STORE:
@@ -10521,8 +10858,8 @@ var rtdReducer = function rtdReducer() {
 
 
                 var _newState = _extends({}, state);
-                if (row === undefined) objectPath__default['default'].del(_newState, _path); // newState[path] is now undefined
-                else objectPath__default['default'].set(_newState, _path, row); // newState[path] is now row
+                if (row === undefined) objectPath__default["default"].del(_newState, _path); // newState[path] is now undefined
+                else objectPath__default["default"].set(_newState, _path, row); // newState[path] is now row
 
                 console.debug("Store change: ", _path, row);
                 // console.group("Store");
@@ -10540,7 +10877,7 @@ var rtdReducer = function rtdReducer() {
 var executeRequest = function executeRequest(request) {
     return function (options) {
         return request(options).then(function (response) {
-            _notification__default['default'].success({
+            _notification__default["default"].success({
                 message: "Сохранение прошло успешно"
             });
         }).catch(function (error) {
@@ -10556,6 +10893,7 @@ exports.Col = Col;
 exports.Collapse = Collapse;
 exports.CollapsePanel = CollapsePanel;
 exports.Custom = Custom;
+exports.Dashboard = Dashboard;
 exports.DatePicker = DatePicker;
 exports.DateText = DateText;
 exports.Divider = Divider;

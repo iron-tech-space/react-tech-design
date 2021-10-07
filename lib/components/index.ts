@@ -66,6 +66,7 @@ import RtModal, { ModalProps, ModalSubscribeOnChangeOptions } from "./Modal";
 // Rt-design
 import RtCustom, { CustomProps } from "./Custom/Custom";
 import RtSwitcher, { SwitcherProps } from "./Switcher/Switcher";
+import RtDashboard, {DashboardProps} from "./Dashboard";
 
 // import AntTransfer, { TransferProps } from "antd/lib/transfer";
 
@@ -125,6 +126,7 @@ export const Modal:     FunctionComponent<ModalProps> =             withItem(RtM
 // Rt-design
 export const Custom:    FunctionComponent<CustomProps> =            withStore(RtCustom);
 export const Switcher:  FunctionComponent<SwitcherProps> =          withStore(RtSwitcher);
+export const Dashboard: FunctionComponent<DashboardProps> =         RtDashboard;
 
 // export const Transfer:  FunctionComponent<TransferProps<any>> =     withStore(AntTransfer);]
 
