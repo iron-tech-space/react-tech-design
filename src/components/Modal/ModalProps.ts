@@ -1,6 +1,6 @@
 import { StoreProps } from "../core/wrappers";
 import { ButtonProps, ModalProps as AntModalProps } from "antd";
-import { Request } from "../core/interfaces";
+import { Request, RequestOptions } from "../core/interfaces";
 import { FormProps } from "../Form/FormProps";
 
 export interface ModalSubscribeOnChangeOptions {
@@ -22,7 +22,7 @@ interface ModalConfig extends AntModalProps{
     type?: 'save' | 'select' | 'view';
 
     /** Запрос для автоматического сохранения формы */
-    requestSaveForm?: Request;
+    requestSaveForm?: Request | any;
 
     /** HTTP Метод, передаваемый в запрос сохранения */
     methodSaveForm?: string;
@@ -32,11 +32,15 @@ interface ModalConfig extends AntModalProps{
     form?: FormProps
 }
 
+interface ModalButtonProps extends ButtonProps{
+    label?: string
+}
+
 export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      *
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
-    buttonProps?: ButtonProps;
+    buttonProps?: ModalButtonProps;
 
     /** Объект модального окна. Стандартная конфигурация. */
     modalConfig?: ModalConfig,

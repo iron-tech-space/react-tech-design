@@ -73,6 +73,7 @@ require('antd/es/select/style');
 var _Select = require('antd/es/select');
 require('antd/es/tree-select/style');
 var _TreeSelect = require('antd/es/tree-select');
+var AntDrawer = require('antd/lib/drawer');
 var AntCollapse = require('antd/lib/collapse');
 var AntList = require('antd/lib/list');
 var AntPopover = require('antd/lib/popover');
@@ -137,6 +138,7 @@ var AntSwitch__default = /*#__PURE__*/_interopDefaultLegacy(AntSwitch);
 var AntSlider__default = /*#__PURE__*/_interopDefaultLegacy(AntSlider);
 var _Select__default = /*#__PURE__*/_interopDefaultLegacy(_Select);
 var _TreeSelect__default = /*#__PURE__*/_interopDefaultLegacy(_TreeSelect);
+var AntDrawer__default = /*#__PURE__*/_interopDefaultLegacy(AntDrawer);
 var AntCollapse__default = /*#__PURE__*/_interopDefaultLegacy(AntCollapse);
 var AntList__default = /*#__PURE__*/_interopDefaultLegacy(AntList);
 var AntPopover__default = /*#__PURE__*/_interopDefaultLegacy(AntPopover);
@@ -183,6 +185,7 @@ var rtComponents = /*#__PURE__*/Object.freeze({
     get TreeSelect () { return TreeSelect; },
     get TimePicker () { return TimePicker; },
     get UploadFile () { return UploadFile; },
+    get Drawer () { return Drawer; },
     get Collapse () { return Collapse; },
     get CollapsePanel () { return CollapsePanel; },
     get List () { return List; },
@@ -10818,6 +10821,7 @@ var Select = withPlaceholder(Select$1, 'Выберите значение');
 var TreeSelect = withPlaceholder(TreeSelect$1, 'Выберите значение');
 var TimePicker = withPlaceholder(RtTimePicker, 'Выберите время');
 var UploadFile = withStore(UploadFile$1);
+var Drawer = withStore(AntDrawer__default["default"]);
 // Data Display
 var Collapse = withStore(AntCollapse__default["default"]);
 var CollapsePanel = withStore(AntCollapse__default["default"].Panel);
@@ -10897,6 +10901,7 @@ exports.Dashboard = Dashboard;
 exports.DatePicker = DatePicker;
 exports.DateText = DateText;
 exports.Divider = Divider;
+exports.Drawer = Drawer;
 exports.Form = Form;
 exports.FormBody = FormBody;
 exports.FormFooter = FormFooter;

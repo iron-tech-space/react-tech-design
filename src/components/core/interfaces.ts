@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type RequestOptions = { params: any; data: any; }
+export type RequestOptions = { params: any; data: any; method?:any}
 
 export type Request = (options: RequestOptions) => Promise<any>;
 

@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 export declare type RequestOptions = {
     params: any;
     data: any;
+    method?: any;
 };
 export declare type Request = (options: RequestOptions) => Promise<any>;
 export declare type OptionItem = {
