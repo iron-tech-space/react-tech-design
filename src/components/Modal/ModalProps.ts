@@ -18,6 +18,20 @@ export interface ModalSubscribeOnChangeOptions {
     closeModal: () => void;
 }
 
+interface ModalConfig extends AntModalProps{
+    type?: 'save' | 'select' | 'view';
+
+    /** Запрос для автоматического сохранения формы */
+    requestSaveForm?: Request;
+
+    /** HTTP Метод, передаваемый в запрос сохранения */
+    methodSaveForm?: string;
+
+    /** Пропсы формы.
+     * Если верстка через конфиги, то пропс body обязателен */
+    form?: FormProps
+}
+
 export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
     /** Свойства [Button](https://ant.design/components/button/) из Ant Design
      *
@@ -25,20 +39,7 @@ export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
     buttonProps?: ButtonProps;
 
     /** Объект модального окна. Стандартная конфигурация. */
-    modalConfig?: {
-        /** Тип модального окна */
-        type?: 'save' | 'select' | 'view';
-
-        /** Запрос для автоматического сохранения формы */
-        requestSaveForm?: Request;
-
-        /** HTTP Метод, передаваемый в запрос сохранения */
-        methodSaveForm?: string;
-
-        /** Пропсы формы.
-         * Если верстка через конфиги, то пропс body обязателен */
-        form?: FormProps
-    },
+    modalConfig?: ModalConfig,
 
     /** Данные для модального окна */
     modalData?: AntModalProps,
