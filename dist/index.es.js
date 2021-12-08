@@ -69,6 +69,7 @@ import 'antd/es/select/style';
 import _Select from 'antd/es/select';
 import 'antd/es/tree-select/style';
 import _TreeSelect from 'antd/es/tree-select';
+import AntDrawer from 'antd/lib/drawer';
 import AntCollapse from 'antd/lib/collapse';
 import AntList from 'antd/lib/list';
 import AntPopover from 'antd/lib/popover';
@@ -120,6 +121,7 @@ var rtComponents = /*#__PURE__*/Object.freeze({
     get TreeSelect () { return TreeSelect; },
     get TimePicker () { return TimePicker; },
     get UploadFile () { return UploadFile; },
+    get Drawer () { return Drawer; },
     get Collapse () { return Collapse; },
     get CollapsePanel () { return CollapsePanel; },
     get List () { return List; },
@@ -10755,6 +10757,7 @@ var Select = withPlaceholder(Select$1, 'Выберите значение');
 var TreeSelect = withPlaceholder(TreeSelect$1, 'Выберите значение');
 var TimePicker = withPlaceholder(RtTimePicker, 'Выберите время');
 var UploadFile = withStore(UploadFile$1);
+var Drawer = withStore(AntDrawer);
 // Data Display
 var Collapse = withStore(AntCollapse);
 var CollapsePanel = withStore(AntCollapse.Panel);
@@ -10823,5 +10826,5 @@ var executeRequest = function executeRequest(request) {
     };
 };
 
-export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, Dashboard, DatePicker, DateText, Divider, Form, FormBody, FormFooter, FormHeader, FormItem, FormItems, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
+export { AntTable, Button, Checkbox, Col, Collapse, CollapsePanel, Custom, Dashboard, DatePicker, DateText, Divider, Drawer, Form, FormBody, FormFooter, FormHeader, FormItem, FormItems, FormList, Input, InputNumber, Layout, List, Modal, Password, Popover, Radio, RadioButton, RadioGroup, Row, RtTable, Search, Select, Slider, Space, Switch, Switcher, TabPane, Table, Tabs, Text, TextArea, TimePicker, Title, Tooltip, TreeSelect, UploadFile, deprecated, executeRequest, notificationError, rtdReducer, setDataStore, withStore };
 //# sourceMappingURL=index.es.js.map

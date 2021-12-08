@@ -18,6 +18,7 @@ export interface DashboardProps {
     // panels: DashboardPanelProps[] | undefined;
     id: string;
     requestLoadConfig: Request;
+    dashboard: any,
 }
 
 export interface LogsPanelProps {

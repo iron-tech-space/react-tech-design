@@ -48,6 +48,7 @@ import RtSelect, { SelectProps } from "./Select";
 import RtTreeSelect, { TreeSelectProps } from "./TreeSelect";
 import { RtTimePicker, TimePickerProps } from "./DatePicker/DatePicker";
 import RtUploadFile, { UploadFileProps } from "./UploadFile";
+import AntDrawer, {DrawerProps} from "antd/lib/drawer"
 
 // Data Display
 import AntCollapse, { CollapseProps, CollapsePanelProps } from "antd/lib/collapse";
@@ -107,6 +108,7 @@ export const Select:     FunctionComponent<SelectProps> =                   with
 export const TreeSelect: FunctionComponent<TreeSelectProps> =               withPlaceholder(RtTreeSelect, 'Выберите значение');
 export const TimePicker: FunctionComponent<TimePickerProps & StoreProps> =  withPlaceholder(RtTimePicker, 'Выберите время');
 export const UploadFile: FunctionComponent<UploadFileProps> =               withStore(RtUploadFile);
+export const Drawer: FunctionComponent<DrawerProps> = withStore(AntDrawer);
 
 // Data Display
 export const Collapse:      FunctionComponent<CollapseProps & StoreProps> =         withStore(AntCollapse);
@@ -177,6 +179,7 @@ export type {
     TreeSelectProps,
     TimePickerProps,
     UploadFileProps,
+    DrawerProps,
 
     // Data Display
     CollapseProps,
