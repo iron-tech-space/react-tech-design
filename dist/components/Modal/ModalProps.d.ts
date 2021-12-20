@@ -2,6 +2,7 @@ import { StoreProps } from "../core/wrappers";
 import { ButtonProps, ModalProps as AntModalProps } from "antd";
 import { Request } from "../core/interfaces";
 import { FormProps } from "../Form/FormProps";
+import { TooltipProps } from "antd/lib/tooltip";
 export interface ModalSubscribeOnChangeOptions {
     /** Значение лежащие в Store по пути subscribe[i].path */
     value: any;
@@ -19,7 +20,7 @@ export interface ModalSubscribeOnChangeOptions {
 interface ModalConfig extends AntModalProps {
     type?: 'save' | 'select' | 'view';
     /** Запрос для автоматического сохранения формы */
-    requestSaveForm?: Request | any;
+    requestSaveForm?: Request | any | Promise<any>;
     /** HTTP Метод, передаваемый в запрос сохранения */
     methodSaveForm?: string;
     /** Пропсы формы.
@@ -34,6 +35,7 @@ export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
      *
      * Добавлено свойство `label` с типом `ReactNode` или `string` для формирования контента кнопки*/
     buttonProps?: ModalButtonProps;
+    toolTipProps?: TooltipProps;
     /** Объект модального окна. Стандартная конфигурация. */
     modalConfig?: ModalConfig;
     /** Данные для модального окна */
