@@ -1,3 +1,16 @@
+## 0.0.82
+
+- Fixed update by selected `Table`
+- Fixed Modal props
+- Fixed Form props
+
+
+## 0.0.81
+
+- Changes Modal props
+
+
+
 ## 0.0.80
 
 - Add dashboards with logs

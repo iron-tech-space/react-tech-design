@@ -30,7 +30,7 @@ export interface FormProps extends AntFormProps {
      * Ссылка на функцию загрузки значений по умолчанию
      *
      * Пример: `(callBack) => callBack({})` */
-    loadInitData?: (callBack: (params: any) => void) => void;
+    loadInitData?: (callBack: (params: any) => void, row?: any) => void;
     /** Запрос для автоматического сохранения формы */
     requestSaveForm?: Request;
     /** HTTP Метод, передаваемый в запрос сохранения */
