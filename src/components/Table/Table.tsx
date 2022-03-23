@@ -216,7 +216,7 @@ export interface TableProps {
         /** Путь до объекта в Store */
         path: string;
         /** Путь к дополнительным данным которые будут переданы в onChange */
-        extraData?: string;
+        extraData?: string| any;
         /** Выполнить подписку при монтировании компонента
          * По умолчанию false */
         withMount?: boolean;
