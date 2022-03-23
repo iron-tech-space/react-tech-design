@@ -69,6 +69,7 @@ const Table = forwardRef((props, ref) => {
         // type,
         infinityMode,
         editMode, // need Props.types
+        disabled,
 
         /** Def values */
         defaultRows,
@@ -1030,7 +1031,7 @@ const Table = forwardRef((props, ref) => {
                             /** Load Data Props */
                             onEndReachedThreshold={loadThreshold}
                             onEndReached={infinityMode ? onEndReached : undefined}
-                            disabled={loading}
+                            disabled={disabled? disabled:loading}
                             /** Tree Props */
                             expandColumnKey={expandColumnKey}
                             expandedRowKeys={_expandedRowKeys}

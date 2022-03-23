@@ -5701,8 +5701,8 @@ var getExtraData = function getExtraData(item, props) {
     var extraData = {};
     if (item.extraData) {
         if (_typeof(item.extraData) === 'object') Object.keys(item.extraData).forEach(function (key) {
-            return extraData[key] = props[item.name + ".extraData." + key];
-        });else extraData = props[item.name + "ExtraData"];
+            return extraData[key] = props["".concat(item.name, ".extraData.").concat(key)];
+        });else extraData = props["".concat(item.name, "ExtraData")];
     }
     return extraData;
 };
@@ -5717,8 +5717,8 @@ var mapStateToProps = function mapStateToProps(store, ownProps) {
                 extraData = item.extraData;
             if (name && path) state[name] = objectPath__default["default"].get(store, path);
             if (name && extraData) if ((typeof extraData === "undefined" ? "undefined" : _typeof(extraData)) === 'object') Object.keys(extraData).forEach(function (key) {
-                return state[name + ".extraData." + key] = objectPath__default["default"].get(store, extraData[key]);
-            });else state[name + "ExtraData"] = objectPath__default["default"].get(store, extraData);
+                return state["".concat(name, ".extraData.").concat(key)] = objectPath__default["default"].get(store, extraData[key]);
+            });else state["".concat(name, "ExtraData")] = objectPath__default["default"].get(store, extraData);
         });
     }
     if (dispatch && dispatch.extraData) {
@@ -5848,12 +5848,12 @@ var withStore$1 = function withStore(Component) {
 
 var render = function render(Component) {
     return function (props) {
-        return jsxRuntime.jsx(Component, __assign({}, props), void 0);
+        return jsxRuntime.jsx(Component, __assign({}, props));
     };
 };
 var renderLabel = function renderLabel(Component) {
     return function (props) {
-        return jsxRuntime.jsx(Component, __assign({}, props, { children: props.label || props.value || props.children }), void 0);
+        return jsxRuntime.jsx(Component, __assign({}, props, { children: props.label || props.value || props.children }));
     };
 };
 var renderClassicByName = function renderClassicByName(componentName) {
@@ -5935,7 +5935,7 @@ var TypographyDate = function TypographyDate(props) {
         value = props.value,
         format = props.format;
     var _value = value ? format ? toFormat(value, format) : getISO(value) : undefined;
-    return jsxRuntime.jsxs(_Typography__default["default"].Text, __assign({}, props, { children: [" ", label || _value, " "] }), void 0);
+    return jsxRuntime.jsxs(_Typography__default["default"].Text, __assign({}, props, { children: [" ", label || _value, " "] }));
 };
 var DateTimePicker = function DateTimePicker(Component) {
     return function (props) {
@@ -5949,18 +5949,18 @@ var DateTimePicker = function DateTimePicker(Component) {
         var _value = value ? typeof value === "string" ? moment__default["default"](value) : value : undefined;
         var style = __assign({ width: "100%" }, props && props.style);
         // console.log("DatePickerHOC value => ", value);
-        return jsxRuntime.jsx(Component, __assign({}, restProps, { style: style, value: _value, onChange: onChange }), void 0);
+        return jsxRuntime.jsx(Component, __assign({}, restProps, { style: style, value: _value, onChange: onChange }));
     };
 };
 
 /** Компонент обертка со всеми пропрами div */
 var Layout$1 = function Layout(props) {
     var getCls = function getCls() {
-        var cls = [rtPrefix + "-layout"];
+        var cls = ["".concat(rtPrefix, "-layout")];
         props.className && cls.push(props.className);
         return cls.join(' ');
     };
-    return jsxRuntime.jsx("div", __assign({}, props, { className: getCls() }, { children: props.children }), void 0);
+    return jsxRuntime.jsx("div", __assign({}, props, { className: getCls() }, { children: props.children }));
 };
 
 var excludeProps$5 = ['child', 'componentType', 'field'];
@@ -6633,6 +6633,9 @@ Select$1.propTypes = {
 	/** Сортировка */
 	sortBy: PropTypes__default["default"].object,
 
+	/** Режим селекта */
+	mode: PropTypes__default["default"].string,
+
 	/** Фильтр */
 	filter: PropTypes__default["default"].object,
 
@@ -7011,8 +7014,8 @@ UploadFile$1.defaultProps = defaultProps$3;
 var TabPane$1 = function TabPane(props) {
     var cls = [];
     props.className && cls.push(props.className);
-    props.scrollable && cls.push(rtPrefix + "-tabs-tabpane-scrollable");
-    return jsxRuntime.jsx(_Tabs__default["default"].TabPane, __assign({}, props, { className: cls.join(" ") }, { children: props.children }), void 0);
+    props.scrollable && cls.push("".concat(rtPrefix, "-tabs-tabpane-scrollable"));
+    return jsxRuntime.jsx(_Tabs__default["default"].TabPane, __assign({}, props, { className: cls.join(" ") }, { children: props.children }));
 };
 
 var empty = React__default["default"].createElement(
@@ -7439,6 +7442,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
         columns = _props$subscribeProps.columns,
         infinityMode = _props$subscribeProps.infinityMode,
         editMode = _props$subscribeProps.editMode,
+        disabled = _props$subscribeProps.disabled,
         defaultRows = _props$subscribeProps.defaultRows,
         defaultSelectedRowKeys = _props$subscribeProps.defaultSelectedRowKeys,
         defaultSearchValue = _props$subscribeProps.defaultSearchValue,
@@ -8293,7 +8297,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
                         /** Load Data Props */
                         , onEndReachedThreshold: loadThreshold,
                         onEndReached: infinityMode ? onEndReached : undefined,
-                        disabled: loading
+                        disabled: disabled ? disabled : loading
                         /** Tree Props */
                         , expandColumnKey: expandColumnKey,
                         expandedRowKeys: _expandedRowKeys
@@ -10166,7 +10170,7 @@ var ConfigLoader = function ConfigLoader(props) {
 var TableWrapper = function TableWrapper(props) {
     var type = props.type,
         restProps = __rest(props, ["type"]);
-    if (type) return type === 'rt' ? jsxRuntime.jsx(ConfigLoader$1, __assign({}, restProps), void 0) : jsxRuntime.jsx(ConfigLoader, __assign({}, restProps), void 0);else return props.infinityMode ? jsxRuntime.jsx(ConfigLoader$1, __assign({}, props), void 0) : jsxRuntime.jsx(ConfigLoader, __assign({}, props), void 0);
+    if (type) return type === 'rt' ? jsxRuntime.jsx(ConfigLoader$1, __assign({}, restProps)) : jsxRuntime.jsx(ConfigLoader, __assign({}, restProps));else return props.infinityMode ? jsxRuntime.jsx(ConfigLoader$1, __assign({}, props)) : jsxRuntime.jsx(ConfigLoader, __assign({}, props));
 };
 
 var excludeProps = ["buttonProps", "toolTipProps", "modalConfig", "modalData", "subscribe", "dispatch"];
@@ -10424,7 +10428,7 @@ Modal$1.defaultProps = defaultProps;
 
 var Modal$2 = reactRedux.connect(mapStateToProps, mapDispatchToProps$1)(Modal$1);
 
-/** Custom компонент */
+/** Custom компонент для нестандартных решений */
 var Custom$1 = function Custom(props) {
     var children = props.children;
     var childNode = null;

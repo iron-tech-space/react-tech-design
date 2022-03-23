@@ -1,3 +1,10 @@
+## 0.0.83
+
+- Fixed add onFinish in ModalProps
+- Change mode props in `Select`, fixed optionConverter
+- Add disabled prop in `Table` from React-Base-Table
+- Add bordered prop in TableProps
+
 ## 0.0.82
 
 - Fixed update by selected `Table`

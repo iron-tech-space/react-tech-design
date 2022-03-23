@@ -132,6 +132,9 @@ export interface TableProps {
     className?: string;
     /** CSS стиль таблицы */
     style?: object;
+    /** Рамки таблицы*/
+    bordered?: boolean;
+    disabled?: boolean;
     /** Порог в пикселях для вызова _onLoad.
      * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
     loadThreshold?: number;
