@@ -3,7 +3,7 @@ import { SelectValue } from "antd/lib/select";
 import { StoreProps } from "../core/wrappers";
 import { Request, sortBy, OptionItem } from "../core/interfaces";
 
-export interface SelectProps<VT extends SelectValue = SelectValue> extends AntSelectProps<VT>, StoreProps{
+export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<AntSelectProps<VT>, 'mode'>, StoreProps{
 
     /** Сортировка по умолчанию */
     defaultSortBy?: sortBy;
@@ -27,6 +27,9 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends AntSe
     /** Функция запроса для загрузки строк (данных) */
     requestLoadRows?: Request;
 
+    /** Режим селекта */
+    mode?:  'single'|'tags'| 'multiple'
+
     /** Функция преобразования загруженных объектов в объекты для селекта.
      *
      * Сигнатура `(option) => ({})`
@@ -45,7 +48,7 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends AntSe
      * })
      * ```
      */
-    optionConverter?: (option: any) => OptionItem;
+    optionConverter?: string | ((option: any) => OptionItem);
     /** Select options: `[{ label, value, className, disabled }]` */
     options?: OptionItem[];
     /** Ширина поля выбора в пикселях */

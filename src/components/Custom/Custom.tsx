@@ -3,6 +3,8 @@ import React, { ReactNode } from "react";
 import { StoreProps } from "../core/wrappers";
 
 export interface CustomProps extends StoreProps{
+    /** Значение насильно прокинутое */
+    value?:any;
     /** Функция для рендера компонента. В приритере если передани и render, и ребенок */
     render?: React.FunctionComponent;
 
@@ -10,7 +12,7 @@ export interface CustomProps extends StoreProps{
     children?: ReactNode | undefined;
 }
 
-/** Custom компонент */
+/** Custom компонент для нестандартных решений */
 const Custom = (props: CustomProps) => {
     const {children} = props
     let childNode = null;

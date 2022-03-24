@@ -30,7 +30,9 @@ interface ModalConfig extends AntModalProps{
 
     /** Пропсы формы.
      * Если верстка через конфиги, то пропс body обязателен */
-    form?: FormProps
+    form?: FormProps;
+
+    onFinish?: Pick<FormProps,'onFinish'> & ((_: any, responseId: any) => void);
 }
 
 interface ModalButtonProps extends ButtonProps{

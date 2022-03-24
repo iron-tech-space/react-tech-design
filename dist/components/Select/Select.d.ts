@@ -12,6 +12,7 @@ declare namespace Select {
         const defaultFilter: PropTypes.Requireable<object>;
         const defaultSearchValue: PropTypes.Requireable<string>;
         const sortBy: PropTypes.Requireable<object>;
+        const mode: PropTypes.Requireable<string>;
         const filter: PropTypes.Requireable<object>;
         const searchValue: PropTypes.Requireable<string>;
         const searchParamName: PropTypes.Requireable<string>;
