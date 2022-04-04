@@ -142,6 +142,7 @@ export interface TableProps {
     /** Рамки таблицы*/
     bordered?: boolean
 
+    /** блокировка таблицы таблицы*/
     disabled?: boolean;
     /** Порог в пикселях для вызова _onLoad.
      * Кол-во пикселей от низа таблицы для срабатывания события загрузки (onEndReached) */
@@ -206,7 +207,7 @@ export interface TableProps {
     dispatch?: {
         path: string;
         type?: 'event' | undefined;
-        extraData?: any;
+        extraData?:  string | { [key:string]:string };
     };
 
     /** Объект для подписки на изменения в STORE */
@@ -216,7 +217,7 @@ export interface TableProps {
         /** Путь до объекта в Store */
         path: string;
         /** Путь к дополнительным данным которые будут переданы в onChange */
-        extraData?: string;
+        extraData?: string| { [key:string]:string };
         /** Выполнить подписку при монтировании компонента
          * По умолчанию false */
         withMount?: boolean;
