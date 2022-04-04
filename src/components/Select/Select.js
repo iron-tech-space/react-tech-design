@@ -51,6 +51,7 @@ const Select = props => {
 		mode,
 		onChange,
 		value,
+		dropdownRender
 	} = props;
 
 	/** Наличие на сервере еще данных */
@@ -301,7 +302,7 @@ const Select = props => {
 			// listItemHeight={10} listHeight={250}
 			onPopupScroll={onScroll}
 			onSearch={onSearch}
-			dropdownRender={menu => (
+			dropdownRender={!dropdownRender?(menu => (
 				<React.Fragment>
 					{mode === 'multiple' ?
 						<div className={getSelectAllCls()} onClick={_onChangeSelectAll}>
@@ -315,7 +316,7 @@ const Select = props => {
 					}
 					{menu}
 				</React.Fragment>
-			)}
+			)):dropdownRender}
 		>
     		{_options && _options.map(({ label, value, className, disabled }, i) =>
 				<AntSelect.Option key={i.toString(36) + i} value={value} className={className} disabled={disabled}>{label}</AntSelect.Option>)}

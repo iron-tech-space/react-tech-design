@@ -2,6 +2,7 @@ import { SelectProps as AntSelectProps } from 'antd';
 import { SelectValue } from "antd/lib/select";
 import { StoreProps } from "../core/wrappers";
 import { Request, sortBy, OptionItem } from "../core/interfaces";
+import { ReactNode } from "react";
 export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<AntSelectProps<VT>, 'mode'>, StoreProps {
     /** Сортировка по умолчанию */
     defaultSortBy?: sortBy;
@@ -50,4 +51,6 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<
     widthControl?: string | number;
     /** Размер страницы */
     pageSize?: number;
+    /** уникальное отображение данных в селекте */
+    dropdownRender?: ReactNode;
 }

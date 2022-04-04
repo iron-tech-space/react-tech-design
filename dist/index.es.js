@@ -6207,7 +6207,8 @@ var Select$1 = function Select(props) {
 	    pageSize = props.pageSize,
 	    mode = props.mode,
 	    onChange = props.onChange,
-	    value = props.value;
+	    value = props.value,
+	    dropdownRender = props.dropdownRender;
 
 	/** Наличие на сервере еще данных */
 
@@ -6506,7 +6507,7 @@ var Select$1 = function Select(props) {
 			// listItemHeight={10} listHeight={250}
 			, onPopupScroll: onScroll,
 			onSearch: onSearch,
-			dropdownRender: function dropdownRender(menu) {
+			dropdownRender: !dropdownRender ? function (menu) {
 				return React.createElement(
 					React.Fragment,
 					null,
@@ -6530,7 +6531,7 @@ var Select$1 = function Select(props) {
 					) : null,
 					menu
 				);
-			}
+			} : dropdownRender
 		}),
 		_options && _options.map(function (_ref2, i) {
 			var label = _ref2.label,
