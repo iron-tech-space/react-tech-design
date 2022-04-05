@@ -1,3 +1,8 @@
+## 0.0.84
+
+- Add dropdownRender props in `Select`
+
+
 ## 0.0.83
 
 - Fixed add onFinish in ModalProps
