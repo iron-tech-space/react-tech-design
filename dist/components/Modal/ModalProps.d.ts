@@ -26,6 +26,10 @@ interface ModalConfig extends AntModalProps {
     /** Пропсы формы.
      * Если верстка через конфиги, то пропс body обязателен */
     form?: FormProps;
+    /**
+     * Ссылка на обработчик ошибок
+     */
+    onFailed?: (arg: any | unknown) => any;
     onFinish?: Pick<FormProps, 'onFinish'> & ((_: any, responseId: any) => void);
 }
 interface ModalButtonProps extends ButtonProps {
@@ -55,7 +59,7 @@ export interface ModalProps extends Omit<StoreProps, 'subscribe'> {
         /** Путь до объекта в Store */
         path: string;
         /** Путь к дополнительным данным которые будут переданы в onChange */
-        extraData?: string;
+        extraData?: string | any;
         /** Выполнить подписку при монтировании компонента
          * По умолчанию false */
         withMount?: boolean;
