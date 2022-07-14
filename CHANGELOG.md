@@ -1,3 +1,8 @@
+## 0.0.85
+
+- Add ModalProps to `Modal` 
+
+
 ## 0.0.84
 
 - Add dropdownRender props in `Select`

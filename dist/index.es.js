@@ -10231,7 +10231,7 @@ var Modal$1 = function Modal(props) {
                 dispatchToStore({ dispatch: dispatch, setDataStore: props.setDataStore, value: saveObj });
                 _onCloseModal();
             }).catch(function (error) {
-                return notificationError(error, 'Ошибка при сохранении');
+                return notificationError(modalProps.onFailed && modalProps.onFailed(error) || error, 'Ошибка при сохранении');
             });
         } else {
             modalProps.onOk && modalProps.onOk(saveObj);
