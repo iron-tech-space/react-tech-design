@@ -1,3 +1,7 @@
+## 0.0.86
+
+- ReExport raw table component
+
 ## 0.0.85
 
 - Add ModalProps to `Modal` 

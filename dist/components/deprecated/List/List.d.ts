@@ -6,7 +6,7 @@ declare function List(props: any): JSX.Element;
 declare namespace List {
     namespace propTypes {
         const rowKey: PropTypes.Requireable<string>;
-        const rowRender: PropTypes.Requireable<string | ((...args: any[]) => any)>;
+        const rowRender: PropTypes.Requireable<NonNullable<string | ((...args: any[]) => any) | null | undefined>>;
         const title: PropTypes.Requireable<string>;
     }
     namespace defaultProps {

@@ -58,8 +58,8 @@ import AntTooltip, { TooltipProps } from "antd/lib/tooltip";
 import AntTabs, { TabsProps } from "antd/lib/tabs";
 import { TabPane as RtTabPane, TabPaneProps } from "./Tabs";
 import { TableWrapper, TableProps, TablesSubscribeOnChangeOptions } from "./Table/Table";
-import { RtTable as InternalRtTable } from "./Table/Table";
-import { AntTable as InternalAntTable } from "./Table/Table";
+import { RtTable as InternalRtTable, RawRtTable as InternalRawRtTable } from "./Table/Table";
+import { AntTable as InternalAntTable, RawAntTable as InternalRawAntTable } from "./Table/Table";
 
 // Feedback
 import RtModal, { ModalProps, ModalSubscribeOnChangeOptions } from "./Modal";
@@ -120,7 +120,9 @@ export const Tabs:      FunctionComponent<TabsProps & StoreProps> =     withStor
 export const TabPane:   FunctionComponent<TabPaneProps> =   withStore(RtTabPane);
 export const Table:     FunctionComponent<TableProps> =     withItem(TableWrapper);
 export const RtTable:   FunctionComponent<TableProps> =     withItem(InternalRtTable);
+export const RawRtTable = InternalRawRtTable;
 export const AntTable:  FunctionComponent<TableProps> =     withItem(InternalAntTable);
+export const RawAntTable = InternalRawAntTable;
 
 // Feedback
 export const Modal:     FunctionComponent<ModalProps> =             withItem(RtModal);

@@ -1,1 +1,2 @@
-export function withStore(Component: any): any;
+export function withStore(Component: any): import("react-redux").ConnectedComponent<React.JSXElementConstructor<import("react-redux").Matching<any, unknown>>, (import("react-redux").Omit<import("react-redux").Matching<any, unknown>, never> | import("react-redux").Omit<React.ClassAttributes<React.Component<any, any, any>> & import("react-redux").Matching<any, unknown>, never>) & import("./wrappers").StoreProps>;
+import React from "react";

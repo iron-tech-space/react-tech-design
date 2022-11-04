@@ -4,7 +4,7 @@ declare namespace FilterPanel {
     namespace propTypes {
         const applyFilterTooltip: PropTypes.Requireable<string>;
         const applyFilterSize: PropTypes.Requireable<string>;
-        const applyFilterRender: PropTypes.Requireable<string | ((...args: any[]) => any) | PropTypes.ReactElementLike>;
+        const applyFilterRender: PropTypes.Requireable<NonNullable<string | ((...args: any[]) => any) | PropTypes.ReactElementLike | null | undefined>>;
         const borderStyle: PropTypes.Requireable<string>;
         const defaultFilter: PropTypes.Requireable<object>;
         const configFilter: PropTypes.Requireable<(object | null | undefined)[]>;
@@ -12,7 +12,7 @@ declare namespace FilterPanel {
         const onChangeFilter: PropTypes.Requireable<(...args: any[]) => any>;
         const resetFilterTooltip: PropTypes.Requireable<string>;
         const resetFilterSize: PropTypes.Requireable<string>;
-        const resetFilterRender: PropTypes.Requireable<string | ((...args: any[]) => any) | PropTypes.ReactElementLike>;
+        const resetFilterRender: PropTypes.Requireable<NonNullable<string | ((...args: any[]) => any) | PropTypes.ReactElementLike | null | undefined>>;
     }
     namespace defaultProps {
         const applyFilterTooltip_1: string;

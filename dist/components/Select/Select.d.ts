@@ -21,7 +21,7 @@ declare namespace Select {
         const requestLoadRows: PropTypes.Requireable<(...args: any[]) => any>;
         const optionConverter: PropTypes.Requireable<(...args: any[]) => any>;
         const options: PropTypes.Requireable<(object | null | undefined)[]>;
-        const widthControl: PropTypes.Requireable<string | number>;
+        const widthControl: PropTypes.Requireable<NonNullable<string | number | null | undefined>>;
         const pageSize: PropTypes.Requireable<number>;
     }
     namespace defaultProps {

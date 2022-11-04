@@ -195,7 +195,9 @@ var rtComponents = /*#__PURE__*/Object.freeze({
     get TabPane () { return TabPane; },
     get Table () { return Table; },
     get RtTable () { return RtTable; },
+    get RawRtTable () { return RawRtTable; },
     get AntTable () { return AntTable; },
+    get RawAntTable () { return RawAntTable; },
     get Modal () { return Modal; },
     get Custom () { return Custom; },
     get Switcher () { return Switcher; },
@@ -1324,7 +1326,7 @@ SelectionList$1.propTypes = {
 
 SelectionList$1.defaultProps = {};
 
-var Table$5 = React.forwardRef(function (props, ref) {
+var Table$3 = React.forwardRef(function (props, ref) {
 	/** Состояние первоначалной настройки компонента*/
 	var _useState = React.useState(false),
 	    _useState2 = slicedToArray(_useState, 2);
@@ -1457,7 +1459,7 @@ var Table$5 = React.forwardRef(function (props, ref) {
 	var commandPanelProps = _extends({}, CommandPanel$1.defaultProps, props.commandPanelProps);
 	var filterPanelProps = _extends({}, FilterPanel.defaultProps, props.filterPanelProps);
 
-	var footerProps = _extends({}, Table$5.defaultProps.footerProps, props.footerProps);
+	var footerProps = _extends({}, Table$3.defaultProps.footerProps, props.footerProps);
 
 	var selectedDispatchPath = dispatchPath && dispatchPath + '.selected';
 	var rowsDispatchPath = dispatchPath && dispatchPath + '.rows';
@@ -2236,7 +2238,7 @@ var Table$5 = React.forwardRef(function (props, ref) {
 	);
 });
 
-Table$5.propTypes = {
+Table$3.propTypes = {
 	/**
   * REQUIRED
   * */
@@ -2475,7 +2477,7 @@ Table$5.propTypes = {
 	subscribe: PropTypes__default["default"].object
 };
 
-Table$5.defaultProps = {
+Table$3.defaultProps = {
 	defaultRows: [],
 	defaultSelectedRowKeys: [],
 	defaultSearchValue: '',
@@ -2583,7 +2585,7 @@ var mapDispatchToProps$4 = function mapDispatchToProps(dispatch) {
 /**
  * @deprecated [#1] since version 0.0.54 [#2].
  * */
-var Table$6 = reactRedux.connect(mapStateToProps$2, mapDispatchToProps$4, null, { forwardRef: true })(Table$5);
+var Table$4 = reactRedux.connect(mapStateToProps$2, mapDispatchToProps$4, null, { forwardRef: true })(Table$3);
 
 var Paragraph = _Typography__default["default"].Paragraph;
 
@@ -2882,7 +2884,7 @@ var Select$2 = function Select(props) {
 		isSelectOpened ? React__default["default"].createElement(
 			'div',
 			{ className: _getPopupCls(), style: _getPopupStyle() },
-			React__default["default"].createElement(Table$6, _extends({}, props, {
+			React__default["default"].createElement(Table$4, _extends({}, props, {
 				commandPanelProps: _extends({}, props.commandPanelProps, {
 					showElements: getEvents() // getShowElements(),
 				}),
@@ -3133,7 +3135,7 @@ var AdvancedTable = React.forwardRef(function (props, ref) {
 
 	if (config && config.fields) {
 		// console.log('AdvancedTable render table -> ', config);
-		return React__default["default"].createElement(Table$6, _extends({}, props, {
+		return React__default["default"].createElement(Table$4, _extends({}, props, {
 			ref: ref,
 			columns: columnsByConfig(),
 			defaultFilter: getDefaultFilter(),
@@ -5605,7 +5607,7 @@ var List$1 = function List(props) {
 			);
 		}
 	}];
-	return React__default["default"].createElement(Table$6, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
+	return React__default["default"].createElement(Table$4, _extends({}, props, { columns: columns, headerHeight: title ? 30 : 0 }));
 };
 
 List$1.propTypes = {
@@ -5648,7 +5650,7 @@ List$1.defaultProps = {
 var deprecated = {
     CommandPanel: CommandPanel$1,
     FilterPanel: FilterPanel,
-    Table: Table$6,
+    Table: Table$4,
     AdvancedTable: AdvancedTable,
     List: List$1,
     Select: Select$3,
@@ -7337,7 +7339,7 @@ SelectionList.propTypes = {
 SelectionList.defaultProps = {};
 
 /** Компонент таблицы */
-var Table$3 = React.forwardRef(function (props, ref) {
+var Table$2 = React.forwardRef(function (props, ref) {
 
     /** LOADING AND INFINITY MODE STATES */
     var _useState = React.useState(true),
@@ -7492,7 +7494,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
         value = _props$subscribeProps.value,
         onChange = _props$subscribeProps.onChange;
 
-    var footerProps = _extends({}, Table$3.defaultProps.footerProps, props.footerProps);
+    var footerProps = _extends({}, Table$2.defaultProps.footerProps, props.footerProps);
 
     var selectedDispatchPath = dispatch && dispatch.path ? dispatch.path + ".selected" : dispatchPath && dispatchPath + ".selected";
     var rowsDispatchPath = dispatch && dispatch.path ? dispatch.path + ".rows" : dispatchPath && dispatchPath + ".rows";
@@ -8322,7 +8324,7 @@ var Table$3 = React.forwardRef(function (props, ref) {
     );
 });
 
-Table$3.propTypes = {
+Table$2.propTypes = {
     /**
      * REQUIRED
      * */
@@ -8588,7 +8590,7 @@ Table$3.propTypes = {
     subscribe: PropTypes__default["default"].arrayOf(PropTypes__default["default"].object)
 };
 
-Table$3.defaultProps = {
+Table$2.defaultProps = {
     infinityMode: false,
     editMode: false,
     defaultRows: [],
@@ -8654,7 +8656,7 @@ Table$3.defaultProps = {
     subscribe: []
 };
 
-var Table$4 = reactRedux.connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$3);
+var InternalRawRtTable = reactRedux.connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$2);
 
 var _this$1 = undefined;
 
@@ -8796,7 +8798,7 @@ var ConfigLoader$1 = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React__default["default"].createElement(Table$4, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React__default["default"].createElement(InternalRawRtTable, _extends({}, props, tableConfig));else return null;
 };
 
 var HeaderCell = function HeaderCell(props) {
@@ -9998,7 +10000,7 @@ Table$1.defaultProps = {
     subscribe: []
 };
 
-var Table$2 = reactRedux.connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$1);
+var InternalRawAntTable = reactRedux.connect(mapStateToProps, mapDispatchToProps$1, null, { forwardRef: true })(Table$1);
 
 var _this = undefined;
 
@@ -10165,7 +10167,7 @@ var ConfigLoader = function ConfigLoader(props) {
         });
     };
 
-    if (tableConfig) return React__default["default"].createElement(Table$2, _extends({}, props, tableConfig));else return null;
+    if (tableConfig) return React__default["default"].createElement(InternalRawAntTable, _extends({}, props, tableConfig));else return null;
 };
 
 var TableWrapper = function TableWrapper(props) {
@@ -10838,7 +10840,9 @@ var Tabs = withStore(AntTabs__default["default"]);
 var TabPane = withStore(TabPane$1);
 var Table = withItem(TableWrapper);
 var RtTable = withItem(ConfigLoader$1);
+var RawRtTable = InternalRawRtTable;
 var AntTable = withItem(ConfigLoader);
+var RawAntTable = InternalRawAntTable;
 // Feedback
 var Modal = withItem(Modal$2);
 // Rt-design
@@ -10925,6 +10929,8 @@ exports.Popover = Popover;
 exports.Radio = Radio;
 exports.RadioButton = RadioButton;
 exports.RadioGroup = RadioGroup;
+exports.RawAntTable = RawAntTable;
+exports.RawRtTable = RawRtTable;
 exports.Row = Row;
 exports.RtTable = RtTable;
 exports.Search = Search;
@@ -10948,5 +10954,8 @@ exports.executeRequest = executeRequest;
 exports.notificationError = notificationError;
 exports.rtdReducer = rtdReducer;
 exports.setDataStore = setDataStore;
+exports.withItem = withItem;
+exports.withLabel = withLabel;
+exports.withPlaceholder = withPlaceholder;
 exports.withStore = withStore;
 //# sourceMappingURL=index.js.map

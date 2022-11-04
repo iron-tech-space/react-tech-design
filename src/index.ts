@@ -4,7 +4,7 @@ export {deprecated} from './components/deprecated'
 
 // Components
 export * from "./components/index";
-export {withStore} from "./components/core/wrappers";
+export {withStore, withItem, withLabel, withPlaceholder} from "./components/core/wrappers";
 
 // Store
 export {default as rtdReducer} from './redux/rtd.reducer';

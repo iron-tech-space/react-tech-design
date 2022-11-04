@@ -1,10 +1,12 @@
 import RtTable from "./ReactBaseTable/ConfigLoader";
+import RawRtTable from "./ReactBaseTable/Table";
 import AntTable from "./AntTable/ConfigLoader";
+import RawAntTable from "./AntTable/Table";
 import React, { FunctionComponent, ReactNode } from "react";
 import { Request, sortBy } from "../core/interfaces";
 import { FormItemProps as AntFormItemProps } from "antd/lib/form/FormItem";
 
-export {RtTable, AntTable};
+export {RtTable, RawRtTable, AntTable, RawAntTable};
 export const TableWrapper: FunctionComponent<TableProps> = (props: TableProps) => {
     const {type, ...restProps} = props
     if(type)

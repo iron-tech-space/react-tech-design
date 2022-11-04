@@ -1,9 +1,11 @@
 import RtTable from "./ReactBaseTable/ConfigLoader";
+import RawRtTable from "./ReactBaseTable/Table";
 import AntTable from "./AntTable/ConfigLoader";
+import RawAntTable from "./AntTable/Table";
 import React, { FunctionComponent, ReactNode } from "react";
 import { Request, sortBy } from "../core/interfaces";
 import { FormItemProps as AntFormItemProps } from "antd/lib/form/FormItem";
-export { RtTable, AntTable };
+export { RtTable, RawRtTable, AntTable, RawAntTable };
 export declare const TableWrapper: FunctionComponent<TableProps>;
 export interface TablesSubscribeOnChangeOptions {
     /** Значение лежащие в Store по пути subscribe[i].path */
