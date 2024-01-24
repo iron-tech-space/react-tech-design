@@ -217,14 +217,16 @@ const Select = props => {
 		const onEndReached = scrollTopMax - scrollTop;
 
 		if(onEndReached < 300 && !isEndReached) {
-			// console.log('Load Data');
 			setIsEndReached(true);
-			_setSearchValue(defaultSearchValue);
+			const __searchValue = searchValue ? searchValue : _searchValue;
+			_setSearchValue(__searchValue);
+			// console.log('Load Data:', __searchValue);
+			// _setSearchValue(defaultSearchValue);
 			if(infinityMode){
 				_loadOptions({
 					sortBy: defaultSortBy,
 					filter: defaultFilter,
-					searchValue: defaultSearchValue,
+					searchValue: __searchValue,
 					reload: false,
 				});
 			}

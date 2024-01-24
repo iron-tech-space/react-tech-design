@@ -1,18 +1,18 @@
 import React from "react";
 import { FormProps as AntFormProps } from 'antd';
 import { Request } from "../core/interfaces";
-export declare type FormHeaderProps = React.HTMLAttributes<HTMLDivElement>;
-export declare type FormBodyProps = React.HTMLAttributes<HTMLDivElement> & {
+export type FormHeaderProps = React.HTMLAttributes<HTMLDivElement>;
+export type FormBodyProps = React.HTMLAttributes<HTMLDivElement> & {
     /** Не делать отступы у формы от краев блока. **Only config Form** */
     noPadding?: boolean;
     /** Разрешить скролл внтри формы */
     scrollable?: boolean;
 };
-export declare type FormFooterProps = React.HTMLAttributes<HTMLDivElement>;
-export declare type FormItemsProps = {
+export type FormFooterProps = React.HTMLAttributes<HTMLDivElement>;
+export type FormItemsProps = {
     items: object[];
 };
-export declare type FormItemProps = {
+export type FormItemProps = {
     child: object;
 };
 export interface FormProps extends AntFormProps {

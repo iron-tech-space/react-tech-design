@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
-export declare type RequestOptions = {
+export type RequestOptions = {
     params: any;
     data: any;
     method?: any;
 };
-export declare type Request = (options: RequestOptions) => Promise<any>;
-export declare type OptionItem = {
+export type Request = (options: RequestOptions) => Promise<any>;
+export type OptionItem = {
     label: ReactNode;
     value: any;
     className?: string;

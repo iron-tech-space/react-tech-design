@@ -564,8 +564,14 @@ const Table = forwardRef((props, ref) => {
     const _onColumnSort = (sortBy) => {
         // console.log("sortBy", sortBy);
         tableRef.current.scrollToRow(0, "auto");
-        let localSortBy = _sortBy.order === "desc" ? {} : sortBy;
+        let localSortBy = {key: sortBy.key, order: sortBy.order};
+        if (_sortBy && _sortBy.order === "desc") {
+            localSortBy = {};
+        }
+        // let localSortBy = sortBy && sortBy.order ? {key: sortBy.key, order: sortBy.order} : {} //
         setSortBy(localSortBy);
+        // console.log("localSortBy", localSortBy);
+
 
         // Для серверной сортировки - сбросить выделение
         // if (type !== 'localSide') {

@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import { LabelProps } from "./wrappers";
 import * as rtComponents from "../index";
 
-
 export const render = (Component: React.ComponentType) => (props: any) =>
     <Component {...props}/>
 

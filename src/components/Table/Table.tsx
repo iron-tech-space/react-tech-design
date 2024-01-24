@@ -114,11 +114,11 @@ export interface TableProps {
         /** Заколовок для кол-ва всего объектов */
         totalTitle?: string;
         /** Левый кастомный элемент командной панели */
-        leftCustomSideElement?: React.ComponentType | any[],
+        leftCustomSideElement?: React.ComponentType | any[] | ReactNode,
         /** Центральный кастомный элемент командной панели */
-        centerCustomSideElement?: React.ComponentType | any[],
+        centerCustomSideElement?: React.ComponentType | any[] | ReactNode,
         /** Правый кастомный элемент командной панели */
-        rightCustomSideElement?: React.ComponentType | any[],
+        rightCustomSideElement?: React.ComponentType | any[] | ReactNode,
     };
 
     /** Высота заголовка таблицы. [ONLY type = rt] */

@@ -6484,14 +6484,16 @@ var Select$1 = function Select(props) {
 		var onEndReached = scrollTopMax - scrollTop;
 
 		if (onEndReached < 300 && !isEndReached) {
-			// console.log('Load Data');
 			setIsEndReached(true);
-			_setSearchValue(defaultSearchValue);
+			var __searchValue = searchValue ? searchValue : _searchValue;
+			_setSearchValue(__searchValue);
+			console.log('Load Data:', __searchValue);
+			// _setSearchValue(defaultSearchValue);
 			if (infinityMode) {
 				_loadOptions({
 					sortBy: defaultSortBy,
 					filter: defaultFilter,
-					searchValue: defaultSearchValue,
+					searchValue: __searchValue,
 					reload: false
 				});
 			}
@@ -7857,8 +7859,14 @@ var Table$2 = React.forwardRef(function (props, ref) {
     var _onColumnSort = function _onColumnSort(sortBy) {
         // console.log("sortBy", sortBy);
         tableRef.current.scrollToRow(0, "auto");
-        var localSortBy = _sortBy.order === "desc" ? {} : sortBy;
+        var localSortBy = { key: sortBy.key, order: sortBy.order };
+        if (_sortBy && _sortBy.order === "desc") {
+            localSortBy = {};
+        }
+        // let localSortBy = sortBy && sortBy.order ? {key: sortBy.key, order: sortBy.order} : {} //
         setSortBy(localSortBy);
+        // console.log("localSortBy", localSortBy);
+
 
         // Для серверной сортировки - сбросить выделение
         // if (type !== 'localSide') {

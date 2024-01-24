@@ -1,3 +1,9 @@
+## 0.0.87
+
+- Fix table sort
+- Fix select search
+- Fix function component types
+
 ## 0.0.86
 
 - ReExport raw table component

@@ -53,7 +53,7 @@ export const withLabel = (Component: React.ComponentType) => (props: any) =>
 export const withPlaceholder = (Component: React.ComponentType, placeholder: string) => (props: any) =>
     withStore(Component)({...props, placeholder: (props && props.placeholder) ? props.placeholder : placeholder})
 
-export const withStore = (Component: React.ComponentType<any>) => {
+export const withStore = (Component: React.ComponentType<any> | ReactNode) => {
     let StoreComponent = storeConnect(Component);
     return (props: any) => withItem(StoreComponent)(props);
 }
