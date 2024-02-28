@@ -6,7 +6,6 @@ const defaultProps = {
     defaultFilter: {},
     rowKey: "id",
     pageSize: 50,
-    requestLoadConfig: noop,
     expandColumnKey: undefined,
     expandLazyLoad: false,
     expandParentKey: "parentId",
