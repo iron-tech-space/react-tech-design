@@ -1,3 +1,8 @@
+## 0.0.88
+
+- Fix ConfigLoader (remove initialValue from requestLoadConfig)
+- Add Debounce to OnSearch at Select
+
 ## 0.0.87
 
 - Fix table sort

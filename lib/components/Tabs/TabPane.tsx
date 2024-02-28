@@ -10,7 +10,7 @@ export interface TabPaneProps extends AntTabPaneProps, StoreProps {
 }
 
 const TabPane = (props: TabPaneProps) => {
-    let cls = [];
+    let cls: string[] = [];
     props.className && cls.push(props.className);
     props.scrollable && cls.push(`${rtPrefix}-tabs-tabpane-scrollable`);
     return <AntTabs.TabPane {...props} className={cls.join(" ")}>{props.children}</AntTabs.TabPane>

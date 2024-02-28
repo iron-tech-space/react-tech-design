@@ -77,6 +77,8 @@ const Select = props => {
 
 	const isMounted = useMounted()
 
+	const [debounceTimer, setDebounceTimer] = useState(undefined);
+	//
 	useEffect(() => {
 		_setSearchValue(defaultSearchValue);
 		_loadOptions({
@@ -238,13 +240,20 @@ const Select = props => {
 	}
 
 	const onSearch = (value) => {
+		clearTimeout(debounceTimer);
 		_setSearchValue(value);
-		_loadOptions({
-			sortBy: defaultSortBy,
-			filter: defaultFilter,
-			searchValue: value,
-			reload: true,
-		});
+		setDebounceTimer (setTimeout(
+			() => {
+				_loadOptions({
+					sortBy: defaultSortBy,
+					filter: defaultFilter,
+					searchValue: value,
+					reload: true,
+				});
+			},
+			500
+		))
+
 	}
 
 	const _onChangeSelectAll = () => {
