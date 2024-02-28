@@ -6342,6 +6342,13 @@ var Select$1 = function Select(props) {
 
 	var isMounted = useMounted();
 
+	var _useState19 = React.useState(undefined),
+	    _useState20 = slicedToArray(_useState19, 2),
+	    debounceTimer = _useState20[0],
+	    setDebounceTimer = _useState20[1];
+	//
+
+
 	React.useEffect(function () {
 		_setSearchValue(defaultSearchValue);
 		_loadOptions({
@@ -6487,7 +6494,7 @@ var Select$1 = function Select(props) {
 			setIsEndReached(true);
 			var __searchValue = searchValue ? searchValue : _searchValue;
 			_setSearchValue(__searchValue);
-			console.log('Load Data:', __searchValue);
+			// console.log('Load Data:', __searchValue);
 			// _setSearchValue(defaultSearchValue);
 			if (infinityMode) {
 				_loadOptions({
@@ -6505,13 +6512,16 @@ var Select$1 = function Select(props) {
 	};
 
 	var onSearch = function onSearch(value) {
+		clearTimeout(debounceTimer);
 		_setSearchValue(value);
-		_loadOptions({
-			sortBy: defaultSortBy,
-			filter: defaultFilter,
-			searchValue: value,
-			reload: true
-		});
+		setDebounceTimer(setTimeout(function () {
+			_loadOptions({
+				sortBy: defaultSortBy,
+				filter: defaultFilter,
+				searchValue: value,
+				reload: true
+			});
+		}, 500));
 	};
 
 	var _onChangeSelectAll = function _onChangeSelectAll() {
@@ -9071,6 +9081,7 @@ var Table$1 = function Table(props) {
     }, []);
 
     React.useEffect(function () {
+        console.log('check');
         _setColumns(columns);
     }, [columns]);
 
