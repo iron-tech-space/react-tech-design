@@ -194,7 +194,6 @@ const Table = props => {
     }, []);
 
     useEffect(() => {
-        console.log('check');
         _setColumns(columns);
     }, [columns]);
 
