@@ -1,3 +1,7 @@
+## 0.0.89
+
+- Fix autoSelected when RTTable filtered
+
 ## 0.0.88
 
 - Fix ConfigLoader (remove initialValue from requestLoadConfig)
