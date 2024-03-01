@@ -348,7 +348,7 @@ const Table = forwardRef((props, ref) => {
     const reloadData = ({ sortBy, filter, searchValue }, appendParams) => {
         // console.log("reloadData params ", sortBy, filter, searchValue, loading);
         tableRef.current && tableRef.current.scrollToRow(0, "auto");
-        if (props.value && props.value.length > 0)
+        if (selectable && props.value && props.value.length > 0)
             _setSelectedRowsHandler(props.value.map(item => item[rowKey]), props.value);
         else
             _setSelectedRowsHandler();
