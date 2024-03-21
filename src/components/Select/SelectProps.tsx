@@ -2,9 +2,9 @@ import {SelectProps as AntSelectProps} from 'antd'
 import { SelectValue } from "antd/lib/select";
 import { StoreProps } from "../core/wrappers";
 import { Request, sortBy, OptionItem } from "../core/interfaces";
-import { ReactNode } from "react";
+import * as React from "react";
 
-export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<AntSelectProps<VT>, 'mode'>, StoreProps{
+export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<AntSelectProps<VT>, "mode">, StoreProps{
 
     /** Сортировка по умолчанию */
     defaultSortBy?: sortBy;
@@ -23,7 +23,7 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<
     searchParamName?: string;
     /** Имя параметра для поиска потерянного элемента */
     lostParamName?: string;
-    /** Режим загружки по скроллу */
+    /** Режим загрузки по скроллу */
     infinityMode?: boolean;
     /** Функция запроса для загрузки строк (данных) */
     requestLoadRows?: Request;
@@ -35,7 +35,7 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<
      *
      * Сигнатура `(option) => ({})`
      *
-     * Требоваеть вернуть объект с параметрам
+     * Требовать вернуть объект с параметрам
      *
      * `{ label: ReactNode, value: any, className: string, disabled: bool }`
      *
@@ -56,6 +56,8 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<
     widthControl?: string | number;
     /** Размер страницы */
     pageSize?: number;
+    /** Время задержки при вводе, мс */
+    debounceDelay?: number;
     /** уникальное отображение данных в селекте */
-    dropdownRender?: ReactNode;
+    dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
 }
