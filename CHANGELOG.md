@@ -1,3 +1,9 @@
+## 0.0.90
+
+- Fix select all bug while undefined value in Select comp (multiple mode)
+- Fix clearing value bug on loading options in Select comp (multiple mode)  
+- Add debounceDelay prop in Select comp (default 300 ms)
+
 ## 0.0.89
 
 - Fix autoSelected when RTTable filtered
