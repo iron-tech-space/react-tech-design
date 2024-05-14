@@ -48,6 +48,7 @@ const Select = props => {
         widthControl,
         pageSize,
         debounceDelay,
+        revertSearchValue,
 
         // Ant Props
         mode,
@@ -90,6 +91,11 @@ const Select = props => {
             reload: true
         });
     }, []);
+
+    useEffect(() => {
+        if (revertSearchValue === undefined || revertSearchValue === null) return;
+        _setSearchValue(revertSearchValue);
+    }, [revertSearchValue]);
 
     useEffect(() => {
         if (isMounted) {
@@ -382,12 +388,15 @@ Select.propTypes = {
     /** Значение строки поиска */
     searchValue: PropTypes.string,
 
+    /** Сброс строки поиска вложенного инпута */
+    revertSearchValue: PropTypes.string,
+
     /** Имя параметра для поиска */
     searchParamName: PropTypes.string,
 
     lostParamName: PropTypes.string,
 
-    /** Режим загружки по скроллу */
+    /** Режим загрузки по скроллу */
     infinityMode: PropTypes.bool,
 
     /** Функция запроса для загрузки строк (данных) */
@@ -395,7 +404,7 @@ Select.propTypes = {
 
     /** Функция преобразования загруженных объектов в объекты для селекта.
      * Сигнатура `(option) => ({})`
-     * Требоваеть вернуть объект с параметрам
+     * Требовать вернуть объект с параметрам
      * `{ label: ReactNode, value: any, className: string, disabled: bool }`
      * ##### Example:
      * ``` JS
