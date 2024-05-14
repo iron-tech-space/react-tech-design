@@ -93,7 +93,6 @@ const Select = props => {
     }, []);
 
     useEffect(() => {
-        if (revertSearchValue === undefined || revertSearchValue === null) return;
         _setSearchValue(revertSearchValue);
     }, [revertSearchValue]);
 
