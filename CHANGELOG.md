@@ -1,3 +1,8 @@
+## 0.0.91
+
+- Value of `password` field no longer logs into the console when submitting form
+- Add `revertSearchField` prop for `Select` component
+
 ## 0.0.90
 
 - Fix select all bug while undefined value in Select comp (multiple mode)

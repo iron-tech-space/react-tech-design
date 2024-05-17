@@ -104,7 +104,11 @@ const Form = (props) => {
             ...initFormData,
             ...values,
         };
-        console.log(`Success form [${props.name ? props.name : 'no name form'}]: `, saveObject);
+        // exclude password from info object
+        console.info(
+            `Success form [${props.name ? props.name : 'no name form'}]: %o`,
+            Object.keys(saveObject).reduce((acc, key) => key === 'password' ? acc : { ...acc, [key]: saveObject[key] }, {})
+        );
         if (requestSaveForm && methodSaveForm) {
             requestSaveForm({
                 method: methodSaveForm,
