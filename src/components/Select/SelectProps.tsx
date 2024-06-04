@@ -19,6 +19,8 @@ export interface SelectProps<VT extends SelectValue = SelectValue> extends Omit<
     filter?: any;
     /** Значение строки поиска */
     searchValue?: string;
+    /** Сброс строки поиска вложенного инпута по любому уникальному значению, например {} */
+    revertSearchValue?: any,
     /** Имя параметра для поиска */
     searchParamName?: string;
     /** Имя параметра для поиска потерянного элемента */
