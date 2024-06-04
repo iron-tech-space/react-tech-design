@@ -35,7 +35,7 @@ export interface StoreProps {
         /** Путь до объекта в Store */
         path: string;
         /** Путь к дополнительным данным которые будут переданы в onChange */
-        extraData?: string;
+        extraData?: string | Record<string, string>;
         /** Выполнить подписку при монтировании компонента
          * По умолчанию false */
         withMount?: boolean;
