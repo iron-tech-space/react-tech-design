@@ -1,3 +1,9 @@
+## 0.0.92
+
+- `revertSearchField` clears inner input `Select`
+- Fix `extraData` type in subscribes to correctly accept object of path records
+- Add `reloadDataAfterSaveForm` prop for `Form` component
+
 ## 0.0.91
 
 - Value of `password` field no longer logs into the console when submitting form
