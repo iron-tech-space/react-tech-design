@@ -93,7 +93,7 @@ const Select = props => {
     }, []);
 
     useEffect(() => {
-        _setSearchValue(revertSearchValue);
+        _setSearchValue('');
     }, [revertSearchValue]);
 
     useEffect(() => {
@@ -387,8 +387,8 @@ Select.propTypes = {
     /** Значение строки поиска */
     searchValue: PropTypes.string,
 
-    /** Сброс строки поиска вложенного инпута */
-    revertSearchValue: PropTypes.string,
+    /** Сброс строки поиска вложенного инпута по любому уникальному значению, например {} */
+    revertSearchValue: PropTypes.any,
 
     /** Имя параметра для поиска */
     searchParamName: PropTypes.string,

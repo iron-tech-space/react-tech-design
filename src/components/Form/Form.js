@@ -52,10 +52,11 @@ const Form = (props) => {
         footer,
         requestSaveForm,
         methodSaveForm,
-        processBeforeSaveForm
+        processBeforeSaveForm,
+        reloadDataAfterSaveForm,
     } = props;
 
-    /** Состояние первоначалной настройки компонента*/
+    /** Состояние первоначальной настройки компонента */
     const [loaded, setLoaded] = useState(false);
     const [antFormProps, setAntFormProps] = useState({});
     const [initFormData, setInitFormData] = useState({});
@@ -119,6 +120,7 @@ const Form = (props) => {
                         message: "Сохранение прошло успешно"
                     });
                     props.onFinish && props.onFinish(saveObject, response.data);
+                    if (reloadDataAfterSaveForm) setLoaded(false);
                 })
                 .catch(error => notificationError(error, 'Ошибка при сохранении') );
         } else if (props.onFinish)
@@ -193,14 +195,18 @@ Form.propTypes = {
     methodSaveForm: PropTypes.string,
 
     /** Функция обработки перед сохранением формы */
-    processBeforeSaveForm: PropTypes.func
+    processBeforeSaveForm: PropTypes.func,
+
+    /** Выполнить loadInitData после сохранения формы */
+    reloadDataAfterSaveForm: PropTypes.bool,
 };
 
 Form.defaultProps = {
     noPadding: false,
     scrollable: false,
     loadInitData: noop,
-    methodSaveForm: 'POST'
+    methodSaveForm: 'POST',
+    reloadDataAfterSaveForm: false,
 };
 
 const mapDispatchToProps = (dispatch) =>
