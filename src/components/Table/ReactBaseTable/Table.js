@@ -1184,6 +1184,9 @@ Table.propTypes = {
     /** Вывод когда нет данных */
     empty: PropTypes.element,
 
+    /** Содержимое ячейки при значении null */
+    nullDash: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+
     /** Отображение загрузки данных */
     overlay: PropTypes.element,
 
@@ -1357,6 +1360,7 @@ Table.defaultProps = {
     rowKey: "id",
 
     empty: empty,
+    nullDash: "---",
     overlay: overlay,
     fixWidthColumn: false,
     footerProps: {

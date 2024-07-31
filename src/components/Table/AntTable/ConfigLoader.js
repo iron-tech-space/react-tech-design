@@ -9,7 +9,8 @@ const defaultProps = {
     expandColumnKey: undefined,
     expandLazyLoad: false,
     expandParentKey: "parentId",
-    customColumnProps: []
+    customColumnProps: [],
+    nullDash: "---",
 };
 
 const ConfigLoader = props => {
@@ -29,7 +30,8 @@ const ConfigLoader = props => {
         customColumnProps,
         // cellBordered,
         fixWidthColumn,
-        selectable
+        selectable,
+        nullDash
     } = { ...defaultProps, ...props };
 
     useEffect(() => {
@@ -122,7 +124,7 @@ const ConfigLoader = props => {
                         rowData={rowData}
                         rowIndex={rowIndex} />;
                 else
-                    return item.typeData === "json" ? JSON.stringify(cellData) : cellData ? cellData : "---";
+                    return item.typeData === "json" ? JSON.stringify(cellData) : cellData ? cellData : nullDash;
             };
             _columns.push(column);
         });

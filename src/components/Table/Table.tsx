@@ -95,6 +95,8 @@ export interface TableProps {
 
     /** Вывод когда нет данных */
     empty?: ReactNode;
+    /** Вывод при значении ячейки null */
+    nullDash?: string | ReactNode;
     /** Отображение загрузки данных */
     overlay?: ReactNode;
     /** Фиксированная ширина столбцов. Появится боковой скрол */
@@ -107,11 +109,11 @@ export interface TableProps {
         /** Массив элементов футтера, которые надо отобразить
          * ['selected', 'loaded', 'total'] */
         showElements?: string[];
-        /** Заколовок для кол-ва выбранных объектов */
+        /** Заголовок для кол-ва выбранных объектов */
         selectedTitle?: string;
-        /** Заколовок для кол-ва загруженны объектов */
+        /** Заголовок для кол-ва загруженных объектов */
         loadedTitle?: string;
-        /** Заколовок для кол-ва всего объектов */
+        /** Заголовок для кол-ва всего объектов */
         totalTitle?: string;
         /** Левый кастомный элемент командной панели */
         leftCustomSideElement?: React.ComponentType | any[] | ReactNode,
