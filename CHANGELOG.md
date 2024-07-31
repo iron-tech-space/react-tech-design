@@ -1,3 +1,9 @@
+## 0.0.93
+
+- Fix `revertSearchField` prop in `Select` component
+- Add `nullDash` prop for `Table` component
+- Exclude `reloadDataAfterSaveForm` prop from `Form` component to prevent console Errors
+
 ## 0.0.92
 
 - `revertSearchField` clears inner input `Select`
