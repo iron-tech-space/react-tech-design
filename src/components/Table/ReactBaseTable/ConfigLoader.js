@@ -12,6 +12,7 @@ const defaultProps = {
     expandLazyLoad: false,
     expandParentKey: 'parentId',
     customColumnProps: [],
+    nullDash: '---',
 };
 
 const ConfigLoader = props => {
@@ -30,6 +31,7 @@ const ConfigLoader = props => {
         expandParentKey,
         customColumnProps,
         cellBordered,
+        nullDash,
     } = {...defaultProps, ...props};
 
     useEffect(() => {
@@ -87,12 +89,12 @@ const ConfigLoader = props => {
                 cellRenderer: (object) => {
                     if (colProps && colProps.cellRenderer)
                         return <colProps.cellRenderer {...object}/>
-                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : '---';
+                        // return colProps.cellRenderer(object) ? colProps.cellRenderer(object) : nullDash;
                     else
                         return object.cellData
                             ? <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{object.cellData}</Typography.Text>
-                            : <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>---</Typography.Text> ;
-                        // return object.cellData ? object.cellData : '---';
+                            : <Typography.Text ellipsis={true} style={{width: '100%'}} className={'rt-table-cell'}>{nullDash}</Typography.Text> ;
+                        // return object.cellData ? object.cellData : nullDash;
                 },
             });
         });

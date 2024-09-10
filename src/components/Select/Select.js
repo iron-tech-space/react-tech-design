@@ -90,10 +90,6 @@ const Select = props => {
             searchValue: defaultSearchValue,
             reload: true
         });
-    }, []);
-
-    useEffect(() => {
-        _setSearchValue('');
     }, [revertSearchValue]);
 
     useEffect(() => {

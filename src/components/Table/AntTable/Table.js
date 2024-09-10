@@ -32,6 +32,7 @@ const excludeProps = [
     "searchParamName",
     "onRowClick",
     "onRowDoubleClick",
+    "nullDash",
 ];
 
 const Table = props => {
@@ -796,6 +797,9 @@ Table.propTypes = {
     /** Значение строки поиска по умолчанию строк */
     defaultSearchValue: PropTypes.string,
 
+    /** Содержимое ячейки при значении null */
+    nullDash: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+
     /** Объект фильтрации по умолчанию */
     defaultFilter: PropTypes.object,
 
@@ -1064,6 +1068,7 @@ Table.defaultProps = {
     sortBy: {},
 
     rowKey: "id",
+    nullDash: "---",
 
     empty: empty,
     overlay: overlay,

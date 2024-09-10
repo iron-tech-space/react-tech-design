@@ -20,7 +20,8 @@ const excludeProps = [
     "loadInitData",
     "requestSaveForm",
     "methodSaveForm",
-    "processBeforeSaveForm"
+    "processBeforeSaveForm",
+    "reloadDataAfterSaveForm"
 ];
 
 /** Компонент заголовка формы */
